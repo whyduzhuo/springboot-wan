@@ -1,5 +1,8 @@
 wan:
-  filePath: D:/ruoyi/uploadPath #默认文件下载路径
+  profile:                      #项目文件配置
+    file-path: D:/wan/uploadPath #默认文件下载路径
+    max-size: 1MB        #文件最大限制
+    max-file-name: 20      #文件名称最长限制
 
 spring:
   datasource:
@@ -44,6 +47,10 @@ spring:
     hiddenmethod:
       filter:
         enabled: true  #开启支持resful请求
+
+  servlet:
+    multipart:
+      max-file-size: ${wan.profile.max-size}
 
 server:
   port: 8082

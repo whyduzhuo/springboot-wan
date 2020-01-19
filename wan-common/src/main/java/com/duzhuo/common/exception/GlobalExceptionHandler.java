@@ -5,10 +5,12 @@ import com.duzhuo.common.utils.ServletUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    @Value("${wan.profile.max-size}")
+    private String maxSize;
 
     /**
      * 权限校验异常
@@ -94,6 +98,18 @@ public class GlobalExceptionHandler {
     public Message validatedBindException(BindException e) {
         log.error(e.getMessage(), e);
         String message = e.getAllErrors().get(0).getDefaultMessage();
+        return Message.error(message);
+    }
+
+    /**
+     * 文件上传过大异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public Message maxUploadSizeExceededException(MaxUploadSizeExceededException e){
+        log.error(e.getMessage(), e);
+        String message = "超过文件限制大小:"+maxSize;
         return Message.error(message);
     }
 }

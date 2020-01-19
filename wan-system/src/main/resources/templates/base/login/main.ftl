@@ -6,23 +6,26 @@
     <script type="text/javascript" src="/js/jquery/bootstrap.min.js"></script>
 </head>
 <body>
-    <a href="http://localhost:8082/base/admin/2" target="_blank">
+    <a href="/base/admin/2" target="_blank">
         <h1>查询用户</h1>
     </a>
-    <a href="http://localhost:8082/base/position/1" target="_blank">
+    <a href="/base/position/1" target="_blank">
         <h1>查询职务</h1>
     </a>
-    <a href="http://localhost:8082/base/organization/1" target="_blank">
+    <a href="/base/organization/1" target="_blank">
         <h1>查询部门</h1>
     </a>
-    <a href="http://localhost:8082/base/organization/1" target="_blank">
+    <a href="/base/organization/1" target="_blank">
         <h1>查询部门</h1>
     </a>
-    <a href="http://localhost:8082/base/sysOperLog/list" target="_blank">
+    <a href="/base/sysOperLog/list" target="_blank">
         <h1>日志记录</h1>
     </a>
-    <a href="http://localhost:8082/base/coding/index" target="_blank">
+    <a href="/base/coding/index" target="_blank">
         <h1>代码生成</h1>
+    </a>
+    <a href="/base/proFile/uploadTest" target="_blank">
+        <h1>文件上传测试</h1>
     </a>
     <button type="button" onclick="del()">
         <h1>删除</h1>

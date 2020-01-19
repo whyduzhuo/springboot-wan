@@ -24,4 +24,6 @@ public enum OperateType {
     APPROVE,
     /**下载*/
     DOWLOAD,
+    /**上传*/
+    UPLOAD,
 }
