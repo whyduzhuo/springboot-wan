@@ -54,7 +54,9 @@ server:
     max-threads: 500
 logging:
   level:
-    root: info
+    org.springframework.boot.autoconfigure: warn
+    root: warn
+
   file:
     path: /
     name: wanlog.log

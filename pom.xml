@@ -143,28 +143,6 @@
         </dependency>
 
 
-
-        <!--&lt;!&ndash; 核心模块&ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>com.duzhuo</groupId>-->
-            <!--<artifactId>wan-framework</artifactId>-->
-            <!--<version>${wan.version}</version>-->
-        <!--</dependency>-->
-
-        <!--&lt;!&ndash; 系统模块&ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>com.duzhuo</groupId>-->
-            <!--<artifactId>wan-system</artifactId>-->
-            <!--<version>${wan.version}</version>-->
-        <!--</dependency>-->
-
-        <!--&lt;!&ndash; 通用工具&ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>com.duzhuo</groupId>-->
-            <!--<artifactId>wan-common</artifactId>-->
-            <!--<version>${wan.version}</version>-->
-        <!--</dependency>-->
-
         <!--Excel工具-->
         <dependency>
             <groupId>org.apache.poi</groupId>
