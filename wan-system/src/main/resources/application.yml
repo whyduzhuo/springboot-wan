@@ -1,8 +1,10 @@
 wan:
   profile:                      #项目文件配置
-    file-path: D:/wan/uploadPath #默认文件下载路径
+    file-path: D:/wan/uploadPath  #默认文件存储路径
+    file-virtual-Path: /upload    #文件储路径对应的项目虚拟路径
     max-size: 1MB        #文件最大限制
     max-file-name: 20      #文件名称最长限制
+    support-file-type: bmp,gif,jpg,jpeg,png,doc,docx,xls,xlsx,ppt,pptx,txt,rar,pdf  #支持的文件格式
 
 spring:
   datasource:
@@ -26,7 +28,7 @@ spring:
     expose-request-attributes: true
     expose-session-attributes: true
     request-context-attribute: request
-    suffix: .ftl
+    suffix: .ftl                #视图解析后缀
     prefer-file-system-access: false #不同模块的静态文件也能映射
     settings:
       number_format: 0.######
@@ -38,11 +40,11 @@ spring:
       restart:
         enabled: true  #设置开启热部署
   jackson:
-    time-zone: GMT+8
-    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8    #时区
+    date-format: yyyy-MM-dd HH:mm:ss    #JSON时间格式
   mvc:
     view:
-      prefix: classpath:/templates/
+      prefix: classpath:/templates  #springmvc视图解析前缀
     static-path-pattern: /**
     hiddenmethod:
       filter:
@@ -50,10 +52,10 @@ spring:
 
   servlet:
     multipart:
-      max-file-size: ${wan.profile.max-size}
+      max-file-size: ${wan.profile.max-size}    #MultipartFile文件大小限制
 
 server:
-  port: 8082
+  port: 8082    #端口号
   servlet:
     context-path: /
   tomcat:
@@ -65,8 +67,8 @@ logging:
     root: warn
 
   file:
-    path: /
-    name: wanlog.log
+    path: /         #日志保存路径
+    name: wanlog.log    #日志文件名
 
 debug: true
 

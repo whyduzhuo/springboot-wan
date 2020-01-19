@@ -3,6 +3,7 @@ package com.duzhuo.wansystem.controller.base;
 import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
+import com.duzhuo.wansystem.entity.base.ProFile;
 import com.duzhuo.wansystem.service.base.ProFileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,12 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 /**
@@ -55,11 +55,19 @@ public class ProFileController {
     @ResponseBody
     @Log(title = "多文件上传",operateType = OperateType.UPLOAD)
     @ApiOperation(value = "多文件上传")
-    public Message upload(@NotEmpty MultipartFile[] files) throws IOException{
+    public Message upload(MultipartFile[] files) throws IOException{
         for (MultipartFile file:files) {
             proFileService.upload(file);
         }
         return Message.success("上传成功！");
+    }
+
+    @GetMapping("/findById")
+    @ResponseBody
+    @Log(title = "查询文件对象",operateType = OperateType.SELECT)
+    @ApiOperation(value = "查询文件对象")
+    public ProFile findById(@NotNull Long id){
+        return proFileService.find(id);
     }
 
 }
