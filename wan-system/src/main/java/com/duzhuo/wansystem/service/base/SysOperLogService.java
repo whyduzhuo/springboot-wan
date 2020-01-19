@@ -38,8 +38,7 @@ public class SysOperLogService extends BaseService<SysOperLog,Long>{
     public Message importData(MultipartFile file) throws IOException {
         List<List<String>> data = ExcelUtils.excelToList(file, 2);
         for (List<String> row:data) {
-            System.err.print(row+"\t");
-            System.err.println();
+            System.err.println(row+"\t");
         }
         return Message.warn("测试");
     }

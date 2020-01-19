@@ -6,7 +6,6 @@ import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.utils.Tools;
 import com.duzhuo.wansystem.dao.base.CodingDao;
 import com.duzhuo.wansystem.entity.base.Coding;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +26,10 @@ public class CodingService extends BaseService<Coding,Long>{
         super.setBaseDao(codingDao);
     }
 
+    /**
+     * @param codingVO
+     * @return
+     */
     public Message addData(Coding codingVO){
         if (!Tools.vaildeParam(codingVO.getEntityPackages())){
             throw new ServiceException("完整类名不可为空！");

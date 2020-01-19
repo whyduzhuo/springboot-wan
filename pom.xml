@@ -11,7 +11,7 @@
 	<groupId>com.duzhuo</groupId>
 	<artifactId>wan</artifactId>
 	<version>1.0.0</version>
-    <packaging>war</packaging>
+    <packaging>pom</packaging>
 	<name>wan</name>
 	<description>校园OA系统框架</description>
 
@@ -182,17 +182,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <fork>true</fork>
-                </configuration>
-            </plugin>
 		</plugins>
 	</build>
 
