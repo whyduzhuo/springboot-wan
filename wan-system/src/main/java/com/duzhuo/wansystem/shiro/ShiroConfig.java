@@ -53,9 +53,7 @@ public class ShiroConfig {
         //对所有用户认证
         map.put("/**","authc");
         // 静态js、css
-        map.put("/js/**","anon");
-        map.put("favicon.ico","anon");
-        map.put("/img/**","anon");
+        map.put("/static/**","anon");
         //swagger接口权限 开放
         map.put("/swagger-ui.html", "anon");
         map.put("/webjars/**", "anon");

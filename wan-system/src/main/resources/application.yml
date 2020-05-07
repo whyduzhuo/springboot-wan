@@ -1,23 +1,6 @@
-wan:
-  profile:                      #项目文件配置
-    file-path: D:/wan/uploadPath  #默认文件存储路径
-    file-virtual-Path: /upload    #文件储路径对应的项目虚拟路径
-    max-size: 1MB        #文件最大限制
-    max-file-name: 20      #文件名称最长限制
-    support-file-type: bmp,gif,jpg,jpeg,png,doc,docx,xls,xlsx,ppt,pptx,txt,rar,pdf  #支持的文件格式
-
 spring:
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: oracle.jdbc.OracleDriver
-    druid:
-      url: jdbc:oracle:thin:@localhost:1521:orcl
-      username: scott
-      password: root
-      initial-size: 20
-      min-idle: 20
-      max-active: 30
-      max-wait: 60000
+  profiles:
+    active: dev
   freemarker:
     enabled: true
     template-loader-path: classpath:/templates
@@ -45,14 +28,15 @@ spring:
   mvc:
     view:
       prefix: classpath:/templates  #springmvc视图解析前缀
-    static-path-pattern: /**
+    static-path-pattern: /static/**
     hiddenmethod:
       filter:
-        enabled: true  #开启支持resful请求
-
+        #开启支持resful请求
+        enabled: true
   servlet:
     multipart:
-      max-file-size: ${wan.profile.max-size}    #MultipartFile文件大小限制
+      #MultipartFile文件大小限制
+      max-file-size: ${wan.profile.max-size}
 
 server:
   port: 8082    #端口号

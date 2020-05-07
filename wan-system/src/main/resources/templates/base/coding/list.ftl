@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/jquery/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/js/layer-v2.4/layer.js"></script>
-    <script type="text/javascript" src="/js/layer/layui.js"></script>
+    <script type="text/javascript" src="/static/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/layer-v2.4/layer.js"></script>
+    <script type="text/javascript" src="/static/js/layer/layui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
 
-    <link rel="stylesheet" href="/js/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="/js/layer-v2.4/skin/layer.css">
-    <link rel="stylesheet" href="/js/layer/layui.css">
+    <link rel="stylesheet" href="/static/js/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/js/layer-v2.4/skin/layer.css">
+    <link rel="stylesheet" href="/static/js/layer/layui.css">
     <style>
         .layui-layer-title{
             overflow:auto !important;

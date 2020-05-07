@@ -5,14 +5,14 @@
 <head>
     <meta charset="utf-8">
     <title>列表</title>
-    <script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/jquery/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/js/layer-v2.4/layer.js"></script>
-    <script type="text/javascript" src="/js/layer/layui.js"></script>
+    <script type="text/javascript" src="/static/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/layer-v2.4/layer.js"></script>
+    <script type="text/javascript" src="/static/js/layer/layui.js"></script>
 
-    <link rel="stylesheet" href="/js/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="/js/layer-v2.4/skin/layer.css">
-    <link rel="stylesheet" href="/js/layer/layui.css">
+    <link rel="stylesheet" href="/static/js/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/js/layer-v2.4/skin/layer.css">
+    <link rel="stylesheet" href="/static/js/layer/layui.css">
 
     <meta name="author" content="bianmaren">
     <meta name="robots" content="noindex, nofollow">

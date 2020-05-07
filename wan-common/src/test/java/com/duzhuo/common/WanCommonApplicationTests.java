@@ -10,4 +10,6 @@ class WanCommonApplicationTests {
 	void contextLoads() {
 	}
 
+
+
 }

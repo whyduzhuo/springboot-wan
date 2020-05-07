@@ -4,12 +4,9 @@ import com.duzhuo.common.config.ProFileConfig;
 import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.exception.ServiceException;
-import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.dao.base.ProFileDao;
 import com.duzhuo.wansystem.entity.base.ProFile;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,15 +14,33 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
-import java.util.logging.Logger;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections.MapUtils;
+import org.apache.poi.xwpf.converter.core.utils.StringUtils;
+import org.apache.poi.xwpf.converter.pdf.PdfConverter;
+import org.apache.poi.xwpf.converter.pdf.PdfOptions;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 /**
  * 项目文件
@@ -62,7 +77,6 @@ public class ProFileService extends BaseService<ProFile,Long>{
             throw new ServiceException("文件为空！");
         }
         String fileName = file.getOriginalFilename();
-        Integer f = proFileConfig.getMaxFileName();
 
         if (fileName.length() > proFileConfig.getMaxFileName()) {
             throw new ServiceException("文件名过长！最大长度"+ proFileConfig.getMaxFileName());
@@ -93,7 +107,8 @@ public class ProFileService extends BaseService<ProFile,Long>{
         }
         ProFile proFile = new ProFile();
         proFile.setAdmin(ShiroUtils.getCurrAdmin());
-        proFile.setName(uuid+suffix);
+        proFile.setUuid(uuid);
+        proFile.setSuffix(suffix);
         proFile.setPath(proFileConfig.getFileVirtualPath()+"/"+date+"/");
         proFile.setOriginal(fileName);
         proFile.setFileSize(file.getSize());
@@ -139,5 +154,73 @@ public class ProFileService extends BaseService<ProFile,Long>{
             }
         }
         return false;
+    }
+
+
+    public File saveUrlAs(String url){
+        String fileName = url.substring(url.lastIndexOf("path=")+5);
+        //创建不同的文件夹目录
+        File file=new File(proFileConfig.getFilePath()+"/"+fileName);
+        //判断文件是否存在
+        if (file.exists()){
+            return file;
+        }
+        //判断文件夹是否存在
+        if (!file.getParentFile().exists())
+        {
+            //如果文件夹不存在，则创建新的的文件夹
+            file.mkdirs();
+        }
+        FileOutputStream fileOut = null;
+        HttpURLConnection conn = null;
+        InputStream inputStream = null;
+        try
+        {
+            // 建立链接
+            URL httpUrl=new URL(url);
+            conn=(HttpURLConnection) httpUrl.openConnection();
+            //以Post方式提交表单，默认get方式
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            // post方式不能使用缓存
+            conn.setUseCaches(false);
+            //连接指定的资源
+            conn.connect();
+            //获取网络输入流
+            inputStream=conn.getInputStream();
+            BufferedInputStream bis = new BufferedInputStream(inputStream);
+            //写入到文件（注意文件保存路径的后面一定要加上文件的名称）
+            fileOut = new FileOutputStream(proFileConfig.getFilePath()+"/"+fileName);
+            BufferedOutputStream bos = new BufferedOutputStream(fileOut);
+            byte[] buf = new byte[4096];
+            int length = bis.read(buf);
+            //保存文件
+            while(length != -1)
+            {
+                bos.write(buf, 0, length);
+                length = bis.read(buf);
+            }
+            bos.close();
+            bis.close();
+            conn.disconnect();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    public File wordToPdF(File wordFile){
+        String wordFileName = wordFile.getName();
+        String suffix = wordFileName.substring(wordFileName.lastIndexOf(".")+1);
+        if (suffix.equalsIgnoreCase("PDF")){
+            return wordFile;
+        }
+        if (suffix.equalsIgnoreCase("docx") || suffix.equalsIgnoreCase("doc")){
+
+        }
+        System.err.println(wordFileName);
+        return null;
     }
 }

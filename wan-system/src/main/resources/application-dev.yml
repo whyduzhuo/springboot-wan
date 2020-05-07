@@ -1,0 +1,33 @@
+spring:
+  datasource:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: oracle.jdbc.OracleDriver
+      druid:
+        url: jdbc:oracle:thin:@localhost:1521:orcl
+        username: scott
+        password: root
+        initial-size: 20
+        min-idle: 20
+        max-active: 30
+        max-wait: 60000
+
+wan:
+  profile:                      #项目文件配置
+    file-path: D:/wan/uploadPath  #默认文件存储路径
+    file-virtual-Path: /upload    #文件储路径对应的项目虚拟路径
+    max-size: 1MB        #文件最大限制
+    max-file-name: 20      #文件名称最长限制
+    support-file-type: bmp,gif,jpg,jpeg,png,doc,docx,xls,xlsx,ppt,pptx,txt,rar,pdf
+
+#微信公众号开发
+#教程https://mp.weixin.qq.com/debug?token=476802302&lang=zh_CN
+#教程https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html
+#注：通过appid和secret 获取access_token
+#注：ip设置白名单，否则无法获取
+# https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc64be930f85801c2&secret=59daaee2149a269e4def5aa1be898bf2
+# access_token是公众号的凭证，有效期2小时，需要定时刷新
+#
+wan-oauth:
+  wechart-appid: wxc64be930f85801c2
+  wechart-secret: 59daaee2149a269e4def5aa1be898bf2
+

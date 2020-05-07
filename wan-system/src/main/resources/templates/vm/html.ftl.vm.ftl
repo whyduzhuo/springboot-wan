@@ -38,6 +38,7 @@
             <a href="javascript:;" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exportModel">
                 数据导出
             </a>
+            <a href="javascript:;" class="btn btn-sm btn-success" onclick="batchApproveWin()">批量审批</a>
             <#noparse>[/@listPageHeadLeft]</#noparse>
             <#noparse>[@listPageHeadRight true]</#noparse>
             <select class="form-control input-sm" name="search_eq_batch">
@@ -48,6 +49,12 @@
             <#noparse>[/@listPageHeadRight]</#noparse>
         </div><!-- /.block-header -->
         <div class="block-content table-responsive remove-padding-t">
+            <div class="alert alert-warning alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert"
+                        aria-hidden="true">
+                    &times;
+                </button>疫情期间，请勿装x
+            </div>
             <table class="table table-bordered" id="listTable">
                 <thead>
                 <tr>
@@ -258,7 +265,7 @@
 
 [#--数据导出方法--]
 <div class="modal fade" id="exportModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <form class="modal-dialog" action="exportData.html" method="get" target="_blank">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"
@@ -269,23 +276,10 @@
                 </h4>
             </div>
             <div class="modal-body">
+                <#noparse>[@tzzPermission3 orgProperty="exp_eq_classInformation.faculty.id" classProperty="exp_eq_classInformation.id" gradeProperty="exp_eq_classInformation.grade"][/@]</#noparse>
                 <div  style="display: inline-block;width: 30%">
                     <label for="exp_column1">字段1</label>
                     <select class="form-control" id="exp_column1">
-                        <option value="eg1">eg1</option>
-                        <option value="eg2">eg2</option>
-                    </select>
-                </div>
-                <div style="display: inline-block;width: 39%">
-                    <label for="exp_column2">字段2</label>
-                    <select  class="form-control input-sm" id="exp_column2" required>
-                        <option value="eg1">eg1</option>
-                        <option value="eg2">eg2</option>
-                    </select>
-                </div>
-                <div style="display: inline-block; width: 28%">
-                    <label>字段3</label>
-                    <select id="exp_column3" class="form-control input-sm">
                         <option value="eg1">eg1</option>
                         <option value="eg2">eg2</option>
                     </select>
@@ -295,21 +289,13 @@
                 <button type="button" class="btn btn-default"
                         data-dismiss="modal">关闭
                 </button>
-                <button type="button" class="btn btn-primary" onclick="exportExcel()">
+                <button type="submit" class="btn btn-primary" >
                     导出excel
                 </button>
             </div>
         </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+    </form><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<script>
-    function exportExcel() {
-        var exp_column1 = $("#exp_column1").val();
-        var exp_column2 = $("#exp_column2").val();
-        var exp_column3 = $("#exp_column1").val();
-        window.open('exportData.html?exp_column1='+exp_column1+'&exp_column2='+exp_column2+'&exp_column3='+exp_column3);
-    }
-</script>
 
 
 [#--文件导入模态框--]
@@ -458,6 +444,105 @@
             $("#message_detil").show();
         }
 
+    }
+</script>
+[#--批量审批--]
+<div class="modal fade" id="batchApproveModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:500px">
+        <form id="batch_approve_win" class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">×
+                </button>
+                <h4 class="modal-title" id="myModalLabel">批量审批</h4>
+            </div>
+            <div class="modal-body">
+                <div  style="display: inline-block;width: 95%">
+                    <label for="exp_batch_id">审批结果</label><i class="text-danger">*</i>
+                    <select class="form-control input-sm" name="status" id="approve_status">
+                        <option value="-1" style="color: #FF3B30;">默认专家审批结果</option>
+                        <#noparse>[#list statusList as status]</#noparse>
+                        <option value="<#noparse>${status}</#noparse>"><#noparse>${status}</#noparse></option>
+                        <#noparse>[/#list]</#noparse>
+                    </select>
+                </div>
+                <div  style="display: inline-block;width: 95%">
+                    <label for="exp_batch_id">审批意见</label>
+                    <textarea name="option" id="approve_option" class="form-control input-sm" placeholder="" style="resize: none;height: 200px;" maxlength="300"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary" onclick="batchApprove()">
+                    提交
+                </button>
+            </div>
+        </form><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+    function batchApproveWin() {
+        var id_array=new Array();
+        $('input[name="ids"]:checked').each(function(){
+            id_array.push($(this).val());//向数组中添加元素
+        });
+        if(id_array.length<1){
+            alert("请先勾选数据");
+            return;
+        }
+        $('#batchApproveModel').modal('show');
+    }
+
+
+    function batchApprove() {
+        layer.load();
+        var id_array=new Array();
+        $('input[name="ids"]:checked').each(function(){
+            id_array.push($(this).val());//向数组中添加元素
+        });
+        if(id_array.length<1){
+            layer.closeAll("loading");
+            alert("请选择操作对象");
+            return;
+        }
+
+        $.ajax({
+            url: "batchApprove.do",
+            type: "post",
+            data: {
+                "ids": id_array,
+                "status":$("#approve_status").val(),
+                "option":$("#approve_option").val()
+            },
+            success: function (data) {
+                layer.closeAll("loading");
+                showDeleteMessage(data.content);
+            },
+            error: function (XMLHttpRequest) {
+                $("#BatchCommit").attr("disabled",false);
+                layer.closeAll("loading");
+                alertErrorMessage(XMLHttpRequest);
+
+            }
+        });
+    }
+
+    function showDeleteMessage(message) {
+        layer.open({
+            type: 1,
+            title: '审批结果',
+            shadeClose: true,
+            shade: 0.8,
+            anim: 2,
+            area: ['40%', '50%'],
+            btn: ['关闭'],
+            content: '<div style="text-align: center;line-height: 32px;padding: 20px;">' + message + '</div>',
+            end: function (index) {
+                window.location.reload();
+            }
+        });
     }
 </script>
 </body>

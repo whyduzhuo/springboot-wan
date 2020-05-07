@@ -8,12 +8,13 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,13 +61,40 @@ public class ExcelUtils {
                     cellData=cellCode.getStringCellValue();
                 }
                 rowData.add(cellData);
-           }
-           data.add(rowData);
+            }
+            data.add(rowData);
         }
         return data;
     }
 
-   /**
+    /**
+     * 下载一个带下拉选项的excel模板
+     * @param fileName 文件名，不要带后缀
+     * @param sheetName 表格首行标题
+     * @param titleList 表头
+     * @param parpamtsList 可选择参数列(需与列名一比一)
+     */
+    public static ResponseEntity<byte[]> exportExcelTemplate(String fileName, String sheetName, List<String> titleList,
+                                                             List<List<String>> parpamtsList) throws IOException {
+        fileName = fileName+".xls";
+        HSSFWorkbook wb = createExcel("sheet1",titleList, parpamtsList);
+
+        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+        wb.write(bos);
+
+        byte[] barray=bos.toByteArray();
+        //is第一转
+        InputStream is=new ByteArrayInputStream(barray);
+
+
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", fileName);
+        return new ResponseEntity<>(wb.getBytes(),headers, HttpStatus.OK);
+    }
+
+    /**
      * 下载一个带下拉选项的excel模板
      * @param fileName 文件名，不要带后缀
      * @param sheetName 表格首行标题
@@ -77,13 +105,23 @@ public class ExcelUtils {
     public static void exportExcelTemplate(String fileName,String sheetName,List<String> titleList,
                                            List<List<String>> parpamtsList,HttpServletResponse response) throws IOException {
         fileName = fileName+".xls";
-        HSSFWorkbook wb = createExcel(sheetName,titleList, parpamtsList);
+        HSSFWorkbook wb = createExcel("sheet1",titleList, parpamtsList);
         response.setHeader("Content-disposition", "attachment; filename=" + URLEncoder.encode(fileName, "utf-8"));
         response.setContentType("application/msexcel");
         OutputStream output = response.getOutputStream();
         wb.write(output);
-        wb.close();
         output.close();
+    }
+
+    /**
+     * 下载Excel模板
+     * @param fileName 文件名，不要带后缀
+     * @param sheetName 表格首行标题
+     * @param titleList 表头
+     * @throws IOException
+     */
+    public static ResponseEntity<byte[]> exportExcelTemplate(String fileName, String sheetName, List<String> titleList) throws IOException {
+        return exportExcelTemplate(fileName,sheetName,titleList,new ArrayList<>());
     }
 
     /**
@@ -243,5 +281,4 @@ public class ExcelUtils {
         sheet.addValidationData(validation);
         return validation;
     }
-
 }

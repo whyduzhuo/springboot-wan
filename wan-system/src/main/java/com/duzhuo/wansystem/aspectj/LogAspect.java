@@ -102,8 +102,8 @@ public class LogAspect {
             // 处理设置注解上的参数
             getControllerMethodDescription(controllerLog, operLog);
             // 异步保存数据库
-//            AsyncManager manager = AsyncManager.me();
-//            manager.execute(AsyncFactory.recordOper(operLog));
+            AsyncManager manager = AsyncManager.me();
+            manager.execute(AsyncFactory.recordOper(operLog));
         }
         catch (Exception exp) {
             // 记录本地异常日志

@@ -7,6 +7,7 @@ import com.duzhuo.common.utils.ExcelUtils;
 import com.duzhuo.common.utils.Tools;
 import com.duzhuo.wansystem.dao.base.SysOperLogDao;
 import com.duzhuo.wansystem.entity.base.SysOperLog;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,8 @@ public class SysOperLogService extends BaseService<SysOperLog,Long>{
 
     @Resource
     private SysOperLogDao sysOperLogDao;
+    @Resource
+    private JdbcTemplate jdbcTemplate;
 
     @Resource
     public void setBaseDao(SysOperLogDao sysOperLogDao){

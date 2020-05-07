@@ -1,6 +1,7 @@
 package ${data.servicepackage};
 
 import com.diange.common.Filter;
+import com.diange.common.ApproveResult;
 import com.diange.common.Message;
 import ${data.entityPackages};
 import com.diange.service.BaseService;
@@ -46,7 +47,7 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
     }
 
     /**
-     * 新增
+     * ${data.module} -- 新增
      * @param ${data.lowEntityName}VO
      * @return
      */
@@ -55,7 +56,7 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
     }
 
     /**
-     * 删除
+     * ${data.module} -- 删除
      * @param id
      * @return
      */
@@ -64,7 +65,7 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
     }
 
     /**
-     * 修改
+     * ${data.module} -- 修改
      * @param ${data.lowEntityName}VO
      * @return
      */
@@ -73,43 +74,35 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
     }
 
     /**
-     * 导出excel
+     * ${data.module} -- 导出excel
      * @param response
-     * @param exp_column1
-     * @param exp_column2
-     * @param exp_column3
+     * @param filters
      */
-    public void exportData(HttpServletResponse response,String exp_column1,String exp_column2,String exp_column3) throws Exception{
+    public void exportData(HttpServletResponse response, List<Filter> filters) throws Exception{
         String fileName="${data.module}导出";
         String fileTitle="${data.module}导出列表";
-        List<Filter> filters = Lists.newArrayList();
-        if (Tools.vaildeParam(exp_column1)){
-
+        List<Sort.Order> orders = new ArrayList<>();
+        orders.add(new Sort.Order(Sort.Direction.ASC,"createDate"));
+        List<${data.entityName}> ${data.lowEntityName}List = super.searchList(filters,new Sort(orders));
+        long count = super.count(filters);
+        if (count>1000){
+            throw new ServiceException("数据量过大，请增加筛选条件，降至1000条以下！");
         }
-        if (Tools.vaildeParam(exp_column1)){
-
-        }
-        if (Tools.vaildeParam(exp_column1)){
-
-        }
-        Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC,"createDate"));
-        List<${data.entityName}> ${data.lowEntityName}List = super.searchList(filters,sort);
         List<Map<String,Object>> data = new ArrayList<>(${data.lowEntityName}List.size());
         for (${data.entityName} ${data.lowEntityName}:${data.lowEntityName}List) {
-//            Map<String,Object> map = new HashMap(n);
-//            map.put("column1",music.getcolumn1());
-//            map.put("column2",music.getcolumn2());
-//            map.put("column3",music.getcolumn3());
+            Map<String,Object> map = new HashMap(n);
+//            map.put("字段1",${data.lowEntityName}.getcolumn1());
+//            map.put("字段2",${data.lowEntityName}.getcolumn2());
+//            map.put("字段3",${data.lowEntityName}.getcolumn3());
+            data.add(map);
         }
-        List<String> properties = Lists.newArrayList(new String[]{"column1","column2","column3"});
-        String[]  head= new String[]{"字段1","字段2","字段3"};
-        CellType[] cellTypes = new CellType[]{CellType.STRING,CellType.STRING, CellType.STRING};
-        ExcelCommonUtil.doExportExcel3(fileName, head, data, properties, fileTitle, response, cellTypes);
+        String[] head= new String[]{"字段1","字段2","字段3"};
+        ExcelCommonUtil.doExportExcel3(fileName, head, data, response);
     }
 
 
     /**
-    * 下载Excel模板
+    * ${data.module} -- 下载Excel模板
     * @param response
     */
     public void downLoadExcel(HttpServletResponse response) throws Exception{
@@ -131,7 +124,47 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
     }
 
     /**
-    * 导入${data.module}
+    * ${data.module} -- 批量审批
+    * @param ids
+    * @param status
+    * @param option
+    * @return 返回审批结果
+    */
+    public Message batchApprove(Long[] ids,String status,String option){
+        if (StringUtils.isBlank(status)){
+            return Message.warn("请选择审批状态");
+        }
+        if (ids==null || ids.length==0){
+            return Message.warn("请先勾选数据");
+        }
+        ApproveResult approveResult = new ApproveResult();
+        for (int i = 1;i<=ids.length;i++){
+            ${data.entityName} ${data.lowEntityName} = new ${data.entityName}();
+            ${data.lowEntityName}.setId(ids[i-1]);
+            ${data.lowEntityName}.setOpinion(option);
+            if ("-1".equals(status)){
+                try {
+                    this.approveWidthNoStatus(${data.lowEntityName});
+                    approveResult.addSuccess();
+                }catch (ServiceException e){
+                    approveResult.addFailed("第"+i+"条审批失败："+e.getMessage());
+                }
+            }else {
+                try {
+                    ${data.lowEntityName}.setFtwLevel(${data.entityName}.Status.valueOf(status));
+                    this.approve(${data.lowEntityName});
+                    approveResult.addSuccess();
+                }catch (ServiceException e){
+                    approveResult.addFailed("第"+i+"条审批失败："+e.getMessage());
+                }
+            }
+        }
+        return Message.success(approveResult.getHtml());
+    }
+
+
+    /**
+    * ${data.module} -- Excel数据导入
     * @param inputStream 文件流
     * @param isupload 上传/检查， 上传为true，
     * @param fileName 文件名

@@ -24,4 +24,8 @@ public class Tools {
         }
         return true;
     }
+
+    public void test(String a){
+        System.err.println(a);
+    }
 }

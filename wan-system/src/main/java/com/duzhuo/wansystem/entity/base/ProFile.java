@@ -1,16 +1,12 @@
 package com.duzhuo.wansystem.entity.base;
 
-import com.duzhuo.common.config.ProFileConfig;
 import com.duzhuo.common.core.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.unit.DataSize;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 /**
  * 项目文件
@@ -23,8 +19,8 @@ import java.math.RoundingMode;
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 public class ProFile extends BaseEntity{
 
-    @ApiModelProperty(value = "文件名称",notes = "uuid+文件后缀",example = "4195756d-aa3b-45ce-998e-63e1a4f4a262.doc")
-    private String name;
+    @ApiModelProperty(value = "文件名称",notes = "uuid",example = "4195756d-aa3b-45ce-998e-63e1a4f4a262")
+    private String uuid;
 
     @ApiModelProperty(value = "文件保存路径",example = "/文件虚拟路径/2018/0109/")
     private String path;
@@ -32,34 +28,42 @@ public class ProFile extends BaseEntity{
     @ApiModelProperty(value = "文件大小",notes = "单位B")
     private Long fileSize;
 
-    @ApiModelProperty(value = "文件大小，带单位",notes = "根据大小定单位，带小数，计算属性无需存储",example = "100MB")
-    private String fileSizeStr;
+    @ApiModelProperty(value = "文件后缀",example = ".doc")
+    private String suffix;
 
-    @ApiModelProperty(value = "宽度",notes = "单位px,只有图片格式才有")
-    private Integer width;
-
-    @ApiModelProperty(value = "高度",notes = "单位px,只有图片格式才有")
-    private Integer height;
-
-    @ApiModelProperty(value = "文件扩展名",example = ".doc",notes = "计算属性，无需存储")
-    private String ext;
-
-    @ApiModelProperty(value = "原文件名",example = "8月5日会议纪要.doc")
+    @ApiModelProperty(value = "原文件名,不带后缀",example = "8月5日会议纪要")
     private String original;
 
     @ApiModelProperty(value = "上传者")
     private Admin admin;
 
+
+
+
+
+    /**计算属性*/
+    @ApiModelProperty(value = "文件大小，带单位",notes = "根据大小定单位，带小数，计算属性无需存储",example = "100MB")
+    private String fileSizeStr;
+
     @ApiModelProperty(value = "文件下载路径",notes = "计算属性，无需存储")
     private String downloadPath;
 
+
     @JsonProperty
-    public String getName() {
-        return name;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
     }
 
     @JsonProperty
@@ -78,30 +82,6 @@ public class ProFile extends BaseEntity{
 
     public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
-    }
-
-    @JsonProperty
-    public Integer getWidth() {
-        return width;
-    }
-
-    public void setWidth(Integer width) {
-        this.width = width;
-    }
-
-    @JsonProperty
-    public Integer getHeight() {
-        return height;
-    }
-
-    public void setHeight(Integer height) {
-        this.height = height;
-    }
-
-    @JsonProperty
-    @Transient
-    public String getExt() {
-        return this.name.substring(name.lastIndexOf("."));
     }
 
     @JsonProperty
@@ -127,24 +107,14 @@ public class ProFile extends BaseEntity{
     @JsonProperty
     @Transient
     public String getFileSizeStr() {
-        if (this.fileSize<1024){
-            return this.fileSize+"B";
-        }
-        if (this.fileSize<1024*1024){
-            return new BigDecimal(this.fileSize).divide(new BigDecimal(1024),2, RoundingMode.HALF_UP).toString()+"KB";
-        }
-        if (this.fileSize<1024*1024*1024){
-            return new BigDecimal(this.fileSize).divide(new BigDecimal(1024*1024),2, RoundingMode.HALF_UP).toString()+"MB";
-        }
-        else {
-            return new BigDecimal(this.fileSize).divide(new BigDecimal(1024*1024*1024),2, RoundingMode.HALF_UP).toString()+"GB";
-        }
+        return DataSize.ofBytes(this.fileSize).toString();
     }
+
 
     @JsonProperty
     @Transient
     public String getDownloadPath() {
-        return path+name;
+        return path+uuid+suffix;
     }
 
 }
