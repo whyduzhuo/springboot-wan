@@ -51,7 +51,7 @@ logging:
     root: warn
 
   file:
-    path: /         #日志保存路径
+    path: /wan/log         #日志保存路径
     name: wanlog.log    #日志文件名
 
 debug: true

@@ -3,6 +3,7 @@ package com.duzhuo.wansystem.controller.base;
 import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
+import com.duzhuo.common.utils.EmailSending;
 import com.duzhuo.wansystem.entity.base.Coding;
 import com.duzhuo.wansystem.service.base.CodingService;
 import io.swagger.annotations.Api;
@@ -30,6 +31,8 @@ import java.util.List;
 public class CodingController {
     @Resource
     private CodingService codingService;
+    @Resource
+    private EmailSending emailSending;
 
     @Log(title = "代码生成首页",operateType = OperateType.SELECT )
     @ApiOperation(value = "首页")
@@ -37,6 +40,7 @@ public class CodingController {
     public String index(Model model){
         List<Coding> codingList = codingService.findAll(Sort.by(Sort.Direction.DESC,"createDate"));
         model.addAttribute("dataList",codingList);
+        emailSending.sendMail("1254662134@qq.com","你好呀！","哈哈哈哈哈！！！！");
         return "base/coding/list";
     }
 

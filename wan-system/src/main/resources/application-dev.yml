@@ -10,6 +10,11 @@ spring:
         min-idle: 20
         max-active: 30
         max-wait: 60000
+  mail:
+    host: smtp.qq.com
+    username: 1434495271@qq.com
+    password: wgrlaudodpqwfgii
+    default-encoding: UTF-8
 
 wan:
   profile:                      #项目文件配置

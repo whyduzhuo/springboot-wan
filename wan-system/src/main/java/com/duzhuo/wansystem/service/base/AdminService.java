@@ -25,6 +25,7 @@ public class AdminService extends BaseService<Admin,Long>{
     public void setBaseDao(AdminDao adminDao){
         super.setBaseDao(adminDao);
     }
+
     /**
      * 新增用户
      * @param admin
