@@ -15,6 +15,9 @@ spring:
     username: 1434495271@qq.com
     password: wgrlaudodpqwfgii
     default-encoding: UTF-8
+  servlet:
+    multipart:
+      max-file-size: ${wan.profile.max-size}
 
 wan:
   profile:                      #项目文件配置
@@ -23,6 +26,22 @@ wan:
     max-size: 1MB        #文件最大限制
     max-file-name: 20      #文件名称最长限制
     support-file-type: bmp,gif,jpg,jpeg,png,doc,docx,xls,xlsx,ppt,pptx,txt,rar,pdf
+
+server:
+  port: 8082    #端口号
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: utf-8
+    max-threads: 500
+logging:
+  level:
+    org.springframework.boot.autoconfigure: warn
+    root: warn
+
+  file:
+    path: /wan/log         #日志保存路径
+    name: wanlog.log    #日志文件名
 
 #微信公众号开发
 #教程https://mp.weixin.qq.com/debug?token=476802302&lang=zh_CN

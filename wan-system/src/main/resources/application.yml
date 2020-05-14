@@ -33,27 +33,6 @@ spring:
       filter:
         #开启支持resful请求
         enabled: true
-  servlet:
-    multipart:
-      #MultipartFile文件大小限制
-      max-file-size: ${wan.profile.max-size}
-
-server:
-  port: 8082    #端口号
-  servlet:
-    context-path: /
-  tomcat:
-    uri-encoding: utf-8
-    max-threads: 500
-logging:
-  level:
-    org.springframework.boot.autoconfigure: warn
-    root: warn
-
-  file:
-    path: /wan/log         #日志保存路径
-    name: wanlog.log    #日志文件名
-
 debug: true
 
 
