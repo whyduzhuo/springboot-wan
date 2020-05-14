@@ -4,6 +4,7 @@ import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.EmailSending;
+import com.duzhuo.common.utils.ExcelUtils;
 import com.duzhuo.wansystem.entity.base.Coding;
 import com.duzhuo.wansystem.service.base.CodingService;
 import io.swagger.annotations.Api;
@@ -18,6 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,7 +45,6 @@ public class CodingController {
     public String index(Model model){
         List<Coding> codingList = codingService.findAll(Sort.by(Sort.Direction.DESC,"createDate"));
         model.addAttribute("dataList",codingList);
-        emailSending.sendMail("1254662134@qq.com","你好呀！","哈哈哈哈哈！！！！");
         return "base/coding/list";
     }
 
@@ -94,5 +98,21 @@ public class CodingController {
     @ResponseBody
     public Coding findById(HttpServletRequest request, Long id){
         return codingService.find(id);
+    }
+
+    @GetMapping("/test")
+    public void test(HttpServletResponse response) throws IOException {
+        String title = "卧槽";
+        List<String> headList = new ArrayList<>();
+        headList.add("字段1");
+        headList.add("字段2");
+        headList.add("字段3");
+        headList.add("字段4");
+        List<List<String>> params = new ArrayList<>();
+        params.add(Arrays.asList(new String[]{"选项1","选项2","选项3","选项4"}));
+        params.add(Arrays.asList(new String[]{"选项1","选项2","选项3","选项4"}));
+        params.add(Arrays.asList(new String[]{"选项1","选项2","选项3","选项4"}));
+        params.add(Arrays.asList(new String[]{"选项1","选项2","选项3","选项4"}));
+        ExcelUtils.downExcelTemplet(title,headList,params,response);
     }
 }

@@ -39,7 +39,7 @@ public class SysOperLogService extends BaseService<SysOperLog,Long>{
     }
 
     public Message importData(MultipartFile file) throws IOException {
-        List<List<String>> data = ExcelUtils.excelToList(file, 2);
+        List<List<String>> data = ExcelUtils.readExelData(file, ExcelUtils.HEAD_LOCK_ROW,10);
         for (List<String> row:data) {
             System.err.println(row+"\t");
         }

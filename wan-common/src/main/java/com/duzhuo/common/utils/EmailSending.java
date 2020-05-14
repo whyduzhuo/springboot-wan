@@ -13,18 +13,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailSending {
 
-    @Autowired
-    private JavaMailSender javaMailSender;
+//    @Autowired
+//    private JavaMailSender javaMailSender;
 
-    @Value("${spring.mail.username}")
-    private String from;
-
-    public void sendMail(String email,String title,String content){
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setText(content);
-        simpleMailMessage.setSubject(title);
-        simpleMailMessage.setTo(email);
-        simpleMailMessage.setFrom(from);
-        javaMailSender.send(simpleMailMessage);
-    }
+//    @Value("${spring.mail.username}")
+//    private String from;
+//
+//    public void sendMail(String email,String title,String content){
+//        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+//        simpleMailMessage.setText(content);
+//        simpleMailMessage.setSubject(title);
+//        simpleMailMessage.setTo(email);
+//        simpleMailMessage.setFrom(from);
+//        javaMailSender.send(simpleMailMessage);
+//    }
 }

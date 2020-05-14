@@ -93,7 +93,7 @@ public class ProFileController {
         titleList.add("字段1");
         titleList.add("字段2");
         titleList.add("字段3");
-        ResponseEntity<byte[]> responseEntity = ExcelUtils.exportExcelTemplate("车牌信息导入模板","车牌信息导入模板",titleList);
+        ResponseEntity<byte[]> responseEntity = ExcelUtils.downExcelTempletByte("车牌信息导入模板",titleList);
         return responseEntity;
     }
 
