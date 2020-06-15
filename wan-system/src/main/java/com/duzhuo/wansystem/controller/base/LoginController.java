@@ -35,8 +35,7 @@ public class LoginController {
     @ApiOperation(value = "进入登录页")
     @GetMapping("/login")
     public String login(){
-        return "base/login/logi" +
-                "n";
+        return "base/login/login";
     }
 
     @Log(title = "登录系统",operateType = OperateType.OTHER)

@@ -17,17 +17,18 @@
     <meta name="author" content="bianmaren">
     <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
+    <style>
+        tr th,tr td{
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <div>
         <a href="javascript:openImportWin();" class="btn btn-sm btn-success hidden-xs">
             <i class="fa fa-plus"></i>从Excel文件导入音乐</a>
     </div>
-    <h1>${haha}</h1>
-    <h1>${admin.username}</h1>
-    <h1>${admin.realname}</h1>
-    <h1>${customSearch.pageSize}</h1>
-    <table>
+    <table class="table table-bordered" id="listTable">
         <tr>
             <th>id</th>
             <th>请求</th>
@@ -47,7 +48,7 @@
     </table>
 
 
-    [#--文件导入模态框--]
+    <#--文件导入模态框-->
     <div class="modal fade" id="importMessage" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-popin">
             <form id="putInExcel" class="form-horizontal push-10-t" method="post" enctype ="multipart/form-data"

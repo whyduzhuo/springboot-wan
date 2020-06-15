@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class AdminService extends BaseService<Admin,Long>{
+public class AdminService extends BaseService<Admin,Long> {
     @Resource
     private AdminDao adminDao;
 

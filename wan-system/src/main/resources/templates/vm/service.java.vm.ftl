@@ -52,7 +52,11 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
      * @return
      */
     public Message addData(${data.entityName} ${data.lowEntityName}VO) {
-        return Message.error("功能暂未完成！");
+        throw new  ServiceException("功能暂未完成！");
+    }
+
+    private Message check(){
+        throw new  ServiceException("功能暂未完成！");
     }
 
     /**
@@ -61,7 +65,7 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
      * @return
      */
     public Message del(Long id) {
-        return Message.error("功能暂未完成！");
+        throw new  ServiceException("功能暂未完成！");
     }
 
     /**
@@ -70,7 +74,7 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
      * @return
      */
     public Message edit(${data.entityName} ${data.lowEntityName}VO) {
-        return Message.error("功能暂未完成！");
+        throw new  ServiceException("功能暂未完成！");
     }
 
     /**
@@ -171,62 +175,31 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
     * @return 返回检查/上传结果
     */
     public Message importMem(InputStream inputStream, String fileName, boolean isupload)throws Exception{
-        StringBuilder ERROR_MESSAGE = new StringBuilder();
-        int success = 0;
-        int failed = 0;
-        if (!fileName.contains(".xls")){
-            return Message.error("请上传Excel文件！");
-        }
-        //判断是否是.xls还是.xlsx文件
-        boolean is03excle = fileName.matches("^.+\\.(?i)(xls)$");
-        Workbook workbook=null;;
-        try {
-            workbook = is03excle ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
-
-            Sheet childSheet = workbook.getSheetAt(0);
-            int rowCount = childSheet.getLastRowNum(); // 最后一行的行标，从0开始
-            if (rowCount < 1) {
-                return Message.error("表中无内容！");
+        List<List<String>> dataListStr = ExcelCommonUtil.readExelData(file,ExcelCommonUtil.HEAD_LOCK_ROW,47);
+        ApproveResult approveResult = new ApproveResult();
+        for (int i = 0;i<dataListStr.size();i++){
+            try {
+                ${data.entityName} ${data.lowEntityName}VO = this.listStrToEntity(dataListStr.get(i));
+                if (isupload) {
+                this.addData(${data.lowEntityName}VO);
+            } else {
+                this.check(${data.lowEntityName}VO);
             }
-
-            for (int j = 2; j <= rowCount; j++) {
-                //读取单元格
-                Row row = childSheet.getRow(j);
-                if (row == null){
-                    continue;
-                }
-                Cell cellCode = row.getCell(0);
-                if (cellCode==null){
-                ERROR_MESSAGE.append("第" + (j + 1) + "行中：字段1为空，请检查<br/>");
-                failed+=1;
-                    continue;
-                }
-                cellCode.setCellType(CellType.STRING);
-                String column = StringUtils.deleteWhitespace((cellCode.getStringCellValue()));
-
-
-
-
-
-                ${data.entityName} ${data.lowEntityName}VO = new ${data.entityName}();
-                if (isupload){
-                    Message message = this.addData(${data.lowEntityName}VO);
-                    if (!Message.Type.success.equals(message.getType())){
-                        failed+=1;
-                        ERROR_MESSAGE.append("第" + (j + 1) + "行："+message.getContent()+"</br>");
-                    }else {
-                        success+=1;
-                    }
-                }else {
-                    success+=1;
-                }
+                approveResult.addSuccess();
+            }catch (ServiceException e){
+                approveResult.addFailed("第"+(i+ExcelCommonUtil.HEAD_LOCK_ROW+1)+"行"+(isupload?"导入":"检查")+"失败:"+e.getMessage());
             }
-        }catch (Exception e){
-            throw e;
-        }finally {
-            workbook.close();
-            inputStream.close();
         }
-        return Message.success(ERROR_MESSAGE.toString());
+        return Message.success(isupload?approveResult.getHtml():approveResult.getCheckHtml());
+    }
+
+    /**
+    * Stringlist转实体
+    * @param data
+    * @return
+    */
+    private EntrepreneurshipProject listStrToEntity(List<String> data){
+        ${data.entityName} ${data.lowEntityName}VO = new EntrepreneurshipProject();
+        return ${data.lowEntityName}VO;
     }
 }

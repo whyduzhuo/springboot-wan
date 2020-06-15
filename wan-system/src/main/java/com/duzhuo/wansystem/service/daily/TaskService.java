@@ -1,8 +1,11 @@
 package com.duzhuo.wansystem.service.daily;
 
 import com.duzhuo.common.core.BaseService;
+import com.duzhuo.common.core.Message;
+import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.daily.TaskDao;
 import com.duzhuo.wansystem.entity.daily.Task;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
@@ -10,7 +13,7 @@ import javax.annotation.Resource;
  * @author: wanhy
  * @date: 2020/5/19 18:03
  */
-
+@Service
 public class TaskService extends BaseService<Task,Long>{
     @Resource
     private TaskDao taskDao;
@@ -20,4 +23,12 @@ public class TaskService extends BaseService<Task,Long>{
         super.setBaseDao(taskDao);
     }
 
+    /**
+     * 创建任务
+     * @param taskVO
+     * @return
+     */
+    public Message addData(Task taskVO) {
+        throw new ServiceException("功能未完成！");
+    }
 }
