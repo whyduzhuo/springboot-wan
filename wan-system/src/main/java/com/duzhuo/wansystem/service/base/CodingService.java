@@ -53,6 +53,15 @@ public class CodingService extends BaseService<Coding,Long>{
         return Message.success("添加成功！");
     }
 
+    /**
+     *
+     * @return
+     */
+    public Message edit(Coding codingVO){
+        super.update(codingVO);
+        return Message.success("修改成功！");
+    }
+
     private Coding findByEntityPackages(String entityPackages) {
         return codingDao.findByEntityPackages(entityPackages);
     }

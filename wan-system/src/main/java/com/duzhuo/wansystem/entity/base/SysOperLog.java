@@ -153,4 +153,21 @@ public class SysOperLog extends BaseEntity {
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
     }
+
+    @Override
+    public String toString() {
+        return "SysOperLog{" +
+                "title='" + title + '\'' +
+                ", operateType=" + operateType +
+                ", method='" + method + '\'' +
+                ", os='" + os + '\'' +
+                ", admin=" + admin +
+                ", operUrl='" + operUrl + '\'' +
+                ", operIp='" + operIp + '\'' +
+                ", operParm='" + operParm + '\'' +
+                ", jsonResult='" + jsonResult + '\'' +
+                ", status=" + status +
+                ", errorMsg='" + errorMsg + '\'' +
+                '}';
+    }
 }

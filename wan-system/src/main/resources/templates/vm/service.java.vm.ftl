@@ -55,7 +55,7 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
         throw new  ServiceException("功能暂未完成！");
     }
 
-    private Message check(){
+    private Message check(${data.entityName} ${data.lowEntityName}VO){
         throw new  ServiceException("功能暂未完成！");
     }
 
@@ -169,12 +169,11 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
 
     /**
     * ${data.module} -- Excel数据导入
-    * @param inputStream 文件流
+    * @param file 文件流
     * @param isupload 上传/检查， 上传为true，
-    * @param fileName 文件名
     * @return 返回检查/上传结果
     */
-    public Message importMem(InputStream inputStream, String fileName, boolean isupload)throws Exception{
+    public Message importMem(MultipartFile file, boolean isupload)throws Exception{
         List<List<String>> dataListStr = ExcelCommonUtil.readExelData(file,ExcelCommonUtil.HEAD_LOCK_ROW,47);
         ApproveResult approveResult = new ApproveResult();
         for (int i = 0;i<dataListStr.size();i++){
@@ -198,8 +197,8 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
     * @param data
     * @return
     */
-    private EntrepreneurshipProject listStrToEntity(List<String> data){
-        ${data.entityName} ${data.lowEntityName}VO = new EntrepreneurshipProject();
+    private ${data.entityName} listStrToEntity(List<String> data){
+        ${data.entityName} ${data.lowEntityName}VO = new ${data.entityName}();
         return ${data.lowEntityName}VO;
     }
 }

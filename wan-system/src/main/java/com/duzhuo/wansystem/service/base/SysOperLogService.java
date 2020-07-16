@@ -60,4 +60,9 @@ public class SysOperLogService extends BaseService<SysOperLog,Long>{
         super.save(sysOperLog);
         return Message.success("添加成功！");
     }
+
+    public Message edit(SysOperLog sysOperLog) {
+        super.update(sysOperLog);
+        return Message.success("修改成功！");
+    }
 }

@@ -4,11 +4,8 @@ import com.duzhuo.common.core.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import oracle.jdbc.proxy.annotation.Post;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -21,7 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "T_BASE_ADMIN")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
-public class Admin extends BaseEntity {
+public class Admin extends BaseEntity implements Cloneable {
 
     @JsonProperty
     @ApiModelProperty(value = "账号,一卡通号",dataType = "number",example = "1200402570")
@@ -91,7 +88,6 @@ public class Admin extends BaseEntity {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(super.hashCode(), getUsername(), getRealname(), getPassword());
     }
 }

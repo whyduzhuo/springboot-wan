@@ -6,9 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 /**
  * 线程池配置
@@ -18,10 +16,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 public class ThreadPoolConfig {
     // 核心线程池大小
-    private int corePoolSize = 50;
+    private int corePoolSize = 20;
 
     // 最大可创建的线程数
-    private int maxPoolSize = 200;
+    private int maxPoolSize = 50;
 
     // 队列最大长度
     private int queueCapacity = 1000;
@@ -40,6 +38,11 @@ public class ThreadPoolConfig {
         // 线程池对拒绝任务(无线程可用)的处理策略
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         return executor;
+    }
+
+    @Bean(name = "threadPoolExecutor")
+    public ThreadPoolExecutor threadPoolExecutor(){
+        return new ThreadPoolExecutor(corePoolSize,maxPoolSize,1, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10),Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
     }
 
     /**

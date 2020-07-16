@@ -14,9 +14,9 @@ import javax.validation.constraints.NotBlank;
  */
 @ApiModel(value = "任务")
 @Entity
-@Table(name = "T_DAILY_TASK")
+@Table(name = "T_DAILY_ISSUE")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
-public class Task extends BaseEntity{
+public class Issue extends BaseEntity{
     private enum Status{
         /**
          *

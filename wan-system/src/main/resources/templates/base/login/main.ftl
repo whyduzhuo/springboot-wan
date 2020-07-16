@@ -27,9 +27,6 @@
     <a href="/base/proFile/uploadTest" target="_blank">
         <h1>文件上传测试</h1>
     </a>
-    <a href="/base/proFile/acc" target="_blank">
-        <h1>新型冠状病毒走势</h1>
-    </a>
     <button type="button" onclick="del()">
         <h1>删除</h1>
     </button>

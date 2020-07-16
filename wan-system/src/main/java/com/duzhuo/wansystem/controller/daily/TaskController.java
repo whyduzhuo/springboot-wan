@@ -5,8 +5,8 @@ import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
-import com.duzhuo.wansystem.entity.daily.Task;
-import com.duzhuo.wansystem.service.daily.TaskService;
+import com.duzhuo.wansystem.entity.daily.Issue;
+import com.duzhuo.wansystem.service.daily.IssueService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Sort;
@@ -28,15 +28,15 @@ import static org.springframework.web.util.WebUtils.getParametersStartingWith;
  */
 @Api(tags = "任务")
 @Controller
-@RequestMapping("/daily/task")
+@RequestMapping("/daily/issue")
 public class TaskController {
     @Resource
-    private TaskService taskService;
+    private IssueService issueService;
 
     @ApiOperation(value = "")
     @Log(title ="",operateType=OperateType.SELECT)
     @GetMapping("/list")
-    public String list(HttpServletRequest request, CustomSearch<Task> customSearch){
+    public String list(HttpServletRequest request, CustomSearch<Issue> customSearch){
         CommonUtil.initPage(request,customSearch);
         Map<String,Object> searchParams = getParametersStartingWith(request,"search_");
         customSearch.getOrders().add(new Sort.Order(Sort.Direction.DESC,"createDate"));
@@ -46,8 +46,8 @@ public class TaskController {
     @Log(title ="",operateType = OperateType.INSERT)
     @PostMapping("/addData")
     @ResponseBody
-    public Message addData(Task taskVO){
-        return taskService.addData(taskVO);
+    public Message addData(Issue issueVO){
+        return issueService.addData(issueVO);
     }
 
     @PostMapping("/detail")

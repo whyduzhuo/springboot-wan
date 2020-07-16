@@ -4,6 +4,7 @@ import com.duzhuo.common.utils.SpringUtils;
 
 import java.util.TimerTask;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,6 +22,11 @@ public class AsyncManager {
      * 异步操作任务调度线程池
      */
     private ScheduledExecutorService executor = SpringUtils.getBean("scheduledExecutorService");
+
+    /**
+     * 异步操作任务调度线程池
+     */
+    private ThreadPoolExecutor threadPoolExecutor = SpringUtils.getBean("threadPoolExecutor");
 
     /**
      * 单例模式
@@ -47,5 +53,9 @@ public class AsyncManager {
      */
     public void shutdown() {
         Threads.shutdownAndAwaitTermination(executor);
+    }
+
+    public void excute2(TimerTask timerTask){
+        threadPoolExecutor.execute(timerTask);
     }
 }

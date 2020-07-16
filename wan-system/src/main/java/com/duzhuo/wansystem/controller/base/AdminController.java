@@ -3,6 +3,7 @@ package com.duzhuo.wansystem.controller.base;
 import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
+import com.duzhuo.common.manager.AsyncManager;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.service.base.AdminService;
 import io.swagger.annotations.Api;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
+import java.util.TimerTask;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author: wanhy

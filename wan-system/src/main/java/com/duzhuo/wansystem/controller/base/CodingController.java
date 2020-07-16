@@ -3,6 +3,7 @@ package com.duzhuo.wansystem.controller.base;
 import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
+import com.duzhuo.common.manager.AsyncManager;
 import com.duzhuo.common.utils.EmailSending;
 import com.duzhuo.common.utils.ExcelUtils;
 import com.duzhuo.wansystem.entity.base.Coding;
@@ -21,9 +22,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author: wanhy

@@ -129,7 +129,7 @@ public class ${data.entityName}Controller extends BaseController{
     public Message importMem(HttpServletRequest request, @NotNull Boolean isUpload,
                              @RequestParam("filePath") MultipartFile file) throws Exception {
         try {
-            return ${data.lowEntityName}Service.importMem(file.getInputStream(), file.getOriginalFilename(), isUpload);
+            return ${data.lowEntityName}Service.importMem(file, isUpload);
         } catch (Exception e) {
             logger.error("文件上传失败！");
             throw new Exception("文件上传失败！",e);

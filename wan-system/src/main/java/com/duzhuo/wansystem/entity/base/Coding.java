@@ -140,4 +140,20 @@ public class Coding extends BaseEntity{
     public void setDaopackage(String daopackage) {
         this.daopackage = daopackage;
     }
+
+    @Override
+    public String toString() {
+        return "Coding{" +
+                "author='" + author + '\'' +
+                ", module='" + module + '\'' +
+                ", entityPackages='" + entityPackages + '\'' +
+                ", entityName='" + entityName + '\'' +
+                ", lowEntityName='" + lowEntityName + '\'' +
+                ", system='" + system + '\'' +
+                ", createDateStr='" + createDateStr + '\'' +
+                ", servicepackage='" + servicepackage + '\'' +
+                ", controllerpackage='" + controllerpackage + '\'' +
+                ", daopackage='" + daopackage + '\'' +
+                '}';
+    }
 }
