@@ -27,9 +27,9 @@
     <a href="/base/proFile/uploadTest" target="_blank">
         <h1>文件上传测试</h1>
     </a>
-    <button type="button" onclick="del()">
-        <h1>删除</h1>
-    </button>
+    <a href="/swagger-ui.html" target="_blank">
+        <h1>swagger</h1>
+    </a>
     <button onclick="logout()" type="button">
         <h1>退出登录</h1>
     </button>
