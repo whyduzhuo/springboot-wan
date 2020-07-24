@@ -19,12 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
- * ${data.module}
+ * ${data.module}--Controller
  * @author: ${data.author}
  * @date: ${data.createDateStr}
  */
 
-@RequestMapping("/test")
+@RequestMapping("/admin/${data.lowEntityName}")
 @Controller
 @Api(value = "${data.module}")
 public class ${data.entityName}Controller extends BaseController {
