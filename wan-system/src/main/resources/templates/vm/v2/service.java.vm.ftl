@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ${data.entityName}Service extends BaseService<${data.entityName}Mapper, ${data.entityName}>{
 
     /**
-     * 测试--数据校验
+     * ${data.module}--数据校验
      * @param ${data.lowEntityName}VO
      */
     private void check(${data.entityName} ${data.lowEntityName}VO){
@@ -27,7 +27,7 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}Map
     }
 
     /**
-     * 测试--新增
+     * ${data.module}--新增
      * @param ${data.lowEntityName}VO
      * @return
      */
@@ -39,7 +39,7 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}Map
 
 
     /**
-     * 测试--修改
+     * ${data.module}--修改
      * @param ${data.lowEntityName}VO
      * @return
      */
@@ -52,7 +52,7 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}Map
     }
 
     /**
-     * 测试--删除
+     * ${data.module}--删除
      * @param id
      * @return
      */

@@ -69,6 +69,7 @@ public class ${data.entityName}Controller extends BaseController {
         return ${data.lowEntityName}Service.del(id);
     }
 
+
     @AutoLog(value = "${data.module}--查询单个对象",logType = AutoLogTypeEnum.OPER_LOG)
     @ApiOperation(value = "${data.module}--查询单个对象")
     @GetMapping("/get/{id}")
