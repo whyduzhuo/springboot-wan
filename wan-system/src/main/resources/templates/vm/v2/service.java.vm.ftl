@@ -4,7 +4,7 @@ import com.jxyunge.enums.ApiResultEnum;
 import com.jxyunge.exception.ApiException;
 import com.jxyunge.mybatis.dto.system.ApiResult;
 import ${data.entityPackages};
-import ${data.daopackage}.${data.entityName}tMapper;
+import ${data.daopackage}.${data.entityName}Mapper;
 import com.jxyunge.utils.ApiResultUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
