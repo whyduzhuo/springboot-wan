@@ -1,4 +1,4 @@
-package com.jxyunge.mybatis.service;
+package ${data.servicepackage};
 
 import com.jxyunge.enums.ApiResultEnum;
 import com.jxyunge.exception.ApiException;

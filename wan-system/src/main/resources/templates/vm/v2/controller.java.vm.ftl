@@ -63,7 +63,7 @@ public class ${data.entityName}Controller extends BaseController {
 
     @AutoLog(value = "${data.module}--删除",logType = AutoLogTypeEnum.OPER_LOG)
     @ApiOperation(value = "${data.module}--删除")
-    @PostMapping("/del")
+    @DeleteMapping("/del")
     @ResponseBody
     public ApiResult del(Long id){
         return ${data.lowEntityName}Service.del(id);

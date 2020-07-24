@@ -47,7 +47,7 @@ public class Coding extends BaseEntity{
         char first = this.entityName.charAt(0);
         first+=32;
         this.lowEntityName = first+this.entityName.substring(1,this.entityName.length());
-        this.createDateStr = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss").format(new Date());
+        this.createDateStr = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
         this.system = arr[arr.length-2];
     }
 
