@@ -279,10 +279,15 @@
                 <#noparse>[@tzzPermission3 orgProperty="exp_eq_classInformation.faculty.id" classProperty="exp_eq_classInformation.id" gradeProperty="exp_eq_classInformation.grade"][/@]</#noparse>
                 <div  style="display: inline-block;width: 30%">
                     <label for="exp_column1">字段1</label>
-                    <select class="form-control" id="exp_column1">
+                    <select class="form-control" name="exp_column1">
                         <option value="eg1">eg1</option>
                         <option value="eg2">eg2</option>
                     </select>
+                </div>
+                <h4>请选择导出字段</h4>
+                <div>
+                    <input type="checkbox" value="字段1" name="fields" checked>字段1
+                    <input type="checkbox" value="字段2" name="fields" checked>字段2
                 </div>
             </div>
             <div class="modal-footer">
@@ -317,7 +322,7 @@
                         <div class="form-group">
                             <div class="col-xs-12 col-md-12">
                                 <label for="filePath">选择文件</label>
-                                <input id="file" type="file" name="filePath" class="form-control input-sm">
+                                <input id="file" type="file" name="filePath" class="form-control">
                             </div>
                             <div class="col-xs-12 col-md-12 " id="message_detil" style="display: none;">
                                 <div style="border: 1px solid #faccc6;color: #e4393c;background-color: #ffebeb;padding: 5px;"></div>

@@ -82,7 +82,7 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
      * @param response
      * @param filters
      */
-    public void exportData(HttpServletResponse response, List<Filter> filters) throws Exception{
+    public void exportData(HttpServletResponse response, List<Filter> filters,String[] fields) throws Exception{
         String fileName="${data.module}导出";
         String fileTitle="${data.module}导出列表";
         List<Sort.Order> orders = new ArrayList<>();
@@ -101,7 +101,7 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
             data.add(map);
         }
         String[] head= new String[]{"字段1","字段2","字段3"};
-        ExcelCommonUtil.doExportExcel3(fileName, head, data, response);
+        ExcelCommonUtil.doExportExcel3(fileName, fields, data, response);
     }
 
 
@@ -173,7 +173,7 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
     * @param isupload 上传/检查， 上传为true，
     * @return 返回检查/上传结果
     */
-    public Message importMem(MultipartFile file, boolean isupload)throws Exception{
+    public Message importData(MultipartFile file, boolean isupload)throws Exception{
         List<List<String>> dataListStr = ExcelCommonUtil.readExelData(file,ExcelCommonUtil.HEAD_LOCK_ROW,47);
         ApproveResult approveResult = new ApproveResult();
         for (int i = 0;i<dataListStr.size();i++){
@@ -201,4 +201,22 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
         ${data.entityName} ${data.lowEntityName}VO = new ${data.entityName}();
         return ${data.lowEntityName}VO;
     }
+
+    /**
+    * Stringlist转实体
+    * @param data
+    * @return
+    */
+    private ${data.entityName} listStrToEntity(Map<String,String> data){
+    ${data.entityName} ${data.lowEntityName}VO = new ${data.entityName}();
+        Set<String> keys = data.keySet();
+        keys.forEach(k->{
+            if (k.contains("字段1")){
+                ${data.lowEntityName}VO.setFiled(data.get(k));
+            }
+        });
+        return ${data.lowEntityName}VO;
+    }
+
+
 }

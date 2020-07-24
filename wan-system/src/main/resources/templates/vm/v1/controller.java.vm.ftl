@@ -94,10 +94,13 @@ public class ${data.entityName}Controller extends BaseController{
      */
     @GetMapping("/exportData")
     @ResponseBody
-    public void exportData(HttpServletRequest request,HttpServletResponse response,Model model)throws Exception{
+    public void exportData(HttpServletRequest request,HttpServletResponse response, String[] fields)throws Exception{
+        if (fields==null || fields.length==0){
+            throw new ServiceException("请选择需要导出的字段!");
+        }
         Map<String, Object> searchParams = getParametersStartingWith(request,"exp_");
         List<Filter> filters = ${data.lowEntityName}Service.mapToFilters(searchParams);
-        ${data.lowEntityName}Service.exportData(response,filters);
+        ${data.lowEntityName}Service.exportData(response,filters,fields);
     }
 
     /**
@@ -124,12 +127,12 @@ public class ${data.entityName}Controller extends BaseController{
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "/importMem")
+    @PostMapping(value = "/importData")
     @ResponseBody
-    public Message importMem(HttpServletRequest request, @NotNull Boolean isUpload,
+    public Message importData(HttpServletRequest request, Boolean isUpload,
                              @RequestParam("filePath") MultipartFile file) throws Exception {
         try {
-            return ${data.lowEntityName}Service.importMem(file, isUpload);
+            return ${data.lowEntityName}Service.importData(file, isUpload);
         } catch (Exception e) {
             logger.error("文件上传失败！");
             throw new Exception("文件上传失败！",e);

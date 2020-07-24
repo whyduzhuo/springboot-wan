@@ -5,12 +5,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.RollbackException;
 
 /**
  * @author: wanhy
  * @date: 2020/5/7 22:56
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class EmailSending {
 
 //    @Autowired

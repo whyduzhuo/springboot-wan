@@ -96,7 +96,8 @@
                     <input class="form-control" name="daopackage" id="daopackage" value="com.diange.dao.jpa.jiangli" placeholder="com.diange.dao.jpa.jiangli">
                 </div>
                 <div class="col-xs-12 col-md-12">
-                    <button type="button" class="btn btn-primary" onclick="save()">代码生成</button>
+                    <button type="button" class="btn btn-primary" onclick="save('v1')">财大学工</button>
+                    <button type="button" class="btn btn-primary" onclick="save('v2')">乡镇平台saas</button>
                     <button type="button" class="btn btn-success" onclick="addData()">保存数据库</button>
                 </div>
             </div>
@@ -104,14 +105,14 @@
     </div>
 </body>
 <script>
-    function save() {
+    function save(v) {
         var html="";
         var controller="";
         var service="";
         var dao="";
 
         $.ajax({
-            url:'getHtml',
+            url:'getHtml/'+v,
             type: "get",
             async:false,
             data: $('#dataForm').serialize(),
@@ -124,7 +125,7 @@
             }
         });
         $.ajax({
-            url:'getController',
+            url:'getController/'+v,
             type: "get",
             async:false,
             data: $('#dataForm').serialize(),
@@ -137,7 +138,7 @@
             }
         });
         $.ajax({
-            url:'getService',
+            url:'getService/'+v,
             type: "get",
             async:false,
             data: $('#dataForm').serialize(),
@@ -150,7 +151,7 @@
             }
         });
         $.ajax({
-            url:'getDao',
+            url:'getDao/'+v,
             type: "get",
             async:false,
             data: $('#dataForm').serialize(),
