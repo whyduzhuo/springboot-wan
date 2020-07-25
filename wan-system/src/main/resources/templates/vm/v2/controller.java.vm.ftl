@@ -47,7 +47,7 @@ public class ${data.entityName}Controller extends BaseController {
     @ApiOperation(value = "${data.module}--新增")
     @PostMapping("/addData")
     @ResponseBody
-    public ApiResult addData(${data.entityName} ${data.lowEntityName}VO){
+    public ApiResult<${data.entityName}> addData(${data.entityName} ${data.lowEntityName}VO){
         return ${data.lowEntityName}Service.addData(${data.lowEntityName}VO);
     }
 
@@ -56,7 +56,7 @@ public class ${data.entityName}Controller extends BaseController {
     @ApiOperation(value = "${data.module}--修改")
     @PostMapping("/edit")
     @ResponseBody
-    public ApiResult edit(${data.entityName} ${data.lowEntityName}VO){
+    public ApiResult<${data.entityName}> edit(${data.entityName} ${data.lowEntityName}VO){
         return ${data.lowEntityName}Service.edit(${data.lowEntityName}VO);
     }
 
@@ -70,11 +70,20 @@ public class ${data.entityName}Controller extends BaseController {
     }
 
 
+    @AutoLog(value = "${data.module}--批量删除",logType = AutoLogTypeEnum.OPER_LOG)
+    @ApiOperation(value = "${data.module}--批量删除")
+    @GetMapping("/batchdel")
+    @ResponseBody
+    public ApiResult batchdel(Long[] ids){
+        return ${data.lowEntityName}Service.batchdel(ids);
+    }
+
+
     @AutoLog(value = "${data.module}--查询单个对象",logType = AutoLogTypeEnum.OPER_LOG)
     @ApiOperation(value = "${data.module}--查询单个对象")
     @GetMapping("/get/{id}")
     @ResponseBody
-    public ApiResult findById(@PathVariable Long id){
+    public ApiResult<${data.entityName}> findById(@PathVariable Long id){
         return ApiResultUtil.success(${data.lowEntityName}Service.getById(id));
     }
 

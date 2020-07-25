@@ -31,7 +31,7 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}Map
      * @param ${data.lowEntityName}VO
      * @return
      */
-    public ApiResult addData(${data.entityName} ${data.lowEntityName}VO) {
+    public ApiResult<${data.entityName}> addData(${data.entityName} ${data.lowEntityName}VO) {
         this.check(${data.lowEntityName}VO);
         super.save(${data.lowEntityName}VO);
         return ApiResultUtil.success(${data.lowEntityName}VO);
@@ -43,7 +43,7 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}Map
      * @param ${data.lowEntityName}VO
      * @return
      */
-    public ApiResult edit(${data.entityName} ${data.lowEntityName}VO) {
+    public ApiResult<${data.entityName}> edit(${data.entityName} ${data.lowEntityName}VO) {
         this.check(${data.lowEntityName}VO);
         ${data.entityName} ${data.lowEntityName} = super.getById(${data.lowEntityName}VO.getId());
 
@@ -57,6 +57,15 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}Map
      * @return
      */
     public ApiResult del(Long id) {
+        throw new ApiException(ApiResultEnum.FAILED);
+    }
+
+    /**
+     *  ${data.module}--批量删除
+     * @param ids
+     * @return
+     */
+    public ApiResult batchdel(Long[] ids) {
         throw new ApiException(ApiResultEnum.FAILED);
     }
 }
