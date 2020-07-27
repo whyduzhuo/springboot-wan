@@ -1,13 +1,16 @@
 package ${data.servicepackage};
 
+import com.jxyunge.exception.BusinessException;
 import com.jxyunge.enums.ApiResultEnum;
-import com.jxyunge.exception.ApiException;
-import com.jxyunge.mybatis.dto.system.ApiResult;
 import ${data.entityPackages};
 import ${data.daopackage}.${data.entityName}Mapper;
 import com.jxyunge.utils.ApiResultUtil;
 import org.springframework.stereotype.Service;
+import com.jxyunge.utils.ApiResultUtil;
+import com.jxyunge.mybatis.service.BaseService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
 
 /**
  * ${data.module}--Service
@@ -23,7 +26,7 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}Map
      * @param ${data.lowEntityName}VO
      */
     private void check(${data.entityName} ${data.lowEntityName}VO){
-        throw new ApiException(ApiResultEnum.FAILED);
+        throw new BusinessException("功能暂未完成！");
     }
 
     /**
@@ -56,16 +59,23 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}Map
      * @param id
      * @return
      */
-    public ApiResult del(Long id) {
-        throw new ApiException(ApiResultEnum.FAILED);
+    public void del(Long id) {
+        if (id==null){
+            throw new BusinessException("请选择数据！");
+        }
+        super.delete(id);
     }
 
     /**
-     *  ${data.module}--批量删除
+     * ${data.module}--批量删除
      * @param ids
      * @return
      */
-    public ApiResult batchdel(Long[] ids) {
-        throw new ApiException(ApiResultEnum.FAILED);
+    @Override
+    public void delete(Long... ids) {
+        if (ids==null || ids.length==0){
+            throw new BusinessException("请勾选数据！");
+        }
+        Arrays.stream(ids).forEach(this::del);
     }
 }
