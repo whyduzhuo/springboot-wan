@@ -79,6 +79,15 @@ public class CodingController {
         return "vm/"+v+"/dao.java.vm";
     }
 
+    @Log(title = "获取mapper代码",operateType = OperateType.SELECT)
+    @ApiOperation(value = "获取dao代码")
+    @GetMapping("/getMapper/{v}")
+    public String getMapper(HttpServletRequest request,Coding coding, @PathVariable String v, Model model){
+        coding.cal();
+        model.addAttribute("data",coding);
+        return "vm/"+v+"/mapper.vm";
+    }
+
     @Log(title = "获取Html代码",operateType = OperateType.SELECT)
     @ApiOperation(value = "获取Html代码")
     @GetMapping("/getHtml/{v}")

@@ -110,6 +110,7 @@
         var controller="";
         var service="";
         var dao="";
+        var mapper="";
 
         $.ajax({
             url:'getHtml/'+v,
@@ -163,6 +164,19 @@
                 console.log(XMLHttpRequest);
             }
         });
+        $.ajax({
+            url:'getMapper/'+v,
+            type: "get",
+            async:false,
+            data: $('#dataForm').serialize(),
+            success:function (data) {
+                mapper = data;
+            },
+            error:function (XMLHttpRequest) {
+                alert("系统错误");
+                console.log(XMLHttpRequest);
+            }
+        });
         layer.tab({
             area:['70%', '90%'],
             btn: ['复制','关闭'],
@@ -178,7 +192,11 @@
             }, {
                 title: 'dao',
                 content: '<xmp style="padding:20px;">'+dao+'</xmp>'
-            }],
+            }, {
+                    title: 'mapper',
+                    content: '<xmp style="padding:20px;">'+mapper+'</xmp>'
+                }
+            ],
             btn1:function (index, layero) {
                 var code = $(".layui-layer-tabli:visible xmp").html();
                 var promise = navigator.clipboard.writeText(code);

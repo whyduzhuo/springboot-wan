@@ -41,7 +41,7 @@ public class AsyncManager {
 
     /**
      * 执行任务
-     *
+     * 延时执行
      * @param task 任务
      */
     public void execute(TimerTask task) {
@@ -55,6 +55,10 @@ public class AsyncManager {
         Threads.shutdownAndAwaitTermination(executor);
     }
 
+    /**
+     * 执行任务/立即执行
+     * @param timerTask
+     */
     public void excute2(TimerTask timerTask){
         threadPoolExecutor.execute(timerTask);
     }

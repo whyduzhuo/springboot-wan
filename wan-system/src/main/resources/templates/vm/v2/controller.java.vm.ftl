@@ -25,7 +25,7 @@ import java.util.Map;
  * @date: ${data.createDateStr}
  */
 
-@RequestMapping("/admin/${data.lowEntityName}")
+@RequestMapping("/grid/${data.lowEntityName}")
 @RestController
 @Api(value = "${data.module}")
 public class ${data.entityName}Controller extends BaseController {
@@ -58,7 +58,7 @@ public class ${data.entityName}Controller extends BaseController {
     @AutoLog(value = "${data.module}--新增")
     @ApiOperation(value = "${data.module}--新增")
     @PostMapping("/addData")
-    public ApiResult<${data.entityName}> addData(${data.entityName} ${data.lowEntityName}VO){
+    public ApiResult<${data.entityName}> addData(@RequestBody ${data.entityName} ${data.lowEntityName}VO){
         return ${data.lowEntityName}Service.addData(${data.lowEntityName}VO);
     }
 
@@ -66,7 +66,7 @@ public class ${data.entityName}Controller extends BaseController {
     @AutoLog(value = "${data.module}--修改")
     @ApiOperation(value = "${data.module}--修改")
     @PostMapping("/edit")
-    public ApiResult<${data.entityName}> edit(${data.entityName} ${data.lowEntityName}VO){
+    public ApiResult<${data.entityName}> edit(@RequestBody ${data.entityName} ${data.lowEntityName}VO){
         return ${data.lowEntityName}Service.edit(${data.lowEntityName}VO);
     }
 
@@ -74,7 +74,7 @@ public class ${data.entityName}Controller extends BaseController {
     @AutoLog(value = "${data.module}--新增/修改")
     @ApiOperation(value = "${data.module}--新增/修改")
     @PostMapping("/saveOrUpdate")
-    public ApiResult<${data.entityName}> saveOrUpdate(${data.entityName} ${data.lowEntityName}VO){
+    public ApiResult<${data.entityName}> saveOrUpdate(@RequestBody ${data.entityName} ${data.lowEntityName}VO){
         if (${data.lowEntityName}VO.getId()==null){
             return ${data.lowEntityName}Service.addData(${data.lowEntityName}VO);
         }
