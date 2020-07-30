@@ -4,7 +4,7 @@
 代码生成
 
 #### 软件架构
-Springboot,Jpa,Shiro,Freekmarker,Layui,bootstrap,Oracle
+Springboot,Jpa,Shiro,Freekmarker,Layer,bootstrap,Oracle
 
 
 #### 安装教程
