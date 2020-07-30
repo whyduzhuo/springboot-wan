@@ -11,13 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
  * @author: wanhy
  * @date: 2020/1/7 15:52
  */
-
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class MenuService extends BaseService<Menu,Long> {
@@ -143,5 +143,45 @@ public class MenuService extends BaseService<Menu,Long> {
         this.check(menu);
         super.update(menu);
         return Message.success("添加成功！");
+    }
+
+    /**
+     * 菜单id
+     * @param id
+     */
+    @Override
+    public void delete(Long id){
+        //如果有子节点，不允许删除
+        if (this.haveChriden(id)){
+            throw new ServiceException("菜单存在子节点，请先删除子节点！");
+        }
+        //先删除菜单-角色关联
+        this.delMenuRole(id);
+        super.delete(id);
+    }
+
+    /**
+     * 批量删除菜单
+     * @param ids
+     */
+    @Override
+    public void delete(Long... ids){
+        Arrays.stream(ids).forEach(this::delete);
+    }
+
+    /**
+     * 删除菜单角色关联
+     * @param menuId
+     */
+    public void delMenuRole(Long menuId){
+        menuDao.delMenuRole(menuId);
+    }
+
+    /**
+     * 查询是否有子节点
+     * @return
+     */
+    public Boolean haveChriden(Long parendId){
+        return menuDao.haveChriden(parendId).compareTo(new BigDecimal("0"))>0;
     }
 }

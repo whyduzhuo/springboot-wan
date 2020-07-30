@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -88,5 +89,82 @@ public class PositionService extends BaseService<Position,Long> {
         filters.add(Filter.eq("organization.id",positionVo.getOrganization().getId()));
         filters.add(Filter.ne("id",positionVo.getId()));
         return super.count(filters)>0;
+    }
+
+
+    /**
+     * 用户绑定角色
+     * @param roleId
+     * @param adminId
+     * @return
+     */
+    public Message addRole(Long roleId,Long adminId){
+        if (this.hasRole(roleId,adminId)!=null){
+            return Message.success();
+        }
+        positionDao.addRole(roleId,adminId);
+        return Message.success();
+    }
+
+    /**
+     * 用户解绑角色
+     * @param roleId
+     * @param adminId
+     * @return
+     */
+    public Message delRole(Long roleId,Long adminId){
+        positionDao.delRole(roleId,adminId);
+        return Message.success("删除成功！");
+    }
+
+    /**
+     * 查询是否有某角色
+     * @param roleId
+     * @param adminId
+     * @return
+     */
+    public Boolean hasRole(Long roleId,Long adminId){
+        return positionDao.hasRole(roleId,adminId);
+    }
+
+    /**
+     * 删除角色/职务
+     */
+    @Override
+    public void delete(Long id){
+        if (this.countByRoleNumber(id)>0){
+            throw new ServiceException("请先移除所有人！");
+        }
+        if (this.countByMenu(id)>0){
+            throw new ServiceException("请先移除所有菜单！");
+        }
+        super.delete(id);
+    }
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    @Override
+    public void delete(Long... ids){
+        Arrays.stream(ids).forEach(this::delete);
+    }
+
+    /**
+     * 查询有某个角色的人数
+     * @param roleId
+     * @return
+     */
+    public int countByRoleNumber(Long roleId){
+        return positionDao.countByRoleNumber(roleId).intValue();
+    }
+
+    /**
+     * 查询某角色的菜单总数
+     * @param roleId
+     * @return
+     */
+    public int countByMenu(Long roleId){
+        return positionDao.countByMenu(roleId).intValue();
     }
 }

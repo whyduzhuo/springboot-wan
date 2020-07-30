@@ -29,4 +29,16 @@ public interface MenuDao extends BaseDao<Menu,Long>{
             "VALUES (?,?,?,?,?,?,?,?,?,?)",nativeQuery = true)
     @Modifying
     int save(Long id, Date date, Date date1, String name, String path, Long parentId, int os, int type, int isEnable, Integer order);
+
+    @Query(value = "DELETE FROM T_BASE_POSITION_MENU WHERE MENU_ID=?",nativeQuery = true)
+    @Modifying
+    void delMenuRole(Long menuId);
+
+    /**
+     *
+     * @param parendId
+     * @return
+     */
+    @Query(value = "SELECT count(*) FROM T_BASE_MENU WHERE PARENT_ID=?",nativeQuery = true)
+    BigDecimal haveChriden(Long parendId);
 }

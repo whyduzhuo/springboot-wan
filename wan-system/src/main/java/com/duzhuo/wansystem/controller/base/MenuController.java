@@ -46,7 +46,7 @@ public class MenuController extends BaseController {
     @ApiOperation(value = "删除菜单")
     @DeleteMapping("/del")
     @ResponseBody
-    public Message del(@NotNull Long id){
+    public Message del(Long id){
         menuService.delete(id);
         return Message.success("删除成功！");
     }
