@@ -20,6 +20,11 @@ public interface MenuDao extends BaseDao<Menu,Long>{
     @Query(value = "select max(id) from T_BASE_MENU where parent_id is null",nativeQuery = true)
     BigDecimal getMaxTop();
 
+    @Query(value = "INSERT INTO T_BASE_MENU (ID, CREATE_DATE, MODIFY_DATE, NAME, PATH, OS,TYPE,IS_ENABLE,ORDERS) " +
+            "VALUES (?,?,?,?,?,?,?,?,?)",nativeQuery = true)
+    @Modifying
+    int save(Long id, Date date, Date date1, String name, String path, int os, int type, int isEnable, Integer order);
+
     @Query(value = "INSERT INTO T_BASE_MENU (ID, CREATE_DATE, MODIFY_DATE, NAME, PATH, PARENT_ID, OS,TYPE,IS_ENABLE,ORDERS) " +
             "VALUES (?,?,?,?,?,?,?,?,?,?)",nativeQuery = true)
     @Modifying

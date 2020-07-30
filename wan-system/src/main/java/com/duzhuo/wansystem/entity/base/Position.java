@@ -6,9 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  *
@@ -20,6 +18,22 @@ import java.util.Set;
 @Table(name = "T_BASE_Position")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 public class Position extends BaseEntity {
+    public enum Type{
+        /**
+         *普通职务可以修改
+         */
+        普通职务,
+        /**
+         * 固定职务不可修改
+         * 也不可添加人员
+         */
+        固定职务
+    }
+
+    /**
+     * 职务类别
+     */
+    private Type type;
 
     @JsonProperty
     @ApiModelProperty(value = "归属部门")
@@ -30,10 +44,19 @@ public class Position extends BaseEntity {
     private String name;
 
     @ApiModelProperty(value = "多对多菜单列表")
-    private Set<Menu> menuSet = new HashSet<>();
+    private List<Menu> menuSet = new LinkedList<>();
 
     @ApiModelProperty(value = "拥有该职务的全部用户")
-    private Set<Admin> adminSet = new HashSet<>();
+    private List<Admin> adminSet = new ArrayList<>();
+
+    public Type getType() {
+        return type;
+    }
+
+    public Position setType(Type type) {
+        this.type = type;
+        return this;
+    }
 
     @ManyToOne
     @JoinColumn(name = "ORG_ID")
@@ -41,34 +64,36 @@ public class Position extends BaseEntity {
         return organization;
     }
 
-    public void setOrganization(Organization organization) {
+    public Position setOrganization(Organization organization) {
         this.organization = organization;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Position setName(String name) {
         this.name = name;
+        return this;
     }
 
     @ManyToMany(cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
     @JoinTable(name = "T_BASE_POSITION_MENU",joinColumns = @JoinColumn(name="POSITION_ID",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "menu_id",referencedColumnName = "id"))
-    public Set<Menu> getMenuSet() {
+    public List<Menu> getMenuSet() {
         return menuSet;
     }
 
-    public void setMenuSet(Set<Menu> menuSet) {
+    public void setMenuSet(List<Menu> menuSet) {
         this.menuSet = menuSet;
     }
 
     @ManyToMany(mappedBy = "positionSet",fetch = FetchType.LAZY)
-    public Set<Admin> getAdminSet() {
+    public List<Admin> getAdminSet() {
         return adminSet;
     }
 
-    public void setAdminSet(Set<Admin> adminSet) {
+    public void setAdminSet(List<Admin> adminSet) {
         this.adminSet = adminSet;
     }
 

@@ -32,7 +32,11 @@ public class MenuService extends BaseService<Menu,Long> {
     }
 
     @Override
-    public Menu save(Menu menu){
+    protected Menu save(Menu menu){
+        if (menu.getParent()==null || menu.getParent().getId()==null){
+            int row= menuDao.save(menu.getId(),new Date(),new Date(),menu.getName(),menu.getPath(),
+                    menu.getOs().ordinal(),menu.getType().ordinal(),menu.getIsEnable().ordinal(),menu.getOrder());
+        }
         int row= menuDao.save(menu.getId(),new Date(),new Date(),menu.getName(),menu.getPath(),menu.getParent().getId(),
                 menu.getOs().ordinal(),menu.getType().ordinal(),menu.getIsEnable().ordinal(),menu.getOrder());
         if (row==1){
@@ -41,6 +45,11 @@ public class MenuService extends BaseService<Menu,Long> {
         return null;
     }
 
+    /**
+     * 菜单--新增
+     * @param menuVO
+     * @return
+     */
     public Message insert(Menu menuVO) {
         Long id = this.createId(menuVO.getParent()==null?null:menuVO.getParent().getId());
         menuVO.setId(id);
@@ -49,6 +58,10 @@ public class MenuService extends BaseService<Menu,Long> {
         return Message.success("添加成功！");
     }
 
+    /**
+     * 菜单--字段校验
+     * @param menuVO
+     */
     private void check(Menu menuVO){
         if (StringUtils.isBlank(menuVO.getName())){
             throw new ServiceException("菜单名不能为空！");
@@ -121,8 +134,14 @@ public class MenuService extends BaseService<Menu,Long> {
         return bigDecimal.longValue();
     }
 
-
+    /**
+     * 菜单管理--编辑修改
+     * @param menu
+     * @return
+     */
     public Message edit(Menu menu) {
-        return Message.error("功能暂未完成！");
+        this.check(menu);
+        super.update(menu);
+        return Message.success("添加成功！");
     }
 }
