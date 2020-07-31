@@ -28,7 +28,7 @@ public class Organization extends BaseEntity{
     private Organization parent;
 
     @ApiModelProperty(value = "部门下的全部职务",notes = "一对多职务表")
-    private Set<Position> positionSet = new HashSet<>();
+    private Set<Role> roleSet = new HashSet<>();
 
     public String getName() {
         return name;
@@ -49,11 +49,11 @@ public class Organization extends BaseEntity{
     }
 
     @OneToMany(mappedBy = "organization")
-    public Set<Position> getPositionSet() {
-        return positionSet;
+    public Set<Role> getPositionSet() {
+        return roleSet;
     }
 
-    public void setPositionSet(Set<Position> positionSet) {
-        this.positionSet = positionSet;
+    public void setPositionSet(Set<Role> positionSet) {
+        this.roleSet = positionSet;
     }
 }

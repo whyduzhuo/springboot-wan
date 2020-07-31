@@ -4,8 +4,8 @@ import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.exception.ServiceException;
-import com.duzhuo.wansystem.dao.base.PositionDao;
-import com.duzhuo.wansystem.entity.base.Position;
+import com.duzhuo.wansystem.dao.base.RoleDao;
+import com.duzhuo.wansystem.entity.base.Role;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,72 +22,72 @@ import java.util.List;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class PositionService extends BaseService<Position,Long> {
+public class RoleService extends BaseService<Role,Long> {
     @Resource
-    private PositionDao positionDao;
+    private RoleDao roleDao;
 
     @Resource
-    public void setBaseDao(PositionDao positionDao){
-        super.setBaseDao(positionDao);
+    public void setBaseDao(RoleDao roleDao){
+        super.setBaseDao(roleDao);
     }
 
     /**
      * 新增菜单
-     * @param positionVo
+     * @param roleVo
      * @return
      */
-    public Message insert(Position positionVo) {
-        if (positionVo.getType()==null){
+    public Message insert(Role roleVo) {
+        if (roleVo.getType()==null){
             throw new ServiceException("");
         }
-        if (StringUtils.isNotBlank(positionVo.getName())){
+        if (StringUtils.isNotBlank(roleVo.getName())){
             throw new ServiceException("请输入名称");
         }
-        if (positionVo.getOrganization()==null || positionVo.getOrganization().getId()==null){
+        if (roleVo.getOrganization()==null || roleVo.getOrganization().getId()==null){
             throw new ServiceException("请选择部门");
         }
-        int c = positionDao.countByNameAndOrganization(positionVo.getName(),positionVo.getOrganization());
+        int c = roleDao.countByNameAndOrganization(roleVo.getName(),roleVo.getOrganization());
         if (c>0){
             throw new ServiceException("已存在！");
         }
-        super.save(positionVo);
+        super.save(roleVo);
         return Message.success("添加成功!");
     }
 
     /**
      * 修改菜单
-     * @param positionVo
+     * @param roleVo
      * @return
      */
-    public Message edit(Position positionVo) {
-        if (StringUtils.isNotBlank(positionVo.getName())){
+    public Message edit(Role roleVo) {
+        if (StringUtils.isNotBlank(roleVo.getName())){
             throw new ServiceException("请输入名称");
         }
-        if (positionVo.getOrganization()==null || positionVo.getOrganization().getId()==null){
+        if (roleVo.getOrganization()==null || roleVo.getOrganization().getId()==null){
             throw new ServiceException("请选择部门");
         }
-        if (this.exist(positionVo)){
+        if (this.exist(roleVo)){
             throw new ServiceException("已存在！");
         }
-        Position position = super.find(positionVo.getId());
-        if (position.getType()==Position.Type.固定职务){
+        Role role = super.find(roleVo.getId());
+        if (role.getType()==Role.Type.固定职务){
             throw new ServiceException("固定职务/角色，不可修改！");
         }
-        position.setName(positionVo.getName()).setOrganization(positionVo.getOrganization());
-        super.update(position);
+        role.setName(roleVo.getName()).setOrganization(roleVo.getOrganization());
+        super.update(role);
         return Message.success("修改成功！！");
     }
 
     /**
      * 查询职务是否存在
-     * @param positionVo
+     * @param roleVo
      * @return
      */
-    private Boolean exist(Position positionVo){
+    private Boolean exist(Role roleVo){
         List<Filter> filters = new ArrayList<>();
-        filters.add(Filter.eq("name",positionVo.getName()));
-        filters.add(Filter.eq("organization.id",positionVo.getOrganization().getId()));
-        filters.add(Filter.ne("id",positionVo.getId()));
+        filters.add(Filter.eq("name",roleVo.getName()));
+        filters.add(Filter.eq("organization.id",roleVo.getOrganization().getId()));
+        filters.add(Filter.ne("id",roleVo.getId()));
         return super.count(filters)>0;
     }
 
@@ -102,7 +102,7 @@ public class PositionService extends BaseService<Position,Long> {
         if (this.hasRole(roleId,adminId)!=null){
             return Message.success();
         }
-        positionDao.addRole(roleId,adminId);
+        roleDao.addRole(roleId,adminId);
         return Message.success();
     }
 
@@ -113,7 +113,7 @@ public class PositionService extends BaseService<Position,Long> {
      * @return
      */
     public Message delRole(Long roleId,Long adminId){
-        positionDao.delRole(roleId,adminId);
+        roleDao.delRole(roleId,adminId);
         return Message.success("删除成功！");
     }
 
@@ -124,7 +124,7 @@ public class PositionService extends BaseService<Position,Long> {
      * @return
      */
     public Boolean hasRole(Long roleId,Long adminId){
-        return positionDao.hasRole(roleId,adminId);
+        return roleDao.hasRole(roleId,adminId);
     }
 
     /**
@@ -156,7 +156,7 @@ public class PositionService extends BaseService<Position,Long> {
      * @return
      */
     public int countByRoleNumber(Long roleId){
-        return positionDao.countByRoleNumber(roleId).intValue();
+        return roleDao.countByRoleNumber(roleId).intValue();
     }
 
     /**
@@ -165,6 +165,6 @@ public class PositionService extends BaseService<Position,Long> {
      * @return
      */
     public int countByMenu(Long roleId){
-        return positionDao.countByMenu(roleId).intValue();
+        return roleDao.countByMenu(roleId).intValue();
     }
 }

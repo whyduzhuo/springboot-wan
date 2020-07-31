@@ -3,9 +3,7 @@ package com.duzhuo.common.manager;
 import com.duzhuo.common.utils.SpringUtils;
 
 import java.util.TimerTask;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * 异步任务管理器
@@ -62,4 +60,19 @@ public class AsyncManager {
     public void excute2(TimerTask timerTask){
         threadPoolExecutor.execute(timerTask);
     }
+
+    /**
+     * 执行任务，可以获得返回值
+     * @param callable
+     * @param <T>
+     * @return
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    public <T> T excute3(Callable<T> callable) throws ExecutionException, InterruptedException {
+        Future<T> future = threadPoolExecutor.submit(callable);
+        return future.get();
+    }
+
+
 }

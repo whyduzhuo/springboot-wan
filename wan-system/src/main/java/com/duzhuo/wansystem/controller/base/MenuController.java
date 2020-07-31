@@ -30,8 +30,8 @@ public class MenuController extends BaseController {
     @ApiOperation(value = "新增菜单")
     @PostMapping("/insert")
     @ResponseBody
-    public Message insert(Menu menu){
-        return menuService.insert(menu);
+    public Message insert(Menu menuVO){
+        return menuService.insert(menuVO);
     }
 
     @Log(title = "修改菜单",operateType = OperateType.UPDATE)
@@ -42,12 +42,32 @@ public class MenuController extends BaseController {
         return menuService.edit(menu);
     }
 
+    @Log(title = "新增/修改",operateType = OperateType.UPDATE)
+    @ApiOperation("修改菜单")
+    @PutMapping("/saveOrEdit")
+    @ResponseBody
+    public Message saveOrEdit(Menu menuVo){
+        if (menuVo.getId()==null){
+            return menuService.insert(menuVo);
+        }
+        return menuService.edit(menuVo);
+    }
+
     @Log(title = "删除菜单",operateType = OperateType.DELETE)
     @ApiOperation(value = "删除菜单")
     @DeleteMapping("/del")
     @ResponseBody
     public Message del(Long id){
         menuService.delete(id);
+        return Message.success("删除成功！");
+    }
+
+    @Log(title = "删除菜单",operateType = OperateType.DELETE)
+    @ApiOperation(value = "删除菜单")
+    @DeleteMapping("/delete")
+    @ResponseBody
+    public Message del(@RequestParam("ids") Long... ids){
+        menuService.delete(ids);
         return Message.success("删除成功！");
     }
 

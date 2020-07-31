@@ -110,9 +110,7 @@ public class SysOperLogController extends BaseController {
     public Message ha(){
         long a = System.currentTimeMillis();
         List<SysOperLog> codingList = sysOperLogService.findAll();
-        codingList.forEach(c->{
-            System.out.println(c);
-        });
+        codingList.forEach(System.out::println);
         return Message.success("哈哈哈哈");
     }
 

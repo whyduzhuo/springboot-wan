@@ -2,10 +2,10 @@ package com.duzhuo.wansystem.shiro;
 
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
-import com.duzhuo.wansystem.entity.base.Position;
+import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.service.base.LoginService;
 import com.duzhuo.wansystem.service.base.MenuService;
-import com.duzhuo.wansystem.service.base.PositionService;
+import com.duzhuo.wansystem.service.base.RoleService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -32,7 +32,7 @@ public class AdminRealm extends AuthorizingRealm {
     private MenuService menuService;
 
     @Resource
-    private PositionService positionService;
+    private RoleService roleService;
 
     @Resource
     private LoginService loginService;
@@ -44,16 +44,16 @@ public class AdminRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
         Admin admin = ShiroUtils.getCurrAdmin();
         // 职务列表
-        Set<Position> positionSet = admin.getPositionSet();
+        Set<Role> roleSet = admin.getRoleSet();
         // 菜单/功能列表
         Set<Menu> menus = new HashSet<>();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //添加菜单
-        positionSet.stream().forEach(position -> {
-            menus.addAll(position.getMenuSet());
+        roleSet.stream().forEach(role -> {
+            menus.addAll(role.getMenuSet());
         });
         // 角色加入AuthorizationInfo认证对象
-//        info.setRoles(positionSet);
+//        info.setRoles(roleSet);
         // 权限加入AuthorizationInfo认证对象
 //        info.setStringPermissions(menus);
 

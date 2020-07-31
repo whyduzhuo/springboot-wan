@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.TimerTask;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -56,8 +59,40 @@ public class AdminController {
     @ApiOperation(value = "查询单个用户")
     @GetMapping("/{id}")
     @ResponseBody
-    public Message findById(@PathVariable @NotNull Long id){
-        Admin admin = adminService.find(id);
+    public Message findById(@PathVariable @NotNull Long id) throws ExecutionException, InterruptedException {
+        System.err.println(Thread.currentThread().toString());
+        Admin admin=AsyncManager.me().excute3(new Callable<Admin>() {
+            @Override
+            public Admin call() throws Exception {
+                Admin admin = adminService.find(id);
+                System.err.println(Thread.currentThread().toString() + "-----" + admin.toString()+"---"+System.currentTimeMillis());
+                return admin;
+            }
+        });
+        AsyncManager.me().excute3(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                Thread.sleep(5000);
+                String a ="方法1";
+                System.err.println(Thread.currentThread().toString()+"----"+a+"---"+System.currentTimeMillis());
+                return "方法1";
+            }
+        });
+        AsyncManager.me().excute3(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                Thread.sleep(5000);
+                String a ="方法2";
+                System.err.println(Thread.currentThread().toString()+"----"+a+"---"+System.currentTimeMillis());
+                return a;
+            }
+        });
+        AsyncManager.me().excute3(() -> {
+            Thread.sleep(5000);
+            String a = "方法3";
+            System.err.println(Thread.currentThread().toString() + "----" + a+"---"+System.currentTimeMillis());
+            return a;
+        });
         return Message.success(admin);
     }
 

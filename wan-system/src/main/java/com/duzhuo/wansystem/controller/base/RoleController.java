@@ -4,8 +4,8 @@ import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.core.BaseController;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
-import com.duzhuo.wansystem.entity.base.Position;
-import com.duzhuo.wansystem.service.base.PositionService;
+import com.duzhuo.wansystem.entity.base.Role;
+import com.duzhuo.wansystem.service.base.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
@@ -20,27 +20,27 @@ import javax.validation.constraints.NotNull;
  */
 
 @Controller
-@RequestMapping("/base/position")
+@RequestMapping("/base/role")
 @Api(tags = "职务管理模块")
-public class PositionController extends BaseController {
+public class RoleController extends BaseController {
 
     @Resource
-    private PositionService positionService;
+    private RoleService roleService;
 
     @Log(title = "新增职务",operateType = OperateType.INSERT)
     @ApiOperation(value = "新增职务")
     @PostMapping("/insert")
     @ResponseBody
-    public Message insert(Position position){
-        return positionService.insert(position);
+    public Message insert(Role role){
+        return roleService.insert(role);
     }
 
     @Log(title = "修改职务",operateType = OperateType.UPDATE)
     @ApiOperation("修改职务")
     @PutMapping("/edit")
     @ResponseBody
-    public Message edit(Position position){
-        return positionService.edit(position);
+    public Message edit(Role role){
+        return roleService.edit(role);
     }
 
     @Log(title = "删除职务",operateType = OperateType.DELETE)
@@ -48,7 +48,7 @@ public class PositionController extends BaseController {
     @DeleteMapping("/del")
     @ResponseBody
     public Message del(@NotNull Long id){
-        positionService.delete(id);
+        roleService.delete(id);
         return Message.success("删除成功！");
     }
 
@@ -57,7 +57,7 @@ public class PositionController extends BaseController {
     @GetMapping("/{id}")
     @ResponseBody
     public Message findById(@PathVariable @NotNull Long id){
-        Position position = positionService.find(id);
-        return Message.success(position);
+        Role role = roleService.find(id);
+        return Message.success(role);
     }
 }

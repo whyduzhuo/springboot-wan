@@ -32,7 +32,7 @@ public class Admin extends BaseEntity implements Cloneable {
     private String password;
 
     @ApiModelProperty(value = "全部职务")
-    private Set<Position> positionSet = new HashSet<>();
+    private Set<Role> roleSet = new HashSet<>();
 
 
     public String getUsername() {
@@ -60,13 +60,13 @@ public class Admin extends BaseEntity implements Cloneable {
     }
 
     @ManyToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
-    @JoinTable(name = "T_BASE_ADMIN_POSITION",joinColumns = @JoinColumn(name="ADMIN_ID",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "POSITION_id",referencedColumnName = "id"))
-    public Set<Position> getPositionSet() {
-        return positionSet;
+    @JoinTable(name = "T_BASE_ADMIN_ROLE",joinColumns = @JoinColumn(name="ADMIN_ID",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "ROLE_id",referencedColumnName = "id"))
+    public Set<Role> getRoleSet() {
+        return roleSet;
     }
 
-    public void setPositionSet(Set<Position> positionSet) {
-        this.positionSet = positionSet;
+    public void setRoleSet(Set<Role> roleSet) {
+        this.roleSet = roleSet;
     }
 
     @Override

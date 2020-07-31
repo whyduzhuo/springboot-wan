@@ -93,7 +93,7 @@ public class ${data.entityName}Controller extends BaseController {
 
     @AutoLog(value = "${data.module}--批量删除")
     @ApiOperation(value = "${data.module}--批量删除")
-    @GetMapping("/delete")
+    @DeleteMapping("/delete")
     public ApiResult delete(@RequestParam("id") Long... ids){
         ${data.lowEntityName}Service.delete(ids);
         return ApiResultUtil.success();

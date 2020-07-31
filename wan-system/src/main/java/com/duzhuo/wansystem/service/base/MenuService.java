@@ -31,30 +31,16 @@ public class MenuService extends BaseService<Menu,Long> {
         super.setBaseDao(menuDao);
     }
 
-    @Override
-    protected Menu save(Menu menu){
-        if (menu.getParent()==null || menu.getParent().getId()==null){
-            int row= menuDao.save(menu.getId(),new Date(),new Date(),menu.getName(),menu.getPath(),
-                    menu.getOs().ordinal(),menu.getType().ordinal(),menu.getIsEnable().ordinal(),menu.getOrder());
-        }
-        int row= menuDao.save(menu.getId(),new Date(),new Date(),menu.getName(),menu.getPath(),menu.getParent().getId(),
-                menu.getOs().ordinal(),menu.getType().ordinal(),menu.getIsEnable().ordinal(),menu.getOrder());
-        if (row==1){
-            return menu;
-        }
-        return null;
-    }
-
     /**
      * 菜单--新增
      * @param menuVO
      * @return
      */
     public Message insert(Menu menuVO) {
-        Long id = this.createId(menuVO.getParent()==null?null:menuVO.getParent().getId());
-        menuVO.setId(id);
+        Long num = this.createId(menuVO.getParent());
+        menuVO.setNum(num);
         this.check(menuVO);
-        this.save(menuVO);
+        super.save(menuVO);
         return Message.success("添加成功！");
     }
 
@@ -83,34 +69,35 @@ public class MenuService extends BaseService<Menu,Long> {
      * 二级菜单生成规则：1001，1002，1003....1099,其中前两位是父菜单id
      * 三级菜单生成规则：100101，100102，100103...100199,其中前四位是父菜单id
      * 已此类推
-     * @param parentId
+     * @param parent
      * @return
      */
-    private Long createId(Long parentId){
+    private Long createId(Menu parent){
         //一级菜单
-        if (parentId==null){
-            Long id= this.getMaxTop();
-            if (id==null){
+        if (parent==null || parent.getId()==null){
+            Long num= this.getMaxTop();
+            if (num==null){
                 return 10L;
             }
-            if (id.equals(MAX_NUM)){
-                throw new ServiceException("id越界");
+            if (num.equals(MAX_NUM)){
+                throw new ServiceException("菜单编号越界");
             }
-            return id+1;
+            return num+1;
         }
+        parent = super.find(parent.getId());
         //n级菜单
-        Long maxBother= this.getMaxBother(parentId);
+        Long maxBother= this.getMaxBother(parent.getId());
         if (maxBother==null){
-            return parentId*100;
+            return parent.getNum()*100;
         }
         if (MAX_NUM.equals(maxBother%100)){
-            throw new ServiceException("id越界");
+            throw new ServiceException("菜单编号越界");
         }
         return maxBother+1;
     }
 
     /**
-     * 查询最大的兄弟节点id
+     * 查询最大的兄弟节点num
      * @param parentId
      * @return
      */
@@ -123,7 +110,7 @@ public class MenuService extends BaseService<Menu,Long> {
     }
 
     /**
-     * 获取最大的根节点id
+     * 获取最大的根节点编号
      * @return
      */
     private Long getMaxTop(){

@@ -55,6 +55,10 @@ public class Menu extends BaseEntity {
     private String path;
 
     @JsonProperty
+    @ApiModelProperty(value = "菜单编号",dataType = "number")
+    private Long num;
+
+    @JsonProperty
     @ApiModelProperty(value = "父级菜单",dataType = "number")
     private Menu parent;
 
@@ -75,10 +79,19 @@ public class Menu extends BaseEntity {
     private Type type;
 
     @ApiModelProperty(value = "拥有此菜单的全部职务")
-    private Set<Position> positionSet = new HashSet<>();
+    private Set<Role> roleSet = new HashSet<>();
 
     @ApiModelProperty(value = "子菜单")
     private Set<Menu> children = new HashSet<>();
+
+
+    public Long getNum() {
+        return num;
+    }
+
+    public void setNum(Long num) {
+        this.num = num;
+    }
 
     public String getName() {
         return name;
@@ -140,12 +153,12 @@ public class Menu extends BaseEntity {
     }
 
     @ManyToMany(mappedBy = "menuSet",fetch = FetchType.LAZY)
-    public Set<Position> getPositionSet() {
-        return positionSet;
+    public Set<Role> getRoleSet() {
+        return roleSet;
     }
 
-    public void setPositionSet(Set<Position> positionSet) {
-        this.positionSet = positionSet;
+    public void setRoleSet(Set<Role> roleSet) {
+        this.roleSet = roleSet;
     }
 
     @OneToMany(mappedBy = "parent",fetch = FetchType.LAZY)

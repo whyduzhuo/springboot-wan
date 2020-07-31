@@ -15,9 +15,9 @@ import java.util.*;
  */
 @ApiModel(value = "职务实体",description = "此处的职务相当于原来的角色，部门-<职务><菜单。用户><职务><菜单")
 @Entity
-@Table(name = "T_BASE_Position")
+@Table(name = "T_BASE_ROLE")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
-public class Position extends BaseEntity {
+public class Role extends BaseEntity {
     public enum Type{
         /**
          *普通职务可以修改
@@ -53,7 +53,7 @@ public class Position extends BaseEntity {
         return type;
     }
 
-    public Position setType(Type type) {
+    public Role setType(Type type) {
         this.type = type;
         return this;
     }
@@ -64,7 +64,7 @@ public class Position extends BaseEntity {
         return organization;
     }
 
-    public Position setOrganization(Organization organization) {
+    public Role setOrganization(Organization organization) {
         this.organization = organization;
         return this;
     }
@@ -73,13 +73,13 @@ public class Position extends BaseEntity {
         return name;
     }
 
-    public Position setName(String name) {
+    public Role setName(String name) {
         this.name = name;
         return this;
     }
 
     @ManyToMany(cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
-    @JoinTable(name = "T_BASE_POSITION_MENU",joinColumns = @JoinColumn(name="POSITION_ID",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "menu_id",referencedColumnName = "id"))
+    @JoinTable(name = "T_BASE_ROLE_MENU",joinColumns = @JoinColumn(name="ROLE_ID",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "menu_id",referencedColumnName = "id"))
     public List<Menu> getMenuSet() {
         return menuSet;
     }
@@ -88,7 +88,7 @@ public class Position extends BaseEntity {
         this.menuSet = menuSet;
     }
 
-    @ManyToMany(mappedBy = "positionSet",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "roleSet",fetch = FetchType.LAZY)
     public List<Admin> getAdminSet() {
         return adminSet;
     }
@@ -102,15 +102,15 @@ public class Position extends BaseEntity {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Position)) {
+        if (!(o instanceof Role)) {
             return false;
         }
         if (!super.equals(o)) {
             return false;
         }
-        Position position = (Position) o;
-        return Objects.equals(getOrganization(), position.getOrganization()) &&
-                Objects.equals(getName(), position.getName());
+        Role role = (Role) o;
+        return Objects.equals(getOrganization(), role.getOrganization()) &&
+                Objects.equals(getName(), role.getName());
     }
 
     @Override

@@ -14,23 +14,13 @@ import java.util.Date;
  */
 
 public interface MenuDao extends BaseDao<Menu,Long>{
-    @Query(value = "select max(id) from T_BASE_MENU where parent_id = ?",nativeQuery = true)
+    @Query(value = "select max(num) from T_BASE_MENU where parent_id = ?",nativeQuery = true)
     BigDecimal getMaxBother(Long parentId);
 
-    @Query(value = "select max(id) from T_BASE_MENU where parent_id is null",nativeQuery = true)
+    @Query(value = "select max(num) from T_BASE_MENU where parent_id is null",nativeQuery = true)
     BigDecimal getMaxTop();
 
-    @Query(value = "INSERT INTO T_BASE_MENU (ID, CREATE_DATE, MODIFY_DATE, NAME, PATH, OS,TYPE,IS_ENABLE,ORDERS) " +
-            "VALUES (?,?,?,?,?,?,?,?,?)",nativeQuery = true)
-    @Modifying
-    int save(Long id, Date date, Date date1, String name, String path, int os, int type, int isEnable, Integer order);
-
-    @Query(value = "INSERT INTO T_BASE_MENU (ID, CREATE_DATE, MODIFY_DATE, NAME, PATH, PARENT_ID, OS,TYPE,IS_ENABLE,ORDERS) " +
-            "VALUES (?,?,?,?,?,?,?,?,?,?)",nativeQuery = true)
-    @Modifying
-    int save(Long id, Date date, Date date1, String name, String path, Long parentId, int os, int type, int isEnable, Integer order);
-
-    @Query(value = "DELETE FROM T_BASE_POSITION_MENU WHERE MENU_ID=?",nativeQuery = true)
+    @Query(value = "DELETE FROM T_BASE_ROLE_MENU WHERE MENU_ID=?",nativeQuery = true)
     @Modifying
     void delMenuRole(Long menuId);
 

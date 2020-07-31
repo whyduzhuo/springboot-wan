@@ -3,7 +3,7 @@ package com.duzhuo.wansystem.dao.base;
 import com.duzhuo.common.core.BaseDao;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.wansystem.entity.base.Organization;
-import com.duzhuo.wansystem.entity.base.Position;
+import com.duzhuo.wansystem.entity.base.Role;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  * @date: 2020/1/7 15:49
  */
 
-public interface PositionDao extends BaseDao<Position,Long>{
+public interface RoleDao extends BaseDao<Role,Long>{
     /**
      * name/organization 联合唯一
      * @param name
@@ -29,7 +29,7 @@ public interface PositionDao extends BaseDao<Position,Long>{
      * @param adminId
      * @return
      */
-    @Query(value = "SELECT count(*) FROM T_BASE_ADMIN_POSITION WHERE POSITION_ID=? AND ADMIN_ID =?",nativeQuery = true)
+    @Query(value = "SELECT count(*) FROM T_BASE_ADMIN_ROLE WHERE ROLE_ID=? AND ADMIN_ID =?",nativeQuery = true)
     Boolean hasRole(Long roleId, Long adminId);
 
     /**
@@ -37,7 +37,7 @@ public interface PositionDao extends BaseDao<Position,Long>{
      * @param roleId
      * @param adminId
      */
-    @Query(value = "DELETE FROM T_BASE_ADMIN_POSITION WHERE POSITION_ID=? AND ADMIN_ID=?",nativeQuery = true)
+    @Query(value = "DELETE FROM T_BASE_ADMIN_ROLE WHERE ROLE_ID=? AND ADMIN_ID=?",nativeQuery = true)
     @Modifying
     void delRole(Long roleId, Long adminId);
 
@@ -47,7 +47,7 @@ public interface PositionDao extends BaseDao<Position,Long>{
      * @param adminId
      * @return
      */
-    @Query(value = "INSERT INTO T_BASE_ADMIN_POSITION (POSITION_ID,ADMIN_ID) VALUES (?,?)",nativeQuery = true)
+    @Query(value = "INSERT INTO T_BASE_ADMIN_ROLE (ROLE_ID,ADMIN_ID) VALUES (?,?)",nativeQuery = true)
     @Modifying
     BigDecimal addRole(Long roleId, Long adminId);
 
@@ -56,7 +56,7 @@ public interface PositionDao extends BaseDao<Position,Long>{
      * @param roleId
      * @return
      */
-    @Query(value = "SELECT count(*) FROM T_BASE_ADMIN_POSITION WHERE POSITION_ID = ?",nativeQuery = true)
+    @Query(value = "SELECT count(*) FROM T_BASE_ADMIN_ROLE WHERE ROLE_ID = ?",nativeQuery = true)
     BigDecimal countByRoleNumber(Long roleId);
 
     /**
@@ -64,6 +64,6 @@ public interface PositionDao extends BaseDao<Position,Long>{
      * @param roleId
      * @return
      */
-    @Query(value = "SELECT count(*) FROM T_BASE_POSITION_MENU WHERE POSITION_ID=?",nativeQuery = true)
+    @Query(value = "SELECT count(*) FROM T_BASE_ROLE_MENU WHERE ROLE_ID=?",nativeQuery = true)
     BigDecimal countByMenu(Long roleId);
 }
