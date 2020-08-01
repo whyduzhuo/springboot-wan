@@ -8,6 +8,7 @@ import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.service.base.MenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class MenuController extends BaseController {
     @Log(title = "新增菜单",operateType = OperateType.INSERT)
     @ApiOperation(value = "新增菜单")
     @PostMapping("/insert")
+    @RequiresPermissions("12030000")
     @ResponseBody
     public Message insert(Menu menuVO){
         return menuService.insert(menuVO);
@@ -36,32 +38,25 @@ public class MenuController extends BaseController {
 
     @Log(title = "修改菜单",operateType = OperateType.UPDATE)
     @ApiOperation("修改菜单")
+    @RequiresPermissions("12030001")
     @PutMapping("/edit")
     @ResponseBody
     public Message edit(Menu menu){
         return menuService.edit(menu);
     }
 
-    @Log(title = "新增/修改",operateType = OperateType.UPDATE)
-    @ApiOperation("修改菜单")
-    @PutMapping("/saveOrEdit")
-    @ResponseBody
-    public Message saveOrEdit(Menu menuVo){
-        if (menuVo.getId()==null){
-            return menuService.insert(menuVo);
-        }
-        return menuService.edit(menuVo);
-    }
 
     @Log(title = "删除菜单",operateType = OperateType.DELETE)
     @ApiOperation(value = "删除菜单")
     @DeleteMapping("/del")
+//    @RequiresPermissions("12030002")
     @ResponseBody
     public Message del(Long id){
         menuService.delete(id);
         return Message.success("删除成功！");
     }
 
+    @RequiresPermissions("12030002")
     @Log(title = "删除菜单",operateType = OperateType.DELETE)
     @ApiOperation(value = "删除菜单")
     @DeleteMapping("/delete")

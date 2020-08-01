@@ -5,7 +5,6 @@ import com.duzhuo.common.core.BaseController;
 import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
-import com.duzhuo.common.manager.AsyncManager;
 import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.wansystem.entity.base.SysOperLog;
 import com.duzhuo.wansystem.service.base.AdminService;
@@ -23,10 +22,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
-import java.util.TimerTask;
 
 import static org.springframework.web.util.WebUtils.getParametersStartingWith;
 
@@ -52,7 +48,7 @@ public class SysOperLogController extends BaseController {
         CommonUtil.initPage(request,customSearch);
         Map<String,Object> searchParams = getParametersStartingWith(request,"search_");
         customSearch.setPagedata(sysOperLogService.search(searchParams,customSearch));
-
+        super.searchParamsTrim(searchParams);
         model.addAttribute("customSearch",customSearch);
         model.addAttribute("searchParams",searchParams);
         model.addAttribute("admin", adminService.find(1L));
@@ -96,30 +92,4 @@ public class SysOperLogController extends BaseController {
         }
     }
 
-    @GetMapping("/da")
-    @ResponseBody
-    public Message da(){
-        List<SysOperLog> codingList = sysOperLogService.findAll();
-        codingList.forEach(c-> AsyncManager.me().excute2(dd(c)));
-        return Message.success("哈哈哈哈");
-    }
-
-
-    @GetMapping("/ha")
-    @ResponseBody
-    public Message ha(){
-        long a = System.currentTimeMillis();
-        List<SysOperLog> codingList = sysOperLogService.findAll();
-        codingList.forEach(System.out::println);
-        return Message.success("哈哈哈哈");
-    }
-
-    public TimerTask dd(SysOperLog sysOperLog){
-        return new TimerTask() {
-            @Override
-            public void run() {
-                System.err.println(Thread.currentThread()+":"+sysOperLog);
-            }
-        };
-    }
 }

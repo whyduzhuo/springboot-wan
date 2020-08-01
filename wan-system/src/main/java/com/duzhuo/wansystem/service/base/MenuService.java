@@ -21,7 +21,7 @@ import java.util.Date;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class MenuService extends BaseService<Menu,Long> {
-    private Long MAX_NUM=99L;
+    private final Long MAX_NUM=99L;
 
     @Resource
     private MenuDao menuDao;
@@ -37,6 +37,9 @@ public class MenuService extends BaseService<Menu,Long> {
      * @return
      */
     public Message insert(Menu menuVO) {
+        if (menuVO.getParent()!=null && menuVO.getParent().getId()!=null){
+            menuVO.setParent(super.find(menuVO.getParent().getId()));
+        }
         Long num = this.createId(menuVO.getParent());
         menuVO.setNum(num);
         this.check(menuVO);
@@ -61,6 +64,15 @@ public class MenuService extends BaseService<Menu,Long> {
         if (menuVO.getIsEnable()==null){
             throw new ServiceException("启用or禁用？");
         }
+        if (menuVO.getParent()==null){
+            if (menuVO.getType()==Menu.Type.按钮){
+                throw new ServiceException("一级菜单不能为按钮！");
+            }
+        }else {
+            if (menuVO.getParent().getType().ordinal()<menuVO.getType().ordinal() || menuVO.getParent().getType()==Menu.Type.按钮){
+                throw new ServiceException("父级菜单为"+menuVO.getParent().getType()+",子菜单不能为"+menuVO.getType());
+            }
+        }
     }
 
     /**
@@ -84,7 +96,6 @@ public class MenuService extends BaseService<Menu,Long> {
             }
             return num+1;
         }
-        parent = super.find(parent.getId());
         //n级菜单
         Long maxBother= this.getMaxBother(parent.getId());
         if (maxBother==null){

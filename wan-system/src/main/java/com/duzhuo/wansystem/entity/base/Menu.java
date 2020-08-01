@@ -75,7 +75,7 @@ public class Menu extends BaseEntity {
     private Os os = Os.PC端;
 
     @JsonProperty
-    @ApiModelProperty(value = "页面Or按钮",dataType = "numer")
+    @ApiModelProperty(value = "页面Or按钮",dataType = "number")
     private Type type;
 
     @ApiModelProperty(value = "拥有此菜单的全部职务")

@@ -214,10 +214,10 @@ public class ProFileService extends BaseService<ProFile,Long>{
     public File wordToPdF(File wordFile){
         String wordFileName = wordFile.getName();
         String suffix = wordFileName.substring(wordFileName.lastIndexOf(".")+1);
-        if (suffix.equalsIgnoreCase("PDF")){
+        if ("PDF".equalsIgnoreCase(suffix)){
             return wordFile;
         }
-        if (suffix.equalsIgnoreCase("docx") || suffix.equalsIgnoreCase("doc")){
+        if ("docx".equalsIgnoreCase(suffix) || "doc".equalsIgnoreCase(suffix)){
 
         }
         System.err.println(wordFileName);

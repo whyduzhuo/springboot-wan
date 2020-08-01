@@ -59,8 +59,11 @@ public class Admin extends BaseEntity implements Cloneable {
         this.password = password;
     }
 
-    @ManyToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
-    @JoinTable(name = "T_BASE_ADMIN_ROLE",joinColumns = @JoinColumn(name="ADMIN_ID",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "ROLE_id",referencedColumnName = "id"))
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "T_BASE_ADMIN_ROLE",
+            joinColumns = @JoinColumn(name="ADMIN_ID",referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "ROLE_ID",referencedColumnName = "ID")
+    )
     public Set<Role> getRoleSet() {
         return roleSet;
     }

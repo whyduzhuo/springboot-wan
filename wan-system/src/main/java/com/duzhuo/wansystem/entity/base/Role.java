@@ -78,8 +78,10 @@ public class Role extends BaseEntity {
         return this;
     }
 
-    @ManyToMany(cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
-    @JoinTable(name = "T_BASE_ROLE_MENU",joinColumns = @JoinColumn(name="ROLE_ID",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "menu_id",referencedColumnName = "id"))
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "T_BASE_ROLE_MENU",
+            joinColumns = @JoinColumn(name="ROLE_ID",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "menu_id",referencedColumnName = "id"))
     public List<Menu> getMenuSet() {
         return menuSet;
     }

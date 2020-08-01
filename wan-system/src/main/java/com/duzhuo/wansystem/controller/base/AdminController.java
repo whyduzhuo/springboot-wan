@@ -8,6 +8,7 @@ import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.service.base.AdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,7 @@ public class AdminController {
     @Log(title = "新增用户",operateType = OperateType.INSERT)
     @ApiOperation(value = "新增用户")
     @PostMapping("/insert")
+    @RequiresPermissions("")
     @ResponseBody
     public Message insert(Admin admin){
         return adminService.insert(admin);
@@ -41,6 +43,7 @@ public class AdminController {
     @Log(title = "修改用户信息",operateType = OperateType.UPDATE)
     @ApiOperation("修改用户信息")
     @PutMapping("/edit")
+    @RequiresPermissions("")
     @ResponseBody
     public Message edit(Admin admin){
         return adminService.edit(admin);
@@ -49,8 +52,9 @@ public class AdminController {
     @Log(title = "删除用户",operateType = OperateType.DELETE)
     @ApiOperation(value = "删除用户")
     @DeleteMapping("/del")
+    @RequiresPermissions("")
     @ResponseBody
-    public Message del(@NotNull Long id){
+    public Message del(Long id){
         adminService.delete(id);
         return Message.success("删除成功！");
     }
@@ -58,42 +62,10 @@ public class AdminController {
     @Log(title ="获取单个用户",operateType = OperateType.SELECT)
     @ApiOperation(value = "查询单个用户")
     @GetMapping("/{id}")
+    @RequiresPermissions("")
     @ResponseBody
-    public Message findById(@PathVariable @NotNull Long id) throws ExecutionException, InterruptedException {
-        System.err.println(Thread.currentThread().toString());
-        Admin admin=AsyncManager.me().excute3(new Callable<Admin>() {
-            @Override
-            public Admin call() throws Exception {
-                Admin admin = adminService.find(id);
-                System.err.println(Thread.currentThread().toString() + "-----" + admin.toString()+"---"+System.currentTimeMillis());
-                return admin;
-            }
-        });
-        AsyncManager.me().excute3(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                Thread.sleep(5000);
-                String a ="方法1";
-                System.err.println(Thread.currentThread().toString()+"----"+a+"---"+System.currentTimeMillis());
-                return "方法1";
-            }
-        });
-        AsyncManager.me().excute3(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                Thread.sleep(5000);
-                String a ="方法2";
-                System.err.println(Thread.currentThread().toString()+"----"+a+"---"+System.currentTimeMillis());
-                return a;
-            }
-        });
-        AsyncManager.me().excute3(() -> {
-            Thread.sleep(5000);
-            String a = "方法3";
-            System.err.println(Thread.currentThread().toString() + "----" + a+"---"+System.currentTimeMillis());
-            return a;
-        });
-        return Message.success(admin);
+    public Message findById(@PathVariable Long id) {
+        return Message.success(adminService.find(id));
     }
 
 }

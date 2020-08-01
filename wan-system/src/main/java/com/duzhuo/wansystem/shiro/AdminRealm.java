@@ -49,13 +49,13 @@ public class AdminRealm extends AuthorizingRealm {
         Set<Menu> menus = new HashSet<>();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //添加菜单
-        roleSet.stream().forEach(role -> {
-            menus.addAll(role.getMenuSet());
-        });
-        // 角色加入AuthorizationInfo认证对象
+        roleSet.forEach(role -> menus.addAll(role.getMenuSet()));
+        Set<String> permissions = new HashSet<>();
+        menus.forEach(m->permissions.add(m.getNum().toString()));
+        // 角色加入AuthorizationInfo认证对象，在controller接口加RequiresRoles 就可以用了
 //        info.setRoles(roleSet);
-        // 权限加入AuthorizationInfo认证对象
-//        info.setStringPermissions(menus);
+        // 权限加入AuthorizationInfo认证对象,在controller接口加RequiresPermissions 就可以用了
+        info.setStringPermissions(permissions);
 
         return info;
     }
@@ -71,7 +71,7 @@ public class AdminRealm extends AuthorizingRealm {
         if (upToken.getPassword() != null) {
             password = new String(upToken.getPassword());
         }
-        Admin admin = null;
+        Admin admin;
         try {
             admin = loginService.login(username, password);
         } catch (Exception e) {
