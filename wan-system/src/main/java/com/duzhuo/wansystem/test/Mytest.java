@@ -50,7 +50,7 @@ public class Mytest {
 
     //SrpingMVC注解，
     //异常类，不用抛。
-    //事务传播行为，隔离级别，rollbackFor
+    //事务传播行为，隔离级别，rollbackFor,使得事务不生效
     //数据库约束
 
 

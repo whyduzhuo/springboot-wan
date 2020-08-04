@@ -97,6 +97,15 @@ public class CodingController {
         return "vm/"+v+"/html.ftl.vm";
     }
 
+    @Log(title = "获取Html代码",operateType = OperateType.SELECT)
+    @ApiOperation(value = "获取Html代码")
+    @GetMapping("/getDetail/{v}")
+    public String getDetail(HttpServletRequest request,Coding coding, @PathVariable String v, Model model){
+        coding.cal();
+        model.addAttribute("data",coding);
+        return "vm/"+v+"/detail.vm";
+    }
+
     @Log(title = "获取单条数据",operateType = OperateType.SELECT)
     @ApiOperation(value = "获取单条数据")
     @GetMapping("/findById")

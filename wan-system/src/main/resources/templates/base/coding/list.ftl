@@ -98,6 +98,7 @@
                 <div class="col-xs-12 col-md-12">
                     <button type="button" class="btn btn-primary" onclick="save('v1')">财大学工</button>
                     <button type="button" class="btn btn-primary" onclick="save('v2')">乡镇平台saas</button>
+                    <button type="button" class="btn btn-primary" onclick="save('v3')">乡镇平台saas2</button>
                     <button type="button" class="btn btn-success" onclick="addData()">保存数据库</button>
                 </div>
             </div>
@@ -106,11 +107,26 @@
 </body>
 <script>
     function save(v) {
+        var detail ="";
         var html="";
         var controller="";
         var service="";
         var dao="";
         var mapper="";
+
+        $.ajax({
+            url:'getDetail/'+v,
+            type: "get",
+            async:false,
+            data: $('#dataForm').serialize(),
+            success:function (data) {
+                detail = data;
+            },
+            error:function (XMLHttpRequest) {
+                alert("系统错误");
+                console.log(XMLHttpRequest);
+            }
+        });
 
         $.ajax({
             url:'getHtml/'+v,
@@ -181,9 +197,12 @@
             area:['70%', '90%'],
             btn: ['复制','关闭'],
             tab: [{
+                title: 'detail',
+                content: '<xmp style="padding:20px;">'+detail+'</xmp>'
+            }, {
                 title: 'Html',
                 content: '<xmp style="padding:20px;">'+html+'</xmp>'
-            },{
+            }, {
                 title: 'controller',
                 content: '<xmp style="padding:20px;">'+controller+'</xmp>'
             }, {
