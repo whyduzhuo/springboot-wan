@@ -59,7 +59,7 @@ public class Grid${data.entityName}Controller extends BaseController {
     @GetMapping("/edit")
     public String edit(Long id,Model model){
         ${data.entityName}Dto ${data.lowEntityName}Dto = new ${data.entityName}Dto();
-        if (id==null){
+        if (id!=null){
             ${data.lowEntityName}Dto = ${data.lowEntityName}Service.getById(id);
         }
         model.addAttribute("data",${data.lowEntityName}Dto);
@@ -88,7 +88,7 @@ public class Grid${data.entityName}Controller extends BaseController {
     @ResponseBody
     @PostMapping("/delete")
     public SysMessage del(Long id){
-        ${data.lowEntityName}Service.delete(ids);
+        ${data.lowEntityName}Service.delete(id);
         return SysMessage.success("删除成功！");
     }
 
