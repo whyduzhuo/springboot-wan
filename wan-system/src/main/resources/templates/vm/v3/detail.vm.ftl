@@ -3,15 +3,6 @@
 <html>
 
 <#noparse><@pageHead></#noparse>
-    <style type="text/css">
-        .container {
-            padding: 20px;
-        }
-
-        .checkbox {
-            width: 180px;
-        }
-    </style>
 <#noparse></@pageHead></#noparse>
 
 <body class="fixed-left">
@@ -33,18 +24,19 @@
                 </div>
                 <div class="col-xs-6">
                     <label for="column2">输入2<span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" id="column2" name="column2">
+                    <input class="form-control" type="text" id="column2" name="column2" value="<#noparse>${data.column2}</#noparse>">
                 </div>
                 <div class="col-xs-12">
                     <label for="column4">输入3<span class="text-danger">*</span></label>
                     <textarea style="width: 100%;height: 150px;resize: none" class="form-control" id="column3"
-                              name="column3"></textarea>
+                              name="column3"><#noparse>${data.column3}</#noparse></textarea>
                 </div>
             </div>
         </form>
 
     </div> <!-- container -->
 
+    <div style="height: 80px"></div>
     <div class="bottomConsoleBox">
         <span class="btn btn-info" onclick="submitData()">保存</span>
     </div>
