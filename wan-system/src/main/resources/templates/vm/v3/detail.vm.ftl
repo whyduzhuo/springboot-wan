@@ -4,10 +4,11 @@
 
 <#noparse><@pageHead></#noparse>
     <style type="text/css">
-        .container{
+        .container {
             padding: 20px;
         }
-        .checkbox{
+
+        .checkbox {
             width: 180px;
         }
     </style>
@@ -19,30 +20,28 @@
 <div id="wrapper">
 
     <div class="container">
-
-        <div class="row">
-            <form id="dataForm">
-                <div class="form-group">
-                    <input type="hidden" name="id" value="<#noparse>${data.id}</#noparse>">
-                    <div class="col-xs-6">
-                        <label for="column1">字段1<span class="text-danger">*</span></label>
-                        <select class="form-control" id="column1" name="column1">
-                            <option disabled selected hidden  value="">请选择</option>
-                            <option value="">aaa</option>
-                            <option value="">bbb</option>
-                        </select>
-                    </div>
-                    <div class="col-xs-6">
-                        <label for="column2">输入2<span class="text-danger">*</span></label>
-                        <input class="form-control" type="text"  id="column2" name="column2">
-                    </div>
-                    <div class="col-xs-12">
-                        <label for="column4">输入3<span class="text-danger">*</span></label>
-                        <textarea style="width: 100%;height: 150px;resize: none" class="form-control" id="column3" name="column3"></textarea>
-                    </div>
+        <form id="dataForm">
+            <div class="form-group">
+                <input type="hidden" name="id" value="<#noparse>${data.id}</#noparse>">
+                <div class="col-xs-6">
+                    <label for="column1">字段1<span class="text-danger">*</span></label>
+                    <select class="form-control" id="column1" name="column1">
+                        <option disabled selected hidden value="">请选择</option>
+                        <option value="">aaa</option>
+                        <option value="">bbb</option>
+                    </select>
                 </div>
-            </form>
-        </div>
+                <div class="col-xs-6">
+                    <label for="column2">输入2<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="column2" name="column2">
+                </div>
+                <div class="col-xs-12">
+                    <label for="column4">输入3<span class="text-danger">*</span></label>
+                    <textarea style="width: 100%;height: 150px;resize: none" class="form-control" id="column3"
+                              name="column3"></textarea>
+                </div>
+            </div>
+        </form>
 
     </div> <!-- container -->
 
@@ -73,16 +72,19 @@
             success: function (res) {
                 layer.closeAll("loading");
                 var i = 7;
-                switch (res.type){
-                    case 'success':i=1;
+                switch (res.type) {
+                    case 'success':
+                        i = 1;
                         break;
-                    case 'warn':i = 0;
+                    case 'warn':
+                        i = 0;
                         break;
-                    case 'error':i =2;
+                    case 'error':
+                        i = 2;
                         break;
                 }
-                layer.confirm(res.content,{icon:i}, function (index) {
-                    if(res.type=='success'){
+                layer.confirm(res.content, {icon: i}, function (index) {
+                    if (res.type == 'success') {
                         layer.load();
                         closeLayer();
                     }

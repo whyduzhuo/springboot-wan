@@ -49,10 +49,7 @@ public class Grid${data.entityName}Controller extends BaseController {
     * @return
     */
     @GetMapping("/list")
-    public String list(Model model,PageBody<${data.entityName}Dto> page){
-        page.getSearchParams().put("eq_unit_id",super.getCurrentAdmin().getUnitId());
-        ${data.lowEntityName}Service.page(page,page.getSearchParams());
-        model.addAttribute("page",page);
+    public String list(){
         return "/admin_tmpl/specialperson/${data.lowEntityName}/list";
     }
 
@@ -72,8 +69,9 @@ public class Grid${data.entityName}Controller extends BaseController {
     public SysMessage addData(${data.entityName} ${data.lowEntityName}VO){
         if (${data.lowEntityName}VO.getUnitId()==null){
             ${data.lowEntityName}VO.setUnitId(super.getCurrentAdmin().getUnitId());
+        }else{
+            ${data.lowEntityName}Service.save(${data.lowEntityName}VO);
         }
-        ${data.lowEntityName}Service.save(${data.lowEntityName}VO);
         return SysMessage.success("保存成功！");
     }
 
