@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script type="text/javascript" src="/static/js/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/jquery/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/static/js/layer-v2.4/layer.js"></script>
-    <script type="text/javascript" src="/static/js/layer/layui.js"></script>
-
-    <link rel="stylesheet" href="/static/js/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/js/layer-v2.4/skin/layer.css">
-    <link rel="stylesheet" href="/static/js/layer/layui.css">
+    <script type="text/javascript" src="/static/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>
+    <link href="/static/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
 
     <style type="text/css">
         #login-form{

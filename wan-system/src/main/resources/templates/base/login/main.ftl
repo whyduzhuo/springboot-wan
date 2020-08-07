@@ -2,8 +2,11 @@
 <html>
 <head>
     <title></title>
-    <script type="text/javascript" src="/static/js/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/jquery/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>
+    <link href="/static/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" type="text/css">
+
 </head>
 <body>
     <a href="/base/admin/2" target="_blank">
@@ -30,33 +33,47 @@
     <a href="/swagger-ui.html" target="_blank">
         <h1>swagger</h1>
     </a>
+    <button onclick="openAddWin()" type="button">layer弹框</button>
+
     <button onclick="logout()" type="button">
         <h1>退出登录</h1>
     </button>
-    <script>
-        function logout() {
-            $.ajax({
-                url: "logout",
-                type: "get",
-                success :function () {
-                    window.location.href="login";
-                }
-            })
-        }
-        
-        function del() {
-            $.ajax({
-                url: "/base/sysOperLog/1892",
-                type: "post",
-                data:{
-                    _method:"DELETE",
-                },
-                success :function (message) {
-                    alert(message.type);
-                    console.log(message.content)
-                }
-            })
-        }
-    </script>
 </body>
+<script type="text/javascript">
+    function logout() {
+        $.ajax({
+            url: "logout",
+            type: "get",
+            success :function () {
+                window.location.href="login";
+            }
+        })
+    }
+
+    function del() {
+        $.ajax({
+            url: "/base/sysOperLog/1892",
+            type: "post",
+            data:{
+                _method:"DELETE",
+            },
+            success :function (message) {
+                alert(message.type);
+                console.log(message.content)
+            }
+        })
+    }
+
+    function openAddWin() {
+        layer.open({
+            type: 2,
+            title: '选择人员',
+            shade: true,
+            maxmin: true,
+            area: ['80%', '80%'],
+            content: '/base/coding/index'
+        });
+    }
+</script>
+
 </html>

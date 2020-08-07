@@ -29,7 +29,7 @@
                 <div class="col-xs-12">
                     <label for="column4">输入3<span class="text-danger">*</span></label>
                     <textarea style="width: 100%;height: 150px;resize: none" class="form-control" id="column3"
-                              name="column3"><#noparse>${data.column3}</#noparse></textarea>
+                                                           name="column3"><#noparse>${data.column3}</#noparse></textarea>
                 </div>
             </div>
         </form>
@@ -49,6 +49,14 @@
 <#noparse></@pageFoot></#noparse>
 
 <script>
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#pxStartDate'
+        });
+    });
+
     function closeLayer() {
         var index = parent.layer.getFrameIndex(window.name);
         parent.layer.close(index);
@@ -77,8 +85,7 @@
                 }
                 layer.confirm(res.content, {icon: i}, function (index) {
                     if (res.type == 'success') {
-                        layer.load();
-                        closeLayer();
+                        parent.$(".reloadPageDataBtn").click();
                     }
                     layer.close(index);
                 });

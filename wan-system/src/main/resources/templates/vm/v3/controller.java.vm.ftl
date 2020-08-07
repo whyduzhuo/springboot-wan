@@ -43,9 +43,7 @@ public class Grid${data.entityName}Controller extends BaseController {
     }
 
     /**
-    * 分页数据
-    * @param model
-    * @param page
+    * 页面
     * @return
     */
     @GetMapping("/list")

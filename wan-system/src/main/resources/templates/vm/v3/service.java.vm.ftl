@@ -34,10 +34,10 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}Map
      * @param ${data.lowEntityName}VO
      * @return
      */
-    public ApiResult<${data.entityName}> addData(${data.entityName} ${data.lowEntityName}VO) {
+    @Override
+    public boolean save(${data.entityName} ${data.lowEntityName}VO) {
         this.check(${data.lowEntityName}VO);
-        super.save(${data.lowEntityName}VO);
-        return ApiResultUtil.success(${data.lowEntityName}VO);
+        return super.save(${data.lowEntityName}VO);
     }
 
 
@@ -46,12 +46,12 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}Map
      * @param ${data.lowEntityName}VO
      * @return
      */
-    public ApiResult<${data.entityName}> edit(${data.entityName} ${data.lowEntityName}VO) {
+    @Override
+    public boolean update(${data.entityName} ${data.lowEntityName}VO) {
         this.check(${data.lowEntityName}VO);
         ${data.entityName} ${data.lowEntityName} = super.getById(${data.lowEntityName}VO.getId());
 
-        super.update(${data.lowEntityName});
-        return ApiResultUtil.success(${data.lowEntityName});
+        return super.update(${data.lowEntityName});
     }
 
     /**
