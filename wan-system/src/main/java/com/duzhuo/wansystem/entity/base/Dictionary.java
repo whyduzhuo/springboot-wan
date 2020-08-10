@@ -2,11 +2,17 @@ package com.duzhuo.wansystem.entity.base;
 
 import com.duzhuo.common.core.BaseEntity;
 
+import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * @author: wanhy
  * @date: 2020/8/10 10:57
  */
-
+@Entity
+@Table(name = "T_BASE_DICTIONARY")
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 public class Dictionary  extends BaseEntity{
     public enum Status{
         启用,

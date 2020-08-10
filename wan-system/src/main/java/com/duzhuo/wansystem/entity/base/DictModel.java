@@ -4,9 +4,7 @@ import com.duzhuo.common.core.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +13,8 @@ import java.util.List;
  * @date: 2020/8/10 10:57
  */
 @ApiModel(value = "字典模块")
+@Table(name = "T_BASE_DICTIONARY")
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_DICT_MODEL", allocationSize = 1)
 public class DictModel extends BaseEntity{
 
     @ApiModelProperty(value = "模块名称")
