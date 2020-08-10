@@ -29,10 +29,10 @@ public class RoleController extends BaseController {
 
     @Log(title = "新增职务",operateType = OperateType.INSERT)
     @ApiOperation(value = "新增职务")
-    @PostMapping("/insert")
+    @PostMapping("/addData")
     @ResponseBody
-    public Message insert(Role role){
-        return roleService.insert(role);
+    public Message addData(Role role){
+        return roleService.addData(role);
     }
 
     @Log(title = "修改职务",operateType = OperateType.UPDATE)
@@ -60,4 +60,13 @@ public class RoleController extends BaseController {
         Role role = roleService.find(id);
         return Message.success(role);
     }
+
+    @Log(title = "测试",operateType = OperateType.OTHER)
+    @GetMapping("/test")
+    @ApiOperation(value = "测试")
+    @ResponseBody
+    public Message test(Long roleId,Long adminId){
+        return Message.success(roleService.hasRole(roleId,adminId).toString());
+    }
+
 }

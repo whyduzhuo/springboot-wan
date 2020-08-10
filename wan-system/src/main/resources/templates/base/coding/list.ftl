@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script type="text/javascript" src="/static/js/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/jquery/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>
     <link href="/static/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" type="text/css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+    <script src="/static/js/clipboard.min.js"></script>
 
-    <link rel="stylesheet" href="/static/js/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
     <style>
         .layui-layer-title{
             overflow:auto !important;

@@ -13,7 +13,7 @@ import java.util.*;
  * @author: wanhy
  * @date: 2020/1/7 14:32
  */
-@ApiModel(value = "职务实体",description = "此处的职务相当于原来的角色，部门-<职务><菜单。用户><职务><菜单")
+@ApiModel(value = "角色/职务",description = "此处的职务相当于原来的角色，部门-<职务><菜单。用户><职务><菜单")
 @Entity
 @Table(name = "T_BASE_ROLE")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)

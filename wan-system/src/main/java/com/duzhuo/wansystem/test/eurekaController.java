@@ -1,6 +1,5 @@
 package com.duzhuo.wansystem.test;
 
-import com.duzhuo.wansystem.entity.base.Admin;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.client.RestTemplate;
 

@@ -21,6 +21,8 @@ import java.util.Date;
 public class BaseEntity implements Serializable{
 
     private static final long serialVersionUID = -67188388306700736L;
+    public static final String CREATE_DATE_PROPERTY_NAME = "createDate";
+    public static final String MODIFY_DATE_PROPERTY_NAME = "modifyDate";
 
     private Long id;
     private Date createDate;

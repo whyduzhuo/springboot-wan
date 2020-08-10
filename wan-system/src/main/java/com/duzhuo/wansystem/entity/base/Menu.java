@@ -15,7 +15,7 @@ import java.util.Set;
  * @author: wanhy
  * @date: 2020/1/7 14:38
  */
-@ApiModel(value = "部门/机构")
+@ApiModel(value = "菜单")
 @Entity
 @Table(name = "T_BASE_MENU")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)

@@ -313,6 +313,17 @@ public class BaseService<T, ID extends Serializable> {
     }
 
 
+    @Transactional(readOnly = true)
+    public List<T> searchList(List<Filter> filters, Sort sort) {
+        Specification<T> spec = generareSpecification(filters, null);
+        if (null == sort) {
+            //默认创建时间排序
+            sort = Sort.by(Sort.Direction.ASC,BaseEntity.CREATE_DATE_PROPERTY_NAME);
+        }
+        return findAll(spec, sort);
+    }
+
+
     /**
      * searchParams转Filter
      * @param searchParams

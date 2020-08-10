@@ -30,7 +30,7 @@ public interface RoleDao extends BaseDao<Role,Long>{
      * @return
      */
     @Query(value = "SELECT count(*) FROM T_BASE_ADMIN_ROLE WHERE ROLE_ID=? AND ADMIN_ID =?",nativeQuery = true)
-    Boolean hasRole(Long roleId, Long adminId);
+    BigDecimal hasRole(Long roleId, Long adminId);
 
     /**
      *

@@ -35,7 +35,7 @@ public class LoginController {
     @ApiOperation(value = "进入登录页")
     @GetMapping("/login")
     public String login(){
-        return "base/login/login";
+        return "/base/login/login";
     }
 
     @Log(title = "登录系统",operateType = OperateType.OTHER)
@@ -64,7 +64,7 @@ public class LoginController {
     @GetMapping("/index")
     public String index(){
         Admin admin = ShiroUtils.getCurrAdmin();
-        return "base/login/main";
+        return "/base/login/main";
     }
 
     @Log(title = "进入错误页面",operateType = OperateType.OTHER)

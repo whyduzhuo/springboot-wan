@@ -6,11 +6,13 @@ import com.duzhuo.common.core.Message;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.RoleDao;
 import com.duzhuo.wansystem.entity.base.Role;
+import com.duzhuo.wansystem.mapper.base.RoleMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +27,8 @@ import java.util.List;
 public class RoleService extends BaseService<Role,Long> {
     @Resource
     private RoleDao roleDao;
+    @Resource
+    private RoleMapper roleMapper;
 
     @Resource
     public void setBaseDao(RoleDao roleDao){
@@ -36,7 +40,7 @@ public class RoleService extends BaseService<Role,Long> {
      * @param roleVo
      * @return
      */
-    public Message insert(Role roleVo) {
+    public Message addData(Role roleVo) {
         if (roleVo.getType()==null){
             throw new ServiceException("");
         }
@@ -117,14 +121,14 @@ public class RoleService extends BaseService<Role,Long> {
         return Message.success("删除成功！");
     }
 
-    /**
+    /**mvn
      * 查询是否有某角色
      * @param roleId
      * @param adminId
      * @return
      */
     public Boolean hasRole(Long roleId,Long adminId){
-        return roleDao.hasRole(roleId,adminId);
+        return roleDao.hasRole(roleId,adminId).compareTo(BigDecimal.ZERO)>0;
     }
 
     /**

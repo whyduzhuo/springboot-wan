@@ -41,7 +41,7 @@ public class CodingController {
     public String index(Model model){
         List<Coding> codingList = codingService.findAll(Sort.by(Sort.Direction.DESC,"createDate"));
         model.addAttribute("dataList",codingList);
-        return "base/coding/list";
+        return "/base/coding/list";
     }
 
     @Log(title = "查询Service代码",operateType = OperateType.SELECT)
