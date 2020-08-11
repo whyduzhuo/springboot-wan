@@ -8,7 +8,6 @@ import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.dao.base.DictionaryDao;
 import com.duzhuo.wansystem.entity.base.DictModel;
 import com.duzhuo.wansystem.entity.base.Dictionary;
-import com.fasterxml.jackson.databind.node.IntNode;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * 字典

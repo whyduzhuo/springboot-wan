@@ -20,19 +20,19 @@ public class Dictionary  extends BaseEntity{
         禁用
     }
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "模块")
     private DictModel dictModel;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "编码")
     private String code;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "值")
     private String value;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "状态")
     private Status status;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "备注")
     private String remark;
 
     @ManyToOne
