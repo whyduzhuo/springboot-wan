@@ -12,8 +12,9 @@ import java.util.List;
  * @author: wanhy
  * @date: 2020/8/10 10:57
  */
+@Entity
 @ApiModel(value = "字典模块")
-@Table(name = "T_BASE_DICTIONARY")
+@Table(name = "T_BASE_DICTMODEL")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_DICT_MODEL", allocationSize = 1)
 public class DictModel extends BaseEntity{
 
@@ -43,7 +44,7 @@ public class DictModel extends BaseEntity{
     }
 
     @OneToMany(mappedBy = "dictModel")
-    @OrderBy("CODE ASC")
+    @OrderBy("STATUS ASC,CODE ASC")
     public List<Dictionary> getDictionaryList() {
         return dictionaryList;
     }

@@ -2,6 +2,7 @@ package com.duzhuo.wansystem.dao.base;
 
 import com.duzhuo.common.core.BaseDao;
 import com.duzhuo.wansystem.entity.base.DictModel;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * @author: wanhy
@@ -10,5 +11,17 @@ import com.duzhuo.wansystem.entity.base.DictModel;
 
 public interface DictModelDao extends BaseDao<DictModel,Long> {
 
+    /**
+     *
+     * @param modelCode
+     * @return
+     */
     DictModel findByModelCode(String modelCode);
+
+    /**
+     * 获取最大的code
+     * @return
+     */
+    @Query(value = "select max(model_Code) from T_BASE_DICTMODEL")
+    String getMaxCode();
 }

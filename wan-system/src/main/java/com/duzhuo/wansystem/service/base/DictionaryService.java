@@ -2,9 +2,13 @@ package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Filter;
+import com.duzhuo.common.core.Message;
+import com.duzhuo.common.exception.ServiceException;
+import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.dao.base.DictionaryDao;
 import com.duzhuo.wansystem.entity.base.DictModel;
 import com.duzhuo.wansystem.entity.base.Dictionary;
+import com.fasterxml.jackson.databind.node.IntNode;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
+ * 字典
  * @author: wanhy
  * @date: 2020/8/10 11:19
  */
@@ -30,6 +36,76 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
     public void setBaseDao(DictionaryDao dictionaryDao){
         super.setBaseDao(dictionaryDao);
     }
+
+    /**
+     * 字典--新增
+     * @param dictionaryVO
+     * @return
+     */
+    public Message addData(Dictionary dictionaryVO){
+        this.check(dictionaryVO);
+        super.save(dictionaryVO);
+        return Message.success("添加成功!");
+    }
+
+    /**
+     * 字典--修改
+     * @param dictionaryVO
+     * @return
+     */
+    public Message edit(Dictionary dictionaryVO){
+        this.check(dictionaryVO);
+        Dictionary dictionary = super.find(dictionaryVO.getId());
+        dictionary.setCode(dictionaryVO.getCode());
+        dictionary.setStatus(dictionaryVO.getStatus());
+        dictionary.setValue(dictionaryVO.getValue());
+        dictionary.setRemark(dictionaryVO.getRemark());
+        super.update(dictionary);
+        return Message.success("修改成功！");
+    }
+
+    /**
+     * 字典--校验
+     * @param dictionaryVO
+     */
+    private void check(Dictionary dictionaryVO){
+        if (dictionaryVO.getDictModel()==null || dictionaryVO.getDictModel().getId()==null){
+            throw new ServiceException("请选择模块！");
+        }
+        if (dictionaryVO.getStatus()==null){
+            throw new ServiceException("请选择启用状态！");
+        }
+        if (StringUtils.isBlank(dictionaryVO.getCode())){
+            throw new ServiceException("请输入字典编码");
+        }
+        if (StringUtils.isBlank(dictionaryVO.getValue())){
+            throw new ServiceException("请输入字典值");
+        }
+        this.isExits(dictionaryVO);
+    }
+
+    /**
+     * 判断是否重复
+     * @param dictionaryVO
+     * @return
+     */
+    private void isExits(Dictionary dictionaryVO){
+        List<Filter> filters = new ArrayList<>();
+        filters.add(Filter.eq("code",dictionaryVO.getCode()));
+        filters.add(Filter.eq("dictModel.id",dictionaryVO.getDictModel().getId()));
+        if (dictionaryVO.getId()!=null){
+            filters.add(Filter.ne("id",dictionaryVO.getId()));
+        }
+        if (super.count(filters)>0){
+            throw new ServiceException("字典编码已存在！");
+        }
+        filters.remove(0);
+        filters.add(Filter.eq("value",dictionaryVO.getValue()));
+        if (super.count(filters)>0){
+            throw new ServiceException("字典值已存在");
+        }
+    }
+
 
     /**
      * 查询某个模块的字典
@@ -63,5 +139,30 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
     public List<Dictionary> getList(String modelCode){
         DictModel dictModel = dictModelService.findByModelCode(modelCode);
         return dictModel.getDictionaryList(Dictionary.Status.启用);
+    }
+
+    /**
+     * 自动获取新code
+     * @param modelId
+     * @return
+     */
+    public String getNewCode(Long modelId){
+        String maxCode = dictionaryDao.getMaxCode(modelId);
+        if (StringUtils.isBlank(maxCode)){
+            return "01";
+        }
+        String newCode;
+        try {
+            int i = Integer.valueOf(maxCode);
+            newCode = (i+1)+"";
+        }catch (NumberFormatException e){
+            char[] chars = maxCode.toCharArray();
+            char c = chars[chars.length-1];
+            int cAsci = (int)(c);
+            char b = (char)(cAsci+1);
+            chars[chars.length-1]=b;
+            newCode = String.valueOf(chars);
+        }
+        return newCode;
     }
 }

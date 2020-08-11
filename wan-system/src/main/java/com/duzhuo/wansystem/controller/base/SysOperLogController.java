@@ -17,14 +17,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.WebUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Map;
-
-import static org.springframework.web.util.WebUtils.getParametersStartingWith;
 
 /**
  * @author: wanhy
@@ -46,7 +45,7 @@ public class SysOperLogController extends BaseController {
     @ApiOperation(value = "日志列表")
     public String list(HttpServletRequest request,CustomSearch<SysOperLog> customSearch, Model model){
         CommonUtil.initPage(request,customSearch);
-        Map<String,Object> searchParams = getParametersStartingWith(request,"search_");
+        Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,"search_");
         customSearch.setPagedata(sysOperLogService.search(searchParams,customSearch));
         super.searchParamsTrim(searchParams);
         model.addAttribute("customSearch",customSearch);

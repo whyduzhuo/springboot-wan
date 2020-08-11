@@ -1,10 +1,10 @@
 package com.duzhuo.wansystem.entity.base;
 
 import com.duzhuo.common.core.BaseEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author: wanhy
@@ -13,22 +13,30 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "T_BASE_DICTIONARY")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
+@ApiModel(value = "字典")
 public class Dictionary  extends BaseEntity{
     public enum Status{
         启用,
         禁用
     }
 
+    @ApiModelProperty(value = "")
     private DictModel dictModel;
 
+    @ApiModelProperty(value = "")
     private String code;
 
-    private String name;
+    @ApiModelProperty(value = "")
+    private String value;
 
+    @ApiModelProperty(value = "")
     private Status status;
 
+    @ApiModelProperty(value = "")
     private String remark;
 
+    @ManyToOne
+    @JoinColumn(name = "MODEL_ID")
     public DictModel getDictModel() {
         return dictModel;
     }
@@ -45,12 +53,12 @@ public class Dictionary  extends BaseEntity{
         this.code = code;
     }
 
-    public String getName() {
-        return name;
+    public String getValue() {
+        return value;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public Status getStatus() {
