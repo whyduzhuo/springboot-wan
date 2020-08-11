@@ -15,6 +15,6 @@ public interface DictionaryDao extends BaseDao<Dictionary,Long> {
      * @param modelId
      * @return
      */
-    @Query(value = "select max(code) from T_BASE_DICTIONARY")
+    @Query(value = "select max(code) from T_BASE_DICTIONARY",nativeQuery = true)
     String getMaxCode(Long modelId);
 }

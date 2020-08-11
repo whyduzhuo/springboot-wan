@@ -11,7 +11,7 @@
 <div id="wrapper">
 
     <div class="container">
-        <form id="dataForm">
+        <form id="dataForm" class="form-horizontal">
             <div class="form-group">
                 <input type="hidden" name="id" value="<#noparse>${data.id}</#noparse>">
                 <div class="col-xs-6">
@@ -85,6 +85,7 @@
                 }
                 layer.confirm(res.content, {icon: i}, function (index) {
                     if (res.type == 'success') {
+                        closeLayer()
                         parent.$(".reloadPageDataBtn").click();
                     }
                     layer.close(index);

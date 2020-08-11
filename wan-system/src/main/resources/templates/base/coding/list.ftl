@@ -27,7 +27,7 @@
         .left{
             padding: 30px;
             padding-top: 0px;
-            flex: 1;
+            flex: 2;
             max-height: 800px;
             overflow: hidden;
             overflow-y: scroll
@@ -69,27 +69,27 @@
     <div class="right">
         <form method="post" id="dataForm">
             <div class="form-group">
-                <div class="col-xs-12 col-md-6">
+                <div class="col-xs-12 col-md-12">
                     <label class="">作者<span class="text-danger">*</span></label>
                     <input class="form-control" name="author" id="author" placeholder="麻花疼" value="麻花疼">
                 </div>
-                <div class="col-xs-12 col-md-6">
+                <div class="col-xs-12 col-md-12">
                     <label class="">业务名<span class="text-danger">*</span></label>
                     <input class="form-control" name="module" id="module"  placeholder="音乐" value="音乐">
                 </div>
-                <div class="col-xs-12 col-md-6">
+                <div class="col-xs-12 col-md-12">
                     <label class="">完整类名<span class="text-danger">*</span></label>
                     <input class="form-control" name="entityPackages" id="entityPackages" value="com.diange.entity.jiangli.Music" placeholder="com.diange.entity.jiangli.Music">
                 </div>
-                <div class="col-xs-12 col-md-6">
+                <div class="col-xs-12 col-md-12">
                     <label class="">controller包名<span class="text-danger">*</span></label>
                     <input class="form-control" name="controllerpackage" id="controllerpackage" value="com.diange.controller.admin.jiangli" placeholder="com.diange.controller.admin.jiangli">
                 </div>
-                <div class="col-xs-12 col-md-6">
+                <div class="col-xs-12 col-md-12">
                     <label class="">service包名<span class="text-danger">*</span></label>
                     <input class="form-control" name="servicepackage" id="servicepackage" value="com.diange.service.jiangli" placeholder="com.diange.service.jiangli">
                 </div>
-                <div class="col-xs-12 col-md-6">
+                <div class="col-xs-12 col-md-12">
                     <label class="">dao包名<span class="text-danger">*</span></label>
                     <input class="form-control" name="daopackage" id="daopackage" value="com.diange.dao.jpa.jiangli" placeholder="com.diange.dao.jpa.jiangli">
                 </div>

@@ -3,12 +3,7 @@
 <html>
 
 <#noparse><@pageHead></#noparse>
-    <style type="text/css">
-        .form-control {
-            display: inline-block;
-            width: auto;
-        }
-    </style>
+
 <#noparse></@pageHead></#noparse>
 
 <body class="fixed-left">

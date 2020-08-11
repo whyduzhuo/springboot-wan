@@ -5,6 +5,7 @@ import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.RoleDao;
+import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.mapper.base.RoleMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -13,9 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author: wanhy
@@ -170,5 +169,17 @@ public class RoleService extends BaseService<Role,Long> {
      */
     public int countByMenu(Long roleId){
         return roleDao.countByMenu(roleId).intValue();
+    }
+
+    /**
+     * 获取该角色有多少菜单--将按钮剔除
+     * @param roles
+     * @return
+     */
+    public List<Menu> getMenus(Collection<Role> roles){
+        Set<Menu> menuSet = new HashSet<>();
+        roles.forEach(r->menuSet.addAll(r.getMenuSet()));
+        menuSet.removeIf(r->r.getType()==Menu.Type.按钮);
+        return new ArrayList<>(menuSet);
     }
 }

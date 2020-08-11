@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author: wanhy
@@ -36,7 +37,7 @@ public class MenuService extends BaseService<Menu,Long> {
      * @param menuVO
      * @return
      */
-    public Message insert(Menu menuVO) {
+    public Message addData(Menu menuVO) {
         if (menuVO.getParent()!=null && menuVO.getParent().getId()!=null){
             menuVO.setParent(super.find(menuVO.getParent().getId()));
         }
