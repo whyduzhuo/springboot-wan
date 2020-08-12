@@ -77,7 +77,7 @@
                 layer.confirm("您确定删除此条记录?", {icon: 3}, function (index) {
                     layer.load();
                     $.ajax({
-                        url: 'del.do',
+                        url: 'delete.do',
                         type: 'post',
                         data: {'id': id},
                         async: false,
@@ -95,7 +95,7 @@
                         },
                         error: function (XMLHttpRequest) {
                             layer.closeAll("loading");
-                            alertErrorMessage(XMLHttpRequest);
+                            console.log(XMLHttpRequest);
                         }
                     });
                     layer.close(index);

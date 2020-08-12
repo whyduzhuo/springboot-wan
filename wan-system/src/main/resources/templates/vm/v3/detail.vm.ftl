@@ -18,8 +18,9 @@
                     <label for="column1">字段1<span class="text-danger">*</span></label>
                     <select class="form-control" id="column1" name="column1">
                         <option disabled selected hidden value="">请选择</option>
-                        <option value="">aaa</option>
-                        <option value="">bbb</option>
+                        <#noparse><#list yesOrNoList as yesOrNo></#noparse>
+                        <option value="<#noparse>${yesOrNo}</#noparse>" <#noparse><#if data.yesOrNo==yesOrNo></#noparse>selected<#noparse></#if></#noparse>><#noparse>${yesOrNo}</#noparse></option>
+                        <#noparse></#list></#noparse>
                     </select>
                 </div>
                 <div class="col-xs-6">

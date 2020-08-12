@@ -1,12 +1,9 @@
 package ${data.servicepackage};
 
 import com.jxyunge.exception.BusinessException;
-import com.jxyunge.enums.ApiResultEnum;
 import ${data.entityPackages};
 import ${data.daopackage}.${data.entityName}Mapper;
-import com.jxyunge.utils.ApiResultUtil;
 import org.springframework.stereotype.Service;
-import com.jxyunge.utils.ApiResultUtil;
 import com.jxyunge.mybatis.service.BaseService;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -121,7 +121,6 @@
 
     //点击menuTab
     $(document).on("click",".menuTab",function () {
-        $(".menuTab").removeClass("active");
         $(this).addClass("active");
         var url = $(this).attr("data-id");
         showFrame(url);
@@ -131,35 +130,20 @@
     $(document).on("click",".fa-times-circle",function (e) {
         var url = $(this).parent().attr("data-id");
         $(this).parent().remove();
-        removeFrame(url);
-        $(".wan_frame:last").show();
+        $(".wan_frame[src='"+url+"']").remove();
+        $(".wan_frame:last").show(300);
         e.stopPropagation();
     });
-
-    //移除某个frame
-    function removeFrame(url) {
-        console.log(url);
-        $.each($(".wan_frame"),function () {
-            var dataUrl = $(this).attr("src");
-            if(dataUrl == url){
-                $(this).remove();
-            }
-        });
-    }
 
     //展示某个frame,如果该frame没有，则建立一个fream和tab
     function showFrame(url,title) {
         $(".wan_frame").hide();
-        var b = true;
-        $.each($(".wan_frame"),function () {
-            var dataUrl = $(this).attr("src");
-            if(dataUrl == url){
-                $(this).show();
-                b= false;
-            }
-        });
-        if(b){
-            $(".menuTab").removeClass("active");
+        $(".menuTab").removeClass("active");
+        $(".menuTab[data-id='"+url+"']").addClass("active");
+        var freme = $(".wan_frame[src='"+url+"']");
+        if(freme.length>0){
+            freme.show(300);
+        }else {
             var tabHtml = '<a href="javascript:;" class="menuTab active" data-id="'+url+'">'+title+' <i class="fa fa-times-circle"></i></a>';
             var frameHtml = '<iframe class="wan_frame"  width="100%" height="100%" src="'+url+'" frameborder="0" data-id="'+url+'"></iframe>';
             $("#wan-menuTab-list").append(tabHtml);
