@@ -21,13 +21,13 @@
             font-size: 16px;
         }
         body{
-            padding-top: 50px;
+            padding-top: 10px;
             display: flex;
         }
         .left{
-            padding: 30px;
+            padding: 10px;
             padding-top: 0px;
-            flex: 2;
+            flex: 6;
             max-height: 800px;
             overflow: hidden;
             overflow-y: scroll
@@ -54,7 +54,7 @@
             color: #FFF;
         }
         .right{
-            flex: 1;
+            flex: 4;
         }
     </style>
 </head>

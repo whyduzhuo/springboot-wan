@@ -31,7 +31,7 @@
             position: relative;
             height: 39px;
             background: #fafafa;
-            line-height: 38px;
+            line-height: 39px;
             border-bottom: 1px solid #ccc;
         }
         .page-tabs a {
@@ -41,15 +41,12 @@
             border-right: solid 1px #eee;
             padding: 0 15px;
         }
-        .page-tabs a.active:hover, .page-tabs a.active i:hover {
+        .page-tabs a.active:hover {
             background: #eaedf1;
             color: #23508e;
         }
-        .page-tabs a i:hover {
-            color: #c00;
-        }
         .page-tabs-content .active{
-            background: #eaedf1;
+            background: #d0d4d8;
             color: #23508e;
         }
         .menuTab:hover{
@@ -79,6 +76,9 @@
             background-color: #111111;
             color: #AAA;
         }
+        .page-tabs a i:hover {
+            color: #c00;
+        }
     </style>
 </head>
 <body id="body">
@@ -96,7 +96,7 @@
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div class="row content-tabs">
             <nav class="page-tabs menuTabs">
-                <div class="page-tabs-content" style="margin-left: 0px;">
+                <div class="page-tabs-content" id="wan-menuTab-list" style="margin-left: 0px;">
                     <a href="javascript:;" class="menuTab" data-id="/system/main">首页</a>
                     <a href="javascript:;" class="menuTab" data-id="/base/coding/index">代码生成 <i class="fa fa-times-circle"></i></a>
                     <a href="javascript:;" class="menuTab" data-id="/base/sysOperLog/list">日志列表 <i class="fa fa-times-circle"></i></a>
@@ -104,25 +104,69 @@
             </nav>
         </div>
         <div class="row mainContent" id="content-main">
-            <iframe class="wan_frame" name="iframe2" id="wan_frame" width="100%" height="100%" src="/base/sysOperLog/list" frameborder="0" data-id="/base/coding/index" seamless=""></iframe>
+            <iframe class="wan_frame"  width="100%" height="100%" src="/system/main" frameborder="0" data-id="/system/main"></iframe>
+            <iframe class="wan_frame"  width="100%" height="100%" src="/base/coding/index" frameborder="0" data-id="/base/coding/index"></iframe>
+            <iframe class="wan_frame"  width="100%" height="100%" src="/base/sysOperLog/list" frameborder="0" data-id="/base/sysOperLog/list"></iframe>
         </div>
     </div>
 </body>
 <script type="text/javascript">
 
+    //点击菜单列表
     $(document).on("click",".menuItem",function () {
         var url=$(this).attr("data-id");
-        $("#wan_frame").attr("data-id",url);
-        $("#wan_frame").attr("src",url);
+        var title = $(this).text();
+        showFrame(url,title);
     });
-    
-    $(".menuTab").click(function () {
+
+    //点击menuTab
+    $(document).on("click",".menuTab",function () {
         $(".menuTab").removeClass("active");
         $(this).addClass("active");
         var url = $(this).attr("data-id");
-        $("#wan_frame").attr("data-id",url);
-        $("#wan_frame").attr("src",url);
+        showFrame(url);
     });
+
+    //点击关闭事件
+    $(document).on("click",".fa-times-circle",function (e) {
+        var url = $(this).parent().attr("data-id");
+        $(this).parent().remove();
+        removeFrame(url);
+        $(".wan_frame:last").show();
+        e.stopPropagation();
+    });
+
+    //移除某个frame
+    function removeFrame(url) {
+        console.log(url);
+        $.each($(".wan_frame"),function () {
+            var dataUrl = $(this).attr("src");
+            if(dataUrl == url){
+                $(this).remove();
+            }
+        });
+    }
+
+    //展示某个frame,如果该frame没有，则建立一个fream和tab
+    function showFrame(url,title) {
+        $(".wan_frame").hide();
+        var b = true;
+        $.each($(".wan_frame"),function () {
+            var dataUrl = $(this).attr("src");
+            if(dataUrl == url){
+                $(this).show();
+                b= false;
+            }
+        });
+        if(b){
+            $(".menuTab").removeClass("active");
+            var tabHtml = '<a href="javascript:;" class="menuTab active" data-id="'+url+'">'+title+' <i class="fa fa-times-circle"></i></a>';
+            var frameHtml = '<iframe class="wan_frame"  width="100%" height="100%" src="'+url+'" frameborder="0" data-id="'+url+'"></iframe>';
+            $("#wan-menuTab-list").append(tabHtml);
+            $("#content-main").append(frameHtml);
+            return true;
+        }
+    }
 </script>
 
 </html>
