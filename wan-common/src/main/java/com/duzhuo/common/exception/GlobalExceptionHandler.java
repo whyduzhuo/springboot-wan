@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    public static final String ERROR_VIEW = "/common/error/error";
+
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
     @Value("${wan.profile.max-size}")
     private String maxSize;
@@ -41,7 +43,8 @@ public class GlobalExceptionHandler {
         }
         else {
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("error/unauth");
+            modelAndView.addObject("content", e.getMessage());
+            modelAndView.setViewName(ERROR_VIEW);
             return modelAndView;
         }
     }
@@ -69,9 +72,17 @@ public class GlobalExceptionHandler {
      * 系统异常
      */
     @ExceptionHandler(Exception.class)
-    public Message handleException(Exception e) {
+    public Object handleException(HttpServletRequest request,Exception e) {
         log.error(e.getMessage(), e);
-        return Message.error("服务器错误，请联系管理员");
+        if (ServletUtils.isAjaxRequest(request)) {
+            return Message.error("服务器错误，请联系管理员。"+e.getMessage());
+        }
+        else {
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("content","服务器错误，请联系管理员。"+e.getMessage());
+            modelAndView.setViewName(ERROR_VIEW);
+            return modelAndView;
+        }
     }
 
     /**
@@ -79,14 +90,14 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ServiceException.class)
     public Object businessException(HttpServletRequest request, ServiceException e) {
-        log.error(e.getMessage(), e);
+        log.info(e.getMessage(), e);
         if (ServletUtils.isAjaxRequest(request)) {
             return Message.error(e.getMessage());
         }
         else {
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("errorMessage", e.getMessage());
-            modelAndView.setViewName("error/business");
+            modelAndView.addObject("content", e.getMessage());
+            modelAndView.setViewName(ERROR_VIEW);
             return modelAndView;
         }
     }
@@ -96,7 +107,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BindException.class)
     public Message validatedBindException(BindException e) {
-        log.error(e.getMessage(), e);
+        log.info(e.getMessage(), e);
         String message = e.getAllErrors().get(0).getDefaultMessage();
         return Message.error(message);
     }

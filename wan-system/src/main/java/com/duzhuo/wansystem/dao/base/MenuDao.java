@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author: wanhy
@@ -31,4 +32,18 @@ public interface MenuDao extends BaseDao<Menu,Long>{
      */
     @Query(value = "SELECT count(*) FROM T_BASE_MENU WHERE PARENT_ID=?",nativeQuery = true)
     BigDecimal haveChriden(Long parendId);
+
+    /**
+     * 查询根节点
+     * @return
+     */
+    List<Menu> findByParentIsNullOrderByOrder();
+
+    /**
+     *
+     * @param parentId
+     * @return
+     */
+    @Query(value = "SELECT nvl(MAX(ORDERS),0) FROM T_BASE_MENU WHERE PARENT_ID=?",nativeQuery = true)
+    BigDecimal getMaxOrder(Long parentId);
 }

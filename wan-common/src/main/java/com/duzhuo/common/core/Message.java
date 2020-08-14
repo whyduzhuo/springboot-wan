@@ -2,6 +2,8 @@ package com.duzhuo.common.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Transient;
+
 /**
  * 操作消息提示
  * @author: wanhy
@@ -19,7 +21,7 @@ public class Message {
     }
 
     private Type type;
-    private String message;
+    private String msg;
     private Object data;
 
     public Message(){
@@ -28,7 +30,7 @@ public class Message {
 
     public Message(Type type, String message, Object data) {
         this.type = type;
-        this.message = message;
+        this.msg = message;
         this.data = data;
     }
 
@@ -126,12 +128,12 @@ public class Message {
     }
 
     @JsonProperty
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     @JsonProperty
@@ -141,5 +143,20 @@ public class Message {
 
     public void setData(Object data) {
         this.data = data;
+    }
+
+    @JsonProperty
+    @Transient
+    public Integer getIcon(){
+        if (this.type==Type.SUCCESS){
+            return 1;
+        }
+        if (this.type==Type.WARN){
+            return 0;
+        }
+        if (this.type==Type.ERROR){
+            return 2;
+        }
+        return 3;
     }
 }

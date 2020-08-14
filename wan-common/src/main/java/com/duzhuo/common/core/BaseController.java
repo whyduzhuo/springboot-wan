@@ -9,6 +9,7 @@ import java.util.Set;
  */
 
 public class BaseController {
+
     public void searchParamsTrim(Map<String,Object> searchParams){
         Set<String> keys = searchParams.keySet();
         keys.forEach(k->searchParams.get(k).toString().trim());

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="shortcut icon" href="/static/favicon.ico"/>
     <script type="text/javascript" src="/static/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/static/jquery/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>

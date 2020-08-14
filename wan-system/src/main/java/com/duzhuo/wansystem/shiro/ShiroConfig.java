@@ -59,6 +59,7 @@ public class ShiroConfig {
         map.put("/webjars/**", "anon");
         map.put("/v2/**", "anon");
         map.put("/swagger-resources/**", "anon");
+        map.put("/favicon.ico","anon");
         //登录
         shiroFilterFactoryBean.setLoginUrl("/base/login");
         //首页

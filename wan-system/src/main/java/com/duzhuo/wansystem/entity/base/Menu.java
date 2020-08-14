@@ -5,11 +5,10 @@ import com.duzhuo.common.enums.YesOrNo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author: wanhy
@@ -19,7 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "T_BASE_MENU")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
-public class Menu extends BaseEntity {
+public class Menu extends BaseEntity implements Comparable<Menu>{
 
     public enum Os{
         /**
@@ -78,11 +77,15 @@ public class Menu extends BaseEntity {
     @ApiModelProperty(value = "页面Or按钮",dataType = "number")
     private Type type;
 
+    @JsonProperty
+    @ApiModelProperty(value = "备注")
+    private String remark;
+
     @ApiModelProperty(value = "拥有此菜单的全部职务")
     private Set<Role> roleSet = new HashSet<>();
 
     @ApiModelProperty(value = "子菜单")
-    private Set<Menu> children = new HashSet<>();
+    private List<Menu> children = new ArrayList<>();
 
 
     public Long getNum() {
@@ -152,6 +155,14 @@ public class Menu extends BaseEntity {
         this.type = type;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @ManyToMany(mappedBy = "menuSet",fetch = FetchType.LAZY)
     public Set<Role> getRoleSet() {
         return roleSet;
@@ -162,11 +173,11 @@ public class Menu extends BaseEntity {
     }
 
     @OneToMany(mappedBy = "parent",fetch = FetchType.LAZY)
-    public Set<Menu> getChildren() {
+    public List<Menu> getChildren() {
         return children;
     }
 
-    public void setChildren(Set<Menu> children) {
+    public void setChildren(List<Menu> children) {
         this.children = children;
     }
 
@@ -194,5 +205,10 @@ public class Menu extends BaseEntity {
     public int hashCode() {
 
         return Objects.hash(super.hashCode(), getName(), getPath(), getParent(), getOrder(), getIsEnable(), getType());
+    }
+
+    @Override
+    public int compareTo(@NotNull Menu o) {
+        return this.order-o.getOrder();
     }
 }

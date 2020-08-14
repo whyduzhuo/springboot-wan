@@ -4,16 +4,21 @@ import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.core.BaseController;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
+import com.duzhuo.common.exception.ServiceException;
+import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.service.base.MenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author: wanhy
@@ -27,16 +32,66 @@ public class MenuController extends BaseController {
     @Resource
     private MenuService menuService;
 
+    @RequiresPermissions("1002")
+    @ApiOperation(value = "菜单列表")
+    @Log(title = "菜单列表",operateType = OperateType.SELECT)
+    @GetMapping("/list")
+    public String list(){
+        return "/base/menu/list";
+    }
+
+    @RequiresPermissions("1002")
+    @ApiOperation(value = "菜单数据")
+    @Log(title = "菜单数据",operateType = OperateType.SELECT)
+    @GetMapping("/getNode")
+    @ResponseBody
+    public Message getNode(){
+        List<Menu> menus = menuService.findAll(Sort.by(Sort.Direction.ASC,"order"));
+        List<Ztree> data = menuService.buildTree(menus);
+        return Message.success(data);
+    }
+
+    @ApiOperation(value = "菜单新增页面")
+    @Log(title = "菜单新增页面",operateType = OperateType.SELECT)
+    @RequiresPermissions("100200")
+    @GetMapping("/addWin")
+    public String addWin(Model model,Long pid){
+        if (pid==null){
+            throw new ServiceException("请先选择一个节点");
+        }
+        Menu parent = menuService.find(pid);
+        Menu menu = new Menu();
+        menu.setParent(parent);
+        menu.setOrder(menuService.getMaxOrder(parent.getId())+1);
+        menu.setNum(menuService.createId(parent));
+        model.addAttribute("typeList",Menu.Type.values());
+        model.addAttribute("data",menu);
+        return "/base/menu/edit";
+    }
+
     @Log(title = "新增菜单",operateType = OperateType.INSERT)
     @ApiOperation(value = "新增菜单")
+    @RequiresPermissions("100200")
     @PostMapping("/addData")
     @ResponseBody
     public Message addData(Menu menuVO){
         return menuService.addData(menuVO);
     }
 
+    @Log(title = "新增菜单",operateType = OperateType.SELECT)
+    @ApiOperation("修改菜单页面")
+    @RequiresPermissions("100201")
+    @GetMapping("/editWin")
+    public String editWin(Model model,Long id){
+        Menu menu = menuService.find(id);
+        model.addAttribute("typeList",Menu.Type.values());
+        model.addAttribute("data",menu);
+        return "/base/menu/edit";
+    }
+
     @Log(title = "修改菜单",operateType = OperateType.UPDATE)
     @ApiOperation("修改菜单")
+    @RequiresPermissions("100201")
     @PutMapping("/edit")
     @ResponseBody
     public Message edit(Menu menu){
@@ -48,16 +103,17 @@ public class MenuController extends BaseController {
     @ApiOperation(value = "删除菜单")
     @DeleteMapping("/del")
     @ResponseBody
+    @RequiresPermissions("100202")
     public Message del(Long id){
         menuService.delete(id);
         return Message.success("删除成功！");
     }
 
-
     @Log(title = "删除菜单",operateType = OperateType.DELETE)
     @ApiOperation(value = "删除菜单")
     @DeleteMapping("/delete")
     @ResponseBody
+    @RequiresPermissions("100202")
     public Message del(@RequestParam("ids") Long... ids){
         menuService.delete(ids);
         return Message.success("删除成功！");

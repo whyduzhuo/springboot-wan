@@ -6,6 +6,7 @@ import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
+import com.duzhuo.wansystem.service.base.MenuService;
 import com.duzhuo.wansystem.service.base.RoleService;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
 import io.swagger.annotations.Api;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -41,11 +43,17 @@ public class LoginController {
 
     @Resource
     private RoleService roleService;
+    @Resource
+    private MenuService menuService;
 
     @Log(title = "进入登录页",operateType = OperateType.OTHER)
     @ApiOperation(value = "进入登录页")
     @GetMapping("/login")
     public String login(){
+        Admin admin = ShiroUtils.getCurrAdmin();
+        if (admin!=null){
+            return "redirect:/base/index";
+        }
         return "/base/login/login";
     }
 
@@ -76,7 +84,9 @@ public class LoginController {
     public String index(Model model){
         Admin admin = ShiroUtils.getCurrAdmin();
         Set<Role> roleSet = admin.getRoleSet();
-        List<Menu> menuList = roleService.getMenus(roleSet);
+        List<Menu> menus = roleService.getMenus(roleSet);
+        Collections.sort(menus);
+        List<Menu> menuList = menuService.buildMenu(menus);
         model.addAttribute("menuList",menuList);
         model.addAttribute("admin",admin);
         model.addAttribute("roleSet",roleSet);

@@ -11,6 +11,7 @@ import com.duzhuo.wansystem.service.base.AdminService;
 import com.duzhuo.wansystem.service.base.SysOperLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -42,17 +43,16 @@ public class SysOperLogController extends BaseController {
 
     @Log(title = "日志列表",operateType = OperateType.SELECT)
     @GetMapping("/list")
+    @RequiresPermissions("1001")
     @ApiOperation(value = "日志列表")
     public String list(HttpServletRequest request,CustomSearch<SysOperLog> customSearch, Model model){
         CommonUtil.initPage(request,customSearch);
         Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,"search_");
-        customSearch.setPagedata(sysOperLogService.search(searchParams,customSearch));
         super.searchParamsTrim(searchParams);
+        customSearch.setPagedata(sysOperLogService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
         model.addAttribute("searchParams",searchParams);
-        model.addAttribute("admin", adminService.find(1L));
-        model.addAttribute("haha","万宏远");
-        return "base/sysOperLog/list";
+        return "/base/sysOperLog/list";
     }
 
     @Log(title = "新增日志",operateType = OperateType.INSERT)
@@ -65,18 +65,18 @@ public class SysOperLogController extends BaseController {
 
     @Log(title = "删除日志",operateType = OperateType.DELETE)
     @ApiOperation(value = "删除日志")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete")
     @ResponseBody
-    public Message del(@PathVariable @NotNull Long id){
+    public Message del(@NotNull Long id){
         sysOperLogService.delete(id);
         return Message.success("删除成功！");
     }
 
     @Log(title = "获取单个日志",operateType = OperateType.SELECT)
     @ApiOperation(value = "获取单个日志")
-    @GetMapping("/{id}")
+    @GetMapping("/find")
     @ResponseBody
-    public Message findById(@PathVariable @NotNull Long id){
+    public Message find(@NotNull Long id){
         return Message.success(sysOperLogService.find(id));
     }
 

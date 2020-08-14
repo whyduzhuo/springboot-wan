@@ -15,6 +15,7 @@ spring:
     prefer-file-system-access: false #不同模块的静态文件也能映射
     settings:
       number_format: 0.######
+      classic_compatible: true    #防止报空指针
   jpa:
     database: oracle
     show-sql: true

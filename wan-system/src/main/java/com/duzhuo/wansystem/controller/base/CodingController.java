@@ -10,6 +10,7 @@ import com.duzhuo.wansystem.entity.base.Coding;
 import com.duzhuo.wansystem.service.base.CodingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +38,7 @@ public class CodingController {
 
     @Log(title = "代码生成首页",operateType = OperateType.SELECT )
     @ApiOperation(value = "首页")
+    @RequiresPermissions("1101")
     @GetMapping("/index")
     public String index(Model model){
         List<Coding> codingList = codingService.findAll(Sort.by(Sort.Direction.DESC,"createDate"));
