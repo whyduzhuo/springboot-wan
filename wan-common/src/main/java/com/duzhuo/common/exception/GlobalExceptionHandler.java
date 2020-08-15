@@ -37,13 +37,15 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(AuthorizationException.class)
     public Object handleAuthorizationException(HttpServletRequest request, AuthorizationException e){
-        log.error(e.getMessage(), e);
+        String message = e.getMessage();
+        log.error(message, e);
+        String per = message.substring(message.lastIndexOf('['),message.indexOf(']')+1);
         if (ServletUtils.isAjaxRequest(request)) {
-            return Message.error(e.getMessage());
+            return Message.error("您没有权限：权限编码："+per);
         }
         else {
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("content", e.getMessage());
+            modelAndView.addObject("content", "您没有权限：权限编码："+per);
             modelAndView.setViewName(ERROR_VIEW);
             return modelAndView;
         }
@@ -63,9 +65,17 @@ public class GlobalExceptionHandler {
      * 拦截未知的运行时异常
      */
     @ExceptionHandler(RuntimeException.class)
-    public Message notFount(RuntimeException e) {
+    public Object notFount(HttpServletRequest request,RuntimeException e) {
         log.error("运行时异常:", e);
-        return Message.error("运行时异常:" + e.getMessage());
+        if (ServletUtils.isAjaxRequest(request)) {
+            return Message.error("运行时异常:"+e.getMessage());
+        }
+        else {
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("content", "运行时异常:"+e.getMessage());
+            modelAndView.setViewName(ERROR_VIEW);
+            return modelAndView;
+        }
     }
 
     /**
@@ -118,9 +128,17 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public Message maxUploadSizeExceededException(MaxUploadSizeExceededException e){
+    public Object maxUploadSizeExceededException(HttpServletRequest request,MaxUploadSizeExceededException e){
         log.error(e.getMessage(), e);
         String message = "超过文件限制大小:"+maxSize;
-        return Message.error(message);
+        if (ServletUtils.isAjaxRequest(request)) {
+            return Message.error(message);
+        }
+        else {
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("content",message);
+            modelAndView.setViewName(ERROR_VIEW);
+            return modelAndView;
+        }
     }
 }

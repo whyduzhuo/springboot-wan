@@ -1,4 +1,4 @@
-package com.duzhuo.wansystem.shiro;
+package com.duzhuo.common.config;
 
 import com.jagregory.shiro.freemarker.ShiroTags;
 import freemarker.template.TemplateModelException;
@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
  * @date: 2020/8/15 9:29
  */
 @Component
-class ShiroTagsFreeMarkerCfg  {
+public class ShiroTagsFreeMarkerCfg  {
     @Autowired
     private FreeMarkerConfigurer freeMarkerConfigurer;
 

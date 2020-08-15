@@ -5,10 +5,12 @@ import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.RoleDao;
+import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.mapper.base.RoleMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,8 @@ public class RoleService extends BaseService<Role,Long> {
     private RoleDao roleDao;
     @Resource
     private RoleMapper roleMapper;
+    @Resource
+    private MenuService menuService;
 
     @Resource
     public void setBaseDao(RoleDao roleDao){
@@ -181,5 +185,36 @@ public class RoleService extends BaseService<Role,Long> {
         roles.forEach(r->menuSet.addAll(r.getMenuList()));
         menuSet.removeIf(r->r.getType()==Menu.Type.按钮);
         return new ArrayList<>(menuSet);
+    }
+
+    /**
+     * 根据劫色获取菜单树
+     * @param id
+     * @return
+     */
+    public List<Ztree> getMenuTree(Long id) {
+        Role role = super.find(id);
+        List<Menu> allMenuList = menuService.findAll(Sort.by(Sort.Direction.ASC,"order"));
+        List<Menu> menuList = role.getMenuList();
+        return menuService.buildSelectMenu(allMenuList,menuList);
+    }
+
+    /**
+     * 给角色授予菜单
+     * @param roleId 角色id
+     * @param menus 菜单id集合
+     * @return
+     */
+    public void gantMenus(Long roleId,Long[] menus) {
+        menuService.delAllMenu(roleId);
+        menuService.addMenu(roleId,menus);
+    }
+
+    /**
+     * 删除某角色的全部菜单
+     * @param roleId
+     */
+    public void delAllMenu(Long roleId){
+        menuService.delMenuRole(roleId);
     }
 }

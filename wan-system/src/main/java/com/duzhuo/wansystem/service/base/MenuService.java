@@ -259,7 +259,8 @@ public class MenuService extends BaseService<Menu,Long> {
     }
 
     /**
-     *
+     * 将菜单转tree对象
+     * 不可勾选
      * @param menu
      * @return
      */
@@ -282,6 +283,34 @@ public class MenuService extends BaseService<Menu,Long> {
     }
 
     /**
+     * 可勾选
+     * @param menu
+     * @param menuList，已勾选的菜单
+     * @return
+     */
+    public Ztree menuToTree(Menu menu,List<Menu> menuList){
+        Ztree ztree = new Ztree();
+        ztree.setId(menu.getId());
+        ztree.setName(menu.getName());
+        ztree.setPid(menu.getParent()==null?null:menu.getParent().getId());
+        ztree.setTitle(menu.getRemark());
+        ztree.setNum(menu.getNum().toString());
+        ztree.setOpen(true);
+        ztree.setNocheck(false);
+        if (menu.getType()==Menu.Type.按钮){
+            ztree.setIcon(Ztree.buttonIcon);
+        }
+        if (menu.getType()==Menu.Type.页面){
+            ztree.setIcon(Ztree.pageIcon);
+        }
+        ztree.setType(menu.getType().toString());
+        if (menuList.contains(menu)){
+            ztree.setChecked(true);
+        }
+        return ztree;
+    }
+
+    /**
      * 将menus转ztree对象
      * @param menus
      * @return
@@ -299,4 +328,78 @@ public class MenuService extends BaseService<Menu,Long> {
     public Integer getMaxOrder(Long parentId){
         return menuDao.getMaxOrder(parentId).intValue();
     }
+
+    /**
+     * 创建菜单树
+     * @param allMenuList 全部菜单
+     * @param menuList 已勾选菜单
+     * @return
+     */
+    public List<Ztree> buildSelectMenu(List<Menu> allMenuList, List<Menu> menuList) {
+        List<Ztree> ztreeList = new ArrayList<>();
+        allMenuList.forEach(m->ztreeList.add(this.menuToTree(m,menuList)));
+        return ztreeList;
+    }
+
+    /**
+     * 给某角色授予菜单权限
+     * @param roleId
+     * @param menuId
+     */
+    public void addMenu(Long roleId,Long menuId){
+        if (roleId==null){
+            throw new ServiceException("roleId can not be bull");
+        }
+        if (menuId==null){
+            throw new ServiceException("menuId can not be null");
+        }
+        if (menuDao.hasMenu(roleId,menuId).compareTo(BigDecimal.ZERO)>0){
+            return;
+        }
+        menuDao.addMenu(roleId,menuId);
+    }
+
+    /**
+     * 给某角色授予菜单权限
+     * @param roleId
+     * @param menusId
+     */
+    public void addMenu(Long roleId,Long[] menusId){
+        if (roleId==null) {
+            throw new ServiceException("roleId can not be bull");
+        }
+        if (menusId!=null && menusId.length>0){
+            Arrays.stream(menusId).forEach(m->addMenu(roleId,m));
+        }
+    }
+
+    /**
+     * 删除某角色的某个菜单
+     * @param roleId
+     * @param menuId
+     */
+    public void delMenu(Long roleId,Long menuId){
+        if (roleId==null){
+            throw new ServiceException("roleId can not be bull");
+        }
+        if (menuId==null){
+            throw new ServiceException("menuId can not be null");
+        }
+        if (menuDao.hasMenu(roleId,menuId).compareTo(BigDecimal.ZERO)==0){
+            return;
+        }
+        menuDao.delMenu(roleId,menuId);
+    }
+
+    /**
+     * 删除某角色的全部菜单
+     * @param roleId
+     */
+    public void delAllMenu(Long roleId){
+        if (roleId==null){
+            throw new ServiceException("roleId can not be null");
+        }
+        menuDao.delAllMenu(roleId);
+    }
+
 }

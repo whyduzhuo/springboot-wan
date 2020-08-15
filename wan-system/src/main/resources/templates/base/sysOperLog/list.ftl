@@ -16,13 +16,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
     <style>
         html{
-            background-color: #dadada;
+            background-color: #f5f5f5;
         }
         body{
             margin: 10px;
-            padding: 5px;
-            border-radius: 5px;
-            background-color: #FFF;
         }
         tr th,tr td{
             text-align: center;
@@ -30,11 +27,18 @@
         .page-head{
             display: flex;
             padding: 5px 0px;
+            margin-bottom: 10px;
         }
-        .page-hear-left{
+        .page-head,.page-body{
+            border-radius: 5px;
+            padding: 5px;
+            background-color: #FFF;
+            box-shadow: 0px 0px 5px #999;
+        }
+        .page-head-left{
             flex: 3;
         }
-        .page-hear-right{
+        .page-head-right{
             flex: 7;
         }
         .search-item{
@@ -55,37 +59,39 @@
 <body>
     <form id="listForm" action="list.html" method="get">
         <div class="page-head">
-            <div class="page-hear-left">
+            <div class="page-head-left">
                 <a href="javascript:openImportWin();" class="btn btn-sm btn-success hidden-xs">
                     <i class="fa fa-plus"></i>从Excel文件导入音乐</a>
                 <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">
                     <i class="fa fa-plus"></i>刷新</a>
             </div>
-            <div class="page-hear-right">
+            <div class="page-head-right">
                 <div class="search-item">
                     <label>请求:</label>
                     <input class="input-sm input-search" name=""/>
                 </div>
             </div>
         </div>
-        <table class="table table-bordered" id="listTable">
-            <tr>
-                <th>id</th>
-                <th>请求</th>
-                <th>操作类型</th>
-                <th>请求方式</th>
-                <th>是否成功</th>
-            </tr>
-            <#list customSearch.pagedata.content as data>
-            <tr>
-                <td>${data.id}</td>
-                <td>${data.operUrl}</td>
-                <td>${data.operateType}</td>
-                <td>${data.method}</td>
-                <td>${data.status}</td>
-            </tr>
-            </#list>
-        </table>
+        <div class="page-body">
+            <table class="table table-bordered" id="listTable">
+                <tr>
+                    <th>id</th>
+                    <th>请求</th>
+                    <th>操作类型</th>
+                    <th>请求方式</th>
+                    <th>是否成功</th>
+                </tr>
+                <#list customSearch.pagedata.content as data>
+                <tr>
+                    <td>${data.id}</td>
+                    <td>${data.operUrl}</td>
+                    <td>${data.operateType}</td>
+                    <td>${data.method}</td>
+                    <td>${data.status}</td>
+                </tr>
+                </#list>
+            </table>
+        </div>
     </form>
 
     <script type="text/javascript">

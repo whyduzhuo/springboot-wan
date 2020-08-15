@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,10 +39,45 @@ public interface MenuDao extends BaseDao<Menu,Long>{
     List<Menu> findByParentIsNullOrderByOrder();
 
     /**
-     *
+     * 查询排序最大的子节点
      * @param parentId
      * @return
      */
     @Query(value = "SELECT nvl(MAX(ORDERS),0) FROM T_BASE_MENU WHERE PARENT_ID=?",nativeQuery = true)
     BigDecimal getMaxOrder(Long parentId);
+
+    /**
+     * 给某角色赋予菜单权限
+     * @param roleId
+     * @param menuId
+     */
+    @Query(value = "INSERT INTO T_BASE_ROLE_MENU (ROLE_ID, MENU_ID) VALUES (?1,?2)",nativeQuery = true)
+    @Modifying
+    void addMenu(Long roleId, Long menuId);
+
+    /**
+     * 判断某角色是否有某个菜单
+     * @param roleId
+     * @param menuId
+     * @return
+     */
+    @Query(value = "SELECT COUNT(*) FROM T_BASE_ROLE_MENU WHERE ROLE_ID = ?1 AND MENU_ID=?2",nativeQuery = true)
+    BigDecimal hasMenu(Long roleId, Long menuId);
+
+    /**
+     * 移除某角色的菜单
+     * @param roleId
+     * @param menuId
+     */
+    @Query(value = "DELETE FROM T_BASE_ROLE_MENU WHERE  ROLE_ID =?1 AND MENU_ID = ?2",nativeQuery = true)
+    @Modifying
+    void delMenu(Long roleId, Long menuId);
+
+    /**
+     * 删除某角色下的全部菜单
+     * @param roleId
+     */
+    @Query(value = "DELETE FROM T_BASE_ROLE_MENU WHERE ROLE_ID = ?",nativeQuery = true)
+    @Modifying
+    void delAllMenu(Long roleId);
 }

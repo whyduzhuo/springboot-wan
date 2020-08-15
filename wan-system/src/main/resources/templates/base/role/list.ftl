@@ -28,10 +28,18 @@
                 <td>${data.organization.name}</td>
                 <td>${data.remark}</td>
                 <td>
+                <@shiro.hasPermission name="100301">
                     <button type="button" class="btn btn-xs btn-primary" onclick="openEditWin(${data.id})">修改</button>
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="100304">
                     <button type="button" class="btn btn-xs btn-info" onclick="showAdmin(${data.id})">人员列表</button>
-                    <button type="button" class="btn btn-xs btn-info" onclick="showMenu(${data.id})">授权菜单</button>
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="100305">
+                    <button type="button" class="btn btn-xs btn-info" onclick="showMenu(${data.id})">菜单列表</button>
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="100302">
                     <button type="button" class="btn btn-xs btn-danger" onclick="del(${data.id})">删除</button>
+                </@shiro.hasPermission>
                 </td>
             </tr>
             </#list>
@@ -44,7 +52,7 @@
             title: '新增菜单',
             maxmin: true,
             area: ['500px', '600px'],
-            content: 'addWin';
+            content: 'addWin'
         });
     }
 
@@ -54,7 +62,7 @@
             title: '编辑菜单',
             maxmin: true,
             area: ['500px', '600px'],
-            content: 'editWin?id='+id;
+            content: 'editWin?id='+id
         });
     }
     
@@ -64,7 +72,7 @@
             title: '人员列表',
             maxmin: true,
             area: ['80%', '90%'],
-            content: 'showAdmin?id='+id;
+            content: 'showAdmin?id='+id
         });
     }
     
@@ -73,8 +81,8 @@
             type: 2,
             title: '菜单列表',
             maxmin: true,
-            area: ['80%', '90%'],
-            content: 'showMenu?id='+id;
+            area: ['60%', '90%'],
+            content: 'showMenu?id='+id
         });
     }
     
