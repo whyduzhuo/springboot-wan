@@ -178,7 +178,7 @@ public class RoleService extends BaseService<Role,Long> {
      */
     public List<Menu> getMenus(Collection<Role> roles){
         Set<Menu> menuSet = new HashSet<>();
-        roles.forEach(r->menuSet.addAll(r.getMenuSet()));
+        roles.forEach(r->menuSet.addAll(r.getMenuList()));
         menuSet.removeIf(r->r.getType()==Menu.Type.按钮);
         return new ArrayList<>(menuSet);
     }

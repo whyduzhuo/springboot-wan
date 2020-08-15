@@ -11,6 +11,16 @@
     <link href="/static/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" type="text/css">
     <link href="/static/zTree_v3-master/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
+    <style type="text/css">
+        .edit-win-foot{
+            position: absolute;
+            height: 35px;
+            bottom: 0px;
+            background-color: #2f4050;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
 <body>
     <form id="dataForm">
         <input class="form-control" type="hidden" id="data_id" name="id" value="${data.id}">
@@ -56,9 +66,11 @@
             <textarea style="width: 100%;height: 100px;resize: none" class="form-control" id="remark"
                       name="remark">${data.remark}</textarea>
         </div>
-        <div class="col-xs-12">
+        <div class="edit-win-foot">
             <button type="button" class="btn btn-success" onclick="ajaxSubmit()">保存</button>
+            <button type="button" class="btn btn-default" onclick="closeLayer()">关闭</button>
         </div>
+
     </form>
 </body>
 </head>

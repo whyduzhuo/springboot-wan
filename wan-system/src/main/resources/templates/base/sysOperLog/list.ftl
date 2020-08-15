@@ -15,35 +15,84 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
     <style>
+        html{
+            background-color: #dadada;
+        }
+        body{
+            margin: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: #FFF;
+        }
         tr th,tr td{
             text-align: center;
+        }
+        .page-head{
+            display: flex;
+            padding: 5px 0px;
+        }
+        .page-hear-left{
+            flex: 3;
+        }
+        .page-hear-right{
+            flex: 7;
+        }
+        .search-item{
+            float: right;
+        }
+        .input-search{
+            padding: 2px 5px;
+            border: 1px solid #ccc;
+            line-height: 26px;
+            font-size: 14px;
+        }
+        .search-item label{
+            font-family: serif;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-    <div>
-        <a href="javascript:openImportWin();" class="btn btn-sm btn-success hidden-xs">
-            <i class="fa fa-plus"></i>从Excel文件导入音乐</a>
-    </div>
-    <table class="table table-bordered" id="listTable">
-        <tr>
-            <th>id</th>
-            <th>请求</th>
-            <th>操作类型</th>
-            <th>请求方式</th>
-            <th>是否成功</th>
-        </tr>
-        <#list customSearch.pagedata.content as data>
-        <tr>
-            <td>${data.id}</td>
-            <td>${data.operUrl}</td>
-            <td>${data.operateType}</td>
-            <td>${data.method}</td>
-            <td>${data.status}</td>
-        </tr>
-        </#list>
-    </table>
+    <form id="listForm" action="list.html" method="get">
+        <div class="page-head">
+            <div class="page-hear-left">
+                <a href="javascript:openImportWin();" class="btn btn-sm btn-success hidden-xs">
+                    <i class="fa fa-plus"></i>从Excel文件导入音乐</a>
+                <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">
+                    <i class="fa fa-plus"></i>刷新</a>
+            </div>
+            <div class="page-hear-right">
+                <div class="search-item">
+                    <label>请求:</label>
+                    <input class="input-sm input-search" name=""/>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered" id="listTable">
+            <tr>
+                <th>id</th>
+                <th>请求</th>
+                <th>操作类型</th>
+                <th>请求方式</th>
+                <th>是否成功</th>
+            </tr>
+            <#list customSearch.pagedata.content as data>
+            <tr>
+                <td>${data.id}</td>
+                <td>${data.operUrl}</td>
+                <td>${data.operateType}</td>
+                <td>${data.method}</td>
+                <td>${data.status}</td>
+            </tr>
+            </#list>
+        </table>
+    </form>
 
+    <script type="text/javascript">
+        function refulsh() {
+            window.location.reload();
+        }
+    </script>
 
     <#--文件导入模态框-->
     <div class="modal fade" id="importMessage" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">

@@ -83,13 +83,13 @@ public class LoginController {
     @GetMapping("/index")
     public String index(Model model){
         Admin admin = ShiroUtils.getCurrAdmin();
-        Set<Role> roleSet = admin.getRoleSet();
-        List<Menu> menus = roleService.getMenus(roleSet);
+        List<Role> roleList = admin.getRoleList();
+        List<Menu> menus = roleService.getMenus(roleList);
         Collections.sort(menus);
         List<Menu> menuList = menuService.buildMenu(menus);
         model.addAttribute("menuList",menuList);
         model.addAttribute("admin",admin);
-        model.addAttribute("roleSet",roleSet);
+        model.addAttribute("roleList",roleList);
         return "/base/login/main";
     }
 

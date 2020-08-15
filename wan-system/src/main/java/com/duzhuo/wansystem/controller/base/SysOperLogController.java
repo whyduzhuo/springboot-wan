@@ -49,6 +49,7 @@ public class SysOperLogController extends BaseController {
         CommonUtil.initPage(request,customSearch);
         Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,"search_");
         super.searchParamsTrim(searchParams);
+        customSearch.setPageSize(60);
         customSearch.setPagedata(sysOperLogService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
         model.addAttribute("searchParams",searchParams);

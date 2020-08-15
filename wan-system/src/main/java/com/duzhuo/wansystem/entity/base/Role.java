@@ -43,11 +43,15 @@ public class Role extends BaseEntity {
     @ApiModelProperty(value = "职务名称",example = "部长")
     private String name;
 
+    @JsonProperty
+    @ApiModelProperty(value = "备注")
+    private String remark;
+
     @ApiModelProperty(value = "多对多菜单列表")
-    private List<Menu> menuSet = new LinkedList<>();
+    private List<Menu> menuList = new LinkedList<>();
 
     @ApiModelProperty(value = "拥有该职务的全部用户")
-    private List<Admin> adminSet = new ArrayList<>();
+    private List<Admin> adminList = new ArrayList<>();
 
     public Type getType() {
         return type;
@@ -78,25 +82,34 @@ public class Role extends BaseEntity {
         return this;
     }
 
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "T_BASE_ROLE_MENU",
             joinColumns = @JoinColumn(name="ROLE_ID",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "menu_id",referencedColumnName = "id"))
-    public List<Menu> getMenuSet() {
-        return menuSet;
+    public List<Menu> getMenuList() {
+        return menuList;
     }
 
-    public void setMenuSet(List<Menu> menuSet) {
-        this.menuSet = menuSet;
+    public void setMenuList(List<Menu> menuSet) {
+        this.menuList = menuSet;
     }
 
-    @ManyToMany(mappedBy = "roleSet",fetch = FetchType.LAZY)
-    public List<Admin> getAdminSet() {
-        return adminSet;
+    @ManyToMany(mappedBy = "roleList",fetch = FetchType.LAZY)
+    public List<Admin> getAdminList() {
+        return adminList;
     }
 
-    public void setAdminSet(List<Admin> adminSet) {
-        this.adminSet = adminSet;
+    public void setAdminList(List<Admin> adminList) {
+        this.adminList = adminList;
     }
 
     @Override

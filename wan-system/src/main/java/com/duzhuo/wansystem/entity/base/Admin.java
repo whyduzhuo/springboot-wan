@@ -6,9 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author: wanhy
@@ -32,7 +30,7 @@ public class Admin extends BaseEntity implements Cloneable {
     private String password;
 
     @ApiModelProperty(value = "全部职务")
-    private Set<Role> roleSet = new HashSet<>();
+    private List<Role> roleList = new ArrayList<>();
 
 
     public String getUsername() {
@@ -64,12 +62,12 @@ public class Admin extends BaseEntity implements Cloneable {
             joinColumns = @JoinColumn(name="ADMIN_ID",referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID",referencedColumnName = "ID")
     )
-    public Set<Role> getRoleSet() {
-        return roleSet;
+    public List<Role> getRoleList() {
+        return roleList;
     }
 
-    public void setRoleSet(Set<Role> roleSet) {
-        this.roleSet = roleSet;
+    public void setRoleList(List<Role> roleSet) {
+        this.roleList = roleSet;
     }
 
     @Override

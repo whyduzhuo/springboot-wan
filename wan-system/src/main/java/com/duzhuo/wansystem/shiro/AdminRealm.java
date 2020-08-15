@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -44,12 +45,12 @@ public class AdminRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
         Admin admin = ShiroUtils.getCurrAdmin();
         // 职务列表
-        Set<Role> roleSet = admin.getRoleSet();
+        List<Role> roleList = admin.getRoleList();
         // 菜单/功能列表
         Set<Menu> menus = new HashSet<>();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //添加菜单
-        roleSet.forEach(role -> menus.addAll(role.getMenuSet()));
+        roleList.forEach(role -> menus.addAll(role.getMenuList()));
         Set<String> permissions = new HashSet<>();
         menus.forEach(m->permissions.add(m.getNum().toString()));
         // 角色加入AuthorizationInfo认证对象，在controller接口加RequiresRoles 就可以用了

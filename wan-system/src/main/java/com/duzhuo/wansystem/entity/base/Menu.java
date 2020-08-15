@@ -82,7 +82,7 @@ public class Menu extends BaseEntity implements Comparable<Menu>{
     private String remark;
 
     @ApiModelProperty(value = "拥有此菜单的全部职务")
-    private Set<Role> roleSet = new HashSet<>();
+    private List<Role> roleList = new ArrayList<>();
 
     @ApiModelProperty(value = "子菜单")
     private List<Menu> children = new ArrayList<>();
@@ -163,13 +163,13 @@ public class Menu extends BaseEntity implements Comparable<Menu>{
         this.remark = remark;
     }
 
-    @ManyToMany(mappedBy = "menuSet",fetch = FetchType.LAZY)
-    public Set<Role> getRoleSet() {
-        return roleSet;
+    @ManyToMany(mappedBy = "menuList",fetch = FetchType.LAZY)
+    public List<Role> getRoleList() {
+        return roleList;
     }
 
-    public void setRoleSet(Set<Role> roleSet) {
-        this.roleSet = roleSet;
+    public void setRoleList(List<Role> roleSet) {
+        this.roleList = roleSet;
     }
 
     @OneToMany(mappedBy = "parent",fetch = FetchType.LAZY)
