@@ -136,6 +136,12 @@
         },
         series: [
             {
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'right'
+                    }
+                },
                 name: '${date}',
                 type: 'bar',
                 data: [<#list data as d>${d.LJ_HOUSE_COUNT},</#list>]
