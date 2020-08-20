@@ -109,26 +109,25 @@ public class HouseCountService extends BaseService<HouseCount, Long>{
      * @return
      */
     public Message addBatch(){
-        List<CityUrl> cityUrlList = cityUrlService.findAll();
+        List<CityUrl> cityUrlList = cityUrlService.findByLjUrlIsNotNull();
         for (CityUrl cityUrl:cityUrlList) {
             AsyncManager.me().excute2(new TimerTask() {
                 @Override
                 public void run() {
                     try {
-                        if (StringUtils.isNotBlank(cityUrl.getLjUrl())) {
-                            HouseCount houseCount = new HouseCount();
-                            houseCount.setCityUrl(cityUrl);
-                            houseCount.setLjHouseCount(getLj(cityUrl));
-                            houseCount.setRecordDate(formateDate(new Date(), "yyyy-MM-dd"));
-                            addData(houseCount);
-                        }
+                        HouseCount houseCount = new HouseCount();
+                        houseCount.setCityUrl(cityUrl);
+                        houseCount.setLjHouseCount(getLj(cityUrl));
+                        houseCount.setRecordDate(formateDate(new Date(), "yyyy-MM-dd"));
+                        addData(houseCount);
+
                     }catch (Exception e){
                         logger.error(e.getMessage());
                     }
                 }
             });
         }
-        return Message.success("创建成功！");
+        return Message.success("大约20秒后刷新页面");
     }
 
     /**

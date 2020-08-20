@@ -3,6 +3,8 @@ package  com.duzhuo.wansystem.dao.house;
 import com.duzhuo.common.core.BaseDao;
 import  com.duzhuo.wansystem.entity.house.CityUrl;
 
+import java.util.List;
+
 
 /**
  * 城市代码--Mapper
@@ -12,5 +14,7 @@ import  com.duzhuo.wansystem.entity.house.CityUrl;
 public interface CityUrlDao extends BaseDao<CityUrl,Long> {
 
     CityUrl findByName(String name);
+
+    List<CityUrl> findByLjUrlIsNotNull();
 }
 

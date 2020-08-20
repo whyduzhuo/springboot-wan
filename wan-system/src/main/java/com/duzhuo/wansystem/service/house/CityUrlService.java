@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 城市代码--Service
@@ -82,5 +83,9 @@ public class CityUrlService extends BaseService<CityUrl, Long> {
         }
         super.delete(id);
         return Message.success("删除成功！");
+    }
+
+    public List<CityUrl> findByLjUrlIsNotNull() {
+        return cityUrlDao.findByLjUrlIsNotNull();
     }
 }
