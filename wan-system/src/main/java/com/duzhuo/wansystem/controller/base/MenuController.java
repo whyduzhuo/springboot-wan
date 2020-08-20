@@ -92,7 +92,7 @@ public class MenuController extends BaseController {
     @Log(title = "修改菜单",operateType = OperateType.UPDATE)
     @ApiOperation("修改菜单")
     @RequiresPermissions("100201")
-    @PutMapping("/edit")
+    @PostMapping("/edit")
     @ResponseBody
     public Message edit(Menu menu){
         return menuService.edit(menu);

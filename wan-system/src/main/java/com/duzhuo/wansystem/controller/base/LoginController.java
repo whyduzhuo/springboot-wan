@@ -8,6 +8,7 @@ import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.service.base.MenuService;
 import com.duzhuo.wansystem.service.base.RoleService;
+import com.duzhuo.wansystem.shiro.AdminRealm;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +16,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.mgt.RealmSecurityManager;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,5 +111,19 @@ public class LoginController {
     public Message logout(){
         SecurityUtils.getSubject().logout();
         return Message.success("退出成功！");
+    }
+
+    @GetMapping("/refresh")
+    public String refush(){
+        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
+        AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
+        Subject subject = SecurityUtils.getSubject();
+        String realmName = subject.getPrincipals().getRealmNames().iterator().next();
+        SimplePrincipalCollection principals = new SimplePrincipalCollection(subject.getPrincipal(),realmName);
+        subject.runAs(principals);
+        shiroRealm.getAuthorizationCache().remove(subject.getPrincipals());
+        shiroRealm.getAuthorizationCache().remove(subject.getPrincipal());
+        subject.releaseRunAs();
+        return "redirect:/base/index";
     }
 }

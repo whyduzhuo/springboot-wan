@@ -101,11 +101,11 @@ public class RoleController extends BaseController {
 
     @Log(title = "菜单授权",operateType = OperateType.UPDATE)
     @ApiOperation("菜单授权")
-    @PostMapping("/gantMenus")
+    @PostMapping("/grantMenu")
     @RequiresPermissions("100303")
     @ResponseBody
-    public Message gantMenus(Long roleId,@RequestParam(value = "menus[]")Long[] menus){
-        roleService.gantMenus(roleId,menus);
+    public Message grantMenu(Long roleId,@RequestParam(value = "menus[]")Long[] menus){
+        roleService.grantMenu(roleId,menus);
         return Message.success("保存成功！");
     }
 

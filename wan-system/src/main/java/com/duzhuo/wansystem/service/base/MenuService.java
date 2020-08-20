@@ -149,13 +149,21 @@ public class MenuService extends BaseService<Menu,Long> {
 
     /**
      * 菜单管理--编辑修改
-     * @param menu
+     * @param menuVo
      * @return
      */
-    public Message edit(Menu menu) {
-        this.check(menu);
+    public Message edit(Menu menuVo) {
+        this.check(menuVo);
+        Menu menu = super.find(menuVo.getId());
+        menu.setName(menuVo.getName());
+        menu.setIsEnable(menuVo.getIsEnable());
+        menu.setNum(menuVo.getNum());
+        menu.setOrder(menuVo.getOrder());
+        menu.setPath(menuVo.getPath());
+        menu.setRemark(menuVo.getRemark());
+        menu.setType(menuVo.getType());
         super.update(menu);
-        return Message.success("添加成功！");
+        return Message.success("修改成功！");
     }
 
     /**
@@ -195,7 +203,7 @@ public class MenuService extends BaseService<Menu,Long> {
      * @return
      */
     public Boolean haveChriden(Long parendId){
-        return menuDao.haveChriden(parendId).compareTo(new BigDecimal("0"))>0;
+        return menuDao.haveChriden(parendId).compareTo(BigDecimal.ZERO)>0;
     }
 
     /**
@@ -243,16 +251,14 @@ public class MenuService extends BaseService<Menu,Long> {
         if (menus.isEmpty()){
             return menuList;
         }
-        Iterator<Menu> it = menus.iterator();
-        while (it.hasNext()){
-            Menu m = it.next();
-            if (m.getParent()==null||!m.getParent().getId().equals(menu.getId())){
+        for (Menu m : menus) {
+            if (m.getParent() == null || !m.getParent().getId().equals(menu.getId())) {
                 continue;
             }
-            if (m.getType()==Menu.Type.页面){
+            if (m.getType() == Menu.Type.页面) {
                 menuList.add(m);
-            }else if (m.getType()==Menu.Type.目录){
-                m.setChildren(findChird(m,menus));
+            } else if (m.getType() == Menu.Type.目录) {
+                m.setChildren(findChird(m, menus));
             }
         }
         return menuList;
@@ -346,7 +352,7 @@ public class MenuService extends BaseService<Menu,Long> {
      * @param roleId
      * @param menuId
      */
-    public void addMenu(Long roleId,Long menuId){
+    public void grantMenu(Long roleId,Long menuId){
         if (roleId==null){
             throw new ServiceException("roleId can not be bull");
         }
@@ -356,7 +362,7 @@ public class MenuService extends BaseService<Menu,Long> {
         if (menuDao.hasMenu(roleId,menuId).compareTo(BigDecimal.ZERO)>0){
             return;
         }
-        menuDao.addMenu(roleId,menuId);
+        menuDao.grantMenu(roleId,menuId);
     }
 
     /**
@@ -364,12 +370,12 @@ public class MenuService extends BaseService<Menu,Long> {
      * @param roleId
      * @param menusId
      */
-    public void addMenu(Long roleId,Long[] menusId){
+    public void grantMenu(Long roleId,Long[] menusId){
         if (roleId==null) {
             throw new ServiceException("roleId can not be bull");
         }
         if (menusId!=null && menusId.length>0){
-            Arrays.stream(menusId).forEach(m->addMenu(roleId,m));
+            Arrays.stream(menusId).forEach(m->grantMenu(roleId,m));
         }
     }
 
@@ -402,4 +408,12 @@ public class MenuService extends BaseService<Menu,Long> {
         menuDao.delAllMenu(roleId);
     }
 
+    /**
+     * 查询所有的父节点，包括自己
+     * @param menuId
+     * @return
+     */
+    public List<Menu> getAllParent(Long menuId){
+        return menuDao.getAllParent(menuId);
+    }
 }

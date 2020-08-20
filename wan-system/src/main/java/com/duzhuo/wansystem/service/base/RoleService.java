@@ -205,9 +205,9 @@ public class RoleService extends BaseService<Role,Long> {
      * @param menus 菜单id集合
      * @return
      */
-    public void gantMenus(Long roleId,Long[] menus) {
+    public void grantMenu(Long roleId,Long[] menus) {
         menuService.delAllMenu(roleId);
-        menuService.addMenu(roleId,menus);
+        menuService.grantMenu(roleId,menus);
     }
 
     /**

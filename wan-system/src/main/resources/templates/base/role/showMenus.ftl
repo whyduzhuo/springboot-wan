@@ -101,7 +101,7 @@
             menus.push(nodes[i].id);
         }
         $.ajax({
-            url: "gantMenus",
+            url: "grantMenu",
             type: "POST",
             data: {
                 'roleId':roleId,

@@ -14,12 +14,9 @@
     <style type="text/css">
         html{
             height: 100%;
-            overflow: hidden;
-            background-color: #2b542c;
         }
         body{
             height: 100%;
-            overflow: hidden;
             padding: 10px;
         }
     </style>
@@ -37,7 +34,7 @@
            data-toggle="tooltip" data-original-title="编辑">编辑</button>
         </@shiro.hasPermission>
         <@shiro.hasPermission name="100202">
-        <button onclick=""
+        <button onclick="del()"
            class="btn btn-danger" type="button"
            data-toggle="tooltip" data-original-title="删除">删除</button>
         </@shiro.hasPermission>
@@ -135,7 +132,41 @@
     }
 
     function del() {
-        
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        var nodes = zTree.getSelectedNodes();
+        var treeNode = nodes[0];
+        if(nodes.length==0){
+            layer.msg("请先选择一个节点！",{icon:0});
+            return;
+        }
+        var id = treeNode.id;
+        layer.confirm("您确定删除此条记录?</br>删除之后不可恢复!",{icon:3}, function (index) {
+            layer.load();
+            $.ajax({
+                url: 'del',
+                type: 'post',
+                data: {
+                    _method:'delete',
+                    'id':id
+                    },
+                async:false,
+                success: function (res) {
+                    layer.closeAll("loading");
+                    layer.confirm(res.msg,{icon:res.icon}, function (index) {
+                        if(res.type=='SUCCESS'){
+                            layer.load();
+                            relfush();
+                        }
+                        layer.close(index);
+                    });
+                },
+                error: function (XMLHttpRequest) {
+                    layer.closeAll("loading");
+                    alertErrorMessage(XMLHttpRequest);
+                }
+            });
+            layer.close(index);
+        })
     }
 </SCRIPT>
 </html>

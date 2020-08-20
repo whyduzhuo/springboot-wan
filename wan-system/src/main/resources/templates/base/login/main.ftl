@@ -234,7 +234,10 @@
         <nav class="page-tabs menuTabs">
             <div class="page-tabs-content" id="wan-menuTab-list" style="margin-left: 0;">
                 <a href="javascript:" class="menuTab" data-id="/system/main">首页</a>
+
                 <a href="javascript:" class="menuTab" style="float: right" onclick="loginOut()">退出</a>
+                <a href="/base/refresh" class="menuTab" style="float: right">刷新权限</a>
+
             </div>
         </nav>
     </div>

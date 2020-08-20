@@ -16,7 +16,7 @@
             position: absolute;
             height: 35px;
             bottom: 0px;
-            background-color: #2f4050;
+            background-color: #87c5ff;
             width: 100%;
             text-align: center;
         }
