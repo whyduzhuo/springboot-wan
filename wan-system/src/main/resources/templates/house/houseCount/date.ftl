@@ -59,7 +59,7 @@
     </style>
 </head>
 <body>
-<form id="listForm" action="list.html" method="get">
+<form id="listForm" action="date" method="get">
     <div class="page-head">
         <div class="page-head-left">
             <a href="javascript:addBatch();" class="btn btn-sm btn-danger hidden-xs">
@@ -70,7 +70,14 @@
         <div class="page-head-right">
             <div class="search-item">
                 <label>请求:</label>
-                <input class="input-sm input-search" name=""/>
+                <input class="input-sm input-search" id="url" name=""/>
+                <label>charSet:</label>
+                <input class="input-sm input-search" id="charSet" name=""/>
+                <a href="javascript:ceshi();" class="btn btn-sm btn-success hidden-xs">
+                    <i class="fa fa-plus"></i>测试</a>
+                <label>日期:</label>
+                <input class="input-sm input-search" id="date" name="date" value="${date}"/>
+                <button class="btn btn-success btn-sm" type="submit"><span class="glyphicon glyphicon-search"></span></button>
             </div>
         </div>
     </div>
@@ -85,6 +92,45 @@
 <script>
     function refulsh() {
         window.location.reload();
+    }
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#date'
+        });
+
+    });
+
+
+    function ceshi() {
+        var url = $("#url").val();
+        var charSet = $("#charSet").val();
+        if(url == ''){
+            alert('请输入地址');
+            return;
+        }
+        var pageCode = "";
+        $.ajax({
+            url: "ceshi?url="+url+"&charSet="+charSet,
+            type: "get",
+            async:false,
+            success: function (res) {
+                layer.closeAll("loading");
+                pageCode = res.data;
+            },
+            error: function (XMLHttpRequest) {
+                layer.closeAll("loading");
+                console.log(XMLHttpRequest);
+            }
+        });
+        layer.open({
+            type: 1,
+            title: 'ceshi',
+            maxmin: true,
+            area: ['500px', '600px'],
+            content:pageCode
+        });
     }
 
     function addBatch() {

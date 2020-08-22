@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -19,7 +20,7 @@ import java.net.URLConnection;
 public class HttpUtils {
     private static final Logger logger = LoggerFactory.getLogger(HttpUtils.class);
 
-    public static String get(String httpUrl){
+    public static String get(String httpUrl,String charset) {
         StringBuilder inputLine = new StringBuilder("");
         try {
             URL url = new URL(httpUrl);
@@ -28,7 +29,7 @@ public class HttpUtils {
             httpUrlConnection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)");
             httpUrlConnection.setRequestMethod("GET");
             httpUrlConnection.connect();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(httpUrlConnection.getInputStream(), "UTF-8"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(httpUrlConnection.getInputStream(), charset));
             String line;
             while((line = reader.readLine()) != null){
                 inputLine .append(line);
@@ -38,6 +39,10 @@ public class HttpUtils {
         }catch (IOException e){
             logger.error(e.getMessage());
         }
-        return inputLine.toString();
+        return  inputLine.toString();
+    }
+
+    public static String get(String httpUrl) {
+        return get(httpUrl,"UTF-8");
     }
 }

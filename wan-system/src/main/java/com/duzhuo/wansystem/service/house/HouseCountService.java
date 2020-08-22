@@ -7,6 +7,7 @@ import com.duzhuo.common.manager.AsyncManager;
 import com.duzhuo.common.utils.HttpUtils;
 import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.dao.house.HouseCountDao;
+import com.duzhuo.wansystem.dto.house.HouseCountDto;
 import com.duzhuo.wansystem.entity.house.CityUrl;
 import com.duzhuo.wansystem.entity.house.HouseCount;
 import com.duzhuo.wansystem.mapper.house.HouseCountMapper;
@@ -14,10 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import oshi.util.StringUtil;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -186,11 +185,19 @@ public class HouseCountService extends BaseService<HouseCount, Long>{
     }
 
     /**
-     *
+     * 日期统计
      * @param date
      * @return
      */
     public List<Map<String,Object>> statisticDate(String date) {
         return houseCountMapper.statisticDate(date);
+    }
+
+    /**
+     * 城市走势
+     * @return
+     */
+    public List<HouseCountDto> statisticCity() {
+        return houseCountMapper.statisticCity();
     }
 }

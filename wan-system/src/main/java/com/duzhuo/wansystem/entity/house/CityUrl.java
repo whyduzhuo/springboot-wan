@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.List;
 
 /**
  * @author: wanhy
@@ -23,6 +25,8 @@ public class CityUrl extends BaseEntity {
     @ApiModelProperty(value = "诸葛找房地址")
     private String zgUrl;
     private String name;
+
+    private List<HouseCount> houseCountList;
 
     public String getLjUrl() {
         return ljUrl;
@@ -48,5 +52,12 @@ public class CityUrl extends BaseEntity {
         this.name = name;
     }
 
+    @Transient
+    public List<HouseCount> getHouseCountList() {
+        return houseCountList;
+    }
 
+    public void setHouseCountList(List<HouseCount> houseCountList) {
+        this.houseCountList = houseCountList;
+    }
 }
