@@ -9,5 +9,10 @@ import com.duzhuo.wansystem.entity.base.Coding;
  */
 
 public interface CodingDao extends BaseDao<Coding,Long> {
+    /**
+     * 根据类名查询
+     * @param entityPackages
+     * @return
+     */
     Coding findByEntityPackages(String entityPackages);
 }

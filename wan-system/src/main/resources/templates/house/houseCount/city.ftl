@@ -5,6 +5,7 @@
 <head>
     <meta charset="utf-8">
     <title>列表</title>
+    <link rel="shortcut icon" href="/static/favicon.ico"/>
     <script type="text/javascript" src="/static/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/static/jquery/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>
@@ -56,14 +57,19 @@
             font-family: serif;
             font-size: 16px;
         }
+        .map{
+            display: inline-block;
+            background-color: #6aa2d8;
+            width: 33%;
+            padding: 1%;
+            height: 300px
+        }
     </style>
 </head>
 <body>
-<form id="listForm" action="date" method="get">
+<form id="listForm" action="city" method="get">
     <div class="page-head">
         <div class="page-head-left">
-            <a href="javascript:addBatch();" class="btn btn-sm btn-danger hidden-xs">
-                <i class="fa fa-plus"></i>更新二手房</a>
             <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">
                 <i class="fa fa-plus"></i>刷新</a>
         </div>
@@ -74,8 +80,37 @@
         </div>
     </div>
     <div class="page-body">
+        <div id="contry" class="map" style="width: 99.45%;margin-bottom: 5px;">
+            <script>
+                var myChart = echarts.init(document.getElementById('contry'));
+                option = {
+                    title: {
+                        text: '全国挂牌量走势'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: [<#list contry as con>'${con.D}',</#list>]
+                    },
+                    yAxis: {
+                        scale:true,
+                        type: 'value'
+                    },
+                    series: [{
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        },
+                        data: [<#list contry as con>${con.C},</#list>],
+                        type: 'line'
+                    }]
+                };
+                myChart.setOption(option);
+            </script>
+        </div>
     <#list dataList as city>
-        <div id="map_${city.url.id}" style="width: 100%; height: 300px">
+        <div id="map_${city.url.id}" class="map">
             <script>
                 var myChart = echarts.init(document.getElementById('map_${city.url.id}'));
                 option = {
@@ -105,33 +140,6 @@
             </script>
         </div>
         </#list>
-
-
-
-        <#--<#list dataList as city>-->
-            <#--<div class="map_${city.url.id}" style="width: 100%; height: 300px">-->
-            <#--</div>-->
-            <#--<script>-->
-                <#--var myChart = echarts.init(document.getElementById('map_${city.url.id}'));-->
-                <#--option = {-->
-                    <#--title: {-->
-                        <#--text: '${city.url.name}'-->
-                    <#--},-->
-                    <#--xAxis: {-->
-                        <#--type: 'category',-->
-                        <#--data: [<#list city.data as data>'${data.date}',</#list>]-->
-                    <#--},-->
-                    <#--yAxis: {-->
-                        <#--type: 'value'-->
-                    <#--},-->
-                    <#--series: [{-->
-                        <#--data: [<#list city.data as data>${data.num},</#list>],-->
-                        <#--type: 'line'-->
-                    <#--}]-->
-                <#--};-->
-                <#--myChart.setOption(option);-->
-            <#--</script>-->
-        <#--</#list>-->
     </div>
 </form>
 

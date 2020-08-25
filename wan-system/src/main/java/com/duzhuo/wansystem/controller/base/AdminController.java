@@ -5,11 +5,15 @@ import com.duzhuo.common.core.BaseController;
 import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
-import com.duzhuo.common.manager.AsyncManager;
 import com.duzhuo.common.utils.CommonUtil;
+import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Admin;
+import com.duzhuo.wansystem.entity.base.Menu;
+import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.service.base.AdminService;
+import com.duzhuo.wansystem.service.base.MenuService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -19,15 +23,10 @@ import org.springframework.web.util.WebUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
-import java.util.Map;
-import java.util.TimerTask;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.*;
 
 /**
+ * 用户管理-Controller
  * @author: wanhy
  * @date: 2020/1/2 8:52
  */
@@ -37,6 +36,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class AdminController extends BaseController{
     @Resource
     private AdminService adminService;
+    @Resource
+    private MenuService menuService;
 
     @Log(title = "用户列表",operateType = OperateType.SELECT)
     @GetMapping("/list")
@@ -50,6 +51,17 @@ public class AdminController extends BaseController{
         model.addAttribute("searchParams",searchParams);
         return "/base/admin/list";
     }
+
+    @Log(title = "用户详情",operateType = OperateType.SELECT)
+    @ApiOperation("用户详情")
+    @GetMapping("/detail")
+    public String detail(@RequestParam("id") Long id,Model model){
+        Admin admin = adminService.find(id);
+        model.addAttribute("data",admin);
+        return "/base/admin/edit";
+    }
+
+
 
     @Log(title = "新增用户",operateType = OperateType.INSERT)
     @ApiOperation(value = "新增用户")
@@ -71,8 +83,8 @@ public class AdminController extends BaseController{
 
     @Log(title = "删除用户",operateType = OperateType.DELETE)
     @ApiOperation(value = "删除用户")
-    @DeleteMapping("/del")
-    @RequiresPermissions("")
+    @PostMapping("/del")
+    @RequiresPermissions("100400")
     @ResponseBody
     public Message del(Long id){
         adminService.delete(id);
@@ -85,6 +97,27 @@ public class AdminController extends BaseController{
     @ResponseBody
     public Message find(Long id) {
         return Message.success(adminService.find(id));
+    }
+
+    @Log(title = "查询用户菜单",operateType = OperateType.SELECT)
+    @ApiOperation(value = "查询用户菜单")
+    @GetMapping("/menuList")
+    public String menuList(@RequestParam("id") Long id,Model model){
+
+        return "";
+    }
+
+    @GetMapping("/getMenuTree")
+    @ApiModelProperty
+    @ResponseBody
+    public Message getMenuTree(@RequestParam("id") Long id){
+        Admin admin = adminService.find(id);
+        List<Role> roleList = admin.getRoleList();
+        Set<Menu> menuSet = new HashSet<>();
+        roleList.forEach(r->menuSet.addAll(r.getMenuList()));
+        List<Menu> menuList = new ArrayList<>(menuSet);
+        List<Ztree> ztreeList = menuService.buildTree(menuList);
+        return Message.success("",ztreeList);
     }
 
 }

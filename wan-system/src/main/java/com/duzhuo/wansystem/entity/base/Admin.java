@@ -1,6 +1,7 @@
 package com.duzhuo.wansystem.entity.base;
 
 import com.duzhuo.common.core.BaseEntity;
+import com.duzhuo.common.utils.StringUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -90,5 +91,17 @@ public class Admin extends BaseEntity implements Cloneable {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getUsername(), getRealname(), getPassword());
+    }
+
+    @Transient
+    public String getRoleListStr(){
+        if (this.roleList.isEmpty()){
+            return "无";
+        }
+        List<String> stringList = new ArrayList<>();
+        roleList.forEach(r->{
+            stringList.add(r.getName());
+        });
+        return StringUtils.listToString(stringList,",");
     }
 }

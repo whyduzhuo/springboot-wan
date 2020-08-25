@@ -22,23 +22,23 @@
     </style>
 </head>
 <body>
-    <div style="position: fixed;height: 50px;">
+    <div style="position: fixed;height: 40px;">
         <@shiro.hasPermission name="100200">
         <button  onclick="addWin()"
-                 class="btn btn-success" type="button"
+                 class="btn btn-sm btn-success" type="button"
                  data-toggle="tooltip" data-original-title="新增">新增</button>
         </@shiro.hasPermission>
         <@shiro.hasPermission name="100201">
         <button  onclick="editWin()"
-           class="btn btn-primary" type="button"
+           class="btn btn-sm btn-primary" type="button"
            data-toggle="tooltip" data-original-title="编辑">编辑</button>
         </@shiro.hasPermission>
         <@shiro.hasPermission name="100202">
         <button onclick="del()"
-           class="btn btn-danger" type="button"
+           class="btn btn-sm btn-danger" type="button"
            data-toggle="tooltip" data-original-title="删除">删除</button>
         </@shiro.hasPermission>
-        <button   class="btn btn-default" type="button"
+        <button   class="btn btn-sm btn-default" type="button"
                   data-toggle="tooltip" data-original-title="刷新" onclick="relfush()">刷新</button>
     </div>
     <div style="height: 50px"></div>

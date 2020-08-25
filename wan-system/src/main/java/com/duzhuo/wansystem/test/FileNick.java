@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class FileNick {
 
-    public static final byte password = 26;
+    public static final byte PASSWORD = 26;
 
     public static void main(String[] args){
         File dic = new File("D:\\360安全浏览器下载\\桃谷");
@@ -26,11 +26,11 @@ public class FileNick {
         if (file.isDirectory()){
             return;
         }
-        String newFieName =  nameNick(file,password);
+        String newFieName =  nameNick(file,PASSWORD);
         File newFile = new File(newFieName);
         if (!newFile.exists()){
             try {
-                copy(file,newFile,password);
+                copy(file,newFile,PASSWORD);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -52,7 +52,7 @@ public class FileNick {
      */
     public static void copy(File oldFile,File newFile,byte password) throws IOException {
         try (InputStream in = new FileInputStream(oldFile);OutputStream out = new FileOutputStream(newFile)){
-            byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[1024*1024];
             int len;
             while ((len = in.read(buffer)) > 0) {
                 out.write(jiami(buffer,password), 0, len);

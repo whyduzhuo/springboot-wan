@@ -10,6 +10,7 @@ import com.duzhuo.wansystem.entity.house.HouseCount;
 import com.duzhuo.wansystem.service.house.CityUrlService;
 import com.duzhuo.wansystem.service.house.HouseCountService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,7 @@ public class HouseCountController extends BaseController {
     @Log(title = "二手房统计--列表",operateType = OperateType.SELECT)
     @GetMapping("/date")
     @ApiOperation(value = "二手房统计--列表")
+    @RequiresPermissions("1102")
     public String list(Model model,String date){
         if (StringUtils.isBlank(date)){
             date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -53,17 +55,13 @@ public class HouseCountController extends BaseController {
     @Log(title = "二手房走势--列表",operateType = OperateType.SELECT)
     @GetMapping("/city")
     @ApiOperation(value = "二手房走势--列表")
+    @RequiresPermissions("1103")
     public String cityLsit(Model model){
+        Long start = System.currentTimeMillis();
         model.addAttribute("dataList",houseCountService.statisticCity());
+        model.addAttribute("contry",houseCountService.statisticContry());
+        System.err.println(System.currentTimeMillis()-start);
         return "/house/houseCount/city";
-    }
-
-    @Log(title = "新增二手房统计",operateType = OperateType.INSERT)
-    @ApiOperation(value = "新增二手房统计")
-    @PostMapping("/addData")
-    @ResponseBody
-    public Message addData(HouseCount houseCountVO){
-        return houseCountService.addData(houseCountVO);
     }
 
 
@@ -84,8 +82,11 @@ public class HouseCountController extends BaseController {
         return houseCountService.del(id);
     }
 
+    @Log(title = "爬取当天二手房挂牌量",operateType = OperateType.INSERT)
+    @ApiOperation("爬取当天二手房挂牌量")
     @GetMapping("/addBatch")
     @ResponseBody
+    @RequiresPermissions("110200")
     public Message addBatch(){
         return houseCountService.addBatch();
     }

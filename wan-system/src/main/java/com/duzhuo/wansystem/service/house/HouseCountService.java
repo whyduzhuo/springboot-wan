@@ -200,4 +200,12 @@ public class HouseCountService extends BaseService<HouseCount, Long>{
     public List<HouseCountDto> statisticCity() {
         return houseCountMapper.statisticCity();
     }
+
+    /**
+     * 全国二手房挂牌量走势
+     * @return
+     */
+    public List<Map<String,Object>> statisticContry(){
+        return houseCountDao.statisticContry();
+    }
 }

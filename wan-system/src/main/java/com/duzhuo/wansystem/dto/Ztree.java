@@ -17,15 +17,15 @@ public class Ztree implements Serializable{
     /**
      * 按钮图标
      */
-    public static final String buttonIcon = "/static/zTree_v3-master/css/zTreeStyle/img/diy/10.png";
+    public static final String BUTTON_ICON = "/static/zTree_v3-master/css/zTreeStyle/img/diy/10.png";
     /**
      * 菜单图标
      */
-    public static final String pageIcon = "/static/zTree_v3-master/css/zTreeStyle/img/diy/2.png";
+    public static final String PAGE_ICON = "/static/zTree_v3-master/css/zTreeStyle/img/diy/2.png";
     /**
      *
      */
-    public static final String dictIcon = "";
+    public static final String DICT_ICON = "";
 
     @ApiModelProperty(value = "id")
     private Long id;

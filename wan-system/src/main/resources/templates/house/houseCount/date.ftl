@@ -5,6 +5,7 @@
 <head>
     <meta charset="utf-8">
     <title>列表</title>
+    <link rel="shortcut icon" href="/static/favicon.ico"/>
     <script type="text/javascript" src="/static/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/static/jquery/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>
@@ -62,8 +63,10 @@
 <form id="listForm" action="date" method="get">
     <div class="page-head">
         <div class="page-head-left">
+            <@shiro.hasPermission name="110200">
             <a href="javascript:addBatch();" class="btn btn-sm btn-danger hidden-xs">
                 <i class="fa fa-plus"></i>更新二手房</a>
+            </@shiro.hasPermission>
             <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">
                 <i class="fa fa-plus"></i>刷新</a>
         </div>

@@ -1,7 +1,6 @@
 package com.duzhuo.wansystem.dao.base;
 
 import com.duzhuo.common.core.BaseDao;
-import com.duzhuo.common.core.Message;
 import com.duzhuo.wansystem.entity.base.Organization;
 import com.duzhuo.wansystem.entity.base.Role;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,7 +23,7 @@ public interface RoleDao extends BaseDao<Role,Long>{
     int countByNameAndOrganization(String name,Organization organization);
 
     /**
-     *
+     * 判断某人是否有某角色
      * @param roleId
      * @param adminId
      * @return
@@ -33,7 +32,7 @@ public interface RoleDao extends BaseDao<Role,Long>{
     BigDecimal hasRole(Long roleId, Long adminId);
 
     /**
-     *
+     * 删除某人的某个角色
      * @param roleId
      * @param adminId
      */
@@ -42,17 +41,17 @@ public interface RoleDao extends BaseDao<Role,Long>{
     void delRole(Long roleId, Long adminId);
 
     /**
-     *
+     * 给某人授予某角色
      * @param roleId
      * @param adminId
      * @return
      */
     @Query(value = "INSERT INTO T_BASE_ADMIN_ROLE (ROLE_ID,ADMIN_ID) VALUES (?,?)",nativeQuery = true)
     @Modifying
-    BigDecimal addRole(Long roleId, Long adminId);
+    void addRole(Long roleId, Long adminId);
 
     /**
-     *
+     * 查询有某个角色的人数
      * @param roleId
      * @return
      */
@@ -60,7 +59,7 @@ public interface RoleDao extends BaseDao<Role,Long>{
     BigDecimal countByRoleNumber(Long roleId);
 
     /**
-     *
+     * 查询某角色的菜单总数
      * @param roleId
      * @return
      */

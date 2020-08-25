@@ -41,11 +41,11 @@ public class GlobalExceptionHandler {
         log.error(message, e);
         String per = message.substring(message.lastIndexOf('['),message.indexOf(']')+1);
         if (ServletUtils.isAjaxRequest(request)) {
-            return Message.error("您没有权限：权限编码："+per);
+            return Message.error("您没有权限：权限编号："+per);
         }
         else {
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("content", "您没有权限：权限编码："+per);
+            modelAndView.addObject("content", "您没有权限：权限编号："+per);
             modelAndView.setViewName(ERROR_VIEW);
             return modelAndView;
         }

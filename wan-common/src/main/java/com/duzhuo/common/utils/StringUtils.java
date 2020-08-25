@@ -1,6 +1,7 @@
 package com.duzhuo.common.utils;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -340,6 +341,27 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             }
             else {
                 sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 将集合拼接字符串
+     * @param stringList
+     * @param spit
+     * @return
+     */
+    public static String listToString(List<String> stringList,String spit){
+        if (stringList.isEmpty()){
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0;i<stringList.size();i++){
+            if (i==0){
+                sb.append(stringList.get(i));
+            }else {
+                sb.append(spit+stringList.get(i));
             }
         }
         return sb.toString();

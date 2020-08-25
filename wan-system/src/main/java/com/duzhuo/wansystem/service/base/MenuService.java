@@ -279,10 +279,10 @@ public class MenuService extends BaseService<Menu,Long> {
         ztree.setNum(menu.getNum().toString());
         ztree.setOpen(true);
         if (menu.getType()==Menu.Type.按钮){
-            ztree.setIcon(Ztree.buttonIcon);
+            ztree.setIcon(Ztree.BUTTON_ICON);
         }
         if (menu.getType()==Menu.Type.页面){
-            ztree.setIcon(Ztree.pageIcon);
+            ztree.setIcon(Ztree.PAGE_ICON);
         }
         ztree.setType(menu.getType().toString());
         return ztree;
@@ -304,10 +304,10 @@ public class MenuService extends BaseService<Menu,Long> {
         ztree.setOpen(true);
         ztree.setNocheck(false);
         if (menu.getType()==Menu.Type.按钮){
-            ztree.setIcon(Ztree.buttonIcon);
+            ztree.setIcon(Ztree.BUTTON_ICON);
         }
         if (menu.getType()==Menu.Type.页面){
-            ztree.setIcon(Ztree.pageIcon);
+            ztree.setIcon(Ztree.PAGE_ICON);
         }
         ztree.setType(menu.getType().toString());
         if (menuList.contains(menu)){
