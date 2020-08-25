@@ -6,16 +6,19 @@ import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
+import com.duzhuo.common.utils.RedisUtils;
 import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.service.base.AdminService;
 import com.duzhuo.wansystem.service.base.MenuService;
+import com.duzhuo.wansystem.shiro.ShiroUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +41,9 @@ public class AdminController extends BaseController{
     private AdminService adminService;
     @Resource
     private MenuService menuService;
+    @Resource
+    private RedisUtils redisUtils;
+
 
     @Log(title = "用户列表",operateType = OperateType.SELECT)
     @GetMapping("/list")
@@ -103,21 +109,31 @@ public class AdminController extends BaseController{
     @ApiOperation(value = "查询用户菜单")
     @GetMapping("/menuList")
     public String menuList(@RequestParam("id") Long id,Model model){
-
-        return "";
+        model.addAttribute("id",id);
+        return "/base/admin/showMenus";
     }
 
     @GetMapping("/getMenuTree")
     @ApiModelProperty
     @ResponseBody
     public Message getMenuTree(@RequestParam("id") Long id){
+        List<Menu> allMenuList = menuService.findAll(Sort.by(Sort.Direction.ASC,"order"));
         Admin admin = adminService.find(id);
         List<Role> roleList = admin.getRoleList();
         Set<Menu> menuSet = new HashSet<>();
         roleList.forEach(r->menuSet.addAll(r.getMenuList()));
         List<Menu> menuList = new ArrayList<>(menuSet);
-        List<Ztree> ztreeList = menuService.buildTree(menuList);
-        return Message.success("",ztreeList);
+        List<Ztree> ztreeList = menuService.buildSelectMenu(allMenuList,menuList);
+        return Message.success(ztreeList);
     }
 
+
+    @GetMapping("/test")
+    @ResponseBody
+    public Admin test(){
+        Admin admin = ShiroUtils.getCurrAdmin();
+        redisUtils.set("hehe",admin,200);
+        Admin a =  redisUtils.get("hahah",Admin.class);
+        return a;
+    }
 }

@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -17,7 +18,9 @@ import java.util.*;
 @Entity
 @Table(name = "T_BASE_ROLE")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
-public class Role extends BaseEntity {
+public class Role extends BaseEntity implements Serializable{
+    private static final long serialVersionUID = 5816388758817962942L;
+
     public enum Type{
         /**
          *普通职务可以修改

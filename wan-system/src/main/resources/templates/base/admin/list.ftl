@@ -88,6 +88,9 @@
                                 <button type="button" onclick="detail(${data.id})" class="btn btn-xs btn-primary">
                                     详情
                                 </button>
+                                <button type="button" onclick="menuList(${data.id})" class="btn btn-xs btn-info">
+                                    菜单列表
+                                </button>
                                 <button type="button" onclick="remove(${data.id})" class="btn btn-xs btn-danger">
                                     删除
                                 </button>
@@ -142,6 +145,16 @@
             maxmin: true,
             area: ['500px', '600px'],
             content: 'detail?id='+id
+        });
+    }
+    
+    function menuList(id) {
+        layer.open({
+            type: 2,
+            title: '用户菜单',
+            maxmin: true,
+            area: ['500px', '90%'],
+            content: 'menuList?id='+id
         });
     }
 </script>

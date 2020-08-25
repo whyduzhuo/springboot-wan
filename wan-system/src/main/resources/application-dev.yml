@@ -18,6 +18,11 @@ spring:
   servlet:
     multipart:
       max-file-size: ${wan.profile.max-size}
+  redis:
+    host: localhost
+    port: 6379
+    password:
+
 
 wan:
   profile:                      #项目文件配置

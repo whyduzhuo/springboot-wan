@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -17,7 +18,9 @@ import java.util.*;
 @Entity
 @Table(name = "T_BASE_ADMIN")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
-public class Admin extends BaseEntity implements Cloneable {
+public class Admin extends BaseEntity implements Cloneable,Serializable {
+
+    private static final long serialVersionUID = -6079046386811746580L;
 
     @JsonProperty
     @ApiModelProperty(value = "账号,一卡通号",dataType = "number",example = "1200402570")
