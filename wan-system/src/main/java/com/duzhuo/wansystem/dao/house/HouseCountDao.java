@@ -35,7 +35,7 @@ public interface HouseCountDao extends BaseDao<HouseCount,Long> {
             "FROM T_HOUSE_HOUSE_COUNT t1 \n" +
             "GROUP BY TO_CHAR(t1.RECORD_DATE,'YYYY-MM-DD')\n" +
             "HAVING sum(t1.LJ_HOUSE_COUNT) >0 \n" +
-            "ORDER BY TO_CHAR(t1.RECORD_DATE,'YYYY-MM-DD') DESC ",nativeQuery = true)
+            "ORDER BY TO_CHAR(t1.RECORD_DATE,'YYYY-MM-DD') ASC ",nativeQuery = true)
     List<Map<String,Object>> statisticContry();
 }
 
