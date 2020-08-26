@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -18,7 +19,9 @@ import java.util.*;
 @Entity
 @Table(name = "T_BASE_MENU")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
-public class Menu extends BaseEntity implements Comparable<Menu>{
+public class Menu extends BaseEntity implements Comparable<Menu>,Serializable {
+
+    private static final long serialVersionUID = -1674442746152794678L;
 
     public enum Os{
         /**

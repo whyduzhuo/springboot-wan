@@ -19,6 +19,7 @@ import java.util.*;
 @Table(name = "T_BASE_ROLE")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 public class Role extends BaseEntity implements Serializable{
+
     private static final long serialVersionUID = 5816388758817962942L;
 
     public enum Type{

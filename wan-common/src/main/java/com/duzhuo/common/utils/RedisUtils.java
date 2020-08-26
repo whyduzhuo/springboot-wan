@@ -2,12 +2,17 @@ package com.duzhuo.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -99,5 +104,19 @@ public class RedisUtils {
      */
     private <T> T fromJson(String json, Class<T> clazz) {
         return JSON.parseObject(json, clazz);
+    }
+
+    /**
+     * 查询某前缀开头的key的值
+     * @param prefix key 前缀
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public <T> List<T> getList(String prefix, Class<T> clazz) {
+        Set<String> keys = redisTemplate.keys(prefix);
+        List<T> list = new ArrayList<>();
+        keys.forEach(k->list.add(get(k,clazz)));
+        return list;
     }
 }

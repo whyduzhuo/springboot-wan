@@ -133,7 +133,7 @@ public class AdminController extends BaseController{
     public Admin test(){
         Admin admin = ShiroUtils.getCurrAdmin();
         redisUtils.set("hehe",admin,200);
-        Admin a =  redisUtils.get("hahah",Admin.class);
+        Admin a =  redisUtils.get("hehe",Admin.class);
         return a;
     }
 }
