@@ -24,13 +24,15 @@ import java.util.Map;
  */
 @Configuration
 public class ShiroConfig {
+    /**
+     * session过期时间1个小时
+     */
+    private static final int timeout = 60*60;
 
     @Value("${spring.redis.host}")
     private String host;
     @Value("${spring.redis.port}")
     private int port;
-    @Value("${spring.redis.timeout}")
-    private int timeout;
     @Value("${spring.redis.password}")
     private String password;
 
