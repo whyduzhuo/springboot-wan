@@ -133,7 +133,8 @@
                             }
                         },
                         data: [<#list city.data as data>${data.num},</#list>],
-                        type: 'line'
+                        type: 'line',
+                        smooth: true
                     }]
                 };
                 myChart.setOption(option);
