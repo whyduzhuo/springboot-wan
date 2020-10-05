@@ -13,7 +13,7 @@
 	<version>1.0.0</version>
     <packaging>pom</packaging>
 	<name>wan</name>
-	<description>校园OA系统框架</description>
+	<description>SpingBoot-Wan权限框架</description>
 
 	<properties>
         <wan.version>1.0.0</wan.version>
