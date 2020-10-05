@@ -16,13 +16,13 @@ public class CommonUtil {
     public static void initPage(HttpServletRequest request, CustomSearch customSearch) {
         String pageInit = request.getParameter("pageInit");
         String isSearch = request.getParameter("isSearch");
-        if (Tools.vaildeParam(pageInit)) {
+        if (StringUtils.isNotBlank(pageInit)) {
             if("yes".equals(pageInit) || "on".equals(pageInit) || "true".equals(pageInit)){
                 customSearch.setPageNumber(1);
             }
 
         }
-        if (Tools.vaildeParam(isSearch)) {
+        if (StringUtils.isNotBlank(isSearch)) {
             if("yes".equals(isSearch) || "true".equals(isSearch)){
                 customSearch.setPageNumber(1);
             }

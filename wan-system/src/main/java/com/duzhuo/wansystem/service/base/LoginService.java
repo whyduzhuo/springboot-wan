@@ -1,6 +1,6 @@
 package com.duzhuo.wansystem.service.base;
 
-import com.duzhuo.common.utils.Tools;
+import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.entity.base.Admin;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +17,10 @@ public class LoginService {
     private AdminService adminService;
 
     public Admin login(String username, String password) throws Exception {
-        if (!Tools.vaildeParam(username)){
+        if (StringUtils.isBlank(username)){
             throw new Exception("用户名为空！");
         }
-        if (!Tools.vaildeParam(password)){
+        if (StringUtils.isBlank(password)){
             throw new Exception("密码为空！");
         }
         Admin admin = adminService.findByUsernameAndPassword(username,password);

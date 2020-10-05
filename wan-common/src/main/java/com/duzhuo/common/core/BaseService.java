@@ -1,6 +1,5 @@
 package com.duzhuo.common.core;
 
-import com.duzhuo.common.utils.Tools;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -13,7 +12,10 @@ import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -290,7 +292,7 @@ public class BaseService<T, ID extends Serializable> {
 
         //构造排序列表
         List<Sort.Order> orderList = new ArrayList<>();
-        if (Tools.vaildeParam(customSearch.getOrderProperty())) {
+        if (StringUtils.isNotBlank(customSearch.getOrderProperty())) {
             orderList.add(new Sort.Order(customSearch.getOrderDirection(), customSearch.getOrderProperty()));
         }
         List<Sort.Order> orders = customSearch.getOrders();

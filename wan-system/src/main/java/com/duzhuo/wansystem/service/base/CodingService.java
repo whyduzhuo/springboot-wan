@@ -3,7 +3,7 @@ package com.duzhuo.wansystem.service.base;
 import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.exception.ServiceException;
-import com.duzhuo.common.utils.Tools;
+import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.dao.base.CodingDao;
 import com.duzhuo.wansystem.entity.base.Coding;
 import org.springframework.stereotype.Service;
@@ -31,19 +31,19 @@ public class CodingService extends BaseService<Coding,Long>{
      * @return
      */
     public Message addData(Coding codingVO){
-        if (!Tools.vaildeParam(codingVO.getEntityPackages())){
+        if (StringUtils.isBlank(codingVO.getEntityPackages())){
             throw new ServiceException("完整类名不可为空！");
         }
-        if (!Tools.vaildeParam(codingVO.getAuthor())){
+        if (StringUtils.isBlank(codingVO.getAuthor())){
             throw new ServiceException("作者不可为空！");
         }
-        if (!Tools.vaildeParam(codingVO.getDaopackage())){
+        if (StringUtils.isBlank(codingVO.getDaopackage())){
             throw new ServiceException("DAO包名为空！");
         }
-        if (!Tools.vaildeParam(codingVO.getControllerpackage())){
+        if (StringUtils.isBlank(codingVO.getControllerpackage())){
             throw new ServiceException("Controller包名为空！");
         }
-        if (!Tools.vaildeParam(codingVO.getServicepackage())){
+        if (StringUtils.isBlank(codingVO.getServicepackage())){
             throw new ServiceException("Service包名为空！");
         }
         if (this.findByEntityPackages(codingVO.getEntityPackages())!=null){

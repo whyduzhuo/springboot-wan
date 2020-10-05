@@ -4,7 +4,7 @@ import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.utils.ExcelUtils;
-import com.duzhuo.common.utils.Tools;
+import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.dao.base.SysOperLogDao;
 import com.duzhuo.wansystem.entity.base.SysOperLog;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -51,10 +51,10 @@ public class SysOperLogService extends BaseService<SysOperLog,Long>{
      * @param sysOperLog
      */
     public Message addData(SysOperLog sysOperLog) {
-        if (!Tools.vaildeParam(sysOperLog.getTitle())){
+        if (StringUtils.isBlank(sysOperLog.getTitle())){
             throw new ServiceException("title can not be null");
         }
-        if (!Tools.vaildeParam(sysOperLog.getMethod())){
+        if (StringUtils.isBlank(sysOperLog.getMethod())){
             throw new ServiceException("method can not be null");
         }
         super.save(sysOperLog);
