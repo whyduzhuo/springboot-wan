@@ -3,7 +3,7 @@ package  com.duzhuo.wansystem.service.house;
 import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.exception.ServiceException;
-import com.duzhuo.common.manager.AsyncManager;
+import com.duzhuo.common.thread.ThreadPoolService;
 import com.duzhuo.common.utils.HttpUtils;
 import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.dao.house.HouseCountDao;
@@ -22,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.TimerTask;
 
 /**
  * 二手房统计--Service
@@ -40,6 +39,8 @@ public class HouseCountService extends BaseService<HouseCount, Long>{
     private CityUrlService cityUrlService;
     @Resource
     private HouseCountMapper houseCountMapper;
+    @Resource
+    private ThreadPoolService threadPoolService;
 
     @Resource
     public void setBaseDao(HouseCountDao houseCountDao){
@@ -110,19 +111,16 @@ public class HouseCountService extends BaseService<HouseCount, Long>{
     public Message addBatch(){
         List<CityUrl> cityUrlList = cityUrlService.findByLjUrlIsNotNull();
         for (CityUrl cityUrl:cityUrlList) {
-            AsyncManager.me().excute2(new TimerTask() {
-                @Override
-                public void run() {
-                    try {
-                        HouseCount houseCount = new HouseCount();
-                        houseCount.setCityUrl(cityUrl);
-                        houseCount.setLjHouseCount(getLj(cityUrl));
-                        houseCount.setRecordDate(formateDate(new Date(), "yyyy-MM-dd"));
-                        addData(houseCount);
+            threadPoolService.excute(()-> {
+                try {
+                    HouseCount houseCount = new HouseCount();
+                    houseCount.setCityUrl(cityUrl);
+                    houseCount.setLjHouseCount(getLj(cityUrl));
+                    houseCount.setRecordDate(formateDate(new Date(), "yyyy-MM-dd"));
+                    addData(houseCount);
 
-                    }catch (Exception e){
-                        logger.error(e.getMessage());
-                    }
+                }catch (Exception e){
+                    logger.error(e.getMessage());
                 }
             });
         }

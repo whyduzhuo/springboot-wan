@@ -1,6 +1,5 @@
 package com.duzhuo.common.thread;
 
-import com.duzhuo.common.manager.Threads;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +10,7 @@ import java.util.concurrent.*;
 /**
  * 线程池配置
  *
- * @author ruoyi
+ * @author wanhy
  **/
 @Configuration
 public class ThreadPoolConfig {
@@ -19,7 +18,7 @@ public class ThreadPoolConfig {
     private int corePoolSize = 20;
 
     // 最大可创建的线程数
-    private int maxPoolSize = 1000;
+    private int maxPoolSize = Integer.MAX_VALUE;
 
     // 队列最大长度
     private int queueCapacity = 1000;
@@ -28,8 +27,7 @@ public class ThreadPoolConfig {
     private int keepAliveSeconds = 300;
 
     @Bean(name = "threadPoolTaskExecutor")
-    public ThreadPoolTaskExecutor threadPoolTaskExecutor()
-    {
+    public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setMaxPoolSize(maxPoolSize);
         executor.setCorePoolSize(corePoolSize);

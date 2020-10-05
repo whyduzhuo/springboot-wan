@@ -6,6 +6,9 @@ import com.duzhuo.common.enums.YesOrNo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
@@ -14,12 +17,16 @@ import javax.persistence.*;
  * @author: wanhy
  * @date: 2020/1/4 11:01
  */
+@Data
 @Entity
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "T_BASE_SYSOPERLOG")
 @ApiModel(value = "操作日志")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 public class SysOperLog extends BaseEntity {
 
+    private static final long serialVersionUID = 3011338163066632943L;
     @JsonProperty
     @ApiModelProperty(value = "操作模块",dataType = "String")
     private String title;
@@ -64,110 +71,9 @@ public class SysOperLog extends BaseEntity {
     @ApiModelProperty(value = "错误消息",dataType ="String")
     private String errorMsg;
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public OperateType getOperateType() {
-        return operateType;
-    }
-
-    public void setOperateType(OperateType operateType) {
-        this.operateType = operateType;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getOs() {
-        return os;
-    }
-
-    public void setOs(String os) {
-        this.os = os;
-    }
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "ADMIN_ID")
     public Admin getAdmin() {
         return admin;
-    }
-
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
-    }
-
-    public String getOperUrl() {
-        return operUrl;
-    }
-
-    public void setOperUrl(String operUrl) {
-        this.operUrl = operUrl;
-    }
-
-    public String getOperIp() {
-        return operIp;
-    }
-
-    public void setOperIp(String operIp) {
-        this.operIp = operIp;
-    }
-
-    public String getOperParm() {
-        return operParm;
-    }
-
-    public void setOperParm(String operParm) {
-        this.operParm = operParm;
-    }
-
-    public String getJsonResult() {
-        return jsonResult;
-    }
-
-    public void setJsonResult(String jsonResult) {
-        this.jsonResult = jsonResult;
-    }
-
-    public YesOrNo getStatus() {
-        return status;
-    }
-
-    public void setStatus(YesOrNo status) {
-        this.status = status;
-    }
-
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
-
-    @Override
-    public String toString() {
-        return "SysOperLog{" +
-                "title='" + title + '\'' +
-                ", operateType=" + operateType +
-                ", method='" + method + '\'' +
-                ", os='" + os + '\'' +
-                ", admin=" + admin +
-                ", operUrl='" + operUrl + '\'' +
-                ", operIp='" + operIp + '\'' +
-                ", operParm='" + operParm + '\'' +
-                ", jsonResult='" + jsonResult + '\'' +
-                ", status=" + status +
-                ", errorMsg='" + errorMsg + '\'' +
-                '}';
     }
 }

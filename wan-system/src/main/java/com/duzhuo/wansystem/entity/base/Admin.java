@@ -5,18 +5,27 @@ import com.duzhuo.common.utils.StringUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author: wanhy
  * @date: 2020/1/1 16:57
  */
-@ApiModel(value = "用户")
+@Getter
+@Setter
 @Entity
+@Accessors(chain = true)
+@ApiModel(value = "用户")
 @Table(name = "T_BASE_ADMIN")
+@EqualsAndHashCode(callSuper = true,exclude = "roleList")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 public class Admin extends BaseEntity implements Cloneable,Serializable {
 
@@ -34,32 +43,10 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
     private String password;
 
     @ApiModelProperty(value = "全部职务")
-    private List<Role> roleList = new ArrayList<>();
+    private List<Role> roleList;
 
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getRealname() {
-        return realname;
-    }
-
-    public void setRealname(String realname) {
-        this.realname = realname;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    @Transient
+    private String roleListStr;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "T_BASE_ADMIN_ROLE",
@@ -70,41 +57,13 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
         return roleList;
     }
 
-    public void setRoleList(List<Role> roleSet) {
-        this.roleList = roleSet;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Admin)) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        Admin admin = (Admin) o;
-        return Objects.equals(getUsername(), admin.getUsername()) &&
-                Objects.equals(getRealname(), admin.getRealname()) &&
-                Objects.equals(getPassword(), admin.getPassword());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getUsername(), getRealname(), getPassword());
-    }
-
     @Transient
     public String getRoleListStr(){
-        if (this.roleList.isEmpty()){
+        if (this.getRoleList().isEmpty()){
             return "无";
         }
         List<String> stringList = new ArrayList<>();
-        roleList.forEach(r->{
-            stringList.add(r.getName());
-        });
+        roleList.forEach(r-> stringList.add(r.getName()));
         return StringUtils.listToString(stringList,",");
     }
 }

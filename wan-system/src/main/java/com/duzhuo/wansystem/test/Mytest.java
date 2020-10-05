@@ -22,20 +22,8 @@ public class Mytest {
      * @param args
      */
     public static void main(String[] args){
-
-        List<Map<String,String>> data= new ArrayList<>();
-
-        Map<String,String> zs = new HashMap<>(2);
-        zs.put("name","张三");
-        zs.put("age","12");
-        data.add(zs);
-
-        Map<String,String> lx = new HashMap<>(2);
-        lx.put("name","李四");
-        lx.put("age","13");
-        data.add(lx);
-
-
+        String a = "15079185135".substring(6);
+        System.err.println(a);
 
     }
 

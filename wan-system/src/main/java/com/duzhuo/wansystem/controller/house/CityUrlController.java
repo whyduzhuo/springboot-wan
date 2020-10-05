@@ -1,33 +1,31 @@
 package  com.duzhuo.wansystem.controller.house;
 
-import com.duzhuo.common.exception.ServiceException;
-import com.duzhuo.common.manager.AsyncManager;
-import com.duzhuo.common.utils.CommonUtil;
-import com.duzhuo.common.utils.HttpUtils;
-import com.duzhuo.common.utils.StringUtils;
-import  com.duzhuo.wansystem.entity.house.CityUrl;
-import  com.duzhuo.wansystem.service.house.CityUrlService;
 import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.core.BaseController;
 import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
+import com.duzhuo.common.exception.ServiceException;
+import com.duzhuo.common.utils.CommonUtil;
+import com.duzhuo.common.utils.HttpUtils;
+import com.duzhuo.wansystem.entity.house.CityUrl;
+import com.duzhuo.wansystem.service.house.CityUrlService;
 import com.duzhuo.wansystem.test.CallableAndFuture;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.WebUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
-import java.util.TimerTask;
-import java.util.regex.Pattern;
 
 /**
  * 城市代码--Controller

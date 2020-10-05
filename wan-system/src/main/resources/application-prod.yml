@@ -18,11 +18,12 @@ spring:
   redis:
     host: localhost
     password:
+    port: 6739
 
 wan:
   profile:                      #项目文件配置
-    file-path: E:/wan/uploadPath  #默认文件存储路径
+    file-path: /home/upload/  #默认文件存储路径
     file-virtual-Path: /upload    #文件储路径对应的项目虚拟路径
-    max-size: 1MB        #文件最大限制
+    max-size: 10MB        #文件最大限制
     max-file-name: 20      #文件名称最长限制
     support-file-type: bmp,gif,jpg,jpeg,png,doc,docx,xls,xlsx,ppt,pptx,txt,rar,pdf  #支持的文件格式

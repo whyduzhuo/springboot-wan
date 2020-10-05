@@ -1,4 +1,4 @@
-package com.duzhuo.common.manager;
+package com.duzhuo.common.thread;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

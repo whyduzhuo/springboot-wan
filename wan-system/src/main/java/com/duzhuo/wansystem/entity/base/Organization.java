@@ -4,20 +4,30 @@ import com.duzhuo.common.core.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * @author: wanhy
  * @date: 2020/1/7 14:33
  */
-@ApiModel(value = "部门/机构")
+@Getter
+@Setter
 @Entity
+@ApiModel(value = "部门/机构")
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true,exclude = {"roleList"})
 @Table(name = "T_BASE_Organization")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 public class Organization extends BaseEntity{
+
+    private static final long serialVersionUID = -4567376417944617713L;
 
     @JsonProperty
     @ApiModelProperty(value = "部门名称",dataType = "String",example = "江西财经大学宣传部")
@@ -28,15 +38,7 @@ public class Organization extends BaseEntity{
     private Organization parent;
 
     @ApiModelProperty(value = "部门下的全部职务",notes = "一对多职务表")
-    private Set<Role> roleSet = new HashSet<>();
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private List<Role> roleList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
@@ -44,16 +46,8 @@ public class Organization extends BaseEntity{
         return parent;
     }
 
-    public void setParent(Organization parent) {
-        this.parent = parent;
-    }
-
     @OneToMany(mappedBy = "organization")
-    public Set<Role> getPositionSet() {
-        return roleSet;
-    }
-
-    public void setPositionSet(Set<Role> positionSet) {
-        this.roleSet = positionSet;
+    public List<Role> getRoleList() {
+        return roleList;
     }
 }

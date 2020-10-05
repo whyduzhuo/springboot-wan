@@ -3,7 +3,6 @@ package com.duzhuo.wansystem.controller.base;
 import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
-import com.duzhuo.common.manager.AsyncManager;
 import com.duzhuo.common.utils.BeanUtils;
 import com.duzhuo.common.utils.ExcelUtils;
 import com.duzhuo.common.utils.Tools;

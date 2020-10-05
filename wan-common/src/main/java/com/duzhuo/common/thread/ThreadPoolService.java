@@ -1,6 +1,7 @@
-package com.duzhuo.common.manager;
+package com.duzhuo.common.thread;
 
 import com.duzhuo.common.utils.SpringUtils;
+import org.springframework.stereotype.Component;
 
 import java.util.TimerTask;
 import java.util.concurrent.*;
@@ -10,7 +11,8 @@ import java.util.concurrent.*;
  *
  * @author wanhy
  */
-public class AsyncManager {
+@Component
+public class ThreadPoolService {
     /**
      * 操作延迟10毫秒
      */
@@ -25,17 +27,6 @@ public class AsyncManager {
      * 异步操作任务调度线程池
      */
     private ThreadPoolExecutor threadPoolExecutor = SpringUtils.getBean("threadPoolExecutor");
-
-    /**
-     * 单例模式
-     */
-    private AsyncManager(){}
-
-    private static AsyncManager me = new AsyncManager();
-
-    public static AsyncManager me() {
-        return me;
-    }
 
     /**
      * 执行任务
@@ -55,10 +46,10 @@ public class AsyncManager {
 
     /**
      * 执行任务/立即执行
-     * @param timerTask
+     * @param runnable
      */
-    public void excute2(TimerTask timerTask){
-        threadPoolExecutor.execute(timerTask);
+    public void excute(Runnable runnable){
+        threadPoolExecutor.execute(runnable);
     }
 
     /**
@@ -69,7 +60,7 @@ public class AsyncManager {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    public <T> T excute3(Callable<T> callable) throws ExecutionException, InterruptedException {
+    public <T> T excute(Callable<T> callable) throws ExecutionException, InterruptedException {
         Future<T> future = threadPoolExecutor.submit(callable);
         return future.get();
     }

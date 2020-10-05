@@ -3,7 +3,7 @@ package com.duzhuo.wansystem.aspectj;
 
 import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.enums.YesOrNo;
-import com.duzhuo.common.manager.AsyncManager;
+import com.duzhuo.common.thread.ThreadPoolService;
 import com.duzhuo.common.utils.JSON;
 import com.duzhuo.common.utils.ServletUtils;
 import com.duzhuo.common.utils.StringUtils;
@@ -11,9 +11,7 @@ import com.duzhuo.common.utils.Tools;
 import com.duzhuo.wansystem.async.AsyncFactory;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.SysOperLog;
-import com.duzhuo.wansystem.service.base.SysOperLogService;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -28,17 +26,19 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.Map;
-import java.util.concurrent.*;
 
 /**
  * 操作日志记录处理
  * 
- * @author ruoyi
+ * @author wanhy
  */
 @Aspect
 @Component
 public class LogAspect {
     private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
+
+    @Resource
+    private ThreadPoolService threadPoolService;
 
     // 配置织入点
     @Pointcut(value = "@annotation(com.duzhuo.common.annotation.Log)")
@@ -102,8 +102,7 @@ public class LogAspect {
             // 处理设置注解上的参数
             getControllerMethodDescription(controllerLog, operLog);
             // 异步保存数据库
-            AsyncManager manager = AsyncManager.me();
-            manager.execute(AsyncFactory.recordOper(operLog));
+            threadPoolService.execute(AsyncFactory.recordOper(operLog));
         }
         catch (Exception exp) {
             // 记录本地异常日志

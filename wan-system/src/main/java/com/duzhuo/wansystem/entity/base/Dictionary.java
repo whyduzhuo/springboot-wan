@@ -3,6 +3,9 @@ package com.duzhuo.wansystem.entity.base;
 import com.duzhuo.common.core.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
@@ -11,10 +14,16 @@ import javax.persistence.*;
  * @date: 2020/8/10 10:57
  */
 @Entity
+@Data
+@Accessors(chain = true)
 @Table(name = "T_BASE_DICTIONARY")
+@EqualsAndHashCode(callSuper = true)
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 @ApiModel(value = "字典")
 public class Dictionary  extends BaseEntity{
+
+    private static final long serialVersionUID = 1448607782295439386L;
+
     public enum Status{
         启用,
         禁用
@@ -39,41 +48,5 @@ public class Dictionary  extends BaseEntity{
     @JoinColumn(name = "MODEL_ID")
     public DictModel getDictModel() {
         return dictModel;
-    }
-
-    public void setDictModel(DictModel dictModel) {
-        this.dictModel = dictModel;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
     }
 }

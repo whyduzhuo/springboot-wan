@@ -17,7 +17,7 @@ public class Message {
         /**警告*/
         WARN,
         /**错误*/
-        ERROR;
+        ERROR
     }
 
     private Type type;

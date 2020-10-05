@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * 自定义Realm 处理登录 权限
  * 
- * @author ruoyi
+ * @author wanhy
  */
 public class AdminRealm extends AuthorizingRealm {
 
