@@ -31,7 +31,7 @@ public class AdminService extends BaseService<Admin,Long> {
      * @param admin
      * @return
      */
-    public Message insert(Admin admin) {
+    public Message addData(Admin admin) {
         super.save(admin);
         return Message.warn("功能未完成！");
     }

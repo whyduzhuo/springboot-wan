@@ -50,7 +50,7 @@
 
     function ajaxSubmit(){
         layer.load();
-        var url = 'addData';
+        var url = '/base/admin/addData';
         var data_id = $("#data_id").val();
         if(data_id!=null && data_id!=""){
             url ='edit';

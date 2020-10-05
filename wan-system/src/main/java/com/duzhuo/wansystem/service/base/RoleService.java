@@ -217,4 +217,23 @@ public class RoleService extends BaseService<Role,Long> {
     public void delAllMenu(Long roleId){
         menuService.delMenuRole(roleId);
     }
+
+    /**
+     * 查询每个橘色的菜单
+     * 不去重
+     * @param roleList
+     * @return
+     */
+    public List<Ztree> findMenuTree(List<Role> roleList) {
+        List<Ztree> ztreeList = new ArrayList<>();
+        roleList.forEach(r->{
+            List<Menu> menuList = r.getMenuList();
+            menuList.forEach(m->{
+                Ztree ztree=menuService.menuToTree(m);
+                ztree.setRoleId(r.getId());
+                ztreeList.add(ztree);
+            });
+        });
+        return ztreeList;
+    }
 }

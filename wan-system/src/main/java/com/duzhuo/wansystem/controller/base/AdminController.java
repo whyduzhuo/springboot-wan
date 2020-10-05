@@ -13,6 +13,7 @@ import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.service.base.AdminService;
 import com.duzhuo.wansystem.service.base.MenuService;
+import com.duzhuo.wansystem.service.base.RoleService;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
@@ -43,6 +44,8 @@ public class AdminController extends BaseController{
     private MenuService menuService;
     @Resource
     private RedisUtils redisUtils;
+    @Resource
+    private RoleService roleService;
 
 
     @Log(title = "用户列表",operateType = OperateType.SELECT)
@@ -71,11 +74,11 @@ public class AdminController extends BaseController{
 
     @Log(title = "新增用户",operateType = OperateType.INSERT)
     @ApiOperation(value = "新增用户")
-    @PostMapping("/insert")
+    @PostMapping("/addData")
     @RequiresPermissions("")
     @ResponseBody
-    public Message insert(Admin admin){
-        return adminService.insert(admin);
+    public Message addData(Admin admin){
+        return adminService.addData(admin);
     }
 
     @Log(title = "修改用户信息",operateType = OperateType.UPDATE)
@@ -109,12 +112,15 @@ public class AdminController extends BaseController{
     @ApiOperation(value = "查询用户菜单")
     @GetMapping("/menuList")
     public String menuList(@RequestParam("id") Long id,Model model){
-        model.addAttribute("id",id);
+        Admin admin = adminService.find(id);
+        List<Role> roleList = admin.getRoleList();
+        model.addAttribute("admin",admin);
+        model.addAttribute("roleList",roleList);
         return "/base/admin/showMenus";
     }
 
     @GetMapping("/getMenuTree")
-    @ApiModelProperty
+    @ApiOperation("查询admin的所有菜单")
     @ResponseBody
     public Message getMenuTree(@RequestParam("id") Long id){
         List<Menu> allMenuList = menuService.findAll(Sort.by(Sort.Direction.ASC,"order"));
@@ -127,6 +133,15 @@ public class AdminController extends BaseController{
         return Message.success(ztreeList);
     }
 
+    @ApiOperation(value = "查询用户下每个角色的菜单")
+    @GetMapping("/getRolesMenu")
+    @ResponseBody
+    public Message getRolesMenu(Long adminId){
+        Admin admin = adminService.find(adminId);
+        List<Role> roleList = admin.getRoleList();
+        List<Ztree> ztreeList = roleService.findMenuTree(roleList);
+        return Message.success(ztreeList);
+    }
 
     @GetMapping("/test")
     @ResponseBody

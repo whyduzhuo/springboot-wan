@@ -294,7 +294,7 @@ public class MenuService extends BaseService<Menu,Long> {
      * @param menuList，已勾选的菜单
      * @return
      */
-    public Ztree menuToTree(Menu menu,List<Menu> menuList){
+    private Ztree menuToTree(Menu menu,List<Menu> menuList){
         Ztree ztree = new Ztree();
         ztree.setId(menu.getId());
         ztree.setName(menu.getName());

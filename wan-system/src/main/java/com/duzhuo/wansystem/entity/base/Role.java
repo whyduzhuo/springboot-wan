@@ -13,6 +13,7 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -77,7 +78,7 @@ public class Role extends BaseEntity implements Serializable {
             joinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "menu_id", referencedColumnName = "id"))
     public List<Menu> getMenuList() {
-        return menuList;
+        return menuList.stream().distinct().collect(Collectors.toList());
     }
 
 

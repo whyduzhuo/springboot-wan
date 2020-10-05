@@ -13,7 +13,9 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author: wanhy
@@ -54,7 +56,7 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID",referencedColumnName = "ID")
     )
     public List<Role> getRoleList() {
-        return roleList;
+        return roleList.stream().distinct().collect(Collectors.toList());
     }
 
     @Transient

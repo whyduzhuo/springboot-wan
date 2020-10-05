@@ -7,7 +7,9 @@ import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Menu;
+import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.service.base.MenuService;
+import com.duzhuo.wansystem.service.base.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -31,6 +33,8 @@ import java.util.List;
 public class MenuController extends BaseController {
     @Resource
     private MenuService menuService;
+    @Resource
+    private RoleService roleService;
 
     @RequiresPermissions("1002")
     @ApiOperation(value = "菜单列表")

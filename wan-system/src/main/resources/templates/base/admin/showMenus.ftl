@@ -30,8 +30,17 @@
               data-toggle="tooltip" data-original-title="刷新" onclick="relfush()">刷新</button>
 </div>
 <div style="height: 50px"></div>
-<div>
+<div style="display: inline-block;width: 60%">
     <ul id="treeDemo" class="ztree"></ul>
+</div>
+<div style="display: inline-block;width: 30%;vertical-align: top">
+    <ul>
+        <#list roleList as role >
+        <li style="display: block">
+            <input type="checkbox" onchange="buildTree()" name="roleId" value="${role.id}" checked>${role.name}
+        </li>
+        </#list>
+    </ul>
 </div>
 </body>
 <script LANGUAGE="JavaScript">
@@ -54,28 +63,91 @@
 
     buildTree();
 
+    var allMenus = [];
+    var rolesMenus = [];
+
     function buildTree() {
-        var trees =[];
         $.ajax({
-            url:"getMenuTree?id=${id}",
+            url:"/base/admin/getRolesMenu?adminId=${admin.id}",
             type: "get",
             async:false,
             success:function (message) {
-                trees = message.data;
+                rolesMenus = message.data;
             },
             error:function (e) {
-
+                alert(e);
+            }
+        });
+        $.ajax({
+            url:"/base/menu/getNode",
+            type: "get",
+            async:false,
+            success:function (message) {
+                allMenus = message.data;
+            },
+            error:function (e) {
+                alert(e);
             }
         });
         var zNodes=[];
+        console.log(allMenus);
+        console.log(rolesMenus);
+        var trees = buildSelected(allMenus,rolesMenus);
+        console.log(trees);
         pushChildren(zNodes,null,trees);
         zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
     }
 
+    /**
+     * 设置选中的checked属性为true
+     * @param allMenus
+     * @param rolesMenus
+     */
+    function buildSelected(allMenus,rolesMenus) {
+        var checkedRoles =[];
+        $('input[name="roleId"]:checked').each(function(){
+            checkedRoles.push($(this).val());
+        });
+        console.log(checkedRoles)
+        for (var i in allMenus){
+            var menu = allMenus[i];
+            if(havaMenu(menu,checkedRoles,rolesMenus)){
+                menu.checked=true;
+            }
+        }
+        return allMenus;
+    }
+
+    /**
+     * 判断menus 中是否含有menu,并且被选中
+     * @param menu
+     * @param menus
+     */
+    function havaMenu(menu,checkedRoles,menus) {
+        for (var i in menus){
+            var m = menus[i];
+            if(menu.id===m.id){
+                for(var j in checkedRoles){
+                    var roleId = checkedRoles[j];
+                    if(roleId==m.roleId){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 递归组装树结构
+     * @param children
+     * @param node
+     * @param arry
+     */
     function pushChildren(children,node,arry) {
         for (var i in arry) {
             var node1 = arry[i];
-            if((node1.pid==null && node==null)|| (node!=null && node1.pid!=null && node1.pid == node.id)){
+            if((node1.pid==null && node==null)|| (node!=null && node1.pid!=null && node1.pid === node.id)){
                 pushChildren(node1.children,node1, arry);
                 children.push(node1);
             }
