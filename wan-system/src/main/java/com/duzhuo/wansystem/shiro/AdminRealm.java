@@ -3,7 +3,7 @@ package com.duzhuo.wansystem.shiro;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
-import com.duzhuo.wansystem.service.base.LoginService;
+import com.duzhuo.wansystem.service.base.AdminService;
 import com.duzhuo.wansystem.service.base.MenuService;
 import com.duzhuo.wansystem.service.base.RoleService;
 import org.apache.shiro.SecurityUtils;
@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,7 +36,7 @@ public class AdminRealm extends AuthorizingRealm {
     private RoleService roleService;
 
     @Resource
-    private LoginService loginService;
+    private AdminService adminService;
 
     /**
      * 授权
@@ -46,14 +45,14 @@ public class AdminRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
         Admin admin = ShiroUtils.getCurrAdmin();
         // 职务列表
-        List<Role> roleList = admin.getRoleList();
+        Set<Role> roleList = admin.getRoleSet();
         Set<String> roleSet = new HashSet<>();
         roleList.forEach(r->roleSet.add(r.getName()));
         // 菜单/功能列表
         Set<Menu> menus = new HashSet<>();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //添加菜单
-        roleList.forEach(role -> menus.addAll(role.getMenuList()));
+        roleList.forEach(role -> menus.addAll(role.getMenuSet()));
         Set<String> permissions = new HashSet<>();
         menus.forEach(m->permissions.add(m.getNum().toString()));
         // 角色加入AuthorizationInfo认证对象，在controller接口加RequiresRoles 就可以用了
@@ -77,9 +76,9 @@ public class AdminRealm extends AuthorizingRealm {
         }
         Admin admin;
         try {
-            admin = loginService.login(username, password);
+            admin = adminService.login(username, password);
         } catch (Exception e) {
-            log.info("对用户[" + username + "]进行登录验证..验证未通过{}", e.getMessage());
+            log.info(e.getMessage(),e);
             throw new AuthenticationException(e.getMessage(), e);
         }
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(admin, password, getName());

@@ -2,6 +2,7 @@ package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.dao.base.AdminDao;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
@@ -50,6 +51,21 @@ public class AdminService extends BaseService<Admin,Long> {
     }
 
     public Admin findByUsernameAndPassword(String username, String password) {
-        return adminDao.findByUsernameAndPassword(username,password);
+        Admin admin = adminDao.findByUsernameAndPassword(username,password);
+        return admin;
+    }
+
+    public Admin login(String username, String password) throws Exception {
+        if (StringUtils.isBlank(username)){
+            throw new Exception("用户名为空！");
+        }
+        if (StringUtils.isBlank(password)){
+            throw new Exception("密码为空！");
+        }
+        Admin admin = this.findByUsernameAndPassword(username,password);
+        if (admin==null){
+            throw new Exception("用户名或密码错误！");
+        }
+        return admin;
     }
 }

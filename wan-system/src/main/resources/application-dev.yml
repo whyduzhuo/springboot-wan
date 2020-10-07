@@ -47,7 +47,6 @@ logging:
   file:
     path: D:/wan/upload/log/         #日志保存路径
     name: wanlog.log    #日志文件名
-
 #微信公众号开发
 #教程https://mp.weixin.qq.com/debug?token=476802302&lang=zh_CN
 #教程https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html

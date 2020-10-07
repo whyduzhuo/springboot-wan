@@ -109,7 +109,7 @@ public class Menu extends BaseEntity implements Comparable<Menu>,Serializable {
         return children;
     }
 
-    @ManyToMany(mappedBy = "menuList")
+    @ManyToMany(mappedBy = "menuSet")
     public List<Role> getRoleList() {
         return roleList;
     }

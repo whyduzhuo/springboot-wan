@@ -182,7 +182,7 @@ public class RoleService extends BaseService<Role,Long> {
      */
     public List<Menu> getMenus(Collection<Role> roles){
         Set<Menu> menuSet = new HashSet<>();
-        roles.forEach(r->menuSet.addAll(r.getMenuList()));
+        roles.forEach(r->menuSet.addAll(r.getMenuSet()));
         menuSet.removeIf(r->r.getType()==Menu.Type.按钮);
         return new ArrayList<>(menuSet);
     }
@@ -195,7 +195,7 @@ public class RoleService extends BaseService<Role,Long> {
     public List<Ztree> getMenuTree(Long id) {
         Role role = super.find(id);
         List<Menu> allMenuList = menuService.findAll(Sort.by(Sort.Direction.ASC,"order"));
-        List<Menu> menuList = role.getMenuList();
+        Set<Menu> menuList = role.getMenuSet();
         return menuService.buildSelectMenu(allMenuList,menuList);
     }
 
@@ -221,14 +221,14 @@ public class RoleService extends BaseService<Role,Long> {
     /**
      * 查询每个橘色的菜单
      * 不去重
-     * @param roleList
+     * @param roleSet
      * @return
      */
-    public List<Ztree> findMenuTree(List<Role> roleList) {
+    public List<Ztree> findMenuTree(Set<Role> roleSet) {
         List<Ztree> ztreeList = new ArrayList<>();
-        roleList.forEach(r->{
-            List<Menu> menuList = r.getMenuList();
-            menuList.forEach(m->{
+        roleSet.forEach(r->{
+            Set<Menu> menuSet = r.getMenuSet();
+            menuSet.forEach(m->{
                 Ztree ztree=menuService.menuToTree(m);
                 ztree.setRoleId(r.getId());
                 ztreeList.add(ztree);

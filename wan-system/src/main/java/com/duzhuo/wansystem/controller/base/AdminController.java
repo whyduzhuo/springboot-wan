@@ -113,9 +113,9 @@ public class AdminController extends BaseController{
     @GetMapping("/menuList")
     public String menuList(@RequestParam("id") Long id,Model model){
         Admin admin = adminService.find(id);
-        List<Role> roleList = admin.getRoleList();
+        Set<Role> roleSet = admin.getRoleSet();
         model.addAttribute("admin",admin);
-        model.addAttribute("roleList",roleList);
+        model.addAttribute("roleList",roleSet);
         return "/base/admin/showMenus";
     }
 
@@ -125,11 +125,10 @@ public class AdminController extends BaseController{
     public Message getMenuTree(@RequestParam("id") Long id){
         List<Menu> allMenuList = menuService.findAll(Sort.by(Sort.Direction.ASC,"order"));
         Admin admin = adminService.find(id);
-        List<Role> roleList = admin.getRoleList();
+        Set<Role> roleList = admin.getRoleSet();
         Set<Menu> menuSet = new HashSet<>();
-        roleList.forEach(r->menuSet.addAll(r.getMenuList()));
-        List<Menu> menuList = new ArrayList<>(menuSet);
-        List<Ztree> ztreeList = menuService.buildSelectMenu(allMenuList,menuList);
+        roleList.forEach(r->menuSet.addAll(r.getMenuSet()));
+        List<Ztree> ztreeList = menuService.buildSelectMenu(allMenuList,menuSet);
         return Message.success(ztreeList);
     }
 
@@ -138,8 +137,8 @@ public class AdminController extends BaseController{
     @ResponseBody
     public Message getRolesMenu(Long adminId){
         Admin admin = adminService.find(adminId);
-        List<Role> roleList = admin.getRoleList();
-        List<Ztree> ztreeList = roleService.findMenuTree(roleList);
+        Set<Role> roleSet = admin.getRoleSet();
+        List<Ztree> ztreeList = roleService.findMenuTree(roleSet);
         return Message.success(ztreeList);
     }
 

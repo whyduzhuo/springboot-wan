@@ -294,7 +294,7 @@ public class MenuService extends BaseService<Menu,Long> {
      * @param menuList，已勾选的菜单
      * @return
      */
-    private Ztree menuToTree(Menu menu,List<Menu> menuList){
+    private Ztree menuToTree(Menu menu,Set<Menu> menuSet){
         Ztree ztree = new Ztree();
         ztree.setId(menu.getId());
         ztree.setName(menu.getName());
@@ -310,7 +310,7 @@ public class MenuService extends BaseService<Menu,Long> {
             ztree.setIcon(Ztree.PAGE_ICON);
         }
         ztree.setType(menu.getType().toString());
-        if (menuList.contains(menu)){
+        if (menuSet.contains(menu)){
             ztree.setChecked(true);
         }
         return ztree;
@@ -338,12 +338,12 @@ public class MenuService extends BaseService<Menu,Long> {
     /**
      * 创建菜单树
      * @param allMenuList 全部菜单
-     * @param menuList 已勾选菜单
+     * @param menuSet 已勾选菜单
      * @return
      */
-    public List<Ztree> buildSelectMenu(List<Menu> allMenuList, List<Menu> menuList) {
+    public List<Ztree> buildSelectMenu(List<Menu> allMenuList, Set<Menu> menuSet) {
         List<Ztree> ztreeList = new ArrayList<>();
-        allMenuList.forEach(m->ztreeList.add(this.menuToTree(m,menuList)));
+        allMenuList.forEach(m->ztreeList.add(this.menuToTree(m,menuSet)));
         return ztreeList;
     }
 

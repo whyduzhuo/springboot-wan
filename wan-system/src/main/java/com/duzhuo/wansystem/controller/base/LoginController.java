@@ -70,13 +70,12 @@ public class LoginController {
         try {
             subject.login(token);
             return Message.success();
-        }
-        catch (AuthenticationException e) {
+        } catch (AuthenticationException e) {
             String msg = "用户或密码错误";
             if (StringUtils.isNotEmpty(e.getMessage())) {
                 msg = e.getMessage();
             }
-            logger.warn("用户名或密码错误！",e);
+            logger.warn(e.getMessage(),e);
             return Message.error(msg);
         }
     }
@@ -86,13 +85,13 @@ public class LoginController {
     @GetMapping("/index")
     public String index(Model model){
         Admin admin = ShiroUtils.getCurrAdmin();
-        List<Role> roleList = admin.getRoleList();
-        List<Menu> menus = roleService.getMenus(roleList);
+        Set<Role> roleSet = admin.getRoleSet();
+        List<Menu> menus = roleService.getMenus(roleSet);
         Collections.sort(menus);
         List<Menu> menuList = menuService.buildMenu(menus);
         model.addAttribute("menuList",menuList);
         model.addAttribute("admin",admin);
-        model.addAttribute("roleList",roleList);
+        model.addAttribute("roleList",roleSet);
         return "/base/login/main";
     }
 

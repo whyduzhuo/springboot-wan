@@ -37,7 +37,7 @@
     <ul>
         <#list roleList as role >
         <li style="display: block">
-            <input type="checkbox" onchange="buildTree()" name="roleId" value="${role.id}" checked>${role.name}
+            <input type="checkbox" onchange="localBuild()" name="roleId" value="${role.id}" checked>${role.name}
         </li>
         </#list>
     </ul>
@@ -61,10 +61,9 @@
         layer.msg("刷新成功！",{icon:6});
     }
 
-    buildTree();
-
     var allMenus = [];
     var rolesMenus = [];
+    buildTree();
 
     function buildTree() {
         $.ajax({
@@ -89,11 +88,12 @@
                 alert(e);
             }
         });
+        localBuild();
+    }
+    
+    function localBuild() {
         var zNodes=[];
-        console.log(allMenus);
-        console.log(rolesMenus);
-        var trees = buildSelected(allMenus,rolesMenus);
-        console.log(trees);
+        var trees = buildSelected();
         pushChildren(zNodes,null,trees);
         zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
     }
@@ -103,16 +103,18 @@
      * @param allMenus
      * @param rolesMenus
      */
-    function buildSelected(allMenus,rolesMenus) {
+    function buildSelected() {
         var checkedRoles =[];
         $('input[name="roleId"]:checked').each(function(){
             checkedRoles.push($(this).val());
         });
-        console.log(checkedRoles)
         for (var i in allMenus){
             var menu = allMenus[i];
+            menu.children=[];
             if(havaMenu(menu,checkedRoles,rolesMenus)){
                 menu.checked=true;
+            }else {
+                menu.checked=false;
             }
         }
         return allMenus;
@@ -144,12 +146,12 @@
      * @param node
      * @param arry
      */
-    function pushChildren(children,node,arry) {
-        for (var i in arry) {
-            var node1 = arry[i];
+    function pushChildren(children,node,array) {
+        for (var i in array) {
+            var node1 = array[i];
             if((node1.pid==null && node==null)|| (node!=null && node1.pid!=null && node1.pid === node.id)){
-                pushChildren(node1.children,node1, arry);
                 children.push(node1);
+                pushChildren(node1.children,node1, array);
             }
         }
     }

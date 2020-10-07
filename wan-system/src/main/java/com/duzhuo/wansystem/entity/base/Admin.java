@@ -13,8 +13,9 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 @Accessors(chain = true)
 @ApiModel(value = "用户")
 @Table(name = "T_BASE_ADMIN")
-@EqualsAndHashCode(callSuper = true,exclude = "roleList")
+@EqualsAndHashCode(callSuper = true,exclude = "roleSet")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 public class Admin extends BaseEntity implements Cloneable,Serializable {
 
@@ -45,7 +46,7 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
     private String password;
 
     @ApiModelProperty(value = "全部职务")
-    private List<Role> roleList;
+    private Set<Role> roleSet = new HashSet<>();
 
     @Transient
     private String roleListStr;
@@ -55,17 +56,17 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
             joinColumns = @JoinColumn(name="ADMIN_ID",referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID",referencedColumnName = "ID")
     )
-    public List<Role> getRoleList() {
-        return roleList.stream().distinct().collect(Collectors.toList());
+    public Set<Role> getRoleSet() {
+        return roleSet;
     }
 
     @Transient
     public String getRoleListStr(){
-        if (this.getRoleList().isEmpty()){
+        if (this.getRoleSet().isEmpty()){
             return "无";
         }
         List<String> stringList = new ArrayList<>();
-        roleList.forEach(r-> stringList.add(r.getName()));
+        roleSet.forEach(r-> stringList.add(r.getName()));
         return StringUtils.listToString(stringList,",");
     }
 }

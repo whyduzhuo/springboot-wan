@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Setter
 @Entity
 @Accessors(chain = true)
-@EqualsAndHashCode(callSuper = true,exclude = {"menuList","adminList"})
+@EqualsAndHashCode(callSuper = true,exclude = {"menuSet","adminList"})
 @ApiModel(value = "角色/职务",description = "此处的职务相当于原来的角色，部门-<职务><菜单。用户><职务><菜单")
 @Table(name = "T_BASE_ROLE")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
@@ -61,7 +61,7 @@ public class Role extends BaseEntity implements Serializable {
     private String remark;
 
     @ApiModelProperty(value = "多对多菜单列表")
-    private List<Menu> menuList = new LinkedList<>();
+    private Set<Menu> menuSet = new HashSet<>();
 
     @ApiModelProperty(value = "拥有该职务的全部用户")
     private List<Admin> adminList = new ArrayList<>();
@@ -77,12 +77,12 @@ public class Role extends BaseEntity implements Serializable {
     @JoinTable(name = "T_BASE_ROLE_MENU",
             joinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "menu_id", referencedColumnName = "id"))
-    public List<Menu> getMenuList() {
-        return menuList.stream().distinct().collect(Collectors.toList());
+    public Set<Menu> getMenuSet() {
+        return menuSet;
     }
 
 
-    @ManyToMany(mappedBy = "roleList")
+    @ManyToMany(mappedBy = "roleSet")
     public List<Admin> getAdminList() {
         return adminList;
     }
