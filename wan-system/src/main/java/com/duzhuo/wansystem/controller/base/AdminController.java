@@ -70,8 +70,6 @@ public class AdminController extends BaseController{
         return "/base/admin/edit";
     }
 
-
-
     @Log(title = "新增用户",operateType = OperateType.INSERT)
     @ApiOperation(value = "新增用户")
     @PostMapping("/addData")
@@ -96,8 +94,7 @@ public class AdminController extends BaseController{
     @RequiresPermissions("100400")
     @ResponseBody
     public Message del(Long id){
-        adminService.delete(id);
-        return Message.success("删除成功！");
+        return adminService.del(id);
     }
 
     @Log(title ="获取单个用户",operateType = OperateType.SELECT)

@@ -5,15 +5,7 @@
 <head>
     <meta charset="utf-8">
     <title>列表</title>
-    <script type="text/javascript" src="/static/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/jquery/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>
-    <link href="/static/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
-
-    <meta name="author" content="bianmaren">
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
+    <#include "/common/tmp/commom.ftl">
     <style>
         html{
             background-color: #f5f5f5;

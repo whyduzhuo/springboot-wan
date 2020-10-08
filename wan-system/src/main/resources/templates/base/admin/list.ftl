@@ -1,74 +1,25 @@
 <!DOCTYPE html>
-<!--[if IE 9]>         <html class="ie9 no-focus"> <![endif]-->
-<!--[if gt IE 9]><!-->
-<html class="no-focus"> <!--<![endif]-->
+<html class="ie9 no-focus">
 <head>
     <meta charset="utf-8">
     <title>列表</title>
-    <script type="text/javascript" src="/static/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/jquery/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>
-    <link href="/static/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
-
-    <meta name="author" content="bianmaren">
     <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
-    <style>
-        html{
-            background-color: #f5f5f5;
-        }
-        body{
-            margin: 10px;
-        }
-        tr th,tr td{
-            text-align: center;
-        }
-        .page-head{
-            display: flex;
-            padding: 5px 0px;
-            margin-bottom: 10px;
-        }
-        .page-head,.page-body{
-            border-radius: 5px;
-            padding: 5px;
-            background-color: #FFF;
-            box-shadow: 0px 0px 5px #999;
-        }
-        .page-head-left{
-            flex: 3;
-        }
-        .page-head-right{
-            flex: 7;
-        }
-        .search-item{
-            float: right;
-        }
-        .input-search{
-            padding: 2px 5px;
-            border: 1px solid #ccc;
-            line-height: 26px;
-            font-size: 14px;
-        }
-        .search-item label{
-            font-family: serif;
-            font-size: 16px;
-        }
-    </style>
+    <#include "/common/tmp/commom.ftl">
 </head>
 <body>
     <form id="listForm" action="list" method="get">
         <div class="page-head">
-            <div class="page-head-left">
+            <@pageHeadLeft>
                 <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">
                     <i class="fa fa-plus"></i>刷新</a>
-            </div>
-            <div class="page-head-right">
+            </@pageHeadLeft>
+            <@pageHeadRight>
                 <div class="search-item">
-                    <label>请求:</label>
-                    <input class="input-sm input-search" name=""/>
+                    <label>姓名:</label>
+                    <input class="input-sm input-search" name="search_like_realname" value="${searchParams['search_like_realname']}"/>
                 </div>
-            </div>
+            </@pageHeadRight>
         </div>
         <div class="page-body">
             <table class="table table-bordered" id="listTable">

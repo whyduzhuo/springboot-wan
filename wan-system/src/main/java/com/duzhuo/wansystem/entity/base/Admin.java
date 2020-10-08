@@ -1,6 +1,7 @@
 package com.duzhuo.wansystem.entity.base;
 
 import com.duzhuo.common.core.BaseEntity;
+import com.duzhuo.common.enums.IsDelete;
 import com.duzhuo.common.utils.StringUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
@@ -44,6 +45,9 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
 
     @ApiModelProperty(value = "密码")
     private String password;
+
+    @ApiModelProperty(value = "是否删除")
+    private IsDelete isDelete = IsDelete.否;
 
     @ApiModelProperty(value = "全部职务")
     private Set<Role> roleSet = new HashSet<>();

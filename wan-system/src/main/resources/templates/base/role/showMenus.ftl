@@ -2,27 +2,7 @@
 <html>
 <head>
     <title></title>
-    <link rel="shortcut icon" href="/static/favicon.ico"/>
-    <script type="text/javascript" src="/static/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/jquery/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>
-    <script type="text/javascript" src="/static/zTree_v3-master/js/jquery.ztree.all.js"></script>
-
-    <link href="/static/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" type="text/css">
-    <link href="/static/zTree_v3-master/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
-    <style type="text/css">
-        html{
-            height: 100%;
-            overflow: hidden;
-            background-color: #2b542c;
-        }
-        body{
-            height: 100%;
-            overflow-y: scroll;
-            padding: 10px;
-        }
-    </style>
+    <#include "/common/tmp/commom.ftl">
 </head>
 <body>
 <div style="position: fixed;height: 50px;">

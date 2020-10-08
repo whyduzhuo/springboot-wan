@@ -3,13 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script type="text/javascript" src="/static/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/jquery/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>
-    <link href="/static/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" type="text/css">
-    <script src="/static/js/clipboard.min.js"></script>
-
-    <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
+    <#include "/common/tmp/commom.ftl">
     <style>
         .layui-layer-title{
             overflow:auto !important;
@@ -265,16 +259,7 @@
             data: $('#dataForm').serialize(),
             success:function (res) {
                 layer.closeAll("loading");
-                var i = 7;
-                switch (res.type){
-                    case 'SUCCESS':i=1;
-                        break;
-                    case 'WARN':i = 0;
-                        break;
-                    case 'ERROR':i =2;
-                        break;
-                }
-                layer.confirm(res.message,{icon:i}, function (index) {
+                layer.confirm(res.msg,{icon:res.icon}, function (index) {
                     if(res.type=='SUCCESS'){
                         layer.load();
                         window.location.reload();

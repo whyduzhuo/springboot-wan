@@ -1,9 +1,11 @@
 package com.duzhuo.wansystem.dto.house;
 
+import oracle.jdbc.driver.DatabaseError;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author: wanhy
@@ -39,7 +41,15 @@ public class TemDto implements Comparable<TemDto>{
     public int compareTo(@NotNull TemDto o) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            return (int) (simpleDateFormat.parse(this.date).getTime()-simpleDateFormat.parse(o.getDate()).getTime());
+            Date date =simpleDateFormat.parse(this.date);
+            Date oDate=simpleDateFormat.parse(o.getDate());
+            if (date.after(oDate)){
+                return 1;
+            }else if (date.before(oDate)){
+                return -1;
+            }else {
+                return 0;
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }

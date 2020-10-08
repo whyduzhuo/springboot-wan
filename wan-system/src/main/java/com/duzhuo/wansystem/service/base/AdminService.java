@@ -2,6 +2,7 @@ package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.enums.IsDelete;
 import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.dao.base.AdminDao;
 import com.duzhuo.wansystem.entity.base.Admin;
@@ -51,8 +52,7 @@ public class AdminService extends BaseService<Admin,Long> {
     }
 
     public Admin findByUsernameAndPassword(String username, String password) {
-        Admin admin = adminDao.findByUsernameAndPassword(username,password);
-        return admin;
+        return adminDao.findByUsernameAndPasswordAndIsDelete(username,password, IsDelete.否);
     }
 
     public Admin login(String username, String password) throws Exception {
@@ -67,5 +67,15 @@ public class AdminService extends BaseService<Admin,Long> {
             throw new Exception("用户名或密码错误！");
         }
         return admin;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public Message del(Long id) {
+        Admin admin = super.find(id);
+        admin.setIsDelete(IsDelete.是);
+        return Message.success("删除成功！");
     }
 }

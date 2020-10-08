@@ -1,6 +1,7 @@
 package com.duzhuo.wansystem.dao.base;
 
 import com.duzhuo.common.core.BaseDao;
+import com.duzhuo.common.enums.IsDelete;
 import com.duzhuo.wansystem.entity.base.Admin;
 
 /**
@@ -14,5 +15,17 @@ public interface AdminDao extends BaseDao<Admin,Long> {
      * @param password
      * @return
      */
-    Admin findByUsernameAndPassword(String username, String password);
+    Admin findByUsernameAndPasswordAndIsDelete(String username, String password, IsDelete isDelete);
+
+    /**
+     *
+     * @return
+     */
+    Admin findByUsernameAndIsDelete(String username,IsDelete isDelete);
+
+    /**
+     *
+     * @return
+     */
+    Admin findByUsername(String username);
 }
