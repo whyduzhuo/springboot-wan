@@ -50,6 +50,7 @@
                     </tr>
                     </#list>
             </table>
+            <div class="row"><@pageingTemaplte customSearch.pagedata /></div>
         </div>
     </form>
 </body>

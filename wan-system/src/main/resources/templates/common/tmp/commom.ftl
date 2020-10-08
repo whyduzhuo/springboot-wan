@@ -3,6 +3,8 @@
 <script type="text/javascript" src="/static/jquery/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>
 <script type="text/javascript" src="/static/echart4.5/echarts.min.js"></script>
+<script type="text/javascript" src="/static/zTree_v3-master/js/jquery.ztree.all.js"></script>
+<link href="/static/zTree_v3-master/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css">
 <link rel="shortcut icon" href="/static/favicon.ico"/>
 <link href="/static/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
@@ -61,6 +63,10 @@
         -ms-user-select: none;
         user-select: none;
     }
+    #listForm{
+        width: 98%;
+        margin: 0 auto;
+    }
 </style>
 <script>
     function initSubmit() {
@@ -79,5 +85,18 @@
                 $(this).val($(this).find("option:first").val());
             }
         });
+    }
+
+    function pageSkip(pageNumber) {
+        layer.load();
+        $("#pageNumber").val(pageNumber);
+        $("#listForm").submit();
+    }
+
+    function changePagesize(pageSize) {
+        layer.load();
+        $("#pageSize").val(pageSize);
+        $("#pageNumber").val("1");
+        $("#listForm").submit();
     }
 </script>

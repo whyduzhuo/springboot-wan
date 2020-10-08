@@ -42,11 +42,11 @@ public class RoleController extends BaseController {
     @GetMapping("/list")
     public String list(CustomSearch<Role> customSearch, Model model, HttpServletRequest request){
         CommonUtil.initPage(request,customSearch);
-        Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,"search_");
+        Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,SEARCH_PREFIX);
         super.searchParamsTrim(searchParams);
         customSearch.setPagedata(roleService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
-        model.addAttribute("searchParams",searchParams);
+        model.addAttribute("searchParams",mapKeyAddPre(searchParams,SEARCH_PREFIX));
         return "/base/role/list";
     }
 

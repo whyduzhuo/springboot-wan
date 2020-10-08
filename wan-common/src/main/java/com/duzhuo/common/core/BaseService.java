@@ -288,7 +288,7 @@ public class BaseService<T, ID extends Serializable> {
      * @return
      */
     @Transactional(readOnly = true)
-    public Page<T> search(Map<String, Object> searchParams, CustomSearch customSearch) {
+    public Page<T> search(Map<String, Object> searchParams, CustomSearch<T> customSearch) {
 
         //构造排序列表
         List<Sort.Order> orderList = new ArrayList<>();

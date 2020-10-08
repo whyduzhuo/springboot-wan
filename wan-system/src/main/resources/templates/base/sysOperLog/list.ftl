@@ -1,74 +1,53 @@
 <!DOCTYPE html>
-<!--[if IE 9]>         <html class="ie9 no-focus"> <![endif]-->
-<!--[if gt IE 9]><!-->
-<html class="no-focus"> <!--<![endif]-->
+<html class="ie9 no-focus">
 <head>
     <meta charset="utf-8">
     <title>列表</title>
     <#include "/common/tmp/commom.ftl">
-    <style>
-        html{
-            background-color: #f5f5f5;
-        }
-        body{
-            margin: 10px;
-        }
-        tr th,tr td{
-            text-align: center;
-        }
-        .page-head{
-            display: flex;
-            padding: 5px 0px;
-            margin-bottom: 10px;
-        }
-        .page-head,.page-body{
-            border-radius: 5px;
-            padding: 5px;
-            background-color: #FFF;
-            box-shadow: 0px 0px 5px #999;
-        }
-        .page-head-left{
-            flex: 3;
-        }
-        .page-head-right{
-            flex: 7;
-        }
-        .search-item{
-            float: right;
-        }
-        .input-search{
-            padding: 2px 5px;
-            border: 1px solid #ccc;
-            line-height: 26px;
-            font-size: 14px;
-        }
-        .search-item label{
-            font-family: serif;
-            font-size: 16px;
-        }
-    </style>
 </head>
 <body>
-    <form id="listForm" action="list.html" method="get">
+    <form id="listForm" action="list" method="get">
         <div class="page-head">
-            <div class="page-head-left">
+            <@pageHeadLeft>
                 <a href="javascript:openImportWin();" class="btn btn-sm btn-success hidden-xs">
                     <i class="fa fa-plus"></i>从Excel文件导入音乐</a>
                 <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">
                     <i class="fa fa-plus"></i>刷新</a>
-            </div>
-            <div class="page-head-right">
+            </@pageHeadLeft>
+            <@pageHeadRight>
                 <div class="search-item">
-                    <label>请求:</label>
-                    <input class="input-sm input-search" name=""/>
+                    <label>请求方式:</label>
+                    <select class="input-sm input-search" name="search_eq_method">
+                        <option value="" selected>全部</option>
+                        <option value="GET" <#if searchParams['search_eq_method']=='GET'>selected</#if>>GET</option>
+                        <option value="POST" <#if searchParams['search_eq_method']=='POST'>selected</#if>>POST</option>
+                        <option value="DELETE" <#if searchParams['search_eq_method']=='DELETE'>selected</#if>>DELETE</option>
+                    </select>
                 </div>
-            </div>
+                <div class="search-item">
+                    <label>用户:</label>
+                    <input class="input-sm input-search" name="search_like_admin.realname" value="${searchParams['search_like_admin.realname']}"/>
+                </div>
+                <div class="search-item">
+                    <label>是否成功:</label>
+                    <select class="input-sm input-search" name="search_eq_status">
+                        <option value="" selected>全部</option>
+                        <#list yesOrNotList as yesOrNo>
+                            <option value="${yesOrNo}" <#if searchParams['search_eq_status']==yesOrNo>selected</#if>>${yesOrNo}</option>
+                        </#list>
+                    </select>
+                </div>
+
+
+            </@pageHeadRight>
         </div>
         <div class="page-body">
             <table class="table table-bordered" id="listTable">
                 <tr>
                     <th>id</th>
-                    <th>请求</th>
+                    <th>用户</th>
+                    <th>IP</th>
+                    <th>请求地址</th>
                     <th>操作类型</th>
                     <th>请求方式</th>
                     <th>是否成功</th>
@@ -76,13 +55,16 @@
                 <#list customSearch.pagedata.content as data>
                 <tr>
                     <td>${data.id}</td>
+                    <td>${data.admin.realname}</td>
+                    <td>${data.operIp}</td>
                     <td>${data.operUrl}</td>
                     <td>${data.operateType}</td>
                     <td>${data.method}</td>
-                    <td>${data.status}</td>
+                    <td>${data.statusHtml}</td>
                 </tr>
                 </#list>
             </table>
+            <div class="row"><@pageingTemaplte customSearch.pagedata /></div>
         </div>
     </form>
 

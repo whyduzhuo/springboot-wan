@@ -35,11 +35,11 @@ public class DictModelController extends BaseController {
     @GetMapping("/list")
     public String list(HttpServletRequest request, CustomSearch<DictModel> customSearch, Model model){
         CommonUtil.initPage(request,customSearch);
-        Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,"search_");
+        Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,SEARCH_PREFIX);
         customSearch.setPagedata(dictModelService.search(searchParams,customSearch));
         super.searchParamsTrim(searchParams);
         model.addAttribute("customSearch",customSearch);
-        model.addAttribute("searchParams",searchParams);
+        model.addAttribute("searchParams",mapKeyAddPre(searchParams,SEARCH_PREFIX));
         return "";
     }
 

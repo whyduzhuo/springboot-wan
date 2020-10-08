@@ -53,11 +53,11 @@ public class AdminController extends BaseController{
     @ApiOperation(value = "用户列表")
     public String list(HttpServletRequest request, CustomSearch<Admin> customSearch, Model model){
         CommonUtil.initPage(request,customSearch);
-        Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,"search_");
+        Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,SEARCH_PREFIX);
         super.searchParamsTrim(searchParams);
         customSearch.setPagedata(adminService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
-        model.addAttribute("searchParams",searchParams);
+        model.addAttribute("searchParams",mapKeyAddPre(searchParams, SEARCH_PREFIX));
         return "/base/admin/list";
     }
 

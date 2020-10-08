@@ -5,7 +5,9 @@ import com.duzhuo.common.core.BaseController;
 import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
+import com.duzhuo.common.enums.YesOrNo;
 import com.duzhuo.common.utils.CommonUtil;
+import com.duzhuo.common.utils.Tools;
 import com.duzhuo.wansystem.entity.base.SysOperLog;
 import com.duzhuo.wansystem.service.base.AdminService;
 import com.duzhuo.wansystem.service.base.SysOperLogService;
@@ -22,6 +24,7 @@ import org.springframework.web.util.WebUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.tools.Tool;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Map;
@@ -41,18 +44,20 @@ public class SysOperLogController extends BaseController {
     @Resource
     private AdminService adminService;
 
-    @Log(title = "日志列表",operateType = OperateType.SELECT)
     @GetMapping("/list")
     @RequiresPermissions("1001")
     @ApiOperation(value = "日志列表")
     public String list(HttpServletRequest request,CustomSearch<SysOperLog> customSearch, Model model){
         CommonUtil.initPage(request,customSearch);
-        Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,"search_");
+        Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,SEARCH_PREFIX);
+        if (Tools.vaildeParam(searchParams.get("eq_status"))){
+            searchParams.put("eq_status",YesOrNo.valueOf(searchParams.get("eq_status").toString()));
+        }
         super.searchParamsTrim(searchParams);
-        customSearch.setPageSize(60);
         customSearch.setPagedata(sysOperLogService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
-        model.addAttribute("searchParams",searchParams);
+        model.addAttribute("searchParams",mapKeyAddPre(searchParams,SEARCH_PREFIX));
+        model.addAttribute("yesOrNotList", YesOrNo.values());
         return "/base/sysOperLog/list";
     }
 

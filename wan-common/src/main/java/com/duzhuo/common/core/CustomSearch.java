@@ -26,7 +26,7 @@ public class CustomSearch<T> implements Serializable {
 	/**
 	 * 默认每页20条
 	 */
-	private static final int DEFAULT_PAGE_SIZE = 20;
+	private static final int DEFAULT_PAGE_SIZE = 10;
 
 	/**
 	 * 每页最多999999条

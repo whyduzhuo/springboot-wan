@@ -47,12 +47,12 @@ public class CityUrlController extends BaseController {
     @ApiOperation(value = "城市代码--列表")
     public String list(HttpServletRequest request,CustomSearch<CityUrl> customSearch, Model model){
         CommonUtil.initPage(request,customSearch);
-        Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,"search_");
+        Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,SEARCH_PREFIX);
         super.searchParamsTrim(searchParams);
         customSearch.setPageSize(60);
         customSearch.setPagedata(cityUrlService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
-        model.addAttribute("searchParams",searchParams);
+        model.addAttribute("searchParams",mapKeyAddPre(searchParams,SEARCH_PREFIX));
         return "***";
     }
 

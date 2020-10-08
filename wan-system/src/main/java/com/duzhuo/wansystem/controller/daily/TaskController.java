@@ -1,6 +1,7 @@
 package com.duzhuo.wansystem.controller.daily;
 
 import com.duzhuo.common.annotation.Log;
+import com.duzhuo.common.core.BaseController;
 import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
@@ -29,7 +30,7 @@ import static org.springframework.web.util.WebUtils.getParametersStartingWith;
 @Api(tags = "任务")
 @Controller
 @RequestMapping("/daily/issue")
-public class TaskController {
+public class TaskController extends BaseController{
     @Resource
     private IssueService issueService;
 
@@ -38,7 +39,7 @@ public class TaskController {
     @GetMapping("/list")
     public String list(HttpServletRequest request, CustomSearch<Issue> customSearch){
         CommonUtil.initPage(request,customSearch);
-        Map<String,Object> searchParams = getParametersStartingWith(request,"search_");
+        Map<String,Object> searchParams = getParametersStartingWith(request,SEARCH_PREFIX);
         customSearch.getOrders().add(new Sort.Order(Sort.Direction.DESC,"createDate"));
         return "";
     }

@@ -3,8 +3,6 @@
 <head>
     <title></title>
     <#include "/common/tmp/commom.ftl">
-    <script type="text/javascript" src="/static/zTree_v3-master/js/jquery.ztree.all.js"></script>
-    <link href="/static/zTree_v3-master/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div style="position: fixed;height: 50px;">

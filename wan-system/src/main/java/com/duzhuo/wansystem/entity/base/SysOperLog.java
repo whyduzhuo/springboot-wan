@@ -76,4 +76,15 @@ public class SysOperLog extends BaseEntity {
     public Admin getAdmin() {
         return admin;
     }
+
+    @Transient
+    public String getStatusHtml(){
+        if (this.status==YesOrNo.是){
+            return "<span  class=\"label label-success\">"+this.status+"</span>";
+        }
+        if (this.status==YesOrNo.否){
+            return "<span  class=\"label label-danger\">"+this.status+"</span>";
+        }
+        return "";
+    }
 }

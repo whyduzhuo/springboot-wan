@@ -31,7 +31,7 @@
                 <a href="javascript:ceshi();" class="btn btn-sm btn-success hidden-xs">
                     <i class="fa fa-plus"></i>测试</a>
                 <label>日期:</label>
-                <input class="input-sm input-search" id="date" name="date" value="${date}"/>
+                <input class="input-sm input-search" autocomplete="off" id="date" name="date" value="${date}"/>
             </div>
          </@pageHeadRight>
     </div>

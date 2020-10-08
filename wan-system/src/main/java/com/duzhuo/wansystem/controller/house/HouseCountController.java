@@ -60,7 +60,6 @@ public class HouseCountController extends BaseController {
         Long start = System.currentTimeMillis();
         model.addAttribute("dataList",houseCountService.statisticCity());
         model.addAttribute("contry",houseCountService.statisticContry());
-        System.err.println(System.currentTimeMillis()-start);
         return "/house/houseCount/city";
     }
 

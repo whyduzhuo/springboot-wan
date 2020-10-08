@@ -15,18 +15,10 @@ public class CommonUtil {
      */
     public static void initPage(HttpServletRequest request, CustomSearch customSearch) {
         String pageInit = request.getParameter("pageInit");
-        String isSearch = request.getParameter("isSearch");
         if (StringUtils.isNotBlank(pageInit)) {
-            if("yes".equals(pageInit) || "on".equals(pageInit) || "true".equals(pageInit)){
+            if("yes".equals(pageInit)){
                 customSearch.setPageNumber(1);
             }
-
-        }
-        if (StringUtils.isNotBlank(isSearch)) {
-            if("yes".equals(isSearch) || "true".equals(isSearch)){
-                customSearch.setPageNumber(1);
-            }
-
         }
     }
 }
