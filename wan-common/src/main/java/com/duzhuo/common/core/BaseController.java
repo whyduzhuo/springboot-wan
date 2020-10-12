@@ -3,6 +3,7 @@ package com.duzhuo.common.core;
 import com.duzhuo.common.utils.StringUtils;
 import org.apache.commons.collections.map.HashedMap;
 
+import java.awt.image.Kernel;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -17,8 +18,9 @@ public class BaseController {
     public static final String SEARCH_PREFIX = "search_";
 
     public void searchParamsTrim(Map<String,Object> searchParams){
-        Set<String> keys = searchParams.keySet();
-        keys.forEach(k->searchParams.get(k).toString().trim());
+        searchParams.forEach((k,v)->{
+            searchParams.put(k,v.toString().trim());
+        });
     }
 
     /**

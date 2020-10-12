@@ -3,6 +3,7 @@ package com.duzhuo.wansystem.aspectj;
 
 import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.enums.YesOrNo;
+import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.thread.ThreadPoolService;
 import com.duzhuo.common.utils.JSON;
 import com.duzhuo.common.utils.ServletUtils;
@@ -90,8 +91,11 @@ public class LogAspect {
             }
 
             if (e != null) {
+                if (!(e instanceof ServiceException)){
+                    operLog.setHaveException(YesOrNo.是);
+                }
                 operLog.setStatus(YesOrNo.否);
-                operLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 2000));
+                operLog.setErrorMsg(StringUtils.substring(e.toString(), 0, 2000));
             }
             // 设置请求方式
             operLog.setMethod(ServletUtils.getRequest().getMethod());

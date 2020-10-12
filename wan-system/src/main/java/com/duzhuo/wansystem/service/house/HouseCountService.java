@@ -124,7 +124,7 @@ public class HouseCountService extends BaseService<HouseCount, Long>{
                 }
             });
         }
-        return Message.success("大约20秒后刷新页面");
+        return Message.success("大约10秒后刷新页面");
     }
 
     /**

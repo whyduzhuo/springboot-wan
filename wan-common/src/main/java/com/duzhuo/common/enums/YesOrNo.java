@@ -6,7 +6,7 @@ package com.duzhuo.common.enums;
  */
 
 public enum  YesOrNo {
-    其他,
+    未知,
     否,
     是
 }

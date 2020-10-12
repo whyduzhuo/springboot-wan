@@ -15,8 +15,7 @@
             <a href="javascript:addBatch();" class="btn btn-sm btn-danger hidden-xs">
                 <i class="fa fa-plus"></i>更新二手房</a>
             </@shiro.hasPermission>
-            <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">
-                <i class="fa fa-plus"></i>刷新</a>
+            <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">刷新</a>
          </@pageHeadLeft>
          <@pageHeadRight>
             <div class="search-item">
@@ -132,7 +131,7 @@
         },
         yAxis: {
             type: 'category',
-            data: [<#list data as d>'${d.NAME}',</#list>]
+            data: [<#list data as d>'${d.NAME}',</#list>],
         },
         series: [
             {
@@ -149,6 +148,11 @@
         ]
     };
     myChart.setOption(option);
+
+    myChart.on('click', function (params) {
+        console.log(params.name);
+        window.open("${base}/house/cityurl/lianjia?cityName="+params.name);
+    })
 </script>
 </body>
 </html>

@@ -68,6 +68,10 @@ public class SysOperLog extends BaseEntity {
     private YesOrNo status;
 
     @JsonProperty
+    @ApiModelProperty(value = "是否异常")
+    private YesOrNo haveException = YesOrNo.否;
+
+    @JsonProperty
     @ApiModelProperty(value = "错误消息",dataType ="String")
     private String errorMsg;
 
@@ -84,6 +88,23 @@ public class SysOperLog extends BaseEntity {
         }
         if (this.status==YesOrNo.否){
             return "<span  class=\"label label-danger\">"+this.status+"</span>";
+        }
+        if(this.status==YesOrNo.未知){
+            return "<span  class=\"label label-waring\">"+this.status+"</span>";
+        }
+        return "";
+    }
+
+    @Transient
+    public String getHaveExceptionHtml(){
+        if (this.haveException==YesOrNo.否){
+            return "<span  class=\"label label-success\">"+this.haveException+"</span>";
+        }
+        if (this.haveException==YesOrNo.是){
+            return "<span  class=\"label label-danger\">"+this.haveException+"</span>";
+        }
+        if(this.haveException==YesOrNo.未知){
+            return "<span  class=\"label label-warning\">"+this.haveException+"</span>";
         }
         return "";
     }

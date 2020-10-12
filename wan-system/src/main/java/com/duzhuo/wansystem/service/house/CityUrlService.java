@@ -88,4 +88,8 @@ public class CityUrlService extends BaseService<CityUrl, Long> {
     public List<CityUrl> findByLjUrlIsNotNull() {
         return cityUrlDao.findByLjUrlIsNotNull();
     }
+
+    public CityUrl findName(String cityName) {
+        return cityUrlDao.findByName(cityName);
+    }
 }

@@ -11,17 +11,16 @@
             <@pageHeadLeft>
                 <a href="javascript:openImportWin();" class="btn btn-sm btn-success hidden-xs">
                     <i class="fa fa-plus"></i>从Excel文件导入音乐</a>
-                <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">
-                    <i class="fa fa-plus"></i>刷新</a>
+                <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">刷新</a>
             </@pageHeadLeft>
             <@pageHeadRight>
                 <div class="search-item">
                     <label>请求方式:</label>
                     <select class="input-sm input-search" name="search_eq_method">
                         <option value="" selected>全部</option>
-                        <option value="GET" <#if searchParams['search_eq_method']=='GET'>selected</#if>>GET</option>
-                        <option value="POST" <#if searchParams['search_eq_method']=='POST'>selected</#if>>POST</option>
-                        <option value="DELETE" <#if searchParams['search_eq_method']=='DELETE'>selected</#if>>DELETE</option>
+                        <#list methodList as method>
+                             <option value="${method}" <#if searchParams['search_eq_method']==method>selected</#if>>${method}</option>
+                        </#list>
                     </select>
                 </div>
                 <div class="search-item">
@@ -29,11 +28,24 @@
                     <input class="input-sm input-search" name="search_like_admin.realname" value="${searchParams['search_like_admin.realname']}"/>
                 </div>
                 <div class="search-item">
+                    <label>请求地址:</label>
+                    <input class="input-sm input-search" name="search_like_operUrl" value="${searchParams['search_like_operUrl']}"/>
+                </div>
+                <div class="search-item">
                     <label>是否成功:</label>
                     <select class="input-sm input-search" name="search_eq_status">
                         <option value="" selected>全部</option>
                         <#list yesOrNotList as yesOrNo>
                             <option value="${yesOrNo}" <#if searchParams['search_eq_status']==yesOrNo>selected</#if>>${yesOrNo}</option>
+                        </#list>
+                    </select>
+                </div>
+                <div class="search-item">
+                    <label>是否报错:</label>
+                    <select class="input-sm input-search" name="search_eq_haveException">
+                        <option value="" selected>全部</option>
+                        <#list yesOrNotList as yesOrNo>
+                            <option value="${yesOrNo}" <#if searchParams['search_eq_haveException']==yesOrNo>selected</#if>>${yesOrNo}</option>
                         </#list>
                     </select>
                 </div>
@@ -47,10 +59,13 @@
                     <th>id</th>
                     <th>用户</th>
                     <th>IP</th>
-                    <th>请求地址</th>
+                    <th style="width: 15%">请求地址</th>
                     <th>操作类型</th>
                     <th>请求方式</th>
                     <th>是否成功</th>
+                    <td>是否报错</td>
+                    <td>请求参数</td>
+                    <td>异常信息</td>
                 </tr>
                 <#list customSearch.pagedata.content as data>
                 <tr>
@@ -61,6 +76,21 @@
                     <td>${data.operateType}</td>
                     <td>${data.method}</td>
                     <td>${data.statusHtml}</td>
+                    <td>${data.haveExceptionHtml}</td>
+                    <td>
+                    <#if data.operParm?length gt 20>
+                        <a href="javascript:;" onclick="showOperParm('${data.id}')">${data.operParm?substring(0,20)}...</a>
+                    <#else>
+                        ${data.operParm}
+                    </#if>
+                    </td>
+                    <td>
+                    <#if data.errorMsg?length gt 20>
+                        <a href="javascript:;" onclick="showOperParm('${data.id}')">${data.errorMsg?substring(0,20)}...</a>
+                    <#else>
+                        ${data.errorMsg}
+                    </#if>
+                    </td>
                 </tr>
                 </#list>
             </table>
@@ -116,6 +146,33 @@
         </div>
     </div>
     <script>
+
+        function showOperParm(id) {
+            var operParm = "";
+            var errorMsg = "";
+            $.ajax({
+                url:'find?id='+id,
+                type: "get",
+                async:false,
+                success:function (res) {
+                    operParm = res.data.operParm;
+                    errorMsg = res.data.errorMsg;
+                },
+                error:function (XMLHttpRequest) {
+                    alert("系统错误");
+                    console.log(XMLHttpRequest);
+                }
+
+            });
+            layer.open({
+                type: 1,
+                title: '请求参数',
+                maxmin: true,
+                area: ['70%', '70%'],
+                content: "<div style='padding: 20px '>"+operParm+"<div style='color: #FF3B30;padding-top: 20px '>"+errorMsg+"</div></div>"
+            })
+        }
+        
         //打开导入框
         function openImportWin() {
             $('#importMessage').modal('show');

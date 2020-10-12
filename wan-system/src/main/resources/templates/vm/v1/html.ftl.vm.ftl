@@ -121,16 +121,7 @@
                 async:false,
                 success: function (res) {
                     layer.closeAll("loading");
-                    var i = 7;
-                    switch (res.type){
-                        case 'success':i=1;
-                            break;
-                        case 'warn':i = 0;
-                            break;
-                        case 'error':i =2;
-                            break;
-                    }
-                    layer.confirm(res.content,{icon:i}, function (index) {
+                    layer.confirm(res.content,{icon:res.icon}, function (index) {
                         if(res.type=='success'){
                             layer.load();
                             window.location.reload();

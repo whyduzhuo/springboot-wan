@@ -11,8 +11,7 @@
     <form id="listForm" action="list" method="get">
         <div class="page-head">
             <@pageHeadLeft>
-                <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">
-                    <i class="fa fa-plus"></i>刷新</a>
+                <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">刷新</a>
             </@pageHeadLeft>
             <@pageHeadRight>
                 <div class="search-item">

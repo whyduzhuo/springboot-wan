@@ -12,6 +12,7 @@ import com.duzhuo.wansystem.entity.house.CityUrl;
 import com.duzhuo.wansystem.service.house.CityUrlService;
 import com.duzhuo.wansystem.test.CallableAndFuture;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -132,5 +133,9 @@ public class CityUrlController extends BaseController {
         return "";
     }
 
-
+    @GetMapping("/lianjia")
+    public String linajia(String cityName){
+        CityUrl cityUrl = cityUrlService.findName(cityName);
+        return "redirect:"+cityUrl.getLjUrl();
+    }
 }

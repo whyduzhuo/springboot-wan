@@ -50,14 +50,18 @@ public class SysOperLogController extends BaseController {
     public String list(HttpServletRequest request,CustomSearch<SysOperLog> customSearch, Model model){
         CommonUtil.initPage(request,customSearch);
         Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,SEARCH_PREFIX);
+        super.searchParamsTrim(searchParams);
         if (Tools.vaildeParam(searchParams.get("eq_status"))){
             searchParams.put("eq_status",YesOrNo.valueOf(searchParams.get("eq_status").toString()));
         }
-        super.searchParamsTrim(searchParams);
+        if (Tools.vaildeParam(searchParams.get("eq_haveException"))){
+            searchParams.put("eq_haveException",YesOrNo.valueOf(searchParams.get("eq_haveException").toString()));
+        }
         customSearch.setPagedata(sysOperLogService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
         model.addAttribute("searchParams",mapKeyAddPre(searchParams,SEARCH_PREFIX));
         model.addAttribute("yesOrNotList", YesOrNo.values());
+        model.addAttribute("methodList",RequestMethod.values());
         return "/base/sysOperLog/list";
     }
 
@@ -89,12 +93,7 @@ public class SysOperLogController extends BaseController {
     @PostMapping("/importData")
     @ResponseBody
     public Message importData(MultipartFile file) throws IOException {
-        try {
-            return sysOperLogService.importData(file);
-        }catch (IOException e){
-            logger.error("文件导入失败！",e);
-            throw e;
-        }
+        return sysOperLogService.importData(file);
     }
 
 }
