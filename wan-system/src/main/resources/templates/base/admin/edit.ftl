@@ -47,27 +47,10 @@
         if(data_id!=null && data_id!=""){
             url ='edit';
         }
-        console.log($('#dataForm').serialize());
-        $.ajax({
-            url: url,
-            type: "POST",
-            data: $('#dataForm').serialize(),
-            success: function (res) {
-                layer.closeAll("loading");
-                layer.confirm(res.msg,{icon:res.icon}, function (index) {
-                    if(res.type =='SUCCESS'){
-                        layer.load();
-                        if(url=='addData'){
-                            window.parent.addMenu(res.data);
-                        }
-                        closeLayer();
-                    }
-                    layer.close(index);
-                });
-            },
-            error: function (XMLHttpRequest) {
-                layer.closeAll("loading");
-                alertErrorMessage(XMLHttpRequest);
+        var data = $('#dataForm').serialize();
+        ajaxPost(url,data,function () {
+            if(url=='addData'){
+                window.parent.addMenu(res.data);
             }
         });
     }

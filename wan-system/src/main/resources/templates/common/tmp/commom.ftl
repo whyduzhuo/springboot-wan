@@ -99,4 +99,111 @@
         $("#pageNumber").val("1");
         $("#listForm").submit();
     }
+
+    function ajaxSend(url,type,data,successFun,errorFun) {
+        layer.load();
+        $.ajax({
+            url: url,
+            type: type,
+            data: data,
+            success: function (res) {
+                layer.closeAll("loading");
+                if(res.type =='SUCCESS'){
+                    successFun(res);
+                }else {
+                    errorFun(res);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                layer.closeAll("loading");
+                layer.open({
+                    type: 1,
+                    title: '请求错误！',
+                    maxmin: true,
+                    area: ['70%', '70%'],
+                    content:XMLHttpRequest
+                })
+            }
+        });
+    }
+    
+    function ajaxSubmit(url,type,data,successFun,errorFun) {
+        layer.load();
+        $.ajax({
+            url: url,
+            type: type,
+            data: data,
+            success: function (res) {
+                layer.closeAll("loading");
+                layer.confirm(res.msg,{icon:res.icon}, function (index) {
+                    layer.close(index);
+                    if(res.type =='SUCCESS'){
+                        successFun(res);
+                    }else {
+                        errorFun(res);
+                    }
+                });
+            },
+            error: function (XMLHttpRequest) {
+                layer.closeAll("loading");
+                layer.open({
+                    type: 1,
+                    title: '请求错误！',
+                    maxmin: true,
+                    area: ['70%', '70%'],
+                    content:XMLHttpRequest
+                })
+            }
+        });
+    }
+    
+    function ajaxPost(url,data,successFun,errorFun) {
+        ajaxSubmit(url,"POST",data,successFun,errorFun);
+    }
+    
+    function ajaxGet(url,data,successFun,errorFun) {
+        ajaxSubmit(url,"GET",data,successFun,errorFun);
+    }
+    
+    function ajaxDelete(url,data,successFun,errorFun) {
+        data.append("_method","delete");
+        ajaxSubmit(url,"POST",data,successFun,errorFun);
+    }
+    
+    function isBlank(s) {
+        if(s ==undefined){
+            return true;
+        }
+        if(s == null){
+            return true;
+        }
+        if(typeof(s)=='string'){
+            if(s.replace(/^\s*|\s*$/g,'')==''){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    function isNotBlank(s) {
+        return !isBlank(s);
+    }
+
+    /**
+     * 递归菜单树
+     * @param children
+     * @param node
+     * @param arry
+     */
+    function pushChildren(children,node,arry) {
+        for (var i in arry) {
+            var node1 = arry[i];
+            if((isBlank(node1.pid) && isBlank(node))|| (isNotBlank(node) && isNotBlank(node1.pid) && node1.pid == node.id)){
+                pushChildren(node1.children,node1, arry);
+                children.push(node1);
+            }
+        }
+    }
+
+
 </script>

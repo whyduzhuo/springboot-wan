@@ -7,7 +7,6 @@ import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Menu;
-import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.service.base.MenuService;
 import com.duzhuo.wansystem.service.base.RoleService;
 import io.swagger.annotations.Api;
@@ -68,7 +67,7 @@ public class MenuController extends BaseController {
         menu.setParent(parent);
         menu.setOrder(menuService.getMaxOrder(parent.getId())+1);
         menu.setNum(menuService.createId(parent));
-        model.addAttribute("typeList",Menu.Type.values());
+        model.addAttribute("typeList",Menu.TypeEnum.values());
         model.addAttribute("data",menu);
         return "/base/menu/edit";
     }
@@ -88,7 +87,7 @@ public class MenuController extends BaseController {
     @GetMapping("/editWin")
     public String editWin(Model model,Long id){
         Menu menu = menuService.find(id);
-        model.addAttribute("typeList",Menu.Type.values());
+        model.addAttribute("typeList",Menu.TypeEnum.values());
         model.addAttribute("data",menu);
         return "/base/menu/edit";
     }

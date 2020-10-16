@@ -31,7 +31,7 @@ public class Menu extends BaseEntity implements Comparable<Menu>,Serializable {
 
     private static final long serialVersionUID = -1674442746152794678L;
 
-    public enum Os{
+    public enum OsEnum{
         /**
          *
          */
@@ -41,7 +41,7 @@ public class Menu extends BaseEntity implements Comparable<Menu>,Serializable {
          */
         移动端,
     }
-    public enum Type{
+    public enum TypeEnum{
         /**
          *
          */
@@ -82,11 +82,11 @@ public class Menu extends BaseEntity implements Comparable<Menu>,Serializable {
 
     @JsonProperty
     @ApiModelProperty(value = "移动端还是PC端菜单",dataType = "number")
-    private Os os = Os.PC端;
+    private OsEnum os = OsEnum.PC端;
 
     @JsonProperty
     @ApiModelProperty(value = "页面Or按钮",dataType = "number")
-    private Type type;
+    private TypeEnum type;
 
     @JsonProperty
     @ApiModelProperty(value = "备注")

@@ -77,7 +77,7 @@ public class RoleService extends BaseService<Role,Long> {
             throw new ServiceException("已存在！");
         }
         Role role = super.find(roleVo.getId());
-        if (role.getType()==Role.Type.固定职务){
+        if (role.getType()==Role.TypeEnum.固定职务){
             throw new ServiceException("固定职务/角色，不可修改！");
         }
         role.setName(roleVo.getName()).setOrganization(roleVo.getOrganization());
@@ -124,7 +124,7 @@ public class RoleService extends BaseService<Role,Long> {
         return Message.success("删除成功！");
     }
 
-    /**mvn
+    /**
      * 查询是否有某角色
      * @param roleId
      * @param adminId
@@ -183,7 +183,7 @@ public class RoleService extends BaseService<Role,Long> {
     public List<Menu> getMenus(Collection<Role> roles){
         Set<Menu> menuSet = new HashSet<>();
         roles.forEach(r->menuSet.addAll(r.getMenuSet()));
-        menuSet.removeIf(r->r.getType()==Menu.Type.按钮);
+        menuSet.removeIf(r->r.getType()==Menu.TypeEnum.按钮);
         return new ArrayList<>(menuSet);
     }
 

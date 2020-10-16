@@ -70,21 +70,21 @@ public class MenuService extends BaseService<Menu,Long> {
             throw new ServiceException("启用or禁用？");
         }
         if (menuVO.getParent()==null){
-            if (menuVO.getType()==Menu.Type.按钮){
+            if (menuVO.getType()==Menu.TypeEnum.按钮){
                 throw new ServiceException("一级菜单不能为按钮！");
             }
         }else {
-            if (menuVO.getParent().getType()==Menu.Type.目录){
-                if (menuVO.getType()==Menu.Type.按钮){
+            if (menuVO.getParent().getType()==Menu.TypeEnum.目录){
+                if (menuVO.getType()==Menu.TypeEnum.按钮){
                     throw new ServiceException("目录下不能为按钮！");
                 }
             }
-            if (menuVO.getParent().getType()==Menu.Type.页面){
-                if (menuVO.getType()!=Menu.Type.按钮){
+            if (menuVO.getParent().getType()==Menu.TypeEnum.页面){
+                if (menuVO.getType()!=Menu.TypeEnum.按钮){
                     throw new ServiceException("页面上只能加按钮！");
                 }
             }
-            if (menuVO.getParent().getType()==Menu.Type.按钮){
+            if (menuVO.getParent().getType()==Menu.TypeEnum.按钮){
                 throw new ServiceException("按钮下不可加东西！");
             }
         }
@@ -255,9 +255,9 @@ public class MenuService extends BaseService<Menu,Long> {
             if (m.getParent() == null || !m.getParent().getId().equals(menu.getId())) {
                 continue;
             }
-            if (m.getType() == Menu.Type.页面) {
+            if (m.getType() == Menu.TypeEnum.页面) {
                 menuList.add(m);
-            } else if (m.getType() == Menu.Type.目录) {
+            } else if (m.getType() == Menu.TypeEnum.目录) {
                 m.setChildren(findChird(m, menus));
             }
         }
@@ -278,10 +278,10 @@ public class MenuService extends BaseService<Menu,Long> {
         ztree.setTitle(menu.getRemark());
         ztree.setNum(menu.getNum().toString());
         ztree.setOpen(true);
-        if (menu.getType()==Menu.Type.按钮){
+        if (menu.getType()==Menu.TypeEnum.按钮){
             ztree.setIcon(Ztree.BUTTON_ICON);
         }
-        if (menu.getType()==Menu.Type.页面){
+        if (menu.getType()==Menu.TypeEnum.页面){
             ztree.setIcon(Ztree.PAGE_ICON);
         }
         ztree.setType(menu.getType().toString());
@@ -291,7 +291,7 @@ public class MenuService extends BaseService<Menu,Long> {
     /**
      * 可勾选
      * @param menu
-     * @param menuList，已勾选的菜单
+     * @param menuSet，已勾选的菜单
      * @return
      */
     private Ztree menuToTree(Menu menu,Set<Menu> menuSet){
@@ -303,10 +303,10 @@ public class MenuService extends BaseService<Menu,Long> {
         ztree.setNum(menu.getNum().toString());
         ztree.setOpen(true);
         ztree.setNocheck(false);
-        if (menu.getType()==Menu.Type.按钮){
+        if (menu.getType()==Menu.TypeEnum.按钮){
             ztree.setIcon(Ztree.BUTTON_ICON);
         }
-        if (menu.getType()==Menu.Type.页面){
+        if (menu.getType()==Menu.TypeEnum.页面){
             ztree.setIcon(Ztree.PAGE_ICON);
         }
         ztree.setType(menu.getType().toString());

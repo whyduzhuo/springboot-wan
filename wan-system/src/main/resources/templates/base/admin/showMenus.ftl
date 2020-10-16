@@ -125,21 +125,6 @@
         return false;
     }
 
-    /**
-     * 递归组装树结构
-     * @param children
-     * @param node
-     * @param arry
-     */
-    function pushChildren(children,node,array) {
-        for (var i in array) {
-            var node1 = array[i];
-            if((node1.pid==null && node==null)|| (node!=null && node1.pid!=null && node1.pid === node.id)){
-                children.push(node1);
-                pushChildren(node1.children,node1, array);
-            }
-        }
-    }
 
 </script>
 </html>

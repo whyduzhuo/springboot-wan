@@ -33,7 +33,7 @@ wan:
     support-file-type: bmp,gif,jpg,jpeg,png,doc,docx,xls,xlsx,ppt,pptx,txt,rar,pdf
 
 server:
-  port: 8082    #端口号
+  port: 8083    #端口号
   servlet:
     context-path: /
   tomcat:

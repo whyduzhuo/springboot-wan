@@ -1,6 +1,8 @@
 package com.duzhuo.wansystem.aspectj;
 
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.enums.YesOrNo;
 import com.duzhuo.common.exception.ServiceException;
@@ -13,6 +15,7 @@ import com.duzhuo.wansystem.async.AsyncFactory;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.SysOperLog;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -41,7 +44,9 @@ public class LogAspect {
     @Resource
     private ThreadPoolService threadPoolService;
 
-    // 配置织入点
+    /**
+     * 配置织入点
+     */
     @Pointcut(value = "@annotation(com.duzhuo.common.annotation.Log)")
     public void logPointCut() {
     }
@@ -95,7 +100,8 @@ public class LogAspect {
                     operLog.setHaveException(YesOrNo.是);
                 }
                 operLog.setStatus(YesOrNo.否);
-                operLog.setErrorMsg(StringUtils.substring(e.toString(), 0, 2000));
+                String stackTrace=ExceptionUtils.getStackTrace(e);
+                operLog.setErrorMsg(StringUtils.substring(stackTrace, 0, 3000));
             }
             // 设置请求方式
             operLog.setMethod(ServletUtils.getRequest().getMethod());

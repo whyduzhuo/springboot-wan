@@ -66,6 +66,7 @@
                     <td>是否报错</td>
                     <td>请求参数</td>
                     <td>异常信息</td>
+                    <td>响应结果</td>
                 </tr>
                 <#list customSearch.pagedata.content as data>
                 <tr>
@@ -91,6 +92,13 @@
                         ${data.errorMsg}
                     </#if>
                     </td>
+                    <td>
+                    <#if data.jsonResult?length gt 20>
+                        <a href="javascript:;" onclick="showOperParm('${data.id}')">${data.jsonResult?substring(0,20)}...</a>
+                    <#else>
+                        ${data.jsonResult}
+                    </#if>
+                    </td>
                 </tr>
                 </#list>
             </table>
@@ -100,185 +108,24 @@
 
     <script type="text/javascript">
         function refulsh() {
+            layer.load();
             window.location.reload();
         }
-        
-
-    </script>
-
-    <#--文件导入模态框-->
-    <div class="modal fade" id="importMessage" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-dialog-popin">
-            <form id="putInExcel" class="form-horizontal push-10-t" method="post" enctype ="multipart/form-data"
-                  style="max-width: 400px;margin: 0 auto">
-                <div class="modal-content">
-                    <div class="block block-themed block-transparent remove-margin-b">
-                        <div class="block-header bg-info">
-                            <ul class="block-options">
-                                <li>
-                                    <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
-                                </li>
-                            </ul>
-                            <h3 class="block-title">Excel数据导入</h3>
-                        </div>
-                        <div class="block-content">
-                            <div class="form-group">
-                                <div class="col-xs-12 col-md-12">
-                                    <label for="filePath">选择文件</label>
-                                    <input id="file" type="file" name="file" class="form-control input-sm">
-                                </div>
-                                <div class="col-xs-12 col-md-12 " id="message_detil" style="display: none;">
-                                    <div style="border: 1px solid #faccc6;color: #e4393c;background-color: #ffebeb;padding: 5px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <input value="false" type="hidden" id="isUpload" name="isUpload">
-                    <div class="modal-footer">
-                        <a style="margin-right: 80px;" href='downLoadExcel.html' target="_blank" title="点击下载模板"><i class="glyphicon glyphicon-save" data-toggle="tooltip" data-original-title="下载Excel模板"></i>下载Excel模板</a>
-                        <button class="btn btn-sm btn-default" type="button" data-dismiss="modal">关闭</button>
-                        <button class="btn btn-sm btn-success" type="button" onclick="importData(false)">检查</button>
-                        <button class="btn btn-sm btn-primary" name="11"  type="button" onclick="importData(true)">上传
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <script>
-
         function showOperParm(id) {
-            var operParm = "";
-            var errorMsg = "";
-            $.ajax({
-                url:'find?id='+id,
-                type: "get",
-                async:false,
-                success:function (res) {
-                    operParm = res.data.operParm;
-                    errorMsg = res.data.errorMsg;
-                },
-                error:function (XMLHttpRequest) {
-                    alert("系统错误");
-                    console.log(XMLHttpRequest);
-                }
-
-            });
-            layer.open({
-                type: 1,
-                title: '请求参数',
-                maxmin: true,
-                area: ['70%', '70%'],
-                content: "<div style='padding: 20px '>"+operParm+"<div style='color: #FF3B30;padding-top: 20px '>"+errorMsg+"</div></div>"
-            })
-        }
-        
-        //打开导入框
-        function openImportWin() {
-            $('#importMessage').modal('show');
-        }
-
-        $('#importMessage').on('hide.bs.modal', function () {
-            if (isSuccess){
-                layer.confirm("数据已更新，是否刷新页面？",{icon:1}, function (index) {
-                    layer.load();
-                    window.location.reload();
-                    layer.close(index);
-                });
-            }
-        });
-
-        //是否检查过
-        var isReady = false;
-        //检查是否通过
-        var  isWorn = false;
-        //是否导入成功
-        var isSuccess = false;
-        $("#file").change(function () {
-            isReady = false;
-            isWorn = false;
-            $("#message_detil div").html('');
-            $("#message_detil").hide();
-        })
-        function importData(isUpload) {
-            layer.load();
-            $("#isUpload").val(isUpload);
-            console.log("isUpload :"+isUpload);
-            if ($(":file[name=file]").val() == "") {
-                alert("请选择文件");
-                layer.closeAll("loading");
-                return;
-            }
-            if(!isReady && isUpload){
-                layer.confirm("请先进行数据检查！再上传！",{icon:0}, function (index) {
-                    layer.close(index);
-                    return;
-                });
-                layer.closeAll("loading");
-                return;
-            }
-            if(!isWorn && isUpload){
-                layer.confirm("检查出错！，是否继续上传？",{icon:0},function (index) {
-                    isWorn = true;
-                    layer.close(index);
-                });
-            }
-            if(!isWorn && isUpload){
-                layer.closeAll("loading");
-                return;
-            }
-            var form = new FormData(document.getElementById('putInExcel'));
-            $.ajax({
-                url: "importData",
-                type: "post",
-                data: form,
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    layer.closeAll("loading");
-                    isReady = true;
-                    if(data.content.indexOf("检查无异常")>0){
-                        isWorn = true;
-                    }
-                    var a = data.content.substring(data.content.indexOf("<h5>成功")+7,data.content.indexOf("条。失败:"));
-                    if(a>0){
-                        isSuccess = true;
-                    }
-                    showImportMessage(isUpload,data.content);
-
-                },
-                error: function (XMLHttpRequest) {
-                    layer.closeAll("loading");
-                    alertErrorMessage(XMLHttpRequest);
-                }
-            })
-        }
-        function showImportMessage(isUpload,message) {
-            if(isUpload){
+            var url = 'find?id='+id;
+            var data = "";
+            ajaxSend(url,"GET",data,function (res) {
+                var operParm = res.data.operParm;
+                var errorMsg = res.data.errorMsg;
+                var jsonResult=res.data.jsonResult;
                 layer.open({
                     type: 1,
-                    title: '',
-                    shadeClose: true,
-                    shade: 0.8,
-                    anim: 2,
-                    area: ['40%', '50%'],
-                    btn: ['关闭'],
-                    content: '<div style="text-align: center;line-height: 32px;padding: 20px;">' + message + '</div>',
-                    end: function (index) {
-                        if (isSuccess){
-                            layer.confirm("数据已更新，是否刷新页面？",{icon:1}, function (index) {
-                                layer.load();
-                                window.location.reload();
-                                layer.close(index);
-                            });
-                        }
-                    }
+                    title: '请求参数',
+                    maxmin: true,
+                    area: ['70%', '70%'],
+                    content: "<div class=\"alert alert-info alert-dismissable\">请求参数："+operParm+"</div><div class=\"alert alert-danger alert-dismissable\">错误信息："+errorMsg+"</div><div class=\"alert alert-success  alert-dismissable\">返回值："+jsonResult+"</div>"
                 });
-            }else {
-                $("#message_detil div").html(message);
-                $("#message_detil").show();
-            }
-
+            });
         }
     </script>
 </body>

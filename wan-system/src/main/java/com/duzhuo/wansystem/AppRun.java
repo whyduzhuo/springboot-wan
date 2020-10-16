@@ -31,16 +31,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class AppRun extends SpringBootServletInitializer {
     public static void main(String[] args) {
         SpringApplication.run(AppRun.class, args);
-        System.out.println("(♥◠‿◠)ﾉﾞ  wan启动成功！   ლ(´ڡ`ლ)ﾞ  \n" +
-                " .-------.       ____     __        \n" +
-                " |  _ _   \\      \\   \\   /  /    \n" +
-                " | ( ' )  |       \\  _. /  '       \n" +
-                " |(_ o _) /        _( )_ .'         \n" +
-                " | (_,_).' __  ___(_ o _)'          \n" +
-                " |  |\\ \\  |  ||   |(_,_)'         \n" +
-                " |  | \\ `'   /|   `-'  /           \n" +
-                " |  |  \\    /  \\      /           \n" +
-                " ''-'   `'-'    `-..-'              ");
+        System.err.println("wan启动成功！");
     }
 
     @Override

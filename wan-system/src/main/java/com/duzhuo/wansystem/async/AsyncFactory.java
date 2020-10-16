@@ -15,7 +15,7 @@ import java.util.TimerTask;
  *
  */
 public class AsyncFactory {
-    private static final Logger sys_user_logger = LoggerFactory.getLogger("sys-user");
+    private static final Logger sys_user_logger = LoggerFactory.getLogger(AsyncFactory.class);
 
     /**
      * 生成任务

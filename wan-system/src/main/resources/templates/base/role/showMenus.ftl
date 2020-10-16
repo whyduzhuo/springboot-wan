@@ -57,15 +57,6 @@
         zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
     }
 
-    function pushChildren(children,node,arry) {
-        for (var i in arry) {
-            var node1 = arry[i];
-            if((node1.pid==null && node==null)|| (node!=null && node1.pid!=null && node1.pid == node.id)){
-                pushChildren(node1.children,node1, arry);
-                children.push(node1);
-            }
-        }
-    }
 
     function closeLayer() {
         var index = parent.layer.getFrameIndex(window.name);

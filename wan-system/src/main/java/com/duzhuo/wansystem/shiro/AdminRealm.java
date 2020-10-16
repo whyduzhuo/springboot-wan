@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 自定义Realm 处理登录 权限
@@ -46,8 +46,7 @@ public class AdminRealm extends AuthorizingRealm {
         Admin admin = ShiroUtils.getCurrAdmin();
         // 职务列表
         Set<Role> roleList = admin.getRoleSet();
-        Set<String> roleSet = new HashSet<>();
-        roleList.forEach(r->roleSet.add(r.getName()));
+        Set<String> roleSet = roleList.stream().map(Role::getName).collect(Collectors.toSet());
         // 菜单/功能列表
         Set<Menu> menus = new HashSet<>();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
@@ -81,8 +80,7 @@ public class AdminRealm extends AuthorizingRealm {
             log.info(e.getMessage(),e);
             throw new AuthenticationException(e.getMessage(), e);
         }
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(admin, password, getName());
-        return info;
+        return new SimpleAuthenticationInfo(admin, password, getName());
     }
 
     /**

@@ -2252,10 +2252,14 @@ a.list-group-item:focus {
 }
 /* Deprecated as of 4.4.0 */
 .pull-right {
+  text-align: right;
   float: right;
+  max-width: 70%;
 }
 .pull-left {
+  max-width: 30%;
   float: left;
+  margin-bottom:10px;
 }
 .fa.pull-left {
   margin-right: .3em;

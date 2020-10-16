@@ -4,7 +4,6 @@ import com.duzhuo.common.core.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,8 +11,10 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -32,7 +33,7 @@ public class Role extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 5816388758817962942L;
 
-    public enum Type {
+    public enum TypeEnum {
         /**
          * 普通职务可以修改
          */
@@ -47,7 +48,7 @@ public class Role extends BaseEntity implements Serializable {
     /**
      * 职务类别
      */
-    private Type type;
+    private TypeEnum type;
 
     @ApiModelProperty(value = "归属部门")
     private Organization organization;
