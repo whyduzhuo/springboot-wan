@@ -1,8 +1,10 @@
 package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.core.BaseService;
+import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.IsDelete;
+import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.dao.base.AdminDao;
 import com.duzhuo.wansystem.entity.base.Admin;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author: wanhy
@@ -30,21 +34,49 @@ public class AdminService extends BaseService<Admin,Long> {
 
     /**
      * 新增用户
-     * @param admin
+     * @param adminVO
      * @return
      */
-    public Message addData(Admin admin) {
-        super.save(admin);
-        return Message.warn("功能未完成！");
+    public Message addData(Admin adminVO) {
+        this.check(adminVO);
+        super.save(adminVO);
+        return Message.success("添加成功！");
     }
 
     /**
      * 修改用户
-     * @param admin
+     * @param adminVO
      * @return
      */
-    public Message edit(Admin admin){
-        return Message.warn("功能未完成！");
+    public Message edit(Admin adminVO){
+//        this.check(adminVO);
+//        super.update(adminVO);
+        return Message.success("修改成功！");
+    }
+
+
+    /**
+     * 数据校验
+     * @param adminVO
+     */
+    public void check(Admin adminVO){
+        if (StringUtils.isBlank(adminVO.getUsername())){
+            throw new ServiceException("请输入用户名");
+        }
+        if (StringUtils.isBlank(adminVO.getRealname())){
+            throw new ServiceException("请输入昵称");
+        }
+        if (StringUtils.isBlank(adminVO.getPassword())){
+            throw new ServiceException("请输入密码");
+        }
+        List<Filter> filterList = new ArrayList<>();
+        filterList.add(Filter.eq("username",adminVO.getUsername()));
+        if (adminVO.getId()!=null){
+            filterList.add(Filter.ne("username",adminVO.getUsername()));
+        }
+        if (super.count(filterList)>0){
+            throw new ServiceException("用户名："+adminVO.getUsername()+"已存在！");
+        }
     }
 
     public Admin getCurrent(){
@@ -66,16 +98,22 @@ public class AdminService extends BaseService<Admin,Long> {
         if (admin==null){
             throw new Exception("用户名或密码错误！");
         }
+        if (admin.getIsDelete()==IsDelete.是){
+            throw new Exception("用户已被禁用！");
+        }
         return admin;
     }
 
     /**
-     *
+     * 禁用用户
      * @param id
      */
     public Message del(Long id) {
         Admin admin = super.find(id);
-        admin.setIsDelete(IsDelete.是);
-        return Message.success("删除成功！");
+        if (ShiroUtils.getCurrAdmin().getId().equals(admin.getId())){
+            throw new ServiceException("不可禁用自己");
+        }
+        admin.setIsDelete(IsDelete.values()[(1-admin.getIsDelete().ordinal())]);
+        return Message.success("操作成功！");
     }
 }

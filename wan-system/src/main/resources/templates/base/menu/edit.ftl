@@ -82,9 +82,9 @@
         var data = $('#dataForm').serialize();
         ajaxPost(url,data,function (res) {
             if(url=='addData'){
-                closeLayer();
                 window.parent.addMenu(res.data);
             }
+            closeLayer();
         });
     }
 </script>

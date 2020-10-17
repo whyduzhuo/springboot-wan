@@ -3,7 +3,9 @@ package com.duzhuo.wansystem.controller.base;
 import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.core.BaseController;
 import com.duzhuo.common.core.CustomSearch;
+import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.enums.IsDelete;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.common.utils.RedisUtils;
@@ -55,6 +57,7 @@ public class AdminController extends BaseController{
         CommonUtil.initPage(request,customSearch);
         Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,SEARCH_PREFIX);
         super.searchParamsTrim(searchParams);
+        customSearch.getOrders().add(Sort.Order.asc("isDelete"));
         customSearch.setPagedata(adminService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
         model.addAttribute("searchParams",mapKeyAddPre(searchParams, SEARCH_PREFIX));
@@ -70,13 +73,21 @@ public class AdminController extends BaseController{
         return "/base/admin/edit";
     }
 
+    @Log(title = "新增用户窗口",operateType = OperateType.SELECT)
+    @ApiOperation("新增用户窗口")
+    @GetMapping("/addWin")
+    @RequiresPermissions("100401")
+    public String addWin(){
+        return "/base/admin/addWin";
+    }
+
     @Log(title = "新增用户",operateType = OperateType.INSERT)
     @ApiOperation(value = "新增用户")
     @PostMapping("/addData")
-    @RequiresPermissions("")
+    @RequiresPermissions("100401")
     @ResponseBody
-    public Message addData(Admin admin){
-        return adminService.addData(admin);
+    public Message addData(Admin adminVO){
+        return adminService.addData(adminVO);
     }
 
     @Log(title = "修改用户信息",operateType = OperateType.UPDATE)
@@ -88,9 +99,9 @@ public class AdminController extends BaseController{
         return adminService.edit(admin);
     }
 
-    @Log(title = "删除用户",operateType = OperateType.DELETE)
-    @ApiOperation(value = "删除用户")
-    @PostMapping("/del")
+    @Log(title = "禁用用户",operateType = OperateType.DELETE)
+    @ApiOperation(value = "禁用用户")
+    @DeleteMapping("/del")
     @RequiresPermissions("100400")
     @ResponseBody
     public Message del(Long id){
@@ -144,7 +155,6 @@ public class AdminController extends BaseController{
     public Admin test(){
         Admin admin = ShiroUtils.getCurrAdmin();
         redisUtils.set("hehe",admin,200);
-        Admin a =  redisUtils.get("hehe",Admin.class);
-        return a;
+        return redisUtils.get("hehe",Admin.class);
     }
 }

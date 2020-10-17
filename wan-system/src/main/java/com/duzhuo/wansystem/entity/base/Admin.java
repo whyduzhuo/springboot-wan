@@ -46,7 +46,7 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
     @ApiModelProperty(value = "密码")
     private String password;
 
-    @ApiModelProperty(value = "是否删除")
+    @ApiModelProperty(value = "是否禁用")
     private IsDelete isDelete = IsDelete.否;
 
     @ApiModelProperty(value = "全部职务")
@@ -72,5 +72,16 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
         List<String> stringList = new ArrayList<>();
         roleSet.forEach(r-> stringList.add(r.getName()));
         return StringUtils.listToString(stringList,",");
+    }
+
+    @Transient
+    public String getIsDeleteHtml(){
+        if (this.isDelete==IsDelete.是){
+            return "<span  class=\"label label-danger\">已禁用</span>";
+        }
+        if (this.isDelete==IsDelete.否){
+            return "<span  class=\"label label-success\">正常</span>";
+        }
+        return "";
     }
 }

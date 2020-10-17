@@ -15,15 +15,25 @@
     </style>
 <body>
     <form id="dataForm">
-        <input class="form-control" type="hidden" id="data_id" name="id" value="${data.id}">
+        <input class="form-control" type="hidden" id="data_id" name="id">
         <div class="col-xs-12">
             <label for="username">账号<span class="text-danger">*</span></label>
-            <input class="form-control" type="text" id="username" name="username" value="${data.username}">
+            <input class="form-control" type="text" id="username" name="username">
         </div>
 
         <div class="col-xs-12">
             <label for="realname">昵称<span class="text-danger">*</span></label>
-            <input class="form-control" type="text" id="realname" name="realname" value="${data.realname}">
+            <input class="form-control" type="text" id="realname" name="realname">
+        </div>
+
+        <div class="col-xs-12">
+            <label for="password">密码<span class="text-danger">*</span></label>
+            <input class="form-control" type="password" id="password" name="password" >
+        </div>
+
+        <div class="col-xs-12">
+            <label for="re_password">再次确认密码<span class="text-danger">*</span></label>
+            <input class="form-control" type="password" id="re_password" name="re_password">
         </div>
 
         <div class="edit-win-foot">
@@ -41,13 +51,13 @@
     }
 
     function save(){
-        layer.load();
         var url = 'addData';
-        var data_id = $("#data_id").val();
-        if(data_id!=null && data_id!=""){
-            url ='edit';
-        }
         var data = $('#dataForm').serialize();
+        console.log(data);
+        if($("#password").val()!=$("#re_password").val()){
+            alert("两次密码不一致！");
+            return false;
+        }
         ajaxPost(url,data,function () {
             window.parent.location.reload();
         });

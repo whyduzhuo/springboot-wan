@@ -93,6 +93,7 @@
         $("#listForm").submit();
     }
 
+
     function changePagesize(pageSize) {
         layer.load();
         $("#pageSize").val(pageSize);
@@ -100,6 +101,13 @@
         $("#listForm").submit();
     }
 
+    /**
+     * Ajax 发起请求，不会弹窗显示返回结果
+     * url:路径
+     * data:参数
+     * successFun:成功后执行的方法
+     * errorFun:失败后执行的方法
+     **/
     function ajaxSend(url,type,data,successFun,errorFun) {
         layer.load();
         $.ajax({
@@ -126,7 +134,15 @@
             }
         });
     }
-    
+
+    /**
+     * Ajax 请求方法
+     * type：get/post
+     * url:路径
+     * data:参数
+     * successFun:成功后执行的方法
+     * errorFun:失败后执行的方法
+     **/
     function ajaxSubmit(url,type,data,successFun,errorFun) {
         layer.load();
         $.ajax({
@@ -138,9 +154,14 @@
                 layer.confirm(res.msg,{icon:res.icon}, function (index) {
                     layer.close(index);
                     if(res.type =='SUCCESS'){
-                        successFun(res);
+                        if(successFun!=null){
+                            successFun(res);
+                        }
                     }else {
-                        errorFun(res);
+                        if(errorFun!=null){
+                            errorFun(res);
+                        }
+
                     }
                 });
             },
@@ -156,20 +177,51 @@
             }
         });
     }
-    
+
+    /**
+     * Ajax post方法
+     * url:路径
+     * data:参数
+     * successFun:成功后执行的方法
+     * errorFun:失败后执行的方法
+     **/
     function ajaxPost(url,data,successFun,errorFun) {
         ajaxSubmit(url,"POST",data,successFun,errorFun);
     }
-    
+
+    /**
+     * Ajax get方法
+     * url:路径
+     * data:参数
+     * successFun:成功后执行的方法
+     * errorFun:失败后执行的方法
+     **/
     function ajaxGet(url,data,successFun,errorFun) {
         ajaxSubmit(url,"GET",data,successFun,errorFun);
     }
-    
-    function ajaxDelete(url,data,successFun,errorFun) {
-        data.append("_method","delete");
-        ajaxSubmit(url,"POST",data,successFun,errorFun);
+
+    /**
+     * Ajax删除方法
+     * url:路径
+     * data:参数
+     * tips:提示语
+     * successFun:成功后执行的方法
+     * errorFun:失败后执行的方法
+     **/
+    function ajaxDelete(url,data,tips,successFun,errorFun) {
+        data._method = "delete";
+        console.log(data);
+        layer.confirm(tips,{icon:3}, function (index) {
+            layer.load();
+            ajaxSubmit(url,"POST",data,successFun,errorFun);
+            layer.close(index);
+        })
     }
-    
+
+    /**
+     * 判断字符串是否是空
+     *
+     **/
     function isBlank(s) {
         if(s ==undefined){
             return true;
@@ -205,5 +257,8 @@
         }
     }
 
+    function alert(msg) {
+        layer.msg(msg);
+    }
 
 </script>
