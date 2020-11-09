@@ -492,10 +492,14 @@ public class BaseService<T, ID extends Serializable> {
         };
     }
 
-    protected void validation(T entity){
+    public void validation(T entity){
         Set<ConstraintViolation<T>> errors = Validation.buildDefaultValidatorFactory().getValidator().validate(entity);
         if (!errors.isEmpty()){
-            throw new ServiceException(errors.iterator().next().getMessage());
+            StringBuilder sb=new StringBuilder();
+            for (ConstraintViolation<T> error : errors) {
+                sb.append(error.getMessage()).append(";");
+            }
+            throw new ServiceException(sb.toString());
         }
     }
 
