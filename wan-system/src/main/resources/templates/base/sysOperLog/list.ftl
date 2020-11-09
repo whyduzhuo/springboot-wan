@@ -32,6 +32,10 @@
                     <input class="input-sm input-search" name="search_like_operUrl" value="${searchParams['search_like_operUrl']}"/>
                 </div>
                 <div class="search-item">
+                    <label>操作:</label>
+                    <input class="input-sm input-search" name="search_like_title" value="${searchParams['search_like_title']}"/>
+                </div>
+                <div class="search-item">
                     <label>是否成功:</label>
                     <select class="input-sm input-search" name="search_eq_status">
                         <option value="" selected>全部</option>
@@ -60,6 +64,7 @@
                     <th>用户</th>
                     <th>IP</th>
                     <th style="width: 15%">请求地址</th>
+                    <th>操作</th>
                     <th>操作类型</th>
                     <th>请求方式</th>
                     <th>是否成功</th>
@@ -73,6 +78,7 @@
                     <td>${data.id}</td>
                     <td>${data.admin.realname}</td>
                     <td>${data.operIp}</td>
+                    <td>${data.title}</td>
                     <td>${data.operUrl}</td>
                     <td>${data.operateType}</td>
                     <td>${data.method}</td>

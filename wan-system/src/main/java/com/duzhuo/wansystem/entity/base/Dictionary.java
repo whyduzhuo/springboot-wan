@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author: wanhy
@@ -29,15 +31,19 @@ public class Dictionary  extends BaseEntity{
         禁用
     }
 
+    @NotNull(message = "请选择模块")
     @ApiModelProperty(value = "模块")
     private DictModel dictModel;
 
+    @NotBlank(message = "请输入字典编码")
     @ApiModelProperty(value = "编码")
     private String code;
 
+    @NotBlank(message = "请输入字典值")
     @ApiModelProperty(value = "值")
     private String value;
 
+    @NotNull(message = "请选择启用状态")
     @ApiModelProperty(value = "状态")
     private Status status;
 

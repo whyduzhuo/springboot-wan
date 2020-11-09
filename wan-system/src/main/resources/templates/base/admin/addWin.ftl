@@ -53,7 +53,6 @@
     function save(){
         var url = 'addData';
         var data = $('#dataForm').serialize();
-        console.log(data);
         if($("#password").val()!=$("#re_password").val()){
             alert("两次密码不一致！");
             return false;

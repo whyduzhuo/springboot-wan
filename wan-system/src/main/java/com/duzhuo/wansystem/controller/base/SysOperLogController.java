@@ -82,7 +82,6 @@ public class SysOperLogController extends BaseController {
         return Message.success("删除成功！");
     }
 
-    @Log(title = "获取单个日志",operateType = OperateType.SELECT)
     @ApiOperation(value = "获取单个日志")
     @GetMapping("/find")
     @ResponseBody

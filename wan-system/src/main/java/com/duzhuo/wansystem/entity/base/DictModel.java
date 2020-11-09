@@ -8,8 +8,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +32,12 @@ public class DictModel extends BaseEntity{
 
     private static final long serialVersionUID = 3988974700266864376L;
 
+    @NotBlank(message = "请输入模块名称")
+    @Length(max = 20,min = 2)
     @ApiModelProperty(value = "模块名称")
     private String modelName;
 
+    @Pattern(regexp = "[A-Z][0-9]{3}",message = "模块编码不符合规范！规范：A001至Z999")
     @ApiModelProperty(value = "模块编码")
     private String modelCode;
 

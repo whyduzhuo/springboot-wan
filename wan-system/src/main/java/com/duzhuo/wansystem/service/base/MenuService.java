@@ -44,6 +44,7 @@ public class MenuService extends BaseService<Menu,Long> {
             Long num = this.createId(menuVO.getParent());
             menuVO.setNum(num);
         }
+        super.validation(menuVO);
         this.check(menuVO);
         super.save(menuVO);
         return Message.success("添加成功！",this.menuToTree(menuVO));
@@ -54,21 +55,6 @@ public class MenuService extends BaseService<Menu,Long> {
      * @param menuVO
      */
     private void check(Menu menuVO){
-        if (StringUtils.isBlank(menuVO.getName())){
-            throw new ServiceException("菜单名不能为空！");
-        }
-        if (menuVO.getOs()==null){
-            throw new ServiceException("OS不能为空");
-        }
-        if (StringUtils.isBlank(menuVO.getPath())){
-            throw new ServiceException("请输入url");
-        }
-        if (menuVO.getType()==null){
-            throw new ServiceException("菜单类型不能为空");
-        }
-        if (menuVO.getIsEnable()==null){
-            throw new ServiceException("启用or禁用？");
-        }
         if (menuVO.getParent()==null){
             if (menuVO.getType()==Menu.TypeEnum.按钮){
                 throw new ServiceException("一级菜单不能为按钮！");
@@ -153,6 +139,7 @@ public class MenuService extends BaseService<Menu,Long> {
      * @return
      */
     public Message edit(Menu menuVo) {
+        super.validation(menuVo);
         this.check(menuVo);
         Menu menu = super.find(menuVo.getId());
         menu.setName(menuVo.getName());

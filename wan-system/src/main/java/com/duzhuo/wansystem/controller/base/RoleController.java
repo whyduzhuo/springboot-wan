@@ -74,10 +74,14 @@ public class RoleController extends BaseController {
     @ApiOperation(value = "角色管理--用户查看")
     @RequiresPermissions("100304")
     @GetMapping("/showAdmin")
-    public String showAdmin(Long id,Model model){
-        Role role = roleService.find(id);
-        List<Admin> adminList = role.getAdminList();
-        model.addAttribute("data",adminList);
+    public String showAdmin(Long roleId,Model model,HttpServletRequest request,CustomSearch<Admin> customSearch){
+        CommonUtil.initPage(request,customSearch);
+        Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,SEARCH_PREFIX);
+        super.searchParamsTrim(searchParams);
+        customSearch.setPagedata(roleService.showAdmin(roleId,searchParams,customSearch));
+        model.addAttribute("customSearch",customSearch);
+        model.addAttribute("searchParams",mapKeyAddPre(searchParams,SEARCH_PREFIX));
+        model.addAttribute("roleId",roleId);
         return "/base/role/showAdmin";
     }
 

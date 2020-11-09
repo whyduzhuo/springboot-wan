@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class DictModelService extends BaseService<DictModel,Long> {
-    public static final Pattern PATTERN = Pattern.compile("[A-Z][0-9]{3}");
 
     @Resource
     private DictModelDao dictModelDao;
@@ -43,6 +42,7 @@ public class DictModelService extends BaseService<DictModel,Long> {
      * @return
      */
     public Message addData(DictModel dictModelVO){
+        super.validation(dictModelVO);
         this.check(dictModelVO);
         super.save(dictModelVO);
         return Message.success("添加成功!");
@@ -53,6 +53,7 @@ public class DictModelService extends BaseService<DictModel,Long> {
      * @return
      */
     public Message edit(DictModel dictModelVO){
+        super.validation(dictModelVO);
         this.check(dictModelVO);
         DictModel dictModel = super.find(dictModelVO.getId());
         dictModel.setModelCode(dictModelVO.getModelCode());
@@ -66,15 +67,6 @@ public class DictModelService extends BaseService<DictModel,Long> {
      * @param dictModelVO
      */
     private void check(DictModel dictModelVO){
-        if (StringUtils.isBlank(dictModelVO.getModelName())){
-            throw new ServiceException("请输入模块名称！");
-        }
-        if (StringUtils.isBlank(dictModelVO.getModelCode())){
-            throw new ServiceException("请输入模块编码！");
-        }
-        if (PATTERN.matcher(dictModelVO.getModelCode()).matches()){
-            throw new ServiceException("模块编码不符合规范！规范：A001至Z999");
-        }
         if (this.isExitName(dictModelVO)){
             throw new ServiceException("模块名称已存在！");
         }

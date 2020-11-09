@@ -1,5 +1,6 @@
 package com.duzhuo.common.core;
 
+import com.duzhuo.common.exception.ServiceException;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -16,11 +17,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author: wanhy
@@ -490,6 +490,13 @@ public class BaseService<T, ID extends Serializable> {
 
             return builder.conjunction();
         };
+    }
+
+    protected void validation(T entity){
+        Set<ConstraintViolation<T>> errors = Validation.buildDefaultValidatorFactory().getValidator().validate(entity);
+        if (!errors.isEmpty()){
+            throw new ServiceException(errors.iterator().next().getMessage());
+        }
     }
 
 }

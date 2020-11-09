@@ -29,10 +29,10 @@ public class OrganizationController extends BaseController {
 
     @Log(title = "新增部门",operateType = OperateType.INSERT)
     @ApiOperation(value = "新增部门")
-    @PostMapping("/insert")
+    @PostMapping("/addData")
     @ResponseBody
-    public Message insert(Organization organization){
-        return organizationService.insert(organization);
+    public Message addData(Organization organization){
+        return organizationService.addData(organization);
     }
 
     @Log(title = "修改部门",operateType = OperateType.UPDATE)

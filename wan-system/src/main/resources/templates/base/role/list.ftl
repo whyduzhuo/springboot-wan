@@ -84,7 +84,7 @@
             title: '人员列表',
             maxmin: true,
             area: ['80%', '90%'],
-            content: 'showAdmin?id='+id
+            content: 'showAdmin?roleId='+id
         });
     }
     

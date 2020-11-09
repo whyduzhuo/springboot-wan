@@ -9,11 +9,14 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.jetbrains.annotations.NotNull;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author: wanhy
@@ -57,10 +60,14 @@ public class Menu extends BaseEntity implements Comparable<Menu>,Serializable {
     }
 
     @JsonProperty
+    @NotBlank(message = "菜单名不能为空")
+    @Length(max = 14,min = 2)
     @ApiModelProperty(value = "菜单名称",dataType = "String")
     private String name;
 
     @JsonProperty
+    @NotBlank(message = "请输入url")
+    @Length(min = 1,max = 40)
     @ApiModelProperty(value = "菜单路径",example = "/base/admin/list.html",dataType = "String")
     private String path;
 
@@ -77,14 +84,17 @@ public class Menu extends BaseEntity implements Comparable<Menu>,Serializable {
     private Integer order;
 
     @JsonProperty
+    @NotNull(message = "启用or禁用")
     @ApiModelProperty(value = "是否可用")
     private YesOrNo isEnable = YesOrNo.是;
 
     @JsonProperty
+    @NotNull(message = "OS不能为空！")
     @ApiModelProperty(value = "移动端还是PC端菜单",dataType = "number")
     private OsEnum os = OsEnum.PC端;
 
     @JsonProperty
+    @NotNull(message="菜单类型不能为空")
     @ApiModelProperty(value = "页面Or按钮",dataType = "number")
     private TypeEnum type;
 

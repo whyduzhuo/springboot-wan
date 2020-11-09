@@ -3,6 +3,7 @@ package com.duzhuo.common.utils;
 import com.duzhuo.common.exception.ServiceException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
@@ -16,9 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author: wanhy
@@ -30,6 +29,8 @@ public class ExcelUtils {
      * 前两行固定，不填数据
      */
     public static final int HEAD_LOCK_ROW=2;
+
+    public static final String ROW_NUM_KEY = "rownum";
 
 
     /**
@@ -203,57 +204,109 @@ public class ExcelUtils {
         return validation;
     }
 
+
+    public static List<List<String>> readExelData(MultipartFile file,int headLockRow,int endCol) throws IOException {
+        Workbook workbook = getWorkBook(file);
+        Sheet sheet = workbook.getSheetAt(0);
+        return readExelData(sheet, headLockRow, endCol);
+    }
+
     /**
      * 读取Excel文件内容
      * @param headLockRow 表中固定的行
      * @param endCol 多少列
-     * @param file
+     * @param sheet
      * @return
      */
-    public static List<List<String>> readExelData(MultipartFile file,int headLockRow,int endCol) throws IOException {
-
-        if (!file.getOriginalFilename().contains(".xls")){
-            throw new ServiceException("请上传Excel文件！");
-        }
-        boolean is03excle = file.getOriginalFilename().matches("^.+\\.(?i)(xls)$");
+    public static List<List<String>> readExelData(Sheet sheet,int headLockRow,int endCol) {
         List<List<String>> dataList = new ArrayList<>();
-        try (InputStream inputStream = file.getInputStream()){
-            Workbook workbook = is03excle ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
-            Sheet childSheet = workbook.getSheetAt(0);
-            // 读取excel有多少行内容
-            int rowCount = childSheet.getLastRowNum();
-            if (rowCount<headLockRow){
-                throw new ServiceException("表中无数据！");
+        // 读取excel有多少行内容
+        int rowCount = sheet.getLastRowNum();
+        if (rowCount<headLockRow){
+            throw new ServiceException("表中无数据！");
+        }
+        for (int i = headLockRow; i <= rowCount; i++) {
+            List<String> data = new ArrayList<>();
+            Row row = sheet.getRow(i);
+            if (row == null){
+                continue;
             }
-            for (int i = headLockRow; i <= rowCount; i++) {
-                List<String> data = new ArrayList<>();
-                Row row = childSheet.getRow(i);
-                if (row == null){
+            for (int j=0;j<endCol;j++){
+                Cell cellCode = row.getCell(j);
+                if (cellCode==null){
+                    data.add("");
                     continue;
                 }
-                for (int j=0;j<endCol;j++){
-                    Cell cellCode = row.getCell(j);
-                    if (cellCode==null){
-                        data.add("");
+                if (cellCode.getCellTypeEnum()==CellType.NUMERIC){
+                    if (HSSFDateUtil.isCellDateFormatted(cellCode)){
+                        Date date = cellCode.getDateCellValue();
+                        data.add(new SimpleDateFormat("yyyy-MM-dd").format(date));
                         continue;
                     }
-                    if (cellCode.getCellTypeEnum()==CellType.NUMERIC){
-                        if (HSSFDateUtil.isCellDateFormatted(cellCode)){
-                            Date date = cellCode.getDateCellValue();
-                            data.add(new SimpleDateFormat("yyyy-MM-dd").format(date));
-                            continue;
-                        }
-                    }
-                    cellCode.setCellType(CellType.STRING);
-                    String cellValue =  StringUtils.deleteWhitespace((cellCode.getStringCellValue()));
-                    data.add(cellValue);
-
                 }
-                dataList.add(data);
+                cellCode.setCellType(CellType.STRING);
+                String cellValue =  StringUtils.deleteWhitespace((cellCode.getStringCellValue()));
+                data.add(cellValue);
+
             }
+            dataList.add(data);
         }
         dataList.removeIf(ExcelUtils::isEmpty);
         return dataList;
+    }
+
+    /**
+     * 读取Excel数据
+     * 将每一列数据转成Map形式，Map的key就是表头
+     * @param file
+     * @param titleRow 表头在那行，Excel行号，从1开始
+     * @param dataRowStart 数据从那行开始
+     * @param endCol 多少列，从1开始
+     * @return
+     * @throws IOException
+     */
+    public static List<Map<String,String>> readExelDataMap(MultipartFile file, int titleRow, int dataRowStart, int endCol, String needCol) throws IOException {
+        Workbook workbook = getWorkBook(file);
+        Sheet sheet = workbook.getSheetAt(0);
+        List<List<String>> stringList = ExcelUtils.readExelData(sheet, dataRowStart-1,endCol);
+        List<String> titleList = ExcelUtils.readExelRowData(sheet,titleRow-1,endCol);
+        if (needCol!=null){
+            hasNeedCol(titleList,needCol);
+        }
+        List<Map<String,String>> dataMap= new ArrayList<>();
+        for (int i=0;i<stringList.size();i++) {
+            List<String> strings = stringList.get(i);
+            Map<String,String> map = new HashMap<>();
+            map.put(ROW_NUM_KEY,(i+dataRowStart)+"");
+            for (int j = 0;j<strings.size();j++){
+                map.put(titleList.get(j),strings.get(j));
+            }
+            dataMap.add(map);
+        }
+        return dataMap;
+    }
+
+    /**
+     * 读取某行数据
+     * @param sheet
+     * @param rowIndex 行号，0开始
+     * @param endCol 多少列，从1开始
+     * @return
+     */
+    public static List<String> readExelRowData(Sheet sheet, int rowIndex, int endCol) {
+        List<String> data = new ArrayList<>();
+        Row row = sheet.getRow(rowIndex);
+        for (int j=0;j<endCol;j++){
+            Cell cellCode = row.getCell(j);
+            if (cellCode==null){
+                data.add("");
+                continue;
+            }
+            cellCode.setCellType(CellType.STRING);
+            String cellValue = StringUtils.deleteWhitespace(cellCode.getStringCellValue());
+            data.add(cellValue);
+        }
+        return data;
     }
 
     private static boolean isEmpty(List<String> data){
@@ -263,6 +316,52 @@ public class ExcelUtils {
             }
         }
         return true;
+    }
+
+    /**
+     * 判断表头有没有对上
+     * @param titleList excel 读取的表头
+     * @param col 因该存在的字段用逗号分开  如 学号,姓名,身份证号
+     */
+    public static void hasNeedCol(List<String> titleList,String col){
+        String[] cols = col.split(",");
+        Arrays.stream(cols).forEach(c->{
+            if (!hasCol(titleList,c)){
+                throw new ServiceException("没有找到表头："+c+"，请检查！");
+            }
+        });
+    }
+
+    private static boolean hasCol(List<String> titleList,String col){
+        for (String aTitleList : titleList) {
+            if (aTitleList.equals(col)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * MultipartFile，获取Workbook
+     * @param multipartFile
+     * @return
+     */
+    public static Workbook getWorkBook(MultipartFile multipartFile) throws IOException {
+        if (!multipartFile.getOriginalFilename().contains(".xls")){
+            throw new ServiceException("请上传Excel文件！");
+        }
+        Workbook workbook ;
+        try {
+            workbook=new HSSFWorkbook(multipartFile.getInputStream());
+        }catch (OfficeXmlFileException e){
+            try {
+                workbook=new XSSFWorkbook(multipartFile.getInputStream());
+            }catch (Exception e1){
+                throw new IOException("文件解析失败",e);
+            }
+
+        }
+        return workbook;
     }
 
 }

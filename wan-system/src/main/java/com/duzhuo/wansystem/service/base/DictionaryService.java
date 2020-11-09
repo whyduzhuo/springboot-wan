@@ -41,6 +41,7 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
      * @return
      */
     public Message addData(Dictionary dictionaryVO){
+        super.validation(dictionaryVO);
         this.check(dictionaryVO);
         super.save(dictionaryVO);
         return Message.success("添加成功!");
@@ -52,6 +53,7 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
      * @return
      */
     public Message edit(Dictionary dictionaryVO){
+        super.validation(dictionaryVO);
         this.check(dictionaryVO);
         Dictionary dictionary = super.find(dictionaryVO.getId());
         dictionary.setCode(dictionaryVO.getCode());
@@ -62,32 +64,13 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
         return Message.success("修改成功！");
     }
 
-    /**
-     * 字典--校验
-     * @param dictionaryVO
-     */
-    private void check(Dictionary dictionaryVO){
-        if (dictionaryVO.getDictModel()==null || dictionaryVO.getDictModel().getId()==null){
-            throw new ServiceException("请选择模块！");
-        }
-        if (dictionaryVO.getStatus()==null){
-            throw new ServiceException("请选择启用状态！");
-        }
-        if (StringUtils.isBlank(dictionaryVO.getCode())){
-            throw new ServiceException("请输入字典编码");
-        }
-        if (StringUtils.isBlank(dictionaryVO.getValue())){
-            throw new ServiceException("请输入字典值");
-        }
-        this.isExits(dictionaryVO);
-    }
 
     /**
      * 判断是否重复
      * @param dictionaryVO
      * @return
      */
-    private void isExits(Dictionary dictionaryVO){
+    private void check(Dictionary dictionaryVO){
         List<Filter> filters = new ArrayList<>();
         filters.add(Filter.eq("code",dictionaryVO.getCode()));
         filters.add(Filter.eq("dictModel.id",dictionaryVO.getDictModel().getId()));

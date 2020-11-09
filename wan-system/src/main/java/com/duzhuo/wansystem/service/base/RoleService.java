@@ -1,15 +1,18 @@
 package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.core.BaseService;
+import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.RoleDao;
 import com.duzhuo.wansystem.dto.Ztree;
+import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.mapper.base.RoleMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -235,5 +238,16 @@ public class RoleService extends BaseService<Role,Long> {
             });
         });
         return ztreeList;
+    }
+
+    /**
+     *
+     * @param roleId
+     * @param searchParams
+     * @param customSearch
+     * @return
+     */
+    public Page<Admin> showAdmin(Long roleId,Map<String, Object> searchParams, CustomSearch<Admin> customSearch) {
+        return roleMapper.showAdmin(roleId,searchParams,customSearch);
     }
 }

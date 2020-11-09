@@ -10,8 +10,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,16 +40,20 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
     private static final long serialVersionUID = -6079046386811746580L;
 
     @JsonProperty
+    @NotBlank(message = "用户名不可为空")
+    @Length(max = 15,min = 3)
     @ApiModelProperty(value = "账号,一卡通号",dataType = "number",example = "1200402570")
     private String username;
 
     @JsonProperty
+    @NotBlank(message = "用户名不可为空")
     @ApiModelProperty(value = "真实姓名",dataType = "String",example = "张三")
     private String realname;
 
     @ApiModelProperty(value = "密码")
     private String password;
 
+    @NotNull
     @ApiModelProperty(value = "是否禁用")
     private IsDelete isDelete = IsDelete.否;
 

@@ -96,12 +96,14 @@ public class LogAspect {
             }
 
             if (e != null) {
-                if (!(e instanceof ServiceException)){
-                    operLog.setHaveException(YesOrNo.是);
-                }
-                operLog.setStatus(YesOrNo.否);
                 String stackTrace=ExceptionUtils.getStackTrace(e);
                 operLog.setErrorMsg(StringUtils.substring(stackTrace, 0, 3000));
+                if (!(e instanceof ServiceException)){
+                    operLog.setHaveException(YesOrNo.是);
+                    operLog.setErrorMsg(e.getMessage());
+                }
+                operLog.setStatus(YesOrNo.否);
+
             }
             // 设置请求方式
             operLog.setMethod(ServletUtils.getRequest().getMethod());

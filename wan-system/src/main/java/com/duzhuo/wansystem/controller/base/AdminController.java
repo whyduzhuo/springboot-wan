@@ -99,12 +99,14 @@ public class AdminController extends BaseController{
         return adminService.edit(admin);
     }
 
-    @Log(title = "禁用用户",operateType = OperateType.DELETE)
-    @ApiOperation(value = "禁用用户")
+    @Log(title = "禁用/启用用户",operateType = OperateType.UPDATE)
+    @ApiOperation(value = "禁用/启用用户")
     @DeleteMapping("/del")
     @RequiresPermissions("100400")
     @ResponseBody
     public Message del(Long id){
+        String string = null;
+        string.equals("aa");
         return adminService.del(id);
     }
 
