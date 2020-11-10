@@ -52,10 +52,12 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
      * @return
      */
     public Message addData(${data.entityName} ${data.lowEntityName}VO) {
-        throw new  ServiceException("功能暂未完成！");
+        super.validation(${data.lowEntityName}VO);
+        this.check(${data.lowEntityName}VO);
+        super.save(${data.lowEntityName}VO);
     }
 
-    private Message check(${data.entityName} ${data.lowEntityName}VO){
+    private void check(${data.entityName} ${data.lowEntityName}VO){
         throw new  ServiceException("功能暂未完成！");
     }
 
@@ -209,12 +211,7 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
     */
     private ${data.entityName} listStrToEntity(Map<String,String> data){
     ${data.entityName} ${data.lowEntityName}VO = new ${data.entityName}();
-        Set<String> keys = data.keySet();
-        keys.forEach(k->{
-            if (k.contains("字段1")){
-                ${data.lowEntityName}VO.setFiled(data.get(k));
-            }
-        });
+        
         return ${data.lowEntityName}VO;
     }
 
