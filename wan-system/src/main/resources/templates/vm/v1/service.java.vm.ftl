@@ -211,7 +211,7 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
     */
     private ${data.entityName} listStrToEntity(Map<String,String> data){
     ${data.entityName} ${data.lowEntityName}VO = new ${data.entityName}();
-        
+
         return ${data.lowEntityName}VO;
     }
 

@@ -3,6 +3,7 @@ package com.duzhuo.common.utils;
 import com.duzhuo.common.exception.ServiceException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -116,7 +117,7 @@ public class ExcelUtils {
 
         //设置第三行标题 标题列
         HSSFRow rowTitleName = sheet.createRow(1);
-        HSSFCellStyle style = getStyle(wb);
+        HSSFCellStyle style = getColumnTopStyle(wb);
         for (int i=0;i<titleList.size();i++){
             HSSFCell cellTitleName = rowTitleName.createCell(i);
             cellTitleName.setCellValue(titleList.get(i));
@@ -147,31 +148,15 @@ public class ExcelUtils {
      * @return
      */
     private static HSSFCellStyle getColumnTopStyle(HSSFWorkbook workbook) {
-
-        HSSFFont font = workbook.createFont();
-        font.setFontHeightInPoints((short)16);
-        font.setBold(true);
-        font.setFontName("宋体");
-        HSSFCellStyle style = workbook.createCellStyle();
-        style.setFont(font);
-        style.setWrapText(false);
-        style.setFillForegroundColor(IndexedColors.PALE_BLUE.getIndex());
-        return style;
-    }
-
-    /**
-     * 标题 列的样式设置
-     * @param workbook
-     * @return
-     */
-    private static HSSFCellStyle getStyle(HSSFWorkbook workbook) {
         HSSFFont font = workbook.createFont();
         font.setFontHeightInPoints((short)12);
         font.setFontName("Courier New");
+        font.setColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
         HSSFCellStyle style = workbook.createCellStyle();
         style.setFont(font);
         style.setWrapText(false);
-        style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setFillForegroundColor(IndexedColors.GREEN.getIndex());
         return style;
     }
 
