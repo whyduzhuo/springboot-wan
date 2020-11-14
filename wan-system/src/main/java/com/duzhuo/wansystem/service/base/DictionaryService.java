@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -189,11 +191,11 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
 
     /**
      * 自动获取新code
-     * @param modelId
+     * @param dictModel
      * @return
      */
-    public String getNewCode(Long modelId){
-        String maxCode = dictionaryDao.getMaxCode(modelId);
+    public String getNewCode(DictModel dictModel){
+        String maxCode = dictionaryDao.getMaxCode(dictModel.getId());
         if (StringUtils.isBlank(maxCode)){
             return "01";
         }
@@ -210,5 +212,51 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
             newCode = String.valueOf(chars);
         }
         return newCode;
+    }
+
+    /**
+     * 排序 -- 向上进1
+     * @param id
+     * @return
+     */
+    public Message up(Long id) {
+        Dictionary dictionary = super.find(id);
+        Integer o =dictionary.getOrder();
+        Dictionary uper = dictionaryDao.getUper(o);
+        if (uper==null){
+            throw new ServiceException("已经到顶了!");
+        }
+        dictionary.setOrder(uper.getOrder());
+        uper.setOrder(o);
+        super.update(uper);
+        super.update(dictionary);
+        return Message.success("修改成功！");
+    }
+
+    /**
+     * 排序 -- 向下退1
+     * @param id
+     * @return
+     */
+    public Message down(Long id) {
+        Dictionary dictionary = super.find(id);
+        Integer o =dictionary.getOrder();
+        Dictionary downer = dictionaryDao.getDowner(o);
+        if (downer==null){
+            throw new ServiceException("已经到顶了!");
+        }
+        dictionary.setOrder(downer.getOrder());
+        downer.setOrder(o);
+        super.update(downer);
+        super.update(dictionary);
+        return Message.success("修改成功！");
+    }
+
+    /**
+     * 获取最大排序
+     * @return
+     */
+    public Integer getMaxOrder(DictModel dictModel) {
+        return dictionaryDao.getMaxOrder(dictModel.getId());
     }
 }

@@ -5,6 +5,9 @@ import com.duzhuo.wansystem.entity.base.DictModel;
 import com.duzhuo.wansystem.entity.base.Dictionary;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 /**
  * @author: wanhy
  * @date: 2020/8/10 11:16
@@ -22,4 +25,18 @@ public interface DictionaryDao extends BaseDao<Dictionary,Long> {
     Dictionary findByDictModelAndCode(DictModel dictModel, String code);
 
     Dictionary findByDictModelAndValue(DictModel dictModel, String value);
+
+    @Query(value = "SELECT * FROM(SELECT * FROM T_BASE_DICTIONARY WHERE ORDERS < ? ORDER BY ORDERS DESC) WHERE ROWNUM =1",nativeQuery = true)
+    Dictionary getUper(Integer order);
+
+    @Query(value = "SELECT * FROM(SELECT * FROM T_BASE_DICTIONARY WHERE ORDERS > ? ORDER BY ORDERS ASC) WHERE ROWNUM =1",nativeQuery = true)
+    Dictionary getDowner(Integer o);
+
+    /**
+     * 查询某个模块字典的最大排序
+     * @param id
+     * @return
+     */
+    @Query(value = "SELECT max(ORDERS) FROM T_BASE_DICTIONARY WHERE MODEL_ID=?",nativeQuery = true)
+    Integer getMaxOrder(Long id);
 }

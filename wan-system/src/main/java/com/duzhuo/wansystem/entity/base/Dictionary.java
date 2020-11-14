@@ -49,7 +49,7 @@ public class Dictionary  extends BaseEntity{
     private String code;
 
     @NotBlank(message = "请输入字典值")
-    @ApiModelProperty(value = "值")
+    @ApiModelProperty(value = "字典值")
     private String value;
 
     @NotNull(message = "请选择启用状态")
