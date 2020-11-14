@@ -1,7 +1,6 @@
 package com.duzhuo.common.annotation;
 
 import com.duzhuo.common.core.BaseService;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -14,6 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * @author: 万宏远
  * @date: 2020/11/12 17:15
  */
+@Repeatable(Uniques.class)
 @Constraint(validatedBy = UniqueValidator.class)
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -39,6 +39,6 @@ public @interface Unique {
     @Retention(RUNTIME)
     @Documented
     public @interface List {
-        NotBlank[] value();
+        Unique[] value();
     }
 }

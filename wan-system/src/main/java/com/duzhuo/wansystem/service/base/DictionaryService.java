@@ -11,6 +11,7 @@ import com.duzhuo.wansystem.entity.base.Dictionary;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -117,9 +118,73 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
      * @param modelCode
      * @return
      */
-    public List<Dictionary> getList(String modelCode){
+    public List<Dictionary> getListByCode(String modelCode){
         DictModel dictModel = dictModelService.findByModelCode(modelCode);
         return dictModel.getDictionaryList(Dictionary.Status.启用);
+    }
+
+    /**
+     * 查询某个模块的字典
+     * @param modelName
+     * @return
+     */
+    public List<Dictionary> getList(String modelName){
+        DictModel dictModel = dictModelService.findByModelName(modelName);
+        return dictModel.getDictionaryList(Dictionary.Status.启用);
+    }
+
+    /**
+     *
+     * @param dictModel
+     * @param value
+     * @return
+     */
+    public Dictionary getByValue(DictModel dictModel,String value){
+        return dictionaryDao.findByDictModelAndValue(dictModel,value);
+    }
+
+    public Dictionary getByValue(String modelName,String value){
+        List<Filter> filters = new ArrayList<>();
+        filters.add(Filter.eq("dictModel.modelName",modelName));
+        filters.add(Filter.eq("value",value));
+        List<Dictionary> dictionaryList = super.searchList(filters);
+        if (dictionaryList.size()==1){
+            return dictionaryList.get(0);
+        }
+        if (dictionaryList.size()>1){
+            throw new RuntimeException("need one but find more");
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param dictModel
+     * @param code
+     * @return
+     */
+    public Dictionary getByCode(DictModel dictModel,String code){
+        return dictionaryDao.findByDictModelAndCode(dictModel,code);
+    }
+
+    /**
+     * 字典模块+字典值获字典
+     * @param modelCode
+     * @param code
+     * @return
+     */
+    public Dictionary getByCode(String modelCode,String code){
+        List<Filter> filters = new ArrayList<>();
+        filters.add(Filter.eq("dictModel.modelCode",modelCode));
+        filters.add(Filter.eq("code",code));
+        List<Dictionary> dictionaryList = super.searchList(filters);
+        if (dictionaryList.size()==1){
+            return dictionaryList.get(0);
+        }
+        if (dictionaryList.size()>1){
+            throw new RuntimeException("need one but find more");
+        }
+        return null;
     }
 
     /**

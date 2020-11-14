@@ -7,6 +7,7 @@ import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.DictModelDao;
 import com.duzhuo.wansystem.entity.base.DictModel;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,7 @@ import java.util.regex.Pattern;
 
 /**
  * 字典模块
- * @author: wanhy
+ * @author: 万宏远
  * @date: 2020/8/10 11:18
  */
 @Service
@@ -34,6 +35,10 @@ public class DictModelService extends BaseService<DictModel,Long> {
 
     public DictModel findByModelCode(String modelCode) {
         return dictModelDao.findByModelCode(modelCode);
+    }
+
+    public DictModel findByModelName(String modelName) {
+        return dictModelDao.findByModelName(modelName);
     }
 
     /**
@@ -124,4 +129,15 @@ public class DictModelService extends BaseService<DictModel,Long> {
         char b = (char)((int)(a)+1);
         return b+"001";
     }
+
+    /**
+     * 获取所有的字典并排序
+     * @return
+     */
+    @Override
+    public List<DictModel> findAll(){
+        return super.searchList(null,Sort.by(Sort.Direction.ASC,"order"));
+    }
+
+
 }

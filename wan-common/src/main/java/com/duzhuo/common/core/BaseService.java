@@ -314,6 +314,10 @@ public class BaseService<T, ID extends Serializable> {
         return search(searchParamsFilters, customSearch.getPageNumber(), customSearch.getPageSize(), sort);
     }
 
+    @Transactional(readOnly = true)
+    public List<T> searchList(List<Filter> filters) {
+        return searchList(filters, null);
+    }
 
     @Transactional(readOnly = true)
     public List<T> searchList(List<Filter> filters, Sort sort) {

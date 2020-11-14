@@ -24,4 +24,6 @@ public interface DictModelDao extends BaseDao<DictModel,Long> {
      */
     @Query(value = "select max(model_Code) from T_BASE_DICTMODEL",nativeQuery = true)
     String getMaxCode();
+
+    DictModel findByModelName(String modelName);
 }
