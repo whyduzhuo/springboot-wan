@@ -5,6 +5,7 @@
     <#include "/common/tmp/commom.ftl">
 </head>
 <body>
+<@adminPageNav navName1='系统管理' navName2='菜单管理'/>
     <div style="position: fixed;height: 40px;">
         <@shiro.hasPermission name="100200">
         <button  onclick="addWin()"
@@ -21,8 +22,6 @@
            class="btn btn-sm btn-danger" type="button"
            data-toggle="tooltip" data-original-title="删除">删除</button>
         </@shiro.hasPermission>
-        <button   class="btn btn-sm btn-default" type="button"
-                  data-toggle="tooltip" data-original-title="刷新" onclick="relfush()">刷新</button>
     </div>
     <div style="height: 50px"></div>
     <div>

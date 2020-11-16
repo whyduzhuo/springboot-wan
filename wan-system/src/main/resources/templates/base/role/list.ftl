@@ -5,16 +5,15 @@
     <#include "/common/tmp/commom.ftl">
 </head>
 <body>
+<@adminPageNav navName1='系统管理' navName2='角色管理'/>
     <form id="listForm" action="list" method="get">
         <div class="page-head">
             <@pageHeadLeft>
-                <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">
-                    <i class="fa fa-plus"></i>刷新</a>
             </@pageHeadLeft>
             <@pageHeadRight>
                 <div class="search-item">
-                    <label>请求:</label>
-                    <input class="input-sm input-search" name=""/>
+                    <label>角色名称:</label>
+                    <input class="input-sm input-search" name="search_like_name" value="${searchParams['search_like_name']}"/>
                 </div>
             </@pageHeadRight>
         </div>
@@ -54,10 +53,16 @@
                     </tr>
                     </#list>
             </table>
+            <div class="row"><@pageingTemaplte customSearch.pagedata /></div>
         </div>
     </form>
 <script>
-    
+
+    function refulsh() {
+        layer.load();
+        window.location.reload();
+    }
+
     function openAddWin() {
         layer.open({
             type: 2,

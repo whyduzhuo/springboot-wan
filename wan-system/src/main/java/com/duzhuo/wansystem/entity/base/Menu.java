@@ -1,7 +1,10 @@
 package com.duzhuo.wansystem.entity.base;
 
+import com.duzhuo.common.annotation.Unique;
+import com.duzhuo.common.annotation.UniqueColumn;
 import com.duzhuo.common.core.BaseEntity;
 import com.duzhuo.common.enums.YesOrNo;
+import com.duzhuo.wansystem.service.base.MenuService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -30,6 +33,9 @@ import java.util.List;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true,exclude = {"roleList","children"})
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
+@Unique(service = MenuService.class,message = "菜单名称重复",uniqueColumns = {@UniqueColumn("parent"),@UniqueColumn("name")})
+@Unique(service = MenuService.class,message = "菜单编号重复",uniqueColumns = {@UniqueColumn("num")})
+@Unique(service = MenuService.class,message = "菜单排序重复",uniqueColumns = {@UniqueColumn("parent"),@UniqueColumn("order")})
 public class Menu extends BaseEntity implements Comparable<Menu>,Serializable {
 
     private static final long serialVersionUID = -1674442746152794678L;
@@ -125,7 +131,7 @@ public class Menu extends BaseEntity implements Comparable<Menu>,Serializable {
     }
 
     @Override
-    public int compareTo(@NotNull Menu o) {
+    public int compareTo(Menu o) {
         return this.order-o.getOrder();
     }
 

@@ -6,12 +6,12 @@
     <#include "/common/tmp/commom.ftl">
 </head>
 <body>
+<@adminPageNav navName1='系统管理' navName2='日志列表'/>
     <form id="listForm" action="list" method="get">
         <div class="page-head">
             <@pageHeadLeft>
-                <a href="javascript:openImportWin();" class="btn btn-sm btn-success hidden-xs">
+                <a href="javascript:openImportWin();" class="btn btn-sm btn-success hidden-xs" data-toggle="tooltip" data-original-title="编辑">
                     <i class="fa fa-plus"></i>从Excel文件导入音乐</a>
-                <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">刷新</a>
             </@pageHeadLeft>
             <@pageHeadRight>
                 <div class="search-item">
@@ -104,6 +104,9 @@
                     <#else>
                         ${data.jsonResult}
                     </#if>
+
+                        <a href="edit.html?id=${data.id}" class="btn btn-xs btn-default" type="button"
+                           data-toggle="tooltip" data-original-title="编辑"><i class="fa fa-pencil"></i></a>
                     </td>
                 </tr>
                 </#list>

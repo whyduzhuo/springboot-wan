@@ -32,6 +32,7 @@ import java.io.InputStream;
 /**
  * ${data.module}
  * @author: ${data.author}
+ * @email: 1434495271@qq.com
  * @date: ${data.createDateStr}
  */
 @Service
@@ -55,6 +56,7 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
         super.validation(${data.lowEntityName}VO);
         this.check(${data.lowEntityName}VO);
         super.save(${data.lowEntityName}VO);
+        return Message.success("添加成功！");
     }
 
     private void check(${data.entityName} ${data.lowEntityName}VO){

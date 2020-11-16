@@ -8,7 +8,7 @@
     <#include "/common/tmp/commom.ftl">
 </head>
 <body>
-<form id="listForm" action="list" method="get">
+<form id="listForm" action="showAdmin" method="get">
     <div class="page-head">
             <@pageHeadLeft>
                 <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">刷新</a>

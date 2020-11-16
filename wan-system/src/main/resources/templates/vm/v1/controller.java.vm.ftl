@@ -24,6 +24,7 @@ import java.util.Map;
 /**
  * ${data.module}
  * @author: ${data.author}
+ * @email: 1434495271@qq.com
  * @date: ${data.createDateStr}
  */
 @Controller

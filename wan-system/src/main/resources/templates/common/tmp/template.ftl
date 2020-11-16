@@ -1,3 +1,26 @@
+
+<#macro adminPageNav  navName1 navName2>
+<!-- Page Header -->
+<div class="bg-gray-lighter adminHeadBox hidden-xs" style="padding: 0px 15px 5px 15px">
+    <div class="row items-push">
+        <div class="col-sm-7">
+            <h1 class="page-heading">
+                ${navName2}
+                <a class="content-header-btn" href="javascript:window.location.reload()"><i class="fa fa-refresh"></i>
+                    刷新</a>
+            </h1>
+        </div>
+        <div class="col-sm-5 text-right hidden-xs">
+            <ol class="breadcrumb push-10-t">
+                <li>${navName1}</li>
+                <li><a class="link-effect">${navName2}</a></li>
+            </ol>
+        </div>
+    </div>
+</div>
+<!-- END Page Header -->
+</#macro>
+
 <#macro pageHeadLeft>
  <div class="page-head-left">
     <#nested>
@@ -7,8 +30,8 @@
 <#macro pageHeadRight>
  <div class="page-head-right">
     <#nested>
-     <button class="btn btn-success btn-sm" type="button" onclick="initSubmit();"><i class="fa fa-search"></i></button>
-     <button class="btn btn-success btn-sm" type="button" onclick="clearCondition()"><i class="fa fa-refresh"></i></button>
+     <button class="btn btn-success btn-sm" type="button"  data-toggle="tooltip"  title="搜索" onclick="initSubmit();"><i class="fa fa-search"></i></button>
+     <button class="btn btn-success btn-sm" type="button"  data-toggle="tooltip"  title="清空搜索条件" onclick="clearCondition()"><i class="fa fa-refresh"></i></button>
      <input id="pageInit" name="pageInit" type="hidden">
  </div>
 </#macro>

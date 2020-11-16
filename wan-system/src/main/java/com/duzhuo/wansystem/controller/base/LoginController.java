@@ -1,6 +1,7 @@
 package com.duzhuo.wansystem.controller.base;
 
 import com.duzhuo.common.annotation.Log;
+import com.duzhuo.common.config.Global;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.wansystem.entity.base.Admin;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -64,11 +66,17 @@ public class LoginController {
     @ApiOperation(value = "登录系统")
     @PostMapping("/login")
     @ResponseBody
-    public Message login(String username, String password, Boolean rememberMe) {
+    public Message login(String username, String password, Boolean rememberMe, HttpServletRequest request) {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
+            Admin admin =ShiroUtils.getCurrAdmin();
+            Set<Role> roleSet = admin.getRoleSet();
+            if (roleSet.isEmpty()){
+                return Message.error("您还没有角色信息，请联系管理员！");
+            }
+            request.getSession().setAttribute(Global.ROLE_SESSION,roleSet.iterator().next());
             return Message.success();
         } catch (AuthenticationException e) {
             String msg = "用户或密码错误";
@@ -85,13 +93,7 @@ public class LoginController {
     @GetMapping("/index")
     public String index(Model model){
         Admin admin = ShiroUtils.getCurrAdmin();
-        Set<Role> roleSet = admin.getRoleSet();
-        List<Menu> menus = roleService.getMenus(roleSet);
-        Collections.sort(menus);
-        List<Menu> menuList = menuService.buildMenu(menus);
-        model.addAttribute("menuList",menuList);
         model.addAttribute("admin",admin);
-        model.addAttribute("roleList",roleSet);
         return "/base/login/main";
     }
 

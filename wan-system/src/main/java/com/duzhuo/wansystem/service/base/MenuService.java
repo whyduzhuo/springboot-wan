@@ -271,6 +271,7 @@ public class MenuService extends BaseService<Menu,Long> {
         if (menu.getType()==Menu.TypeEnum.页面){
             ztree.setIcon(Ztree.PAGE_ICON);
         }
+        ztree.setUrlPath(menu.getPath());
         ztree.setType(menu.getType().toString());
         return ztree;
     }
@@ -393,6 +394,22 @@ public class MenuService extends BaseService<Menu,Long> {
             throw new ServiceException("roleId can not be null");
         }
         menuDao.delAllMenu(roleId);
+    }
+
+    /**
+     * 递归组装树结构
+     * @param ztree
+     * @param ztreeList
+     * @param all
+     */
+    public void assembleTree(Ztree ztree,List<Ztree> ztreeList,List<Ztree> all){
+        all.forEach(a->{
+            Boolean b = (ztree==null && a.getPid()==null) || (ztree!=null && a.getPid()!=null && ztree.getId().equals(a.getPid()));
+            if (b){
+                assembleTree(a,a.getChildren(),all);
+                ztreeList.add(a);
+            }
+        });
     }
 
     /**

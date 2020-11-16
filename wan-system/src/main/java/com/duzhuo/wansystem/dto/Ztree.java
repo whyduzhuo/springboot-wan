@@ -70,8 +70,11 @@ public class Ztree implements Serializable{
     private String type;
 
     @JsonProperty
+    private String urlPath;
+
+    @JsonProperty
     @ApiModelProperty("子节点")
-    private List children = new ArrayList<>();
+    private List<Ztree> children = new ArrayList<>();
 
     @JsonProperty
     @ApiModelProperty(value = "角色id")

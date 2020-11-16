@@ -8,10 +8,10 @@
     <#include "/common/tmp/commom.ftl">
 </head>
 <body>
+<@adminPageNav navName1='系统管理' navName2='用户列表'/>
     <form id="listForm" action="list" method="get">
         <div class="page-head">
             <@pageHeadLeft>
-                <a href="javascript:refulsh();" class="btn btn-sm btn-success hidden-xs">刷新</a>
             <@shiro.hasPermission name="100401">
                 <button type="button" onclick="addWin()" class="btn btn-sm btn-success hidden-xs">新增</button>
             </@shiro.hasPermission>

@@ -4,10 +4,18 @@
     <title></title>
     <link rel="shortcut icon" href="/static/favicon.ico"/>
     <script type="text/javascript" src="/static/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery/jquery-ui/jquery-ui.js"></script>
     <script type="text/javascript" src="/static/jquery/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>
+    <link href="/static/css/oneui.css" rel="stylesheet" type="text/css">
     <link href="/static/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" type="text/css">
     <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/static/jquery/core/jquery.placeholder.min.js"></script>
+    <script type="text/javascript" src="/static/jquery/core/jquery.scrollLock.min.js"></script>
+    <script type="text/javascript" src="/static/jquery/core/jquery.slimscroll.min.js"></script>
+    <script type="text/javascript" src="/static/jquery/core/jquery.countTo.min.js"></script>
+    <script type="text/javascript" src="/static/js/app.js"></script>
+
 
     <style>
         .menu {
@@ -18,6 +26,22 @@
             -webkit-user-select: none;
             -ms-user-select: none;
             user-select: none;
+        }
+        .nav-main{
+            margin: 0 0;
+        }
+        .nav-main a,.nav-main ul a{
+            padding: 10px 10px;
+        }
+        .nav-main ul{
+            padding: 0 0 0 30px;
+        }
+        .nav-main img {
+            vertical-align: bottom;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
         }
 
         html, body {
@@ -132,100 +156,10 @@
 <body id="body">
 <#--左侧导航-->
 <nav class="navbar-default navbar-static-side">
-    <ul>
-        <!----------------->
-        <#--<li>-->
-            <#--<a class="menu menuDict">代码生成</a>-->
-            <#--<ul class="nav-ul" style="display: none">-->
-                <#--<li>-->
-                    <#--<a class="menu menuItem" data-id="/base/coding/index">菜单101</a>-->
-                    <#--<a class="menu menuItem">菜单102</a>-->
-                    <#--<a class="menu menuItem">菜单103</a>-->
-                <#--</li>-->
-            <#--</ul>-->
-        <#--</li>-->
-        <#--<li>-->
-            <#--<a class="menu menuItem" data-id="/base/sysOperLog/list">日志列表</a>-->
-        <#--</li>-->
-        <!----------------->
-            <#list menuList as menu>
-                <#if menu.type=='页面'>
-                 <li>
-                     <a class="menu menuItem" data-id="${menu.path}">${menu.name}</a>
-                 </li>
-                <#elseif menu.type=='目录'>
-                 <li>
-                     <a class="menu menuDict">${menu.name}</a>
-                     <ul class="nav-ul" style="display: none">
-                     <li>
-                         <#list menu.children as menu1>
-                             <#if menu1.type=='页面'>
-                             <li>
-                                 <a class="menu menuItem" data-id="${menu1.path}">${menu1.name}</a>
-                             </li>
-                             <#elseif menu1.type=='目录'>
-                             <li>
-                                 <a class="menu menuDict">${menu1.name}</a>
-                                 <ul class="nav-ul" style="display: none">
-                                     <li>
-                                         <#list menu1.children as menu2>
-                                             <#if menu2.type=='页面'>
-                                             <li>
-                                                 <a class="menu menuItem" data-id="${menu2.path}">${menu2.name}</a>
-                                             </li>
-                                             <#elseif menu2.type=='目录'>
-                                             <li>
-                                                 <a class="menu menuDict">${menu2.name}</a>
-                                                 <ul class="nav-ul" style="display: none">
-                                                     <li>
-                                                         <#list menu2.children as menu3>
-                                                             <#if menu3.type=='页面'>
-                                                             <li>
-                                                                 <a class="menu menuItem" data-id="${menu3.path}">${menu3.name}</a>
-                                                             </li>
-                                                             <#elseif menu3.type=='目录'>
-                                                             <li>
-                                                                 <a class="menu menuDict">${menu3.name}</a>
-                                                                 <ul class="nav-ul" style="display: none">
-                                                                     <li>
-                                                                         <#list menu3.children as menu4>
-                                                                             <#if menu4.type=='页面'>
-                                                                             <li>
-                                                                                 <a class="menu menuItem" data-id="${menu4.path}">${menu4.name}</a>
-                                                                             </li>
-                                                                             <#elseif menu4.type=='目录'>
-                                                                             <li>
-                                                                                 <a class="menu menuDict">${menu4.name}</a>
-                                                                                 <ul class="nav-ul" style="display: none">
-                                                                                     <li>
-                                                                                         <#list menu4.children as menu5>
-                                                                                             <a class="menu menuItem" data-id="/base/coding/index">${menu5.name}</a>
-                                                                                         </#list>
-                                                                                     </li>
-                                                                                 </ul>
-                                                                             </li>
-                                                                             </#if>
-                                                                         </#list>
-                                                                     </li>
-                                                                 </ul>
-                                                             </li>
-                                                             </#if>
-                                                         </#list>
-                                                     </li>
-                                                 </ul>
-                                             </li>
-                                             </#if>
-                                         </#list>
-                                     </li>
-                                 </ul>
-                             </li>
-                             </#if>
-                         </#list>
-                         </li>
-                     </ul>
-                 </li>
-                </#if>
-            </#list>
+    <ul class="nav-main">
+        <@menuDirective>
+            ${navHtml}
+        </@menuDirective>
     </ul>
 </nav>
 <div id="page-wrapper" class="gray-bg dashbard-1">
@@ -247,6 +181,8 @@
 </div>
 </body>
 <script type="text/javascript">
+
+    App.initHelpers('slick');
 
     //点击菜单列表
     $(document).on("click", ".menuItem", function () {
@@ -278,6 +214,9 @@
         $(".menuTab[data-id='" + url + "']").addClass("active");
         var freme = $(".wan_frame[src='" + url + "']");
         if (freme.length > 0) {
+            if(title !=undefined){
+                freme.attr("src",url);
+            }
             freme.show(300);
         } else {
             var tabHtml = '<a href="javascript:;" class="menuTab active" data-id="' + url + '">' + title + ' <i class="fa fa-times-circle"></i></a>';
