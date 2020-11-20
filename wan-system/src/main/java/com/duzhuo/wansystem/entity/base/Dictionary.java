@@ -6,13 +6,10 @@ import com.duzhuo.common.core.BaseEntity;
 import com.duzhuo.wansystem.service.base.DictionaryService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -23,7 +20,6 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Data
-@Accessors(chain = true)
 @Table(name = "T_BASE_DICTIONARY")
 @EqualsAndHashCode(callSuper = true)
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)

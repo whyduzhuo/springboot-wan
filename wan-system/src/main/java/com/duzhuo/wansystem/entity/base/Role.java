@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,7 +23,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true,exclude = {"menuSet","adminList"})
 @ApiModel(value = "角色/职务",description = "此处的职务相当于原来的角色，部门-<职务><菜单。用户><职务><菜单")
 @Table(name = "T_BASE_ROLE")

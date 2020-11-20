@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
@@ -19,7 +18,6 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "T_BASE_SYSOPERLOG")
 @ApiModel(value = "操作日志")

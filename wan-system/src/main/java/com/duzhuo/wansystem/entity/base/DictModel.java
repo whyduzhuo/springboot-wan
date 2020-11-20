@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -29,7 +28,6 @@ import java.util.List;
 @Setter
 @Entity
 @ApiModel(value = "字典模块")
-@Accessors(chain = true)
 @Table(name = "T_BASE_DICTMODEL")
 @EqualsAndHashCode(callSuper = true,exclude = {"dictionaryList"})
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_DICT_MODEL", allocationSize = 1)

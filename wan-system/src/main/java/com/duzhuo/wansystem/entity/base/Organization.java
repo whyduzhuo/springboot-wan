@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,7 +20,6 @@ import java.util.Set;
 @Setter
 @Entity
 @ApiModel(value = "部门/机构")
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true,exclude = {"roleList"})
 @Table(name = "T_BASE_Organization")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)

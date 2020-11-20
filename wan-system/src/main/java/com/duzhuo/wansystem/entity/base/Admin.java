@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -33,7 +32,6 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Entity
-@Accessors(chain = true)
 @ApiModel(value = "用户")
 @Table(name = "T_BASE_ADMIN")
 @EqualsAndHashCode(callSuper = true,exclude = "roleSet")

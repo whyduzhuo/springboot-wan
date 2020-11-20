@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -30,7 +29,6 @@ import java.util.List;
 @Entity
 @ApiModel(value = "菜单")
 @Table(name = "T_BASE_MENU")
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true,exclude = {"roleList","children"})
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 @Unique(service = MenuService.class,message = "菜单名称重复",uniqueColumns = {@UniqueColumn("parent"),@UniqueColumn("name")})
@@ -118,6 +116,10 @@ public class Menu extends BaseEntity implements Comparable<Menu>,Serializable {
     @JoinColumn(name = "parent_id")
     public Menu getParent() {
         return parent;
+    }
+
+    public void setParent(Menu parent) {
+        this.parent = parent;
     }
 
     @OneToMany(mappedBy = "parent")
