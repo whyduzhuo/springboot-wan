@@ -97,10 +97,10 @@ public class LogAspect {
 
             if (e != null) {
                 String stackTrace=ExceptionUtils.getStackTrace(e);
-                operLog.setErrorMsg(StringUtils.substring(stackTrace, 0, 3000));
+                operLog.setErrorMsg(e.getMessage());
                 if (!(e instanceof ServiceException)){
                     operLog.setHaveException(YesOrNo.是);
-                    operLog.setErrorMsg(e.getMessage());
+                    operLog.setErrorMsg(StringUtils.substring(stackTrace, 0, 3000));
                 }
                 operLog.setStatus(YesOrNo.否);
 
