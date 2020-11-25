@@ -10,8 +10,7 @@
     <form id="listForm" action="list" method="get">
         <div class="page-head">
             <@pageHeadLeft>
-                <a href="javascript:openImportWin();" class="btn btn-sm btn-success hidden-xs" data-toggle="tooltip" data-original-title="编辑">
-                    <i class="fa fa-plus"></i>从Excel文件导入音乐</a>
+
             </@pageHeadLeft>
             <@pageHeadRight>
                 <div class="search-item">
@@ -63,8 +62,8 @@
                     <th>id</th>
                     <th>用户</th>
                     <th>IP</th>
-                    <th style="width: 15%">请求地址</th>
                     <th>操作</th>
+                    <th style="width: 15%">请求地址</th>
                     <th>操作类型</th>
                     <th>请求方式</th>
                     <th>是否成功</th>
@@ -104,9 +103,6 @@
                     <#else>
                         ${data.jsonResult}
                     </#if>
-
-                        <a href="edit.html?id=${data.id}" class="btn btn-xs btn-default" type="button"
-                           data-toggle="tooltip" data-original-title="编辑"><i class="fa fa-pencil"></i></a>
                     </td>
                 </tr>
                 </#list>

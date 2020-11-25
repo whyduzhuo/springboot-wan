@@ -10,6 +10,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.cache.Cache;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
@@ -84,11 +85,14 @@ public class AdminRealm extends AuthorizingRealm {
     }
 
     /**
-     * 清理缓存权限
+     * 清除当前登录人的权限缓存
      */
-    public void clearCachedAuthorizationInfo() {
-        this.clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
+    public void clearCachedAuthorizationInfo(){
+        clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
     }
 
+    public void clearAllCachedAuthorizationInfo(){
+
+    }
 
 }

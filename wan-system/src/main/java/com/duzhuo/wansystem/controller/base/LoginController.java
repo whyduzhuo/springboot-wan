@@ -2,10 +2,11 @@ package com.duzhuo.wansystem.controller.base;
 
 import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.config.Global;
+import com.duzhuo.common.config.RedisKeyTimeOutConfig;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
+import com.duzhuo.common.utils.RedisUtils;
 import com.duzhuo.wansystem.entity.base.Admin;
-import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.service.base.MenuService;
 import com.duzhuo.wansystem.service.base.RoleService;
@@ -50,6 +51,10 @@ public class LoginController {
     private RoleService roleService;
     @Resource
     private MenuService menuService;
+    @Resource
+    private RedisKeyTimeOutConfig redisKeyTimeOutConfig;
+    @Resource
+    private RedisUtils redisUtils;
 
     @Log(title = "进入登录页",operateType = OperateType.OTHER)
     @ApiOperation(value = "进入登录页")
@@ -74,9 +79,10 @@ public class LoginController {
             Admin admin =ShiroUtils.getCurrAdmin();
             Set<Role> roleSet = admin.getRoleSet();
             if (roleSet.isEmpty()){
+                subject.logout();
                 return Message.error("您还没有角色信息，请联系管理员！");
             }
-            request.getSession().setAttribute(Global.ROLE_SESSION,roleSet.iterator().next());
+            redisUtils.set(Global.ROLE_SESSION_KEY+admin.getId(),roleSet.iterator().next());
             return Message.success();
         } catch (AuthenticationException e) {
             String msg = "用户或密码错误";
@@ -94,7 +100,7 @@ public class LoginController {
     public String index(Model model){
         Admin admin = ShiroUtils.getCurrAdmin();
         model.addAttribute("admin",admin);
-        return "/base/login/main";
+        return "/base/login/index";
     }
 
     @Log(title = "进入错误页面",operateType = OperateType.OTHER)
@@ -118,13 +124,7 @@ public class LoginController {
     public String refush(){
         RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
         AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
-        Subject subject = SecurityUtils.getSubject();
-        String realmName = subject.getPrincipals().getRealmNames().iterator().next();
-        SimplePrincipalCollection principals = new SimplePrincipalCollection(subject.getPrincipal(),realmName);
-        subject.runAs(principals);
-        shiroRealm.getAuthorizationCache().remove(subject.getPrincipals());
-        shiroRealm.getAuthorizationCache().remove(subject.getPrincipal());
-        subject.releaseRunAs();
+        shiroRealm.clearCachedAuthorizationInfo();
         return "redirect:/base/index";
     }
 }

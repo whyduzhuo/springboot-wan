@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
 
     <style type="text/css">
-        #login-form{
+        #login-form {
             width: 300px;
             height: 600px;
             display: block;
@@ -50,8 +50,13 @@
                 url: "login",
                 type: "post",
                 data: $('#login-form').serialize(),
-                success :function () {
-                    window.location.href="index";
+                success :function (res) {
+                    if (res.type=='SUCCESS'){
+                        window.location.href="index";
+                    }else {
+                        layer.msg(res.msg, {icon: res.icon, time: 1000,skin:'.demo-class'})
+                    }
+
                 }
             })
         }

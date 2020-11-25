@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 /**
  * 通用配置
  * 
- * @author wna
+ * @author wan
  */
 @Configuration
 public class ResourcesConfig implements WebMvcConfigurer {

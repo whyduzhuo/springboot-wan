@@ -35,7 +35,6 @@ public class UniqueValidator implements ConstraintValidator<Unique, BaseEntity> 
 
     @Override
     public boolean isValid(BaseEntity baseEntity, ConstraintValidatorContext constraintValidatorContext) {
-        String beanName = serviceClass.getSimpleName().substring(0,1).toLowerCase()+serviceClass.getSimpleName().substring(1);
         BaseService entityService = SpringUtils.getBean(serviceClass);
         List<Filter> filterList = new ArrayList<>();
         if (baseEntity.getId()!=null){
@@ -63,8 +62,8 @@ public class UniqueValidator implements ConstraintValidator<Unique, BaseEntity> 
                 throw new RuntimeException("Unique 校验错误");
             }
         }
-        long count = entityService.count(filterList);
-        return count==0;
+        List list = entityService.searchList(filterList);
+        return list.isEmpty();
     }
 
 

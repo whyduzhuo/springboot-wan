@@ -9,12 +9,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +26,7 @@ public class RoleMapper {
 
     public Page<Admin> showAdmin(Long roleId, Map<String, Object> searchParams, CustomSearch<Admin> customSearch) {
         StringBuilder sql = new StringBuilder();
+
         sql.append("select t2.id,T2.USERNAME,T2.REALNAME,T2.IS_DELETE from T_BASE_ADMIN_ROLE t1\n" +
                 "left join T_BASE_ADMIN t2 on T1.ADMIN_ID = T2.ID\n" +
                 "where T1.ROLE_ID = ?");

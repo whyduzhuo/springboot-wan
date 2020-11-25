@@ -1,10 +1,12 @@
 package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.core.BaseService;
+import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.MenuDao;
 import com.duzhuo.wansystem.dto.Ztree;
+import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -44,14 +46,14 @@ public class MenuService extends BaseService<Menu,Long> {
             Long num = this.createId(menuVO.getParent());
             menuVO.setNum(num);
         }
-        super.validation(menuVO);
+        //super.validation(menuVO);
         this.check(menuVO);
         super.save(menuVO);
         return Message.success("添加成功！",this.menuToTree(menuVO));
     }
 
     /**
-     * 菜单--字段校验
+     * 菜单--字段的逻辑校验
      * @param menuVO
      */
     private void check(Menu menuVO){

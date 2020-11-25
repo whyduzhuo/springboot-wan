@@ -18,15 +18,6 @@
 
 
     <style>
-        .menu {
-            moz-user-select: -moz-none;
-            -moz-user-select: none;
-            -o-user-select: none;
-            -khtml-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
         .nav-main{
             margin: 0 0;
         }
@@ -112,45 +103,6 @@
             overflow: hidden;
         }
 
-        .menu {
-            cursor: pointer;
-            color: #ffffff;
-            display: block;
-            position: relative;
-            font-weight: 600;
-            padding: 14px 20px 14px 14px;
-            border-bottom: 1px solid #283746;
-        }
-
-        .menu:hover {
-            transition: all ease 300ms;
-            background-color: #111111;
-            color: #AAA;
-        }
-
-        .page-tabs a i {
-            position: absolute;
-            top: 1px;
-            right: 1px;
-        }
-
-        .page-tabs a i:hover {
-            color: #c00;
-        }
-
-        .nav-ul {
-            transition: all ease 300ms;
-            border-left: 2px solid #0000FF;
-        }
-
-        .nav-ul li a {
-            padding-left: 20px;
-        }
-
-        .menuDict-open {
-            transition: all ease 300ms;
-            background-color: #1b3752;
-        }
     </style>
 </head>
 <body id="body">

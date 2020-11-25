@@ -83,7 +83,8 @@ public class RoleService extends BaseService<Role,Long> {
         if (role.getType()==Role.TypeEnum.固定职务){
             throw new ServiceException("固定职务/角色，不可修改！");
         }
-        role.setName(roleVo.getName()).setOrganization(roleVo.getOrganization());
+        role.setName(roleVo.getName());
+        role.setOrganization(roleVo.getOrganization());
         super.update(role);
         return Message.success("修改成功！！");
     }

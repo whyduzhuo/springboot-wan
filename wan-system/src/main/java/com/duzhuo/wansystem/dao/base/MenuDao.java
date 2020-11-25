@@ -99,6 +99,6 @@ public interface MenuDao extends BaseDao<Menu,Long>{
      * @param menuId
      * @return
      */
-    @Query(value = "SELECT * FROM T_BASE_MENU START WITH ID = 68187 CONNECT BY PRIOR PARENT_ID = ID order by num asc",nativeQuery = true)
+    @Query(value = "SELECT * FROM T_BASE_MENU START WITH ID = ? CONNECT BY PRIOR PARENT_ID = ID order by num asc",nativeQuery = true)
     List<Menu> getAllParent(Long menuId);
 }

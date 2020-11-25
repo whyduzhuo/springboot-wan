@@ -1,8 +1,5 @@
 package com.duzhuo.wansystem.aspectj;
 
-
-import com.alibaba.druid.support.json.JSONUtils;
-import com.alibaba.fastjson.JSONObject;
 import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.enums.YesOrNo;
 import com.duzhuo.common.exception.ServiceException;
@@ -108,8 +105,10 @@ public class LogAspect {
             // 设置请求方式
             operLog.setMethod(ServletUtils.getRequest().getMethod());
             // 保存响应结果,get请求不保存
-            if (Tools.vaildeParam(jsonResult) && !"GET".equalsIgnoreCase(operLog.getMethod())){
+            if (!"GET".equalsIgnoreCase(operLog.getMethod())){
                 operLog.setJsonResult(JSON.marshal(jsonResult));
+            }else {
+                operLog.setJsonResult("GET 请求不记录响应结果");
             }
             // 处理设置注解上的参数
             getControllerMethodDescription(controllerLog, operLog);

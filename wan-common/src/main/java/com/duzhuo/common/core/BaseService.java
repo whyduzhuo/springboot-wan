@@ -3,6 +3,7 @@ package com.duzhuo.common.core;
 import com.duzhuo.common.exception.ServiceException;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.HibernateValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -19,6 +21,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
+import javax.validation.Validator;
 import java.io.Serializable;
 import java.util.*;
 
@@ -29,13 +32,16 @@ import java.util.*;
 @Transactional(rollbackFor = Exception.class)
 public class BaseService<T, ID extends Serializable> {
 
+    private static Validator validatorFast = Validation.byProvider(HibernateValidator.class).configure().failFast(true).buildValidatorFactory().getValidator();
+    private static Validator validatorAll = Validation.byProvider(HibernateValidator.class).configure().failFast(false).buildValidatorFactory().getValidator();
+
     private BaseDao<T, ID> baseDao;
 
     public void setBaseDao(BaseDao<T, ID> baseDao) {
         this.baseDao = baseDao;
     }
 
-    @PersistenceContext
+    @Resource
     protected EntityManager entityManager;
 
     public void clear() {
