@@ -10,7 +10,9 @@
 <form id="listForm" action="showRoles" method="get">
     <div class="page-head">
             <@pageHeadLeft>
-                <button class="btn btn-success" type="button" onclick="gantRoles()">授予</button>
+            <@shiro.hasPermission name="100403">
+                <button class="btn btn-success" type="button" onclick="grantRoles()">授予</button>
+            </@shiro.hasPermission>
             </@pageHeadLeft>
             <@pageHeadRight>
                 <div class="search-item">
@@ -53,7 +55,7 @@
         parent.layer.close(index);
     }
 
-    function gantRoles() {
+    function grantRoles() {
         var url = 'grantRoles';
         var roleIds=[];
         $('input[name="ids"]:checked').each(function(){
