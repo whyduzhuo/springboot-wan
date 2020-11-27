@@ -24,9 +24,9 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = true)
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 @ApiModel(value = "字典")
-@Unique(service = DictionaryService.class,message = "字典编码已存在!",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("code")})
-@Unique(service = DictionaryService.class,message = "字典值已存在！",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("value")})
-@Unique(service = DictionaryService.class,message = "排序重复",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("order")})
+//@Unique(service = DictionaryService.class,message = "字典编码已存在!",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("code")})
+//@Unique(service = DictionaryService.class,message = "字典值已存在！",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("value")})
+//@Unique(service = DictionaryService.class,message = "排序重复",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("order")})
 public class Dictionary  extends BaseEntity{
 
     private static final long serialVersionUID = 1448607782295439386L;
@@ -50,13 +50,17 @@ public class Dictionary  extends BaseEntity{
 
     @NotNull(message = "请选择启用状态")
     @ApiModelProperty(value = "状态")
-    private Status status;
+    private Status status = Status.启用;
 
     @NotNull(message = "请输入排序")
     @ApiModelProperty(value = "排序")
-    @Column(name = "orders")
     @Min(value = 0,message = "排序不能小于0")
     private Integer order;
+
+    @Column(name = "orders")
+    public Integer getOrder() {
+        return order;
+    }
 
     @ApiModelProperty(value = "备注")
     private String remark;
@@ -65,5 +69,16 @@ public class Dictionary  extends BaseEntity{
     @JoinColumn(name = "MODEL_ID")
     public DictModel getDictModel() {
         return dictModel;
+    }
+
+    @Transient
+    public String getStatusHtml(){
+        if (status==Status.启用){
+            return "<span  class=\"label label-success\">"+this.status+"</span>";
+        }
+        if (status==Status.禁用){
+            return "<span  class=\"label label-danger\">"+this.status+"</span>";
+        }
+        return "";
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 /**
  * @author: wanhy
@@ -37,6 +38,6 @@ public interface DictionaryDao extends BaseDao<Dictionary,Long> {
      * @param id
      * @return
      */
-    @Query(value = "SELECT max(ORDERS) FROM T_BASE_DICTIONARY WHERE MODEL_ID=?",nativeQuery = true)
-    Integer getMaxOrder(Long id);
+    @Query(value = "SELECT nvl(max(ORDERS),0) FROM T_BASE_DICTIONARY WHERE MODEL_ID=?",nativeQuery = true)
+    BigDecimal getMaxOrder(Long id);
 }

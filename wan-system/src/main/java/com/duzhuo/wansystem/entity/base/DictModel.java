@@ -30,10 +30,10 @@ import java.util.List;
 @ApiModel(value = "字典模块")
 @Table(name = "T_BASE_DICTMODEL")
 @EqualsAndHashCode(callSuper = true,exclude = {"dictionaryList"})
-@SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_DICT_MODEL", allocationSize = 1)
-@Unique(service = DictModelService.class,message = "模块名称已存在",uniqueColumns = @UniqueColumn("modelName"))
-@Unique(service = DictModelService.class,message = "模块编码已存在",uniqueColumns = @UniqueColumn("modelCode"))
-@Unique(service = DictModelService.class,message = "排序已存在",uniqueColumns = @UniqueColumn("order"))
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
+//@Unique(service = DictModelService.class,message = "模块名称已存在",uniqueColumns = @UniqueColumn("modelName"))
+//@Unique(service = DictModelService.class,message = "模块编码已存在",uniqueColumns = @UniqueColumn("modelCode"))
+//@Unique(service = DictModelService.class,message = "排序已存在",uniqueColumns = @UniqueColumn("order"))
 public class DictModel extends BaseEntity{
 
     private static final long serialVersionUID = 3988974700266864376L;
@@ -49,9 +49,13 @@ public class DictModel extends BaseEntity{
 
     @NotNull(message = "请输入排序")
     @ApiModelProperty(value = "排序")
-    @Column(name = "orders")
     @Min(value = 0,message = "排序不能小于0")
     private Integer order;
+
+    @Column(name = "orders")
+    public Integer getOrder() {
+        return order;
+    }
 
     @ApiModelProperty(value = "字典")
     private List<Dictionary> dictionaryList;
@@ -67,6 +71,8 @@ public class DictModel extends BaseEntity{
         });
         return dictionaryList1;
     }
+
+
 
     @OneToMany(mappedBy = "dictModel")
     @OrderBy("STATUS ASC,ORDERS ASC,CODE ASC")

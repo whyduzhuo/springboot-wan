@@ -2,8 +2,8 @@ package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Filter;
-import com.duzhuo.common.core.Message;
 import com.duzhuo.common.exception.ServiceException;
+import com.duzhuo.common.utils.StrFormatter;
 import com.duzhuo.wansystem.dao.base.DictModelDao;
 import com.duzhuo.wansystem.entity.base.DictModel;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * 字典模块
@@ -46,25 +45,23 @@ public class DictModelService extends BaseService<DictModel,Long> {
      * @param dictModelVO
      * @return
      */
-    public Message addData(DictModel dictModelVO){
+    public void addData(DictModel dictModelVO){
         super.validation(dictModelVO);
         this.check(dictModelVO);
         super.save(dictModelVO);
-        return Message.success("添加成功!");
     }
 
     /**
      * 字典模块--修改
      * @return
      */
-    public Message edit(DictModel dictModelVO){
+    public void edit(DictModel dictModelVO){
         super.validation(dictModelVO);
         this.check(dictModelVO);
         DictModel dictModel = super.find(dictModelVO.getId());
         dictModel.setModelCode(dictModelVO.getModelCode());
         dictModel.setModelName(dictModelVO.getModelName());
         super.update(dictModel);
-        return Message.success("修改成功!");
     }
 
     /**
@@ -121,13 +118,17 @@ public class DictModelService extends BaseService<DictModel,Long> {
         char a = maxCode.charAt(0);
         int num = Integer.valueOf(maxCode.substring(1,maxCode.length()));
         if (num<999){
-            return a+(num+1)+"";
+            return String.valueOf(a)+ StrFormatter.formatNumber(num+1,3);
         }
         if (a=='Z'){
             throw new ServiceException("字典编码已耗尽！");
         }
         char b = (char)((int)(a)+1);
         return b+"001";
+    }
+
+    public Integer getNewOrder(){
+        return dictModelDao.getMaxOrder().intValue()+1;
     }
 
     /**

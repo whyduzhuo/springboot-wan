@@ -6,6 +6,7 @@ import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
+import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.wansystem.entity.base.DictModel;
 import com.duzhuo.wansystem.entity.base.Dictionary;
@@ -16,10 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
 
 import javax.annotation.Resource;
@@ -51,22 +49,27 @@ public class DictionaryController extends BaseController{
     @Log(title = "字典--列表页",operateType = OperateType.SELECT)
     @ApiOperation(value = "字典--列表页")
     @GetMapping("/list")
-    public String list(HttpServletRequest request, CustomSearch<Dictionary> customSearch, Model model,Long modelId){
+    public String list(HttpServletRequest request, CustomSearch<Dictionary> customSearch, Model model, Long modelId){
+        if (modelId==null){
+            throw new ServiceException("请选择字典");
+        }
         CommonUtil.initPage(request,customSearch);
         Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,SEARCH_PREFIX);
         super.searchParamsTrim(searchParams);
-        customSearch.getFilters().add(Filter.eq("dictModel.id",model));
-        customSearch.getOrders().add(Sort.Order.asc("orders"));
+        customSearch.getFilters().add(Filter.eq("dictModel.id",modelId));
+        customSearch.getOrders().add(Sort.Order.asc("status"));
+        customSearch.getOrders().add(Sort.Order.asc("order"));
         customSearch.setPagedata(dictionaryService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
         model.addAttribute("searchParams",mapKeyAddPre(searchParams, SEARCH_PREFIX));
-        return "/base/dictionary/list";
+        model.addAttribute("dictModel",dictModelService.find(modelId));
+        return "/base/dictionaryModel/dictionary/list";
     }
 
     @Log(title = "字典--编辑窗口",operateType = OperateType.SELECT)
     @ApiOperation(value = "字典--编辑窗口")
-    @GetMapping("/editWin")
-    public String editWin(Long modelId,Long id,Model model){
+    @GetMapping("/detail")
+    public String detail(Long modelId,Long id,Model model){
         Dictionary dictionary;
         DictModel dictModel;
         if (id!=null){
@@ -79,7 +82,8 @@ public class DictionaryController extends BaseController{
             dictionary.setCode(dictionaryService.getNewCode(dictModel));
         }
         model.addAttribute("data",dictionary);
-        return "/base/dictionary/editWin";
+        model.addAttribute("statusList",Dictionary.Status.values());
+        return "/base/dictionaryModel/dictionary/edit";
     }
 
 
@@ -88,7 +92,8 @@ public class DictionaryController extends BaseController{
     @PostMapping("/addData")
     @ResponseBody
     public Message addData(Dictionary dictionaryVO){
-        return dictionaryService.addData(dictionaryVO);
+        dictionaryService.addData(dictionaryVO);
+        return Message.success("添加成功!");
     }
 
     @ApiOperation(value = "字典--修改")
@@ -96,7 +101,8 @@ public class DictionaryController extends BaseController{
     @PostMapping("/edit")
     @ResponseBody
     public Message edit(Dictionary dictionaryVO){
-        return dictionaryService.edit(dictionaryVO);
+        dictionaryService.edit(dictionaryVO);
+        return Message.success("修改成功！");
     }
 
     @ApiOperation(value = "字典--启用/禁用")
@@ -114,10 +120,12 @@ public class DictionaryController extends BaseController{
     @ResponseBody
     @Log(title = "字典--修改排序",operateType = OperateType.UPDATE)
     public Message upOrDown(Long id,Integer change){
-        if (change>0){
-            return dictionaryService.down(id);
+        if (change<0){
+            dictionaryService.down(id);
+            return Message.success("修改成功！");
         }
-        return dictionaryService.up(id);
+        dictionaryService.up(id);
+        return Message.success("修改成功！");
     }
 
 }

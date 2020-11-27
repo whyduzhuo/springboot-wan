@@ -35,7 +35,8 @@ import java.util.*;
 
 /**
  * 用户管理-Controller
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/1/2 8:52
  */
 @Api(tags = "用户管理模块")
@@ -130,6 +131,7 @@ public class AdminController extends BaseController{
         return "/base/admin/showMenus";
     }
 
+    @Log(title = "查询admin的所有菜单",operateType = OperateType.SELECT)
     @GetMapping("/getMenuTree")
     @ApiOperation("查询admin的所有菜单")
     @ResponseBody
@@ -143,6 +145,7 @@ public class AdminController extends BaseController{
         return Message.success(ztreeList);
     }
 
+    @Log(title = "查询用户下每个角色的菜单",operateType = OperateType.SELECT)
     @ApiOperation(value = "查询用户下每个角色的菜单")
     @GetMapping("/getRolesMenu")
     @ResponseBody
@@ -153,6 +156,8 @@ public class AdminController extends BaseController{
         return Message.success(ztreeList);
     }
 
+    @Log(title = "显示用户的角色",operateType = OperateType.SELECT)
+    @ApiOperation("显示用户的角色")
     @GetMapping("/showRoles")
     public String showRoles(Long id,Model model,String name){
         Admin admin = adminService.find(id);
@@ -173,12 +178,8 @@ public class AdminController extends BaseController{
         return "/base/admin/showRoles";
     }
 
-    /**
-     * 角色授权
-     * @param id
-     * @param roleIds
-     * @return
-     */
+    @Log(title = "角色授权",operateType = OperateType.UPDATE)
+    @ApiOperation("角色授权")
     @RequiresPermissions("100403")
     @PostMapping("grantRoles")
     @ResponseBody

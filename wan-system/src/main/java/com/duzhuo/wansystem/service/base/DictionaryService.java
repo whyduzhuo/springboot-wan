@@ -2,8 +2,8 @@ package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Filter;
-import com.duzhuo.common.core.Message;
 import com.duzhuo.common.exception.ServiceException;
+import com.duzhuo.common.utils.StrFormatter;
 import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.dao.base.DictionaryDao;
 import com.duzhuo.wansystem.entity.base.DictModel;
@@ -11,11 +11,8 @@ import com.duzhuo.wansystem.entity.base.Dictionary;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +40,10 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
      * @param dictionaryVO
      * @return
      */
-    public Message addData(Dictionary dictionaryVO){
+    public void addData(Dictionary dictionaryVO){
         super.validation(dictionaryVO);
         this.check(dictionaryVO);
         super.save(dictionaryVO);
-        return Message.success("添加成功!");
     }
 
     /**
@@ -55,7 +51,7 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
      * @param dictionaryVO
      * @return
      */
-    public Message edit(Dictionary dictionaryVO){
+    public void edit(Dictionary dictionaryVO){
         super.validation(dictionaryVO);
         this.check(dictionaryVO);
         Dictionary dictionary = super.find(dictionaryVO.getId());
@@ -64,7 +60,6 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
         dictionary.setValue(dictionaryVO.getValue());
         dictionary.setRemark(dictionaryVO.getRemark());
         super.update(dictionary);
-        return Message.success("修改成功！");
     }
 
 
@@ -202,7 +197,7 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
         String newCode;
         try {
             int i = Integer.valueOf(maxCode);
-            newCode = (i+1)+"";
+            newCode = StrFormatter.formatNumber(i+1,2);
         }catch (NumberFormatException e){
             char[] chars = maxCode.toCharArray();
             char c = chars[chars.length-1];
@@ -219,7 +214,7 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
      * @param id
      * @return
      */
-    public Message up(Long id) {
+    public void up(Long id) {
         Dictionary dictionary = super.find(id);
         Integer o =dictionary.getOrder();
         Dictionary uper = dictionaryDao.getUper(o);
@@ -230,7 +225,6 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
         uper.setOrder(o);
         super.update(uper);
         super.update(dictionary);
-        return Message.success("修改成功！");
     }
 
     /**
@@ -238,18 +232,17 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
      * @param id
      * @return
      */
-    public Message down(Long id) {
+    public void down(Long id) {
         Dictionary dictionary = super.find(id);
         Integer o =dictionary.getOrder();
         Dictionary downer = dictionaryDao.getDowner(o);
         if (downer==null){
-            throw new ServiceException("已经到顶了!");
+            throw new ServiceException("已经到底了!");
         }
         dictionary.setOrder(downer.getOrder());
         downer.setOrder(o);
         super.update(downer);
         super.update(dictionary);
-        return Message.success("修改成功！");
     }
 
     /**
@@ -257,6 +250,6 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
      * @return
      */
     public Integer getMaxOrder(DictModel dictModel) {
-        return dictionaryDao.getMaxOrder(dictModel.getId());
+        return dictionaryDao.getMaxOrder(dictModel.getId()).intValue();
     }
 }

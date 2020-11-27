@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @Table(name = "T_BASE_ADMIN")
 @EqualsAndHashCode(callSuper = true,exclude = "roleSet")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
-@Unique(service = AdminService.class,message = "用户名重复",uniqueColumns = @UniqueColumn("username"))
+//@Unique(service = AdminService.class,message = "用户名重复",uniqueColumns = @UniqueColumn("username"))
 public class Admin extends BaseEntity implements Cloneable,Serializable {
 
     private static final long serialVersionUID = -6079046386811746580L;

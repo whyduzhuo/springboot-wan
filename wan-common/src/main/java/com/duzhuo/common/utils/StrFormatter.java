@@ -78,4 +78,22 @@ public class StrFormatter {
 
         return sbuf.toString();
     }
+
+
+    /**
+     *
+     * @param i
+     * @param len
+     * @return
+     */
+    public static String formatNumber(int i,int len){
+        String a = String.valueOf(i);
+        for (int i1 = 0;i1<len;i1++){
+            if (a.length()==len){
+                return a;
+            }
+            a="0"+a;
+        }
+        return "";
+    }
 }

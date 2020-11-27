@@ -48,6 +48,8 @@ public class AdminRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
         Admin admin = ShiroUtils.getCurrAdmin();
+        // 防止认证缓存问题导致授权不起效果
+        admin = adminService.find(admin.getId());
         // 职务列表
         Set<Role> roleList = admin.getRoleSet();
         Set<String> roleSet = roleList.stream().map(Role::getName).collect(Collectors.toSet());
