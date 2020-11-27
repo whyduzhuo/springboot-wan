@@ -107,9 +107,8 @@ public class AdminController extends BaseController{
     @RequiresPermissions("100400")
     @ResponseBody
     public Message del(Long id){
-        String string = null;
-        string.equals("aa");
-        return adminService.del(id);
+        adminService.del(id);
+        return Message.success("操作成功！");
     }
 
     @Log(title ="获取单个用户",operateType = OperateType.SELECT)

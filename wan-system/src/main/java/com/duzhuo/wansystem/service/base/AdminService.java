@@ -8,7 +8,10 @@ import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.dao.base.AdminDao;
 import com.duzhuo.wansystem.entity.base.Admin;
+import com.duzhuo.wansystem.shiro.AdminRealm;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.mgt.RealmSecurityManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -110,13 +113,15 @@ public class AdminService extends BaseService<Admin,Long> {
      * 禁用用户
      * @param id
      */
-    public Message del(Long id) {
+    public void del(Long id) {
         Admin admin = super.find(id);
         if (ShiroUtils.getCurrAdmin().getId().equals(admin.getId())){
             throw new ServiceException("不可禁用自己");
         }
         admin.setIsDelete(IsDelete.values()[(1-admin.getIsDelete().ordinal())]);
-        return Message.success("操作成功！");
+        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
+        AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
+        shiroRealm.clearCache(admin.getUsername());
     }
 
     /**
