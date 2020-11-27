@@ -20,7 +20,9 @@
     <form id="listForm" action="list" method="get">
         <div class="page-head">
             <@pageHeadLeft>
+                <@shiro.hasPermission name="100502">
                  <button type="button" class="btn btn-success" onclick="detail('')">新增</button>
+                </@shiro.hasPermission>
             </@pageHeadLeft>
             <@pageHeadRight>
 
@@ -60,7 +62,9 @@
                     </td>
                     <td>${data.statusHtml}</td>
                     <td>
+                    <@shiro.hasPermission name="100503">
                         <button type="button" onclick="detail('${data.id}')" class="btn btn-primary btn-sm">修改</button>
+                    </@shiro.hasPermission>
                     </td>
                 </tr>
                 </#list>

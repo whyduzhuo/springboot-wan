@@ -16,12 +16,14 @@
     </style>
 </head>
 <body>
-<@adminPageNav navName1='系统管理' navName2='字典管理'/>
+<@adminPageNav navName1='系统管理' navName2='字典模块'/>
     <div style="display: flex;height: 90%;">
         <form id="listForm" action="list" method="get" style="flex: 2;">
             <div class="page-head">
                 <@pageHeadLeft>
+                     <@shiro.hasPermission name="100500">
                     <button type="button" class="btn btn-success" onclick="detail('')">新增</button>
+                     </@shiro.hasPermission>
                 </@pageHeadLeft>
                 <@pageHeadRight>
                     <div class="search-item">
@@ -55,7 +57,9 @@
                             </lable>
                         </td>
                         <td>
+                        <@shiro.hasPermission name="100501">
                             <button type="button" class="btn btn-primary btn-sm" onclick="detail('${data.id}')">编辑</button>
+                        </@shiro.hasPermission>
                         </td>
                     </tr>
                     </#list>

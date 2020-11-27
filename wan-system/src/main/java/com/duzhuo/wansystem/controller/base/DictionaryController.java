@@ -14,6 +14,7 @@ import com.duzhuo.wansystem.service.base.DictModelService;
 import com.duzhuo.wansystem.service.base.DictionaryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,7 +52,7 @@ public class DictionaryController extends BaseController{
     @GetMapping("/list")
     public String list(HttpServletRequest request, CustomSearch<Dictionary> customSearch, Model model, Long modelId){
         if (modelId==null){
-            throw new ServiceException("请选择字典");
+            throw new ServiceException("请选择字典模块");
         }
         CommonUtil.initPage(request,customSearch);
         Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,SEARCH_PREFIX);
@@ -66,6 +67,7 @@ public class DictionaryController extends BaseController{
         return "/base/dictionaryModel/dictionary/list";
     }
 
+    @RequiresPermissions({"100502","100503"})
     @Log(title = "字典--编辑窗口",operateType = OperateType.SELECT)
     @ApiOperation(value = "字典--编辑窗口")
     @GetMapping("/detail")
@@ -86,7 +88,7 @@ public class DictionaryController extends BaseController{
         return "/base/dictionaryModel/dictionary/edit";
     }
 
-
+    @RequiresPermissions("100502")
     @ApiOperation(value = "字典--新增")
     @Log(title = "字典--新增",operateType = OperateType.INSERT)
     @PostMapping("/addData")
@@ -96,6 +98,7 @@ public class DictionaryController extends BaseController{
         return Message.success("添加成功!");
     }
 
+    @RequiresPermissions("100503")
     @ApiOperation(value = "字典--修改")
     @Log(title = "字典--修改",operateType = OperateType.UPDATE)
     @PostMapping("/edit")
@@ -105,6 +108,7 @@ public class DictionaryController extends BaseController{
         return Message.success("修改成功！");
     }
 
+    @RequiresPermissions("100503")
     @ApiOperation(value = "字典--启用/禁用")
     @Log(title = "字典--启用/禁用",operateType = OperateType.UPDATE)
     @PostMapping("/onOff")
@@ -115,6 +119,7 @@ public class DictionaryController extends BaseController{
         return Message.success("修改成功!");
     }
 
+    @RequiresPermissions("100503")
     @ApiOperation(value = "字典--修改排序")
     @PostMapping("/upOrDown")
     @ResponseBody
