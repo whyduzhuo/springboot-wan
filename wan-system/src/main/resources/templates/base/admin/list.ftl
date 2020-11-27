@@ -46,6 +46,9 @@
                                 <button type="button" onclick="menuList(${data.id})" class="btn btn-xs btn-info">
                                     菜单列表
                                 </button>
+                                <button type="button" onclick="roleList(${data.id})" class="btn btn-xs btn-success">
+                                    角色列表
+                                </button>
                                 <@shiro.hasPermission name="100400">
                                 <#if data.isDelete=='否'>
                                     <button type="button" onclick="remove(${data.id},'禁用')" class="btn btn-xs btn-danger">
@@ -108,6 +111,16 @@
             maxmin: true,
             area: ['500px', '90%'],
             content: 'menuList?id='+id
+        });
+    }
+    
+    function roleList(id) {
+        layer.open({
+            type: 2,
+            title: '用户菜单',
+            maxmin: true,
+            area: ['600px', '90%'],
+            content: 'showRoles?id='+id
         });
     }
 </script>

@@ -9,6 +9,7 @@ import com.duzhuo.common.enums.IsDelete;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.common.utils.RedisUtils;
+import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
@@ -20,6 +21,7 @@ import com.duzhuo.wansystem.shiro.ShiroUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
+import oracle.jdbc.proxy.annotation.Post;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -152,11 +154,37 @@ public class AdminController extends BaseController{
         return Message.success(ztreeList);
     }
 
-    @GetMapping("/test")
+    @GetMapping("/showRoles")
+    public String showRoles(Long id,Model model,String name){
+        Admin admin = adminService.find(id);
+        List<Filter> filters = new ArrayList<>();
+        if (StringUtils.isNotBlank(name)){
+            filters.add(Filter.eq("name",name));
+        }
+        List<Role> roleList = roleService.searchList(filters);
+        roleList.forEach(r->{
+            boolean b = roleService.in(admin.getRoleSet(),r);
+            if (b){
+                r.setChecked(true);
+            }
+        });
+        model.addAttribute("roleList",roleList);
+        model.addAttribute("admin",admin);
+        model.addAttribute("name",name);
+        return "/base/admin/showRoles";
+    }
+
+    /**
+     * 角色授权
+     * @param id
+     * @param roleIds
+     * @return
+     */
+    @RequiresPermissions("100403")
+    @PostMapping("grantRoles")
     @ResponseBody
-    public Admin test(){
-        Admin admin = ShiroUtils.getCurrAdmin();
-        redisUtils.set("hehe",admin,200);
-        return redisUtils.get("hehe",Admin.class);
+    public Message grantRoles(Long id,@RequestParam(value = "roleIds[]",required = false,defaultValue = "") Long[] roleIds){
+        adminService.grantRoles(id,roleIds);
+        return Message.success("授予成功！");
     }
 }

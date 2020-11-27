@@ -1,5 +1,6 @@
 package com.duzhuo.wansystem.shiro;
 
+import com.duzhuo.common.utils.RedisUtils;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
@@ -10,9 +11,9 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.cache.Cache;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.crazycake.shiro.RedisCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +39,8 @@ public class AdminRealm extends AuthorizingRealm {
 
     @Resource
     private AdminService adminService;
+    @Resource
+    private RedisUtils redisUtils;
 
     /**
      * 授权
@@ -85,14 +88,76 @@ public class AdminRealm extends AuthorizingRealm {
     }
 
     /**
-     * 清除当前登录人的权限缓存
+     * 清除自己的认证缓存
+     */
+    public void clearCachedAuthenticationInfo() {
+        super.clearCachedAuthenticationInfo(SecurityUtils.getSubject().getPrincipals());
+    }
+
+    /**
+     * 清除某人的认证缓存
+     * @see RedisCacheManager#keyPrefix
+     * 因为缓存key值自定义的用户username {@link ShiroConfig#myShiroRealm()} {@link ShiroConfig#cacheManager}
+     */
+    public void clearCachedAuthenticationInfo(String username) {
+        String key = "shiro:cache:authenticationCache:"+username;
+        redisUtils.delete(key);
+    }
+
+    /**
+     * 清除全部认证缓存
+     */
+    public void clearAllCachedAuthenticationInfo() {
+        getAuthenticationCache().clear();
+    }
+
+
+    /**
+     * 清除自己的授权缓存
      */
     public void clearCachedAuthorizationInfo(){
         clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
     }
 
-    public void clearAllCachedAuthorizationInfo(){
-
+    /**
+     * 清除某人的授权缓存
+     * @see RedisCacheManager#keyPrefix
+     * 因为缓存key值自定义的用户username {@link ShiroConfig#myShiroRealm()} {@link ShiroConfig#cacheManager}
+     */
+    public void clearCachedAuthorizationInfo(String username){
+        String key = "shiro:cache:authorizationCache:"+username;
+        redisUtils.delete(key);
     }
 
+    /**
+     * 清除全部授权缓存
+     */
+    public void clearAllCachedAuthorizationInfo(){
+        getAuthorizationCache().clear();
+    }
+
+    /**
+     * 清除自己的 认证缓存  和 授权缓存
+     */
+    public void clearMyCache() {
+        clearCachedAuthenticationInfo();
+        clearCachedAuthorizationInfo();
+    }
+
+    /**
+     * 清除某个人的 认证缓存  和 授权缓存
+     * @see RedisCacheManager#keyPrefix
+     */
+    public void clearCache(String username) {
+        clearCachedAuthenticationInfo(username);
+        clearCachedAuthorizationInfo(username);
+    }
+
+    /**
+     * 清除所有的  认证缓存  和 授权缓存
+     */
+    public void clearAllCache() {
+        clearAllCachedAuthenticationInfo();
+        clearAllCachedAuthorizationInfo();
+    }
 }

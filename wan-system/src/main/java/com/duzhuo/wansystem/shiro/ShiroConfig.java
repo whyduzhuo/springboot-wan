@@ -1,16 +1,16 @@
 package com.duzhuo.wansystem.shiro;
 
+import com.lowagie.text.pdf.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
-import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +42,17 @@ public class ShiroConfig {
      */
     @Bean
     public AdminRealm myShiroRealm() {
-        return new AdminRealm();
+        AdminRealm adminRealm =  new AdminRealm();
+        adminRealm.setCachingEnabled(true);
+        //启用身份验证缓存，即缓存AuthenticationInfo信息，默认false
+        adminRealm.setAuthenticationCachingEnabled(true);
+        //缓存AuthenticationInfo信息的缓存名称 在ehcache-shiro.xml中有对应缓存的配置
+        adminRealm.setAuthenticationCacheName("authenticationCache");
+        //启用授权缓存，即缓存AuthorizationInfo信息，默认false
+        adminRealm.setAuthorizationCachingEnabled(true);
+        //缓存AuthorizationInfo信息的缓存名称  在ehcache-shiro.xml中有对应缓存的配置
+        adminRealm.setAuthorizationCacheName("authorizationCache");
+        return adminRealm;
     }
 
     /**
@@ -57,6 +67,7 @@ public class ShiroConfig {
         securityManager.setCacheManager(cacheManager());
         // 自定义session管理 使用redis
         securityManager.setSessionManager(SessionManager());
+        securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;
     }
 
@@ -99,6 +110,7 @@ public class ShiroConfig {
 
     /**
      * 开启shiro aop注解支持
+     * 如@RequiresPermissions
      * 使用代理方式;所以需要开启代码支持
      * @param securityManager
      */
@@ -118,8 +130,7 @@ public class ShiroConfig {
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(host);
         redisManager.setPort(port);
-        // 配置过期时间
-        redisManager.setExpire(timeout);
+        redisManager.setTimeout(timeout);
         return redisManager;
     }
 
@@ -131,6 +142,9 @@ public class ShiroConfig {
     public RedisCacheManager cacheManager() {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager());
+        redisCacheManager.setPrincipalIdFieldName("username");
+        //用户权限信息缓存时间
+        redisCacheManager.setExpire(timeout);
         return redisCacheManager;
     }
 
@@ -140,6 +154,7 @@ public class ShiroConfig {
     public RedisSessionDAO redisSessionDAO() {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(redisManager());
+        redisSessionDAO.setKeyPrefix("shiro:sid:");
         return redisSessionDAO;
     }
 
@@ -149,7 +164,61 @@ public class ShiroConfig {
     public DefaultWebSessionManager SessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(redisSessionDAO());
+        // 取消url 后面的 JSESSIONID
+        sessionManager.setSessionIdUrlRewritingEnabled(false);
+        sessionManager.setSessionIdCookie(sessionIdCookie());
         return sessionManager;
+    }
+
+    /**
+     * 配置保存sessionId的cookie
+     * 注意：这里的cookie 不是上面的记住我 cookie 记住我需要一个cookie session管理 也需要自己的cookie
+     * 默认为: JSESSIONID 问题: 与SERVLET容器名冲突,重新定义为sid
+     * @return
+     */
+    public SimpleCookie sessionIdCookie(){
+        //这个参数是cookie的名称
+        SimpleCookie simpleCookie = new SimpleCookie("sid");
+        //setcookie的httponly属性如果设为true的话，会增加对xss防护的安全系数。它有以下特点：
+
+        //setcookie()的第七个参数
+        //设为true后，只能通过http访问，javascript无法访问
+        //防止xss读取cookie
+        simpleCookie.setHttpOnly(true);
+        simpleCookie.setPath("/");
+        //maxAge=-1表示浏览器关闭时失效此Cookie
+        simpleCookie.setMaxAge(-1);
+        return simpleCookie;
+    }
+
+    /**
+     * cookie对象;会话Cookie模板 ,默认为: JSESSIONID 问题: 与SERVLET容器名冲突,重新定义为sid或rememberMe，自定义
+     * @return
+     */
+    public SimpleCookie rememberMeCookie(){
+        //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
+        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+        //setcookie的httponly属性如果设为true的话，会增加对xss防护的安全系数。它有以下特点：
+        //setcookie()的第七个参数
+        //设为true后，只能通过http访问，javascript无法访问
+        //防止xss读取cookie
+        simpleCookie.setHttpOnly(true);
+        simpleCookie.setPath("/");
+        //<!-- 记住我cookie生效时间30天 ,单位秒;-->
+        simpleCookie.setMaxAge(2592000);
+        return simpleCookie;
+    }
+
+    /**
+     * cookie管理对象;记住我功能,rememberMe管理器
+     * @return
+     */
+    public CookieRememberMeManager rememberMeManager(){
+        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+        cookieRememberMeManager.setCookie(rememberMeCookie());
+        //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
+        cookieRememberMeManager.setCipherKey(Base64.decode("4AvVhmFLUs0KTA3Kprsdag=="));
+        return cookieRememberMeManager;
     }
 
 

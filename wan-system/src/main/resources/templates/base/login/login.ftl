@@ -46,11 +46,13 @@
 
     <script>
         function login() {
+            layer.load();
             $.ajax({
                 url: "login",
                 type: "post",
                 data: $('#login-form').serialize(),
                 success :function (res) {
+                    layer.closeAll("loading");
                     if (res.type=='SUCCESS'){
                         window.location.href="index";
                     }else {

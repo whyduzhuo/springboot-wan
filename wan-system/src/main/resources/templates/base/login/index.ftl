@@ -122,6 +122,7 @@
 
                 <a href="javascript:" class="menuTab" style="float: right" onclick="loginOut()">退出</a>
                 <a href="/base/refresh" class="menuTab" style="float: right">刷新权限</a>
+                <a href="/base/refreshAll" class="menuTab" style="float: right">清除全部权限缓存</a>
 
             </div>
         </nav>

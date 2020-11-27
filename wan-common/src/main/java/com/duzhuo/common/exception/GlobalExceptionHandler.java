@@ -3,6 +3,7 @@ package com.duzhuo.common.exception;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.utils.ServletUtils;
 import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.session.UnknownSessionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -137,6 +138,26 @@ public class GlobalExceptionHandler {
         else {
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.addObject("content",message);
+            modelAndView.setViewName(ERROR_VIEW);
+            return modelAndView;
+        }
+    }
+
+    /**
+     * 登录失效异常
+     * @param request
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(UnknownSessionException.class)
+    public Object unknownSessionExceptionHandle(HttpServletRequest request,UnknownSessionException e){
+        log.info(e.getMessage(), e);
+        if (ServletUtils.isAjaxRequest(request)) {
+            return Message.error("登录失效，请重新登录");
+        }
+        else {
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("content","登录失效，请重新登录");
             modelAndView.setViewName(ERROR_VIEW);
             return modelAndView;
         }

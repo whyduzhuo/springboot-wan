@@ -42,8 +42,7 @@
     };
 
     function relfush() {
-        buildTree();
-        layer.msg("刷新成功！",{icon:6});
+        window.location.reload();
     }
 
     var allMenus = [];

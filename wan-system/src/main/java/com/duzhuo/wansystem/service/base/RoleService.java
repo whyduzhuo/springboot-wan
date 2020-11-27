@@ -11,7 +11,10 @@ import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.mapper.base.RoleMapper;
+import com.duzhuo.wansystem.shiro.AdminRealm;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.mgt.RealmSecurityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author: wanhy
@@ -35,6 +40,8 @@ public class RoleService extends BaseService<Role,Long> {
     private RoleMapper roleMapper;
     @Resource
     private MenuService menuService;
+    @Resource
+    private AdminService adminService;
 
     @Resource
     public void setBaseDao(RoleDao roleDao){
@@ -42,7 +49,7 @@ public class RoleService extends BaseService<Role,Long> {
     }
 
     /**
-     * 新增菜单
+     * 新增角色
      * @param roleVo
      * @return
      */
@@ -65,7 +72,7 @@ public class RoleService extends BaseService<Role,Long> {
     }
 
     /**
-     * 修改菜单
+     * 修改角色
      * @param roleVo
      * @return
      */
@@ -80,7 +87,7 @@ public class RoleService extends BaseService<Role,Long> {
             throw new ServiceException("已存在！");
         }
         Role role = super.find(roleVo.getId());
-        if (role.getType()==Role.TypeEnum.固定职务){
+        if (role.getType()==Role.TypeEnum.固定角色){
             throw new ServiceException("固定职务/角色，不可修改！");
         }
         role.setName(roleVo.getName());
@@ -109,12 +116,24 @@ public class RoleService extends BaseService<Role,Long> {
      * @param adminId
      * @return
      */
-    public Message addRole(Long roleId,Long adminId){
-        if (this.hasRole(roleId,adminId)!=null){
-            return Message.success();
+    public void addRole(Long roleId,Long adminId){
+        if (this.hasRole(roleId,adminId)){
+            return;
         }
+        Admin admin = adminService.find(adminId);
         roleDao.addRole(roleId,adminId);
-        return Message.success();
+        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
+        AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
+        shiroRealm.clearCachedAuthorizationInfo(admin.getUsername());
+    }
+
+    /**
+     *
+     * @param roleIds
+     * @param adminId
+     */
+    public void addRole(Long[] roleIds,Long adminId){
+        Arrays.stream(roleIds).forEach(r->this.addRole(r,adminId));
     }
 
     /**
@@ -123,9 +142,31 @@ public class RoleService extends BaseService<Role,Long> {
      * @param adminId
      * @return
      */
-    public Message delRole(Long roleId,Long adminId){
+    public void delRole(Long roleId,Long adminId){
         roleDao.delRole(roleId,adminId);
-        return Message.success("删除成功！");
+        Admin admin = adminService.find(adminId);
+        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
+        AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
+        shiroRealm.clearCachedAuthorizationInfo(admin.getUsername());
+    }
+
+    /**
+     * 移除角色
+     * @param roles
+     * @param adminId
+     */
+    public void delRole(Collection<Role> roles,Long adminId){
+        roles.forEach(r->this.delRole(r.getId(),adminId));
+    }
+
+    /**
+     * 移除角色
+     * @param roleIds
+     * @param adminId
+     * @return
+     */
+    public void delRole(Long[] roleIds,Long adminId){
+        Arrays.stream(roleIds).forEach(r->this.delRole(r,adminId));
     }
 
     /**
@@ -212,6 +253,9 @@ public class RoleService extends BaseService<Role,Long> {
     public void grantMenu(Long roleId,Long[] menus) {
         menuService.delAllMenu(roleId);
         menuService.grantMenu(roleId,menus);
+        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
+        AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
+        shiroRealm.clearAllCachedAuthorizationInfo();
     }
 
     /**
@@ -250,5 +294,21 @@ public class RoleService extends BaseService<Role,Long> {
      */
     public Page<Admin> showAdmin(Long roleId,Map<String, Object> searchParams, CustomSearch<Admin> customSearch) {
         return roleMapper.showAdmin(roleId,searchParams,customSearch);
+    }
+
+    /**
+     * 判断某个角色是否在list里面
+     * @param roles
+     * @param role
+     * @return
+     */
+    public boolean in(Collection<Role> roles,Role role){
+        AtomicBoolean i= new AtomicBoolean(false);
+        roles.forEach(r->{
+            if (r.getId().equals(role.getId())){
+                i.set(true);
+            }
+        });
+        return i.get();
     }
 }

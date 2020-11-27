@@ -26,6 +26,8 @@ import java.util.List;
 public class AdminService extends BaseService<Admin,Long> {
     @Resource
     private AdminDao adminDao;
+    @Resource
+    private RoleService roleService;
 
     @Resource
     public void setBaseDao(AdminDao adminDao){
@@ -115,5 +117,17 @@ public class AdminService extends BaseService<Admin,Long> {
         }
         admin.setIsDelete(IsDelete.values()[(1-admin.getIsDelete().ordinal())]);
         return Message.success("操作成功！");
+    }
+
+    /**
+     *
+     * @param adminId
+     * @param roleIds
+     * @return
+     */
+    public void grantRoles(Long adminId, Long[] roleIds) {
+        Admin admin = super.find(adminId);
+        roleService.delRole(admin.getRoleSet(),adminId);
+        roleService.addRole(roleIds,adminId);
     }
 }

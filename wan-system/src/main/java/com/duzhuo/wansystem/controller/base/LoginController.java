@@ -116,7 +116,12 @@ public class LoginController {
     @GetMapping("/logout")
     @ResponseBody
     public Message logout(){
+        Admin admin = ShiroUtils.getCurrAdmin();
         SecurityUtils.getSubject().logout();
+        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
+        AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
+        shiroRealm.clearMyCache();
+        redisUtils.delete(Global.ROLE_SESSION_KEY+admin.getId());
         return Message.success("退出成功！");
     }
 
@@ -125,6 +130,14 @@ public class LoginController {
         RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
         AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
         shiroRealm.clearCachedAuthorizationInfo();
+        return "redirect:/base/index";
+    }
+
+    @GetMapping("/refreshAll")
+    public String refreshAll(){
+        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
+        AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
+        shiroRealm.clearAllCachedAuthorizationInfo();
         return "redirect:/base/index";
     }
 }
