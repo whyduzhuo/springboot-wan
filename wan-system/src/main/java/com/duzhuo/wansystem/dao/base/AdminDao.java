@@ -15,7 +15,7 @@ public interface AdminDao extends BaseDao<Admin,Long> {
      * @param password
      * @return
      */
-    Admin findByUsernameAndPasswordAndIsDelete(String username, String password, IsDelete isDelete);
+    Admin findByUsernameAndPassword(String username, String password);
 
     /**
      *

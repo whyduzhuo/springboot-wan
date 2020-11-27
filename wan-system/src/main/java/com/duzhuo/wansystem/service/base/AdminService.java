@@ -89,7 +89,7 @@ public class AdminService extends BaseService<Admin,Long> {
     }
 
     public Admin findByUsernameAndPassword(String username, String password) {
-        return adminDao.findByUsernameAndPasswordAndIsDelete(username,password, IsDelete.否);
+        return adminDao.findByUsernameAndPassword(username,password);
     }
 
     public Admin login(String username, String password) throws Exception {
