@@ -111,7 +111,7 @@ public class HouseCountService extends BaseService<HouseCount, Long>{
     public Message addBatch(){
         List<CityUrl> cityUrlList = cityUrlService.findByLjUrlIsNotNull();
         for (CityUrl cityUrl:cityUrlList) {
-            threadPoolService.excute(()-> {
+            threadPoolService.execute(()-> {
                 try {
                     HouseCount houseCount = new HouseCount();
                     houseCount.setCityUrl(cityUrl);

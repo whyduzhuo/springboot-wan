@@ -33,6 +33,11 @@ wan:
     support-file-type: bmp,gif,jpg,jpeg,png,doc,docx,xls,xlsx,ppt,pptx,txt,rar,zip,pdf
   redis:
     shiro-time-out: 3600 #shiro redis缓存失效时间
+  email:
+    from: why15079185135@163.com
+    username: why15079185135@163.com
+    password: LSGGAYSGQKCBWNEK
+    host: smtp.163.com
 server:
   port: 8082    #端口号
   servlet:

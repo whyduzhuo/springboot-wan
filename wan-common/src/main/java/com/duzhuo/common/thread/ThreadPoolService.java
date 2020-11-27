@@ -48,7 +48,7 @@ public class ThreadPoolService {
      * 执行任务/立即执行
      * @param runnable
      */
-    public void excute(Runnable runnable){
+    public void execute(Runnable runnable){
         threadPoolExecutor.execute(runnable);
     }
 
@@ -60,7 +60,7 @@ public class ThreadPoolService {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    public <T> T excute(Callable<T> callable) throws ExecutionException, InterruptedException {
+    public <T> T execute(Callable<T> callable) throws ExecutionException, InterruptedException {
         Future<T> future = threadPoolExecutor.submit(callable);
         return future.get();
     }

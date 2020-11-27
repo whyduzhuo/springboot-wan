@@ -4,13 +4,11 @@ import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.enums.YesOrNo;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.thread.ThreadPoolService;
-import com.duzhuo.common.utils.JSON;
-import com.duzhuo.common.utils.ServletUtils;
-import com.duzhuo.common.utils.StringUtils;
-import com.duzhuo.common.utils.Tools;
+import com.duzhuo.common.utils.*;
 import com.duzhuo.wansystem.async.AsyncFactory;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.SysOperLog;
+import com.duzhuo.wansystem.service.base.SysOperLogService;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.aspectj.lang.JoinPoint;
@@ -40,6 +38,10 @@ public class LogAspect {
 
     @Resource
     private ThreadPoolService threadPoolService;
+    @Resource
+    private SysOperLogService sysOperLogService;
+    @Resource
+    private SendEmailService sendEmailService;
 
     /**
      * 配置织入点
@@ -91,9 +93,9 @@ public class LogAspect {
             if (admin != null) {
                 operLog.setAdmin(admin);
             }
-
+            String stackTrace="";
             if (e != null) {
-                String stackTrace=ExceptionUtils.getStackTrace(e);
+                stackTrace=ExceptionUtils.getStackTrace(e);
                 operLog.setErrorMsg(e.getMessage());
                 if (!(e instanceof ServiceException)){
                     operLog.setHaveException(YesOrNo.是);
@@ -113,7 +115,14 @@ public class LogAspect {
             // 处理设置注解上的参数
             getControllerMethodDescription(controllerLog, operLog);
             // 异步保存数据库
-            threadPoolService.execute(AsyncFactory.recordOper(operLog));
+            threadPoolService.execute(() -> {
+                sysOperLogService.addData(operLog);
+            });
+            //
+            if (operLog.getHaveException()==YesOrNo.是){
+                sendEmailService.sendEmail(stackTrace,"1434495271@qq.com","系统错误，请及时处理！");
+            }
+
         }
         catch (Exception exp) {
             // 记录本地异常日志
