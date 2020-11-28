@@ -2,10 +2,9 @@ package com.duzhuo.common.exception;
 
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.utils.ServletUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.session.UnknownSessionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -21,12 +20,11 @@ import javax.servlet.http.HttpServletRequest;
  * @author: wanhy
  * @date: 2020/1/1 15:57
  */
-
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     public static final String ERROR_VIEW = "/common/error/error";
 
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
     @Value("${wan.profile.max-size}")
     private String maxSize;
 

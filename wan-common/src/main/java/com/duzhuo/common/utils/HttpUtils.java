@@ -1,12 +1,10 @@
 package com.duzhuo.common.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,9 +14,8 @@ import java.net.URLConnection;
  * @author: wanhy
  * @date: 2020/8/18 9:47
  */
-
+@Slf4j
 public class HttpUtils {
-    private static final Logger logger = LoggerFactory.getLogger(HttpUtils.class);
 
     public static String get(String httpUrl,String charset) {
         StringBuilder inputLine = new StringBuilder("");
@@ -35,9 +32,9 @@ public class HttpUtils {
                 inputLine .append(line);
             }
         }catch (MalformedURLException e){
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }catch (IOException e){
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
         return  inputLine.toString();
     }

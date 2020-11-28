@@ -5,8 +5,7 @@ import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.utils.SpringUtils;
 import com.duzhuo.common.utils.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -20,9 +19,8 @@ import java.util.List;
  * @author: 万宏远
  * @date: 2020/11/12 17:26
  */
-
+@Slf4j
 public class UniqueValidator implements ConstraintValidator<Unique, BaseEntity> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UniqueValidator.class);
 
     private UniqueColumn[] uniqueColumns;
     private Class<? extends BaseService<?,?>> serviceClass;
@@ -58,7 +56,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, BaseEntity> 
                     filterList.add(Filter.ne(uniqueColumn.value(),exclude));
                 }
             } catch (Exception e) {
-                LOGGER.error(e.getMessage(),e);
+                log.error(e.getMessage(),e);
                 throw new RuntimeException("Unique 校验错误");
             }
         }
@@ -73,7 +71,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, BaseEntity> 
                 Method v = type.getMethod("valueOf", String.class);
                 return v.invoke(type, value);
             } catch (Exception e) {
-                LOGGER.error(e.getMessage(), e);
+                log.error(e.getMessage(), e);
             }
         }
         return value;
