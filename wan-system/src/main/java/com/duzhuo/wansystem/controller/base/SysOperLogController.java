@@ -14,8 +14,6 @@ import com.duzhuo.wansystem.service.base.SysOperLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +22,6 @@ import org.springframework.web.util.WebUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.tools.Tool;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Map;
@@ -37,7 +34,6 @@ import java.util.Map;
 @RequestMapping("/base/sysOperLog")
 @Api(tags = "用户操作日志")
 public class SysOperLogController extends BaseController {
-    private static final Logger logger = LoggerFactory.getLogger(SysOperLogController.class);
 
     @Resource
     private SysOperLogService sysOperLogService;

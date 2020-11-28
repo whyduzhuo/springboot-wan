@@ -14,6 +14,7 @@ import com.duzhuo.wansystem.shiro.AdminRealm;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -21,8 +22,6 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.mgt.RealmSecurityManager;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,12 +39,11 @@ import java.util.Set;
  * @author: wanhy
  * @date: 2020/1/7 18:06
  */
-
+@Slf4j
 @Controller
 @Api(tags = "登录管理")
 @RequestMapping("/base")
 public class LoginController {
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Resource
     private RoleService roleService;
@@ -89,7 +87,7 @@ public class LoginController {
             if (StringUtils.isNotEmpty(e.getMessage())) {
                 msg = e.getMessage();
             }
-            logger.warn(e.getMessage(),e);
+            log.warn(e.getMessage(),e);
             return Message.error(msg);
         }
     }

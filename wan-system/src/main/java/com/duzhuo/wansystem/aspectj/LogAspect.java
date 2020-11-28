@@ -5,11 +5,11 @@ import com.duzhuo.common.enums.YesOrNo;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.thread.ThreadPoolService;
 import com.duzhuo.common.utils.*;
-import com.duzhuo.wansystem.async.AsyncFactory;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.SysOperLog;
 import com.duzhuo.wansystem.service.base.SysOperLogService;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
@@ -18,8 +18,6 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -31,10 +29,10 @@ import java.util.Map;
  * 
  * @author wanhy
  */
+@Slf4j
 @Aspect
 @Component
 public class LogAspect {
-    private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
     @Resource
     private ThreadPoolService threadPoolService;
@@ -166,7 +164,7 @@ public class LogAspect {
     /**
      * 是否存在注解，如果存在就获取
      */
-    private Log getAnnotationLog(JoinPoint joinPoint) throws Exception {
+    private Log getAnnotationLog(JoinPoint joinPoint) {
         Signature signature = joinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
         Method method = methodSignature.getMethod();

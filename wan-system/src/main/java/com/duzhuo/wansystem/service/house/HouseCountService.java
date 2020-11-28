@@ -11,8 +11,7 @@ import com.duzhuo.wansystem.dto.house.HouseCountDto;
 import com.duzhuo.wansystem.entity.house.CityUrl;
 import com.duzhuo.wansystem.entity.house.HouseCount;
 import com.duzhuo.wansystem.mapper.house.HouseCountMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,10 +27,10 @@ import java.util.Map;
  * @author: 万宏远
  * @date: 2020/08/18 12:51:09
  */
+@Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class HouseCountService extends BaseService<HouseCount, Long>{
-    private static final Logger logger = LoggerFactory.getLogger(HouseCountService.class);
 
     @Resource
     private HouseCountDao houseCountDao;
@@ -120,7 +119,7 @@ public class HouseCountService extends BaseService<HouseCount, Long>{
                     addData(houseCount);
 
                 }catch (Exception e){
-                    logger.error(e.getMessage());
+                    log.error(e.getMessage());
                 }
             });
         }

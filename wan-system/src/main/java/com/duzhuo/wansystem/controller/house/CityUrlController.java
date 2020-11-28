@@ -12,9 +12,7 @@ import com.duzhuo.wansystem.entity.house.CityUrl;
 import com.duzhuo.wansystem.service.house.CityUrlService;
 import com.duzhuo.wansystem.test.CallableAndFuture;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,11 +32,10 @@ import java.util.Map;
  * @date: 2020/08/18 10:51:27
  */
 
+@Slf4j
 @Controller
 @RequestMapping("/house/cityurl")
 public class CityUrlController extends BaseController {
-
-    private static final Logger logger = LoggerFactory.getLogger(CityUrlController.class);
 
     @Resource
     private CityUrlService cityUrlService;
@@ -94,7 +91,7 @@ public class CityUrlController extends BaseController {
             try {
                 cityUrlService.addLjData(cityUrl);
             }catch (ServiceException e){
-                logger.info(e.getMessage());
+                log.info(e.getMessage());
             }
 
         });
@@ -127,7 +124,7 @@ public class CityUrlController extends BaseController {
             try {
                 cityUrlService.addZgData(cityUrl);
             }catch (ServiceException e){
-                logger.info(e.getMessage());
+                log.info(e.getMessage());
             }
         });
         return "";

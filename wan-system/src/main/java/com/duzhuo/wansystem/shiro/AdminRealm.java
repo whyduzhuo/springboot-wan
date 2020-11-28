@@ -7,6 +7,7 @@ import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.service.base.AdminService;
 import com.duzhuo.wansystem.service.base.MenuService;
 import com.duzhuo.wansystem.service.base.RoleService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -14,8 +15,6 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.crazycake.shiro.RedisCacheManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
@@ -27,9 +26,8 @@ import java.util.stream.Collectors;
  * 
  * @author wanhy
  */
+@Slf4j
 public class AdminRealm extends AuthorizingRealm {
-
-    private static final Logger log = LoggerFactory.getLogger(AdminRealm.class);
 
     @Resource
     private MenuService menuService;

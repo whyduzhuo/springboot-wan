@@ -1,6 +1,5 @@
 package com.duzhuo.common.utils;
 
-import com.duzhuo.common.core.Convert;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -8,42 +7,15 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 /**
  * 客户端工具类
  * 
- * @author wanhy
+ * @author 万宏远
  * @data 2020/1/1 15:57
  */
 public class ServletUtils {
-    /**
-     * 获取String参数
-     */
-    public static String getParameter(String name) {
-        return getRequest().getParameter(name);
-    }
 
-    /**
-     * 获取String参数
-     */
-    public static String getParameter(String name, String defaultValue) {
-        return Convert.toStr(getRequest().getParameter(name), defaultValue);
-    }
-
-    /**
-     * 获取Integer参数
-     */
-    public static Integer getParameterToInt(String name) {
-        return Convert.toInt(getRequest().getParameter(name));
-    }
-
-    /**
-     * 获取Integer参数
-     */
-    public static Integer getParameterToInt(String name, Integer defaultValue) {
-        return Convert.toInt(getRequest().getParameter(name), defaultValue);
-    }
 
     /**
      * 获取request
@@ -72,25 +44,6 @@ public class ServletUtils {
     }
 
     /**
-     * 将字符串渲染到客户端
-     * 
-     * @param response 渲染对象
-     * @param string 待渲染的字符串
-     * @return null
-     */
-    public static String renderString(HttpServletResponse response, String string) {
-        try {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("utf-8");
-            response.getWriter().print(string);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
      * 是否是Ajax异步请求
      * 
      * @param request
@@ -116,5 +69,65 @@ public class ServletUtils {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 转换为Integer数组<br>
+     * @param split 分隔符
+     * @param split 被转换的值
+     * @return 结果
+     */
+    public static Integer[] toIntArray(String split, String str) {
+        if (org.apache.commons.lang3.StringUtils.isEmpty(str)) {
+            return new Integer[] {};
+        }
+        String[] arr = str.split(split);
+        Integer[] ints = new Integer[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            Integer v = Integer.valueOf(arr[i]);
+            ints[i] = v;
+        }
+        return ints;
+    }
+
+    /**
+     * 转换为Long数组<br>
+     *
+     * @param split 分隔符
+     * @param str 被转换的值
+     * @return 结果
+     */
+    public static Long[] toLongArray(String split, String str) {
+        if (org.apache.commons.lang3.StringUtils.isEmpty(str)) {
+            return new Long[] {};
+        }
+        String[] arr = str.split(split);
+        final Long[] longs = new Long[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            final Long v = Long.valueOf(arr[i]);
+            longs[i] = v;
+        }
+        return longs;
+    }
+
+    /**
+     * 转换为String数组<br>
+     *
+     * @param str 被转换的值
+     * @return 结果
+     */
+    public static String[] toStrArray(String str) {
+        return toStrArray(",", str);
+    }
+
+    /**
+     * 转换为String数组<br>
+     *
+     * @param split 分隔符
+     * @param split 被转换的值
+     * @return 结果
+     */
+    public static String[] toStrArray(String split, String str) {
+        return str.split(split);
     }
 }
