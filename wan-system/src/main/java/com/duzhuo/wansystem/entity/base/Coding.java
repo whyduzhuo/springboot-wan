@@ -1,7 +1,6 @@
 package com.duzhuo.wansystem.entity.base;
 
 import com.duzhuo.common.core.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -11,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotBlank;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -28,43 +28,41 @@ public class Coding extends BaseEntity{
 
     private static final long serialVersionUID = 7684742710608529386L;
 
-    @JsonProperty
+    @NotBlank(message = "不可为空")
     @ApiModelProperty(value ="作者")
     private String author;
 
-    @JsonProperty
+    @NotBlank(message = "不可为空")
+    @ApiModelProperty(value ="邮箱")
+    private String email;
+
+    @NotBlank(message = "不可为空")
     @ApiModelProperty(value = "业务名")
     private String module;
 
-    @JsonProperty
+    @NotBlank(message = "不可为空")
     @ApiModelProperty(value = "完整类名")
     private String entityPackages;
 
-    @JsonProperty
+    @NotBlank(message = "不可为空")
     @ApiModelProperty(value = "类名")
     private String entityName;
 
-    @JsonProperty
     @ApiModelProperty(value = "类名小写")
     private String lowEntityName;
 
-    @JsonProperty
     @ApiModelProperty(value = "系统")
     private String system;
 
-    @JsonProperty
     @ApiModelProperty(value = "serviev包名")
     private String servicepackage;
 
-    @JsonProperty
     @ApiModelProperty(value = "controller包名")
     private String controllerpackage;
 
-    @JsonProperty
     @ApiModelProperty(value = "dao包名")
     private String daopackage;
 
-    @JsonProperty
     @Transient
     private String createDateStr;
 

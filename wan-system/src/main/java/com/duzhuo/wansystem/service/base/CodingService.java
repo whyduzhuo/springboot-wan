@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 /**
- * @author: wanhy
+ * @author: 万宏远
  * @date: 2020/1/13 15:36
  */
 
@@ -31,21 +31,7 @@ public class CodingService extends BaseService<Coding,Long>{
      * @return
      */
     public Message addData(Coding codingVO){
-        if (StringUtils.isBlank(codingVO.getEntityPackages())){
-            throw new ServiceException("完整类名不可为空！");
-        }
-        if (StringUtils.isBlank(codingVO.getAuthor())){
-            throw new ServiceException("作者不可为空！");
-        }
-        if (StringUtils.isBlank(codingVO.getDaopackage())){
-            throw new ServiceException("DAO包名为空！");
-        }
-        if (StringUtils.isBlank(codingVO.getControllerpackage())){
-            throw new ServiceException("Controller包名为空！");
-        }
-        if (StringUtils.isBlank(codingVO.getServicepackage())){
-            throw new ServiceException("Service包名为空！");
-        }
+        super.validation(codingVO);
         if (this.findByEntityPackages(codingVO.getEntityPackages())!=null){
             throw new ServiceException("类已存在！");
         }

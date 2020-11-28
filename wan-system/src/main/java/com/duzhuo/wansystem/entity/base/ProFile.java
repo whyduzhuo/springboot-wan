@@ -1,7 +1,6 @@
 package com.duzhuo.wansystem.entity.base;
 
 import com.duzhuo.common.core.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -40,7 +39,6 @@ public class ProFile extends BaseEntity{
     @ApiModelProperty(value = "原文件名,不带后缀",example = "8月5日会议纪要")
     private String original;
 
-    @JsonProperty
     @ApiModelProperty(value = "上传者")
     private Admin admin;
 

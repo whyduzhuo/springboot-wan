@@ -6,7 +6,7 @@ import com.duzhuo.common.core.BaseEntity;
 import com.duzhuo.common.enums.IsDelete;
 import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.service.base.AdminService;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
@@ -41,17 +41,16 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
 
     private static final long serialVersionUID = -6079046386811746580L;
 
-    @JsonProperty
     @NotBlank(message = "用户名不可为空")
     @Length(max = 15,min = 3)
     @ApiModelProperty(value = "账号,一卡通号",dataType = "number",example = "1200402570")
     private String username;
 
-    @JsonProperty
     @NotBlank(message = "用户名不可为空")
     @ApiModelProperty(value = "真实姓名",dataType = "String",example = "张三")
     private String realname;
 
+    @JsonIgnore
     @ApiModelProperty(value = "密码")
     private String password;
 
@@ -59,6 +58,7 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
     @ApiModelProperty(value = "是否禁用")
     private IsDelete isDelete = IsDelete.否;
 
+    @JsonIgnore
     @ApiModelProperty(value = "全部职务")
     private Set<Role> roleSet = new HashSet<>();
 

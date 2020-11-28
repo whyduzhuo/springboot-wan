@@ -67,6 +67,19 @@
         width: 98%;
         margin: 0 auto;
     }
+    .exp_column {
+        display: inline-block;
+        padding-right: 5px;
+    }
+
+    .edit-win-foot{
+        position: absolute;
+        height: 35px;
+        bottom: 0px;
+        background-color: #87c5ff;
+        width: 100%;
+        text-align: center;
+    }
 </style>
 <script>
     function initSubmit() {

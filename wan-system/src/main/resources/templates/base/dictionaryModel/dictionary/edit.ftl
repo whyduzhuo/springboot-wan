@@ -12,10 +12,6 @@
             width: 100%;
             text-align: center;
         }
-        .exp_column {
-            display: inline-block;
-            padding-right: 5px;
-        }
 
     </style>
 <body>

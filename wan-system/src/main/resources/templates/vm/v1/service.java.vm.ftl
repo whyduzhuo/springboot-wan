@@ -32,7 +32,7 @@ import java.io.InputStream;
 /**
  * ${data.module}
  * @author: ${data.author}
- * @email: 1434495271@qq.com
+ * @email: ${data.email}
  * @date: ${data.createDateStr}
  */
 @Service
@@ -89,13 +89,13 @@ public class ${data.entityName}Service extends BaseService< ${data.entityName} ,
     public void exportData(HttpServletResponse response, List<Filter> filters,String[] fields) throws Exception{
         String fileName="${data.module}导出";
         String fileTitle="${data.module}导出列表";
+        long count = super.count(filters);
+        if (count>5000){
+            throw new ServiceException("数据量过大，请增加筛选条件，降至5000条以下！");
+        }
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.ASC,"createDate"));
         List<${data.entityName}> ${data.lowEntityName}List = super.searchList(filters,new Sort(orders));
-        long count = super.count(filters);
-        if (count>1000){
-            throw new ServiceException("数据量过大，请增加筛选条件，降至1000条以下！");
-        }
         List<Map<String,Object>> data = new ArrayList<>(${data.lowEntityName}List.size());
         for (${data.entityName} ${data.lowEntityName}:${data.lowEntityName}List) {
             Map<String,Object> map = new HashMap(n);

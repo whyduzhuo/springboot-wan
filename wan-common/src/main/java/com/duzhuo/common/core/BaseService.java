@@ -1,6 +1,9 @@
 package com.duzhuo.common.core;
 
+import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.exception.ServiceException;
+import com.duzhuo.common.thread.Threads;
+import com.duzhuo.common.utils.RedisUtils;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.HibernateValidator;
@@ -30,7 +33,7 @@ import java.util.*;
  * @date: 2020/1/1 16:58
  */
 @Transactional(rollbackFor = Exception.class)
-public class BaseService<T, ID extends Serializable> {
+public class BaseService<T extends BaseEntity, ID extends Serializable> {
 
     private static Validator validatorFast = Validation.byProvider(HibernateValidator.class).configure().failFast(true).buildValidatorFactory().getValidator();
     private static Validator validatorAll = Validation.byProvider(HibernateValidator.class).configure().failFast(false).buildValidatorFactory().getValidator();
@@ -43,6 +46,8 @@ public class BaseService<T, ID extends Serializable> {
 
     @Resource
     protected EntityManager entityManager;
+    @Resource
+    private RedisUtils redisUtils;
 
     public void clear() {
         entityManager.clear();
@@ -107,7 +112,17 @@ public class BaseService<T, ID extends Serializable> {
      * @return
      */
     protected T update(T entity) {
-        return baseDao.save(entity);
+        String lockKey = RedisUtils.buildEntityKey(entity, OperateType.UPDATE);
+        Boolean exits;
+        synchronized (exits = redisUtils.exits(lockKey)){
+        }
+        if (exits){
+            throw new ServiceException("系统正忙，请稍后重试！");
+        }
+        redisUtils.set(lockKey,entity.getId(),20);
+        T save = baseDao.save(entity);
+        redisUtils.delete(lockKey);
+        return save;
     }
 
     @SuppressWarnings("unchecked")

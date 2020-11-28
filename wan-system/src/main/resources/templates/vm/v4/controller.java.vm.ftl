@@ -18,6 +18,7 @@ import java.util.Map;
 
 /**
  * ${data.module}--Controller
+ * @email: ${data.email}
  * @author: ${data.author}
  * @date: ${data.createDateStr}
  */
@@ -29,6 +30,7 @@ public class ${data.entityName}Controller extends BaseController {
     @Resource
     private ${data.entityName}Service ${data.lowEntityName}Service;
 
+    @RequiresPermissions("1")
     @Log(title = "${data.module}--列表",operateType = OperateType.SELECT)
     @GetMapping("/list")
     @ApiOperation(value = "${data.module}--列表")
@@ -43,6 +45,24 @@ public class ${data.entityName}Controller extends BaseController {
         return "***";
     }
 
+    @RequiresPermissions("1")
+    @Log(title = "新增${data.module}窗口",operateType = OperateType.SELECT)
+    @ApiOperation(value = "新增${data.module}窗口")
+    @GetMapping("/addWin")
+    public String addWin(Model model){
+        return "";
+    }
+
+    @RequiresPermissions("1")
+    @Log(title = "编辑${data.module}窗口",operateType = OperateType.SELECT)
+    @ApiOperation(value = "编辑${data.module}窗口")
+    @GetMapping("/editWin")
+    public String editWin(Model model,Long id){
+         model.addAttribute("data",${data.lowEntityName}Service.find(id));
+        return "";
+    }
+
+    @RequiresPermissions("1")
     @Log(title = "新增${data.module}",operateType = OperateType.INSERT)
     @ApiOperation(value = "新增${data.module}")
     @PostMapping("/addData")
@@ -51,7 +71,7 @@ public class ${data.entityName}Controller extends BaseController {
         return ${data.lowEntityName}Service.addData(${data.lowEntityName}VO);
     }
 
-
+    @RequiresPermissions("1")
     @Log(title = "修改${data.module}",operateType = OperateType.UPDATE)
     @ApiOperation(value = "修改${data.module}")
     @PostMapping("/edit")
@@ -60,7 +80,7 @@ public class ${data.entityName}Controller extends BaseController {
         return ${data.lowEntityName}Service.edit(${data.lowEntityName}VO);
     }
 
-
+    @RequiresPermissions("1")
     @Log(title = "删除${data.module}",operateType = OperateType.UPDATE)
     @ApiOperation(value = "删除${data.module}")
     @ResponseBody

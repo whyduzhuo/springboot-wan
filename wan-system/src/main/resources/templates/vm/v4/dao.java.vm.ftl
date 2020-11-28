@@ -6,6 +6,7 @@ import ${data.entityPackages};
 
 /**
  * ${data.module}--Mapper
+ * @email: ${data.email}
  * @author: ${data.author}
  * @date: ${data.createDateStr}
  */

@@ -5,7 +5,7 @@ import com.duzhuo.common.annotation.UniqueColumn;
 import com.duzhuo.common.core.BaseEntity;
 import com.duzhuo.common.enums.YesOrNo;
 import com.duzhuo.wansystem.service.base.MenuService;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
@@ -63,52 +63,44 @@ public class Menu extends BaseEntity implements Comparable<Menu>,Serializable {
         按钮,
     }
 
-    @JsonProperty
     @NotBlank(message = "菜单名不能为空")
     @Length(max = 14,min = 2)
     @ApiModelProperty(value = "菜单名称",dataType = "String")
     private String name;
 
-    @JsonProperty
     @NotBlank(message = "请输入url")
     @Length(min = 1,max = 40)
     @ApiModelProperty(value = "菜单路径",example = "/base/admin/list.html",dataType = "String")
     private String path;
 
-    @JsonProperty
     @ApiModelProperty(value = "菜单编号",dataType = "number")
     private Long num;
 
-    @JsonProperty
     @ApiModelProperty(value = "父级菜单",dataType = "number")
     private Menu parent;
 
-    @JsonProperty
     @ApiModelProperty(value = "排序",example = "1",dataType = "number")
     private Integer order;
 
-    @JsonProperty
     @NotNull(message = "启用or禁用")
     @ApiModelProperty(value = "是否可用")
     private YesOrNo isEnable = YesOrNo.是;
 
-    @JsonProperty
     @NotNull(message = "OS不能为空！")
     @ApiModelProperty(value = "移动端还是PC端菜单",dataType = "number")
     private OsEnum os = OsEnum.PC端;
 
-    @JsonProperty
     @NotNull(message="菜单类型不能为空")
     @ApiModelProperty(value = "页面Or按钮",dataType = "number")
     private TypeEnum type;
 
-    @JsonProperty
     @ApiModelProperty(value = "备注")
     private String remark;
 
     @ApiModelProperty(value = "拥有此菜单的全部职务")
     private List<Role> roleList = new ArrayList<>();
 
+    @JsonIgnore
     @ApiModelProperty(value = "子菜单")
     private List<Menu> children = new ArrayList<>();
 
@@ -127,6 +119,7 @@ public class Menu extends BaseEntity implements Comparable<Menu>,Serializable {
         return children;
     }
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "menuSet")
     public List<Role> getRoleList() {
         return roleList;

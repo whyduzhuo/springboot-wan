@@ -1,7 +1,7 @@
 package com.duzhuo.wansystem.entity.base;
 
 import com.duzhuo.common.core.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
@@ -51,21 +51,20 @@ public class Role extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "归属部门")
     private Organization organization;
 
-    @JsonProperty
     @ApiModelProperty(value = "职务名称", example = "部长")
     private String name;
 
-    @JsonProperty
     @ApiModelProperty(value = "备注")
     private String remark;
 
+    @JsonIgnore
     @ApiModelProperty(value = "多对多菜单列表")
     private Set<Menu> menuSet = new HashSet<>();
 
+    @JsonIgnore
     @ApiModelProperty(value = "拥有该职务的全部用户")
     private List<Admin> adminList = new ArrayList<>();
 
-    @JsonProperty
     @ManyToOne
     @JoinColumn(name = "ORG_ID")
     public Organization getOrganization() {
@@ -94,6 +93,7 @@ public class Role extends BaseEntity implements Serializable {
         return checked;
     }
 
+    @JsonIgnore
     @Transient
     public String getTypeHtml(){
         if (type==TypeEnum.固定角色){

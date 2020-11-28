@@ -1,7 +1,7 @@
 package com.duzhuo.wansystem.entity.base;
 
 import com.duzhuo.common.core.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -27,11 +27,9 @@ public class Organization extends BaseEntity{
 
     private static final long serialVersionUID = -4567376417944617713L;
 
-    @JsonProperty
     @ApiModelProperty(value = "部门名称",dataType = "String",example = "江西财经大学宣传部")
     private String name;
 
-    @JsonProperty
     @ApiModelProperty(value = "上级部门",dataType = "number")
     private Organization parent;
 
@@ -44,6 +42,7 @@ public class Organization extends BaseEntity{
         return parent;
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "organization")
     public List<Role> getRoleList() {
         return roleList;

@@ -1,6 +1,8 @@
 package com.duzhuo.common.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.duzhuo.common.core.BaseEntity;
+import com.duzhuo.common.enums.OperateType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,10 @@ public class RedisUtils {
 
     /**  不设置过期时长 */
     public final static long  NOT_EXPIRE = -1;
+
+    public static String buildEntityKey(BaseEntity baseEntity, OperateType operateType){
+        return baseEntity.getClass().getName().replace(".",":")+":"+operateType.toString()+"@"+baseEntity.getId();
+    }
 
     /**
      * 插入缓存默认时间
@@ -86,6 +92,15 @@ public class RedisUtils {
      */
     public void delete(String key) {
         redisTemplate.delete(key);
+    }
+
+    /**
+     * 判断是否存在
+     * @param key
+     * @return
+     */
+    public Boolean exits(String key){
+        return stringRedisTemplate.hasKey(key);
     }
 
     /**

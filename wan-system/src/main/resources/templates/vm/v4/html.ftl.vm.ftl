@@ -1,114 +1,106 @@
-<#noparse><#include '/admin_tmpl/include/template.ftl' /></#noparse>
 <!DOCTYPE html>
-<html>
-
-<#noparse><@pageHead></#noparse>
-
-<#noparse></@pageHead></#noparse>
-
-<body class="fixed-left">
-
-<!-- Begin page -->
-<div id="wrapper">
-
-    <div class="container">
-
-        <div class="panel panel-default">
-            <div class="panel-body" style="padding-top: 0px">
-            <div class="pageConsoleBox" style="background: #fff;padding-top: 10px">
-             <#noparse><@listpageHead isShowDeleteBtn=false iframeWidth='60%' iframeHeight="90%"></#noparse>
-                <input type="text" class="form-control input-sm" name="search_like_name"
-                       placeholder="姓名">
-            <#noparse></@listpageHead></#noparse>
+<html class="ie9 no-focus">
+<head>
+    <meta charset="utf-8">
+    <title>${data.module}列表</title>
+    <#noparse><#include "/common/tmp/commom.ftl"></#noparse>
+</head>
+<body>
+<#noparse><@adminPageNav navName1='</#noparse>${data.module}<#noparse>' navName2='</#noparse>${data.module}<#noparse>列表'/></#noparse>
+<form id="listForm" action="list" method="get">
+    <div class="page-head">
+        <#noparse><@pageHeadLeft></#noparse>
+            <#noparse><@shiro.hasPermission name="1"></#noparse>
+                <button type="button" class="btn btn-success btn-sm" onclick="addWin()">新增</button>
+            <#noparse><@shiro.hasPermission name="1"></#noparse>
+        <#noparse></@pageHeadLeft></#noparse>
+        <#noparse><@pageHeadRight></#noparse>
+            <div class="search-item">
+                <label>请求方式:</label>
+                <select class="input-sm input-search" name="search_eq_method">
+                    <option value="" selected>全部</option>
+                    <#noparse><#list methodList as method></#noparse>
+                         <option value="<#noparse>${method}</#noparse>" <#noparse><#if searchParams['search_eq_method']</#noparse>==method>selected <#noparse></#if></#noparse>><#noparse>${method}</#noparse></option>
+                    <#noparse></#list></#noparse>
+                </select>
             </div>
-            <div class="listBox">
-                <div class="table-responsive">
-                    <table id="listTable" lay-filter="list"></table>
-                </div>
+            <div class="search-item">
+                <label>用户:</label>
+                <input class="input-sm input-search" name="search_like_admin.realname" value="${searchParams['search_like_admin.realname']}"/>
             </div>
-        </div>
+        <#noparse></@pageHeadRight></#noparse>
     </div>
+    <div class="page-body">
+        <table class="table table-bordered" id="listTable">
+            <tr>
+                <th class="remove-padding-t remove-padding-b">
+                    <label class="css-input css-checkbox css-checkbox-primary">
+                        <input type="checkbox" id="selectAll"><span></span>
+                    </label>
+                </th>
+                <th>序号</th>
+                <th>字段1</th>
+                <th>字段2</th>
+                <th>字段3</th>
+                <th>操作</th>
+            </tr>
+            <#noparse><#list customSearch.pagedata.content as data></#noparse>
+            <tr>
+                <td>
+                    <label class="css-input css-checkbox css-checkbox-primary remove-padding remove-margin">
+                        <input type="checkbox" name="ids" value="<#noparse>${data.id}</#noparse>"/><span></span>
+                    </label>
+                </td>
+                <td><#noparse>${data_index+1}</#noparse></td>
+                <td>数据1</td>
+                <td>数据2</td>
+                <td>数据3</td>
+                <td>
+                    <div class="btn-group">
+                        <a href="javascript:;"
+                           onclick="editWin(<#noparse>${data.id}</#noparse>)"
+                           class="btn btn-xs btn-primary" type="button"
+                           data-toggle="tooltip" data-original-title="编辑">编辑</a>
+                        <a href="javascript:;"
+                           onclick="remove(<#noparse>${data.id}</#noparse>)"
+                           class="btn btn-xs btn-danger" type="button"
+                           data-toggle="tooltip" data-original-title="删除">删除</a>
+                    </div>
+                </td>
+            </tr>
+            <#noparse></#list></#noparse>
+        </table>
+        <div class="row"><#noparse><@pageingTemaplte customSearch.pagedata /></#noparse></div>
+    </div>
+</form>
 
-</div> <!-- container -->
+<script type="text/javascript">
+    function addWin() {
+        layer.open({
+            type: 2,
+            title: '新增${data.module}',
+            maxmin: true,
+            area: ['500px', '600px'],
+            content: 'addWin'
+        });
+    }
 
-</div>
-</body>
-<!-- END wrapper -->
+    function editWin() {
+        layer.open({
+            type: 2,
+            title: '修改${data.module}',
+            maxmin: true,
+            area: ['500px', '600px'],
+            content: 'editWin?id='+id
+        });
+    }
+    
+    function remove(id) {
+        ajaxDelete("del",{'id':id},"您确定删除?",function () {
+            window.location.reload();
+        })
+    }
 
-<#noparse><@pageFoot></#noparse>
-<#noparse></@pageFoot></#noparse>
-
-
-<#noparse><@pageList></#noparse>
-
-    <script type="text/html" id="editTpl">
-        <span class="btn btn-xs btn-info btn-custom" lay-event="edit"><i class="fa fa-edit"></i> 编辑</span>
-        <span class="btn btn-xs btn-danger btn-custom" lay-event="del"><i class="fa fa-trash-o"></i> 删除</span>
-    </script>
-
-    <script type="application/javascript">
-
-        var table;
-        /** 表头 */
-        var cols = [[
-            {title: '选择', width: 80, fixed: 'left', type: 'checkbox'}
-            , {field: 'name', title: '姓名'}
-            , {field: 'gridName', title: '区域'}
-            , {field: 'nickIdCard', title: '身份证号码'}
-            , {field: 'infectionRoute', title: '感染途径'}
-            , {field: 'haveCrime', title: '是否有违法犯罪史'}
-            , {field: 'crimeStatus', title: '违法犯罪情况'}
-            , {field: 'focusContent', title: '关注内容'}
-            , {field: 'helpedStatus', title: '帮扶情况'}
-            , {field: 'cureStatus', title: '收治情况'}
-            , {title: '操作', templet: '#editTpl'}
-        ]];
-
-        /**
-         * 监听工具条事件
-         * @param obj
-         */
-        function dealToolEvent(obj) {
-            var data = obj.data;
-            var layEvent = obj.event;
-            var id = data.id;
-
-            if ('del' === layEvent) {
-                layer.confirm("您确定删除此条记录?", {icon: 3}, function (index) {
-                    layer.load();
-                    $.ajax({
-                        url: 'delete.do',
-                        type: 'post',
-                        data: {'id': id},
-                        async: false,
-                        success: function (res) {
-                            layer.closeAll("loading");
-                            if (res.type == 'success') {
-                                layer.msg(res.content, {icon: 1, time: 1000}, function () {
-                                    reloadPageData()
-                                });
-                            } else {
-                                layer.confirm(res.content, {icon: 2}, function (index) {
-                                    layer.close(index);
-                                });
-                            }
-                        },
-                        error: function (XMLHttpRequest) {
-                            layer.closeAll("loading");
-                            console.log(XMLHttpRequest);
-                        }
-                    });
-                    layer.close(index);
-                })
-            } else if ('edit' === layEvent) {
-                openPage(this, "编辑", "edit?id=" + id, "60%", "90%");
-            }
-        }
-
-
-    </script>
-
-<#noparse></@pageList></#noparse>
-
+</script>
 </body>
 </html>

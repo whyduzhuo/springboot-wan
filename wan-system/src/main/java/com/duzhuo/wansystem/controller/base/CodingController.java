@@ -73,7 +73,7 @@ public class CodingController {
     @Log(title = "获取dao代码",operateType = OperateType.SELECT)
     @ApiOperation(value = "获取dao代码")
     @GetMapping("/getDao/{v}")
-    public String getDao(HttpServletRequest request,Coding coding, @PathVariable String v, Model model){
+    public String getDao(Coding coding, @PathVariable String v, Model model){
         coding.cal();
         model.addAttribute("data",coding);
         return "vm/"+v+"/dao.java.vm";
@@ -82,7 +82,7 @@ public class CodingController {
     @Log(title = "获取mapper代码",operateType = OperateType.SELECT)
     @ApiOperation(value = "获取dao代码")
     @GetMapping("/getMapper/{v}")
-    public String getMapper(HttpServletRequest request,Coding coding, @PathVariable String v, Model model){
+    public String getMapper(Coding coding, @PathVariable String v, Model model){
         coding.cal();
         model.addAttribute("data",coding);
         return "vm/"+v+"/mapper.vm";
@@ -91,7 +91,7 @@ public class CodingController {
     @Log(title = "获取Html代码",operateType = OperateType.SELECT)
     @ApiOperation(value = "获取Html代码")
     @GetMapping("/getHtml/{v}")
-    public String getHtml(HttpServletRequest request,Coding coding, @PathVariable String v, Model model){
+    public String getHtml(Coding coding, @PathVariable String v, Model model){
         coding.cal();
         model.addAttribute("data",coding);
         return "vm/"+v+"/html.ftl.vm";
@@ -100,7 +100,7 @@ public class CodingController {
     @Log(title = "获取Html代码",operateType = OperateType.SELECT)
     @ApiOperation(value = "获取Html代码")
     @GetMapping("/getDetail/{v}")
-    public String getDetail(HttpServletRequest request,Coding coding, @PathVariable String v, Model model){
+    public String getDetail(Coding coding, @PathVariable String v, Model model){
         coding.cal();
         model.addAttribute("data",coding);
         return "vm/"+v+"/detail.vm";
@@ -110,7 +110,7 @@ public class CodingController {
     @ApiOperation(value = "获取单条数据")
     @GetMapping("/findById")
     @ResponseBody
-    public Coding findById(HttpServletRequest request, Long id){
+    public Coding findById(Long id){
         return codingService.find(id);
     }
 

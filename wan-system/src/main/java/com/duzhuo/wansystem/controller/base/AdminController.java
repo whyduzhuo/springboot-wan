@@ -49,6 +49,7 @@ public class AdminController extends BaseController{
     private RoleService roleService;
 
 
+    @RequiresPermissions("1004")
     @Log(title = "用户列表",operateType = OperateType.SELECT)
     @GetMapping("/list")
     @ApiOperation(value = "用户列表")

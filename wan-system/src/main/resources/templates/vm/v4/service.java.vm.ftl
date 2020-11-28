@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 /**
  * ${data.module}--Service
+ * @email: ${data.email}
  * @author: ${data.author}
  * @date: ${data.createDateStr}
  */
@@ -39,6 +40,7 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}, L
      * @return
      */
     public Message addData(${data.entityName} ${data.lowEntityName}VO) {
+        super.validation(${data.lowEntityName}VO);
         this.check(${data.lowEntityName}VO);
         super.save(${data.lowEntityName}VO);
         return Message.success("添加成功!");
@@ -51,6 +53,7 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}, L
      * @return
      */
     public Message edit(${data.entityName} ${data.lowEntityName}VO) {
+        super.validation(${data.lowEntityName}VO);
         this.check(${data.lowEntityName}VO);
         ${data.entityName} ${data.lowEntityName} = super.find(${data.lowEntityName}VO.getId());
         super.update(${data.lowEntityName});
