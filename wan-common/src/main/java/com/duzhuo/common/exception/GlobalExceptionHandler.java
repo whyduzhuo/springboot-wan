@@ -3,6 +3,7 @@ package com.duzhuo.common.exception;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.utils.ServletUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.session.UnknownSessionException;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,10 +15,11 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * controller全局异常处理
- * @author: wanhy
+ * @author: 万宏远
  * @date: 2020/1/1 15:57
  */
 @Slf4j
@@ -37,27 +39,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthorizationException.class)
     public Object handleAuthorizationException(HttpServletRequest request, AuthorizationException e){
         String message = e.getMessage();
-        log.error(message, e);
-        String per = message.substring(message.lastIndexOf('['),message.indexOf(']')+1);
-        if (ServletUtils.isAjaxRequest(request)) {
-            return Message.error("您没有权限：权限编号："+per);
-        }
-        else {
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("content", "您没有权限：权限编号："+per);
-            modelAndView.setViewName(ERROR_VIEW);
-            return modelAndView;
-        }
+        String msg = "您没有权限：权限编号："+message.substring(message.lastIndexOf('['),message.indexOf(']')+1);
+        log.warn(msg, e);
+        return retError(request,e,msg);
     }
 
 
     /**
      * 请求方式不支持
      */
-    @ExceptionHandler({ HttpRequestMethodNotSupportedException.class })
-    public Message handleException(HttpRequestMethodNotSupportedException e) {
-        log.error(e.getMessage(), e);
-        return Message.error("不支持' " + e.getMethod() + "'请求");
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public Object handleException(HttpServletRequest request,HttpRequestMethodNotSupportedException e) {
+        String msg = getErrorMsg(e);
+        log.error(msg, e);
+        return retError(request,e,msg);
     }
 
     /**
@@ -65,16 +60,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public Object notFount(HttpServletRequest request,RuntimeException e) {
-        log.error("运行时异常:", e);
-        if (ServletUtils.isAjaxRequest(request)) {
-            return Message.error("运行时异常:"+e.getMessage());
-        }
-        else {
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("content", "运行时异常:"+e.getMessage());
-            modelAndView.setViewName(ERROR_VIEW);
-            return modelAndView;
-        }
+        String msg = getErrorMsg(e);
+        log.error(msg, e);
+        return retError(request,e,msg);
     }
 
     /**
@@ -82,16 +70,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public Object handleException(HttpServletRequest request,Exception e) {
-        log.error(e.getMessage(), e);
-        if (ServletUtils.isAjaxRequest(request)) {
-            return Message.error("服务器错误，请联系管理员。"+e.getMessage());
-        }
-        else {
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("content","服务器错误，请联系管理员。"+e.getMessage());
-            modelAndView.setViewName(ERROR_VIEW);
-            return modelAndView;
-        }
+        String msg = getErrorMsg(e);
+        log.error(msg, e);
+        return retError(request,e,msg);
     }
 
     /**
@@ -99,26 +80,19 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ServiceException.class)
     public Object businessException(HttpServletRequest request, ServiceException e) {
-        log.info(e.getMessage(), e);
-        if (ServletUtils.isAjaxRequest(request)) {
-            return Message.error(e.getMessage());
-        }
-        else {
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("content", e.getMessage());
-            modelAndView.setViewName(ERROR_VIEW);
-            return modelAndView;
-        }
+        String msg = e.getMessage();
+        log.info(msg, e);
+        return retError(request,e,msg);
     }
 
     /**
      * 自定义验证异常
      */
     @ExceptionHandler(BindException.class)
-    public Message validatedBindException(BindException e) {
-        log.info(e.getMessage(), e);
-        String message = e.getAllErrors().get(0).getDefaultMessage();
-        return Message.error(message);
+    public Object validatedBindException(HttpServletRequest request,BindException e) {
+        String msg = e.getMessage();
+        log.info(msg, e);
+        return retError(request,e,msg);
     }
 
     /**
@@ -128,17 +102,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public Object maxUploadSizeExceededException(HttpServletRequest request,MaxUploadSizeExceededException e){
-        log.error(e.getMessage(), e);
-        String message = "超过文件限制大小:"+maxSize;
-        if (ServletUtils.isAjaxRequest(request)) {
-            return Message.error(message);
-        }
-        else {
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("content",message);
-            modelAndView.setViewName(ERROR_VIEW);
-            return modelAndView;
-        }
+        String msg = "超过文件限制大小:"+maxSize;
+        log.warn(msg, e);
+        return retError(request,e,msg);
     }
 
     /**
@@ -149,15 +115,24 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(UnknownSessionException.class)
     public Object unknownSessionExceptionHandle(HttpServletRequest request,UnknownSessionException e){
-        log.info(e.getMessage(), e);
+        String msg = "登录失效，请重新登录"+e.getMessage();
+        log.info(msg, e);
+        return retError(request,e,msg);
+    }
+
+    private Object retError(HttpServletRequest request,Exception e,String msg){
         if (ServletUtils.isAjaxRequest(request)) {
-            return Message.error("登录失效，请重新登录");
+            return Message.error(msg);
         }
         else {
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("content","登录失效，请重新登录");
+            modelAndView.addObject("content",msg);
             modelAndView.setViewName(ERROR_VIEW);
             return modelAndView;
         }
+    }
+
+    private String getErrorMsg(Exception e){
+        return "系统错误【"+ DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss")+"】"+e.getMessage();
     }
 }
