@@ -8,7 +8,7 @@ import java.util.List;
  * @author 万宏远
  * @date 2020/1/1 15:57
  */
-public class StringUtils extends org.apache.commons.lang3.StringUtils {
+public class StringUtils {
 
     /**
      * 截取字符串
@@ -84,7 +84,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     public static boolean inStringIgnoreCase(String str, String... strs) {
         if (str != null && strs != null) {
             for (String s : strs) {
-                if (str.equalsIgnoreCase(trim(s))) {
+                if (str.equalsIgnoreCase(s.trim())) {
                     return true;
                 }
             }
@@ -107,7 +107,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             if (i==0){
                 sb.append(stringList.get(i));
             }else {
-                sb.append(spit+stringList.get(i));
+                sb.append(spit).append(stringList.get(i));
             }
         }
         return sb.toString();
