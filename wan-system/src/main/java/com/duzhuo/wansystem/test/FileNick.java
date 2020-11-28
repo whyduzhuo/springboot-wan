@@ -5,7 +5,8 @@ import java.util.Arrays;
 
 /**
  * 文件加密
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/8/10 14:10
  */
 

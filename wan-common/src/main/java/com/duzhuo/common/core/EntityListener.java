@@ -6,7 +6,8 @@ import javax.persistence.PreUpdate;
 import java.util.Date;
 
 /**
- * @author wanhy
+ * @author 万宏远
+ * @email: 1434495271@qq.com
  * @date 2020-01-05
  */
 public class EntityListener {

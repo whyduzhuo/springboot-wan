@@ -9,7 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 /**
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/5/19 17:49
  */
 @ApiModel(value = "任务")

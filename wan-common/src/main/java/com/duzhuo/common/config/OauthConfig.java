@@ -5,7 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.sql.SQLException;
 
 /**
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/2/14 19:57
  */
 

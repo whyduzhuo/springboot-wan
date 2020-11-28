@@ -33,7 +33,8 @@ import org.apache.poi.xwpf.converter.xhtml.XHTMLOptions;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.w3c.dom.Document;
 /**
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/4/20 22:16
  */
 

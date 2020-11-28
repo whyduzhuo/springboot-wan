@@ -2,7 +2,8 @@ package com.duzhuo.common.enums;
 
 /**
  * 业务操作类型
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/1/1 16:20
  */
 public enum OperateType {

@@ -12,7 +12,8 @@ import java.io.OutputStream;
 /**
  * JSON解析处理
  * 
- * @author wanhy
+ * @author 万宏远
+ * @email: 1434495271@qq.com
  */
 public class JSON {
     public static final String DEFAULT_FAIL = "\"Parse failed\"";

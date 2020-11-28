@@ -10,7 +10,8 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/8/10 11:16
  */
 

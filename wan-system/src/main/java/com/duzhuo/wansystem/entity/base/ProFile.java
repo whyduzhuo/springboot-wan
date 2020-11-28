@@ -11,7 +11,8 @@ import javax.persistence.*;
 
 /**
  * 项目文件
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/1/9 9:07
  */
 @Data

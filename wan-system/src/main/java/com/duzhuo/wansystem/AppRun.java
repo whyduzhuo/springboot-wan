@@ -19,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @EnableSwagger2 接口文档
  * @EnableScheduling 定时任务
  * @EnableCaching redis缓存
- * @author wanhy
+ * @author 万宏远
  */
 @EnableSwagger2
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })

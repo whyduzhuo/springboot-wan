@@ -7,7 +7,8 @@ import java.lang.annotation.*;
 /**
  * 自定义操作日志记录注解
  * 记录接口的调用记录和传入参数、返回值、异常
- * @author wanhy
+ * @author 万宏远
+ * @email: 1434495271@qq.com
  * @date 2020/1/1 16:18
  */
 @Target({ ElementType.PARAMETER, ElementType.METHOD })

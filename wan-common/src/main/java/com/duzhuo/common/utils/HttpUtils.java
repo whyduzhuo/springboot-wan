@@ -11,7 +11,8 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/8/18 9:47
  */
 @Slf4j

@@ -6,7 +6,7 @@ import javax.persistence.Transient;
 
 /**
  * 操作消息提示
- * @author: wanhy
+ * @author: 万宏远
  * @date: 2020/1/1 15:39
  */
 

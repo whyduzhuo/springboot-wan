@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * 批量操作结果类的封装
- * @author: wanhy
+ * @author: 万宏远
  * @date: 2020/3/13 16:47
  */
 

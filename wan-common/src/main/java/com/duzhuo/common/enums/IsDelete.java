@@ -1,7 +1,8 @@
 package com.duzhuo.common.enums;
 
 /**
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/10/8 15:35
  */
 

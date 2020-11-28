@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * 通用查询
- * @author wanhy
+ * @author 万宏远 * @email: 1434495271@qq.com
  * @date 2020-01-05
  */
 public class CustomSearch<T> implements Serializable {

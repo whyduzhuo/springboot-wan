@@ -44,7 +44,8 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 /**
  * 项目文件
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/1/2 8:51
  */
 

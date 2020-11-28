@@ -11,7 +11,8 @@ import javax.persistence.Transient;
 import java.util.List;
 
 /**
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/8/18 10:30
  */
 @ApiModel(value = "城市代码")

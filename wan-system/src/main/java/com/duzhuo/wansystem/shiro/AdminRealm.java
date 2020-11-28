@@ -24,7 +24,8 @@ import java.util.stream.Collectors;
 /**
  * 自定义Realm 处理登录 权限
  * 
- * @author wanhy
+ * @author 万宏远
+ * @email: 1434495271@qq.com
  */
 @Slf4j
 public class AdminRealm extends AuthorizingRealm {

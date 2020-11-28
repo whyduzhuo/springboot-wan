@@ -10,7 +10,8 @@ import java.util.Date;
 
 /**
  * 删除标志
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/11/9 17:49
  */
 

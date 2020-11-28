@@ -12,7 +12,8 @@ import javax.persistence.*;
 
 /**
  * 操作日志
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/1/4 11:01
  */
 @Data

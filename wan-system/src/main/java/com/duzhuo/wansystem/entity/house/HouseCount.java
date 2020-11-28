@@ -8,7 +8,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * @author: wanhy
+ * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/8/18 12:03
  */
 @ApiModel(value = "城市代码")

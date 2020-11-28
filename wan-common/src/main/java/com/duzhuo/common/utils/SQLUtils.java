@@ -1,7 +1,7 @@
 package com.duzhuo.common.utils;
 
 /**
- * @author: wanhy
+ * @author: 万宏远
  * @date: 2020/10/18 20:29
  */
 

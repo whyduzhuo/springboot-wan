@@ -7,7 +7,7 @@ import java.util.concurrent.*;
 /**
  * 线程相关工具类.
  * 
- * @author wanhy
+ * @author 万宏远
  */
 @Slf4j
 public class Threads {

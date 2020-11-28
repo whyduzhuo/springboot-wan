@@ -3,7 +3,8 @@ package com.duzhuo.common.utils;
 /**
  * 字符串格式化
  * 
- * @author wanhy
+ * @author 万宏远
+ * @email: 1434495271@qq.com
  * @date 2020/1/1 15:57
  */
 public class StrFormatter {
