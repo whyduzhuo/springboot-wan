@@ -3,7 +3,7 @@ package com.duzhuo.wansystem.service.base;
 import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.exception.ServiceException;
-import com.duzhuo.common.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import com.duzhuo.wansystem.dao.base.CodingDao;
 import com.duzhuo.wansystem.entity.base.Coding;
 import org.springframework.stereotype.Service;

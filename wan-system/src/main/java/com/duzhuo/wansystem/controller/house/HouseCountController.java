@@ -5,7 +5,7 @@ import com.duzhuo.common.core.BaseController;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.HttpUtils;
-import com.duzhuo.common.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import com.duzhuo.wansystem.entity.house.HouseCount;
 import com.duzhuo.wansystem.service.house.CityUrlService;
 import com.duzhuo.wansystem.service.house.HouseCountService;

@@ -23,7 +23,7 @@ import java.util.Date;
  * @date: 2020/1/1 15:57
  */
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "com.duzhuo.wansystem.controller")
 public class GlobalExceptionHandler {
     public static final String ERROR_VIEW = "/common/error/error";
 

@@ -5,7 +5,7 @@ import com.duzhuo.common.core.Message;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.thread.ThreadPoolService;
 import com.duzhuo.common.utils.HttpUtils;
-import com.duzhuo.common.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import com.duzhuo.wansystem.dao.house.HouseCountDao;
 import com.duzhuo.wansystem.dto.house.HouseCountDto;
 import com.duzhuo.wansystem.entity.house.CityUrl;

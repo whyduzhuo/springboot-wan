@@ -1,7 +1,7 @@
 package com.duzhuo.common.utils;
 
 import com.duzhuo.common.core.CustomSearch;
-
+import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 
 /**

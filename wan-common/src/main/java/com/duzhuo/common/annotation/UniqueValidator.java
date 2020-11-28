@@ -4,7 +4,7 @@ import com.duzhuo.common.core.BaseEntity;
 import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.utils.SpringUtils;
-import com.duzhuo.common.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.ConstraintValidator;

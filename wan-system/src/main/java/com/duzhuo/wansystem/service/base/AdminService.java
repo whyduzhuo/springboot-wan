@@ -5,7 +5,7 @@ import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.IsDelete;
 import com.duzhuo.common.exception.ServiceException;
-import com.duzhuo.common.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import com.duzhuo.wansystem.dao.base.AdminDao;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.shiro.AdminRealm;

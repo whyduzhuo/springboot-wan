@@ -1,13 +1,9 @@
 package com.duzhuo.common.core;
 
-import com.duzhuo.common.utils.StringUtils;
-import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.lang3.StringUtils;
 
-import java.awt.image.Kernel;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author: wanhy
