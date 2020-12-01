@@ -7,10 +7,7 @@ import com.duzhuo.common.utils.RedisUtils;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.HibernateValidator;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -18,14 +15,16 @@ import org.springframework.util.Assert;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -212,6 +211,78 @@ public class BaseService<T extends BaseEntity, ID extends Serializable> {
     public long count(List<Filter> filters) {
         Specification<T> spec = generareSpecification(filters, null);
         return baseDao.count(spec);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean exists(List<Filter> filters) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        // 查询结果
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Class<T> tClass = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        // 在哪个表查
+        Root<T> root = cq.from(tClass);
+        List<Predicate> predicates = generaExample(filters, cq, cb, root);
+        Predicate[] predicateArr = new Predicate[predicates.size()];
+        cq.where(predicates.toArray(predicateArr));
+        cq.select(cb.count(root));
+        TypedQuery<Long> typedQuery = entityManager.createQuery(cq);
+        Long i = typedQuery.getSingleResult();
+        return i>0;
+    }
+
+    private List<Predicate> generaExample(List<Filter> filters,CriteriaQuery cq,CriteriaBuilder cb,Root root){
+        ExampleMatcher matcher = ExampleMatcher.matching();
+        List<Predicate> predicates = new ArrayList<>();
+        filters.forEach(filter -> {
+            switch (filter.getOperator()){
+                case eq:
+                    predicates.add(cb.equal(root.get(filter.getProperty()),filter.getValue()));
+                    break;
+                case ge:
+                    predicates.add(cb.greaterThanOrEqualTo(root.get(filter.getProperty()),new BigDecimal(filter.getValue().toString())));
+                    break;
+                case gt:
+                    predicates.add(cb.greaterThan(root.get(filter.getProperty()),new BigDecimal(filter.getValue().toString())));
+                    break;
+                case in:
+                    break;
+                case le:
+                    predicates.add(cb.lessThan(root.get(filter.getProperty()),new BigDecimal(filter.getValue().toString())));
+                    break;
+                case lt:
+                    predicates.add(cb.lessThanOrEqualTo(root.get(filter.getProperty()),new BigDecimal(filter.getValue().toString())));
+                    break;
+                case ne:
+                    predicates.add(cb.notEqual(root.get(filter.getProperty()),filter.getValue()));
+                    break;
+                case has:
+                    break;
+                case like:
+                    predicates.add(cb.like(root.get(filter.getProperty()),filter.getValue().toString()));
+                    break;
+                case notIn:
+                    break;
+                case isNull:
+                    predicates.add(cb.isNull(root.get(filter.getProperty())));
+                    break;
+                case notHas:
+                    break;
+                case between:
+                    break;
+                case isEmpty:
+                    predicates.add(cb.isEmpty(root.get(filter.getProperty())));
+                    break;
+                case isNotNull:
+                    predicates.add(cb.isNotNull(root.get(filter.getProperty())));
+                    break;
+                case isNotEmpty:
+                    predicates.add(cb.isNotEmpty(root.get(filter.getProperty())));
+                    break;
+                case parentlike:
+                    break;
+            }
+        });
+        return predicates;
     }
 
     /**
@@ -413,7 +484,7 @@ public class BaseService<T extends BaseEntity, ID extends Serializable> {
      * @return
      */
     private <T> Specification<T> generareSpecification(final List<Filter> filters, final CriteriaQuery<T> criteriaQuery) {
-        return (Specification<T>) (root, query, builder) -> {
+        return  (root, query, builder) -> {
 
             List<Predicate> predicates = new ArrayList<>();
 

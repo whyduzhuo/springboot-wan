@@ -60,8 +60,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, BaseEntity> 
                 throw new RuntimeException("Unique 校验错误");
             }
         }
-        List list = entityService.searchList(filterList);
-        return list.isEmpty();
+        return !entityService.exists(filterList);
     }
 
 

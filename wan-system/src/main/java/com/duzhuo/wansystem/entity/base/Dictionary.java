@@ -25,9 +25,9 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = true)
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 @ApiModel(value = "字典")
-//@Unique(service = DictionaryService.class,message = "字典编码已存在!",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("code")})
-//@Unique(service = DictionaryService.class,message = "字典值已存在！",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("value")})
-//@Unique(service = DictionaryService.class,message = "排序重复",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("order")})
+@Unique(service = DictionaryService.class,message = "字典编码已存在!",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("code")})
+@Unique(service = DictionaryService.class,message = "字典值已存在！",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("value")})
+@Unique(service = DictionaryService.class,message = "排序重复",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("order")})
 public class Dictionary  extends BaseEntity{
 
     private static final long serialVersionUID = 1448607782295439386L;

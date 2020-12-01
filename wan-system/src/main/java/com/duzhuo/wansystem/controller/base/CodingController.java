@@ -115,18 +115,7 @@ public class CodingController {
     }
 
     @GetMapping("/test")
-    public void test(HttpServletResponse response) throws IOException {
-        String title = "卧槽";
-        List<String> headList = new ArrayList<>();
-        headList.add("字段1");
-        headList.add("字段2");
-        headList.add("字段3");
-        headList.add("字段4");
-        List<List<String>> params = new ArrayList<>();
-        params.add(Arrays.asList(new String[]{"选项1","选项2","选项3","选项4"}));
-        params.add(Arrays.asList(new String[]{"选项1","选项2","选项3","选项4"}));
-        params.add(Arrays.asList(new String[]{"选项1","选项2","选项3","选项4"}));
-        params.add(Arrays.asList(new String[]{"选项1","选项2","选项3","选项4"}));
-        ExcelUtils.downExcelTemplet(title,headList,params,response);
+    public void test(HttpServletResponse response) {
+        codingService.exists(new ArrayList<>());
     }
 }
