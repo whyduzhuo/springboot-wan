@@ -9,6 +9,9 @@
     <form id="listForm" action="list" method="get">
         <div class="page-head">
             <@pageHeadLeft>
+                <@shiro.hasPermission name="100300">
+                <button type="button" onclick="addWin()" class="btn btn-sm btn-success hidden-xs">新增</button>
+                </@shiro.hasPermission>
             </@pageHeadLeft>
             <@pageHeadRight>
                 <div class="search-item">
@@ -63,10 +66,10 @@
         window.location.reload();
     }
 
-    function openAddWin() {
+    function addWin() {
         layer.open({
             type: 2,
-            title: '新增菜单',
+            title: '用户角色',
             maxmin: true,
             area: ['500px', '600px'],
             content: 'addWin'
@@ -76,7 +79,7 @@
     function openEditWin(id) {
         layer.open({
             type: 2,
-            title: '编辑菜单',
+            title: '编辑角色',
             maxmin: true,
             area: ['500px', '600px'],
             content: 'editWin?id='+id

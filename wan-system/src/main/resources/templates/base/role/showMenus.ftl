@@ -6,7 +6,7 @@
 </head>
 <body>
 <div style="position: fixed;height: 50px;">
-<@shiro.hasPermission name="100303">
+    <@shiro.hasPermission name="100303">
     <button  onclick="save()"
              class="btn btn-success" type="button"
              data-toggle="tooltip" data-original-title="授权">授权</button>

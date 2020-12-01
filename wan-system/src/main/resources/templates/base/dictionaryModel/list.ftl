@@ -52,8 +52,8 @@
                         <td>${data.modelCode}</td>
                         <td>${data.order}
                             <lable class="orders-lable">
-                                <a href="javascript:void(0)" class="glyphicon glyphicon-chevron-up"></a>
-                                <a href="javascript:void(0)" class="glyphicon glyphicon-chevron-down"></a>
+                                <a href="javascript:void(0)" onclick="upOrDown('${data.id}','1')" class="glyphicon glyphicon-chevron-up"></a>
+                                <a href="javascript:void(0)" onclick="upOrDown('${data.id}','-1')" class="glyphicon glyphicon-chevron-down"></a>
                             </lable>
                         </td>
                         <td>
@@ -86,6 +86,14 @@
                 area: ['500px', '600px'],
                 content: 'detail?id='+id
             });
+        }
+
+        function upOrDown(id,change) {
+            ajaxSend("upOrDown","POST",{"id":id, "change":change},function (res) {
+                window.location.reload();
+            },function (res) {
+                layer.msg(res.msg,{icon:0})
+            })
         }
     </script>
 </body>

@@ -55,7 +55,7 @@ public class RoleService extends BaseService<Role,Long> {
      */
     public Message addData(Role roleVo) {
         if (roleVo.getType()==null){
-            throw new ServiceException("");
+            throw new ServiceException("请选择角色类别");
         }
         if (StringUtils.isNotBlank(roleVo.getName())){
             throw new ServiceException("请输入名称");

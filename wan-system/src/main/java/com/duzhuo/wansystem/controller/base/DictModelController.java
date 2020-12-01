@@ -86,4 +86,17 @@ public class DictModelController extends BaseController {
         return Message.success("修改成功!");
     }
 
+    @RequiresPermissions("100503")
+    @ApiOperation(value = "字典--修改排序")
+    @PostMapping("/upOrDown")
+    @ResponseBody
+    @Log(title = "字典--修改排序",operateType = OperateType.UPDATE)
+    public Message upOrDown(Long id,Integer change){
+        if (change<0){
+            dictModelService.down(id);
+            return Message.success("修改成功！");
+        }
+        dictModelService.up(id);
+        return Message.success("修改成功！");
+    }
 }

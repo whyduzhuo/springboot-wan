@@ -7,7 +7,9 @@ import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.wansystem.entity.base.Admin;
+import com.duzhuo.wansystem.entity.base.Organization;
 import com.duzhuo.wansystem.entity.base.Role;
+import com.duzhuo.wansystem.service.base.OrganizationService;
 import com.duzhuo.wansystem.service.base.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +37,8 @@ public class RoleController extends BaseController {
 
     @Resource
     private RoleService roleService;
+    @Resource
+    private OrganizationService organizationService;
 
     @Log(title = "角色列表",operateType = OperateType.SELECT)
     @ApiOperation("角色列表")
@@ -56,8 +60,10 @@ public class RoleController extends BaseController {
     @GetMapping("/addWin")
     public String addWin(Model model){
         Role role = new Role();
+        role.setType(Role.TypeEnum.自定义角色);
         model.addAttribute("data",role);
-        return "/base/role/edit";
+        model.addAttribute("orgList",organizationService.getAllEnable());
+        return "/base/role/addWin";
     }
 
     @Log(title = "编辑角色窗口",operateType = OperateType.SELECT)
@@ -118,8 +124,8 @@ public class RoleController extends BaseController {
     @RequiresPermissions("100300")
     @PostMapping("/addData")
     @ResponseBody
-    public Message addData(Role role){
-        return roleService.addData(role);
+    public Message addData(Role roleVO){
+        return roleService.addData(roleVO);
     }
 
     @Log(title = "修改角色",operateType = OperateType.UPDATE)

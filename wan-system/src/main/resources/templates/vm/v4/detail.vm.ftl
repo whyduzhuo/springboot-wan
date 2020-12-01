@@ -4,7 +4,7 @@
     <title></title>
     <#noparse><#include "/common/tmp/commom.ftl"></#noparse>
 <body>
-<form id="inputForm" class="form-horizontal" >
+<form id="dataForm">
     <div class="form-group">
         <input type="hidden" name="id" id="data_id" value="<#noparse>${data.id}</#noparse>"/>
         <div class="col-xs-12 col-md-4">
@@ -13,11 +13,11 @@
                    required/>
         </div>
         <div class="col-xs-12 col-md-4">
-            <label for="column2">选择1<span class="text-danger">*</span></label>
+            <label for="column2">部门<span class="text-danger">*</span></label>
             <select class="form-control" name="column2" id="column2">
-                    <#noparse>[#list  statusList as status]</#noparse>
-                    <option value="<#noparse>${status}</#noparse>"  <#noparse>[#if data.column2 == status]</#noparse>selected<#noparse>[/#if]</#noparse>><#noparse>${status}</#noparse></option>
-                    <#noparse>[/#list]</#noparse>
+                <#noparse><#list  statusList as status></#noparse>
+                <option value="<#noparse>${status}</#noparse>"  <#noparse><#if data.column2 == status></#noparse>selected<#noparse></#if></#noparse>><#noparse>${status}</#noparse></option>
+                <#noparse></#list></#noparse>
             </select>
         </div>
 
@@ -25,13 +25,13 @@
             <label for="column3">选择3<span class="text-danger">*</span></label>
             <div class="exp_column">
                 <label class="css-input css-checkbox css-checkbox-primary">
-                <input type="radio" name="column3" value="是" <#noparse>[#if data.column3 == '是']</#noparse>checked<#noparse>[/#if]</#noparse> /><span></span>
+                <input type="radio" name="column3" value="是" <#noparse><#if data.column3 == '是'></#noparse>checked<#noparse></#if></#noparse> /><span></span>
                 </label>是
             </div>
 
             <div class="exp_column">
                 <label class="css-input css-checkbox css-checkbox-primary">
-                <input type="radio" name="column3" value="否" <#noparse>[#if data.column3 == '否']</#noparse>checked<#noparse>[/#if]</#noparse> /><span></span>
+                <input type="radio" name="column3" value="否" <#noparse><#if data.column3 == '否'></#noparse>checked<#noparse></#if></#noparse> /><span></span>
                 </label>否
             </div>
 

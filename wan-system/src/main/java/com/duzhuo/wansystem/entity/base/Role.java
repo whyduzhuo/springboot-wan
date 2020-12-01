@@ -36,7 +36,7 @@ public class Role extends BaseEntity implements Serializable {
         /**
          * 普通职务可以修改
          */
-        普通角色,
+        自定义角色,
         /**
          * 固定职务不可修改
          * 也不可添加人员
@@ -45,7 +45,7 @@ public class Role extends BaseEntity implements Serializable {
     }
 
     /**
-     * 职务类别
+     * 角色类别
      */
     private TypeEnum type;
 
@@ -100,7 +100,7 @@ public class Role extends BaseEntity implements Serializable {
         if (type==TypeEnum.固定角色){
             return "<span  class=\"label label-danger\">"+this.type+"</span>";
         }
-        if (type==TypeEnum.普通角色){
+        if (type==TypeEnum.自定义角色){
             return "<span  class=\"label label-success\">"+this.type+"</span>";
         }
         return "";

@@ -1,7 +1,7 @@
 package com.duzhuo.wansystem.service.base;
 
-import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Filter;
+import com.duzhuo.common.core.OrderService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.utils.StrFormatter;
 import com.duzhuo.wansystem.dao.base.DictModelDao;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DictModelService extends BaseService<DictModel,Long> {
+public class DictModelService extends OrderService<DictModel,Long> {
 
     @Resource
     private DictModelDao dictModelDao;

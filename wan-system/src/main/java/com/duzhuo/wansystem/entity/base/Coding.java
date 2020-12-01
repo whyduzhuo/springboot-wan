@@ -29,23 +29,23 @@ public class Coding extends BaseEntity{
 
     private static final long serialVersionUID = 7684742710608529386L;
 
-    @NotBlank(message = "不可为空")
+    @NotBlank(message = "作者不可为空")
     @ApiModelProperty(value ="作者")
     private String author;
 
-    @NotBlank(message = "不可为空")
+    @NotBlank(message = "邮箱不可为空")
     @ApiModelProperty(value ="邮箱")
     private String email;
 
-    @NotBlank(message = "不可为空")
+    @NotBlank(message = "业务名不可为空")
     @ApiModelProperty(value = "业务名")
     private String module;
 
-    @NotBlank(message = "不可为空")
+    @NotBlank(message = "完整类名不可为空")
     @ApiModelProperty(value = "完整类名")
     private String entityPackages;
 
-    @NotBlank(message = "不可为空")
+//------------------ filed not in table -------------
     @ApiModelProperty(value = "类名")
     private String entityName;
 
