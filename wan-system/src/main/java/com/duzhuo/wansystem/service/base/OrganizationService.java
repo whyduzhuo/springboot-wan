@@ -38,7 +38,6 @@ public class OrganizationService extends DeleteService<Organization,Long> {
      */
     public Message addData(Organization organizationVO) {
         super.validation(organizationVO);
-        this.check(organizationVO);
         super.save(organizationVO);
         return Message.success("添加成功!");
     }
@@ -50,7 +49,7 @@ public class OrganizationService extends DeleteService<Organization,Long> {
      */
     public Message edit(Organization organizationVO) {
         super.validation(organizationVO);
-        this.check(organizationVO);
+
         return Message.error("功能暂未完成！");
     }
 

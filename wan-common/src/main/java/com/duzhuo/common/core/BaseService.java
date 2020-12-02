@@ -22,6 +22,7 @@ import javax.persistence.metamodel.Metamodel;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
@@ -35,7 +36,7 @@ import java.util.*;
 public class BaseService<T extends BaseEntity, ID extends Serializable> {
 
     private static Validator validatorFast = Validation.byProvider(HibernateValidator.class).configure().failFast(true).buildValidatorFactory().getValidator();
-    private static Validator validatorAll = Validation.byProvider(HibernateValidator.class).configure().failFast(false).buildValidatorFactory().getValidator();
+    private static Validator validatorAll =  Validation.byProvider(HibernateValidator.class).configure().failFast(false).buildValidatorFactory().getValidator();
 
     private BaseDao<T, ID> baseDao;
 
@@ -589,7 +590,9 @@ public class BaseService<T extends BaseEntity, ID extends Serializable> {
     }
 
     public void validation(T entity){
-        Set<ConstraintViolation<T>> errors = Validation.buildDefaultValidatorFactory().getValidator().validate(entity);
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        Validator validator = validatorFactory.getValidator();
+        Set<ConstraintViolation<T>> errors = validator.validate(entity);
         if (!errors.isEmpty()){
             StringBuilder sb=new StringBuilder();
             for (ConstraintViolation<T> error : errors) {

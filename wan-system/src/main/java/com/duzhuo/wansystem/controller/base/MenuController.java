@@ -83,7 +83,8 @@ public class MenuController extends BaseController {
     @PostMapping("/addData")
     @ResponseBody
     public Message addData(Menu menuVO){
-        return menuService.addData(menuVO);
+        menuService.addData(menuVO);
+        return Message.success("添加成功！",menuService.menuToTree(menuVO));
     }
 
     @Log(title = "新增菜单",operateType = OperateType.SELECT)

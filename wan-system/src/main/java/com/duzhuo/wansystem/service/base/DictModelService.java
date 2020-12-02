@@ -47,7 +47,6 @@ public class DictModelService extends OrderService<DictModel,Long> {
      */
     public void addData(DictModel dictModelVO){
         super.validation(dictModelVO);
-        this.check(dictModelVO);
         super.save(dictModelVO);
     }
 
@@ -57,25 +56,12 @@ public class DictModelService extends OrderService<DictModel,Long> {
      */
     public void edit(DictModel dictModelVO){
         super.validation(dictModelVO);
-        this.check(dictModelVO);
         DictModel dictModel = super.find(dictModelVO.getId());
         dictModel.setModelCode(dictModelVO.getModelCode());
         dictModel.setModelName(dictModelVO.getModelName());
         super.update(dictModel);
     }
 
-    /**
-     * 字典模块--字段校验
-     * @param dictModelVO
-     */
-    private void check(DictModel dictModelVO){
-        if (this.isExitName(dictModelVO)){
-            throw new ServiceException("模块名称已存在！");
-        }
-        if (this.isExitCode(dictModelVO)){
-            throw new ServiceException("模块编码已存在！");
-        }
-    }
 
     /**
      * 判断模块名是否存在

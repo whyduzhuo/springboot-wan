@@ -11,6 +11,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/11/12 17:15
  */
 @Repeatable(Uniques.class)

@@ -41,7 +41,12 @@ public class UniqueValidator implements ConstraintValidator<Unique, BaseEntity> 
         for (UniqueColumn uniqueColumn:uniqueColumns){
             Class clazz = baseEntity.getClass();
             try {
-                Field field = clazz.getDeclaredField(uniqueColumn.value());
+                Field field;
+                if (uniqueColumn.parentFiled()){
+                    field = clazz.getSuperclass().getDeclaredField(uniqueColumn.value());
+                }else {
+                    field = clazz.getDeclaredField(uniqueColumn.value());
+                }
                 PropertyDescriptor pd = new PropertyDescriptor(field.getName(), clazz);
                 Method getMethod = pd.getReadMethod();
                 Object value = getMethod.invoke(baseEntity);

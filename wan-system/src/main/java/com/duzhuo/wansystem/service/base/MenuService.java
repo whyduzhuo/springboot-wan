@@ -39,7 +39,7 @@ public class MenuService extends BaseService<Menu,Long> {
      * @param menuVO
      * @return
      */
-    public Message addData(Menu menuVO) {
+    public void addData(Menu menuVO) {
         if (menuVO.getParent()!=null && menuVO.getParent().getId()!=null){
             menuVO.setParent(super.find(menuVO.getParent().getId()));
         }
@@ -50,7 +50,6 @@ public class MenuService extends BaseService<Menu,Long> {
         //super.validation(menuVO);
         this.check(menuVO);
         super.save(menuVO);
-        return Message.success("添加成功！",this.menuToTree(menuVO));
     }
 
     /**

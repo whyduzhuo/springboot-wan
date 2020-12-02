@@ -24,7 +24,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
 @ComponentScan(value = {"com.duzhuo.admin","com.duzhuo.wansystem","com.duzhuo.common"})
-@EnableJpaRepositories(value = {"com.duzhuo.wansystem.dao"})
+@EnableJpaRepositories(entityManagerFactoryRef = "entityManageFactoryPrimary", transactionManagerRef = "transactionManagerPrimary",basePackages = {"com.duzhuo.wansystem.dao"})
 @EntityScan(value = {"com.duzhuo.wansystem.entity"})
 @EnableScheduling
 @EnableCaching

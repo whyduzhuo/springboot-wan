@@ -35,7 +35,7 @@ import java.util.List;
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 @Unique(service = DictModelService.class,message = "模块名称已存在",uniqueColumns = @UniqueColumn("modelName"))
 @Unique(service = DictModelService.class,message = "模块编码已存在",uniqueColumns = @UniqueColumn("modelCode"))
-@Unique(service = DictModelService.class,message = "排序已存在",uniqueColumns = @UniqueColumn("order"))
+@Unique(service = DictModelService.class,message = "排序已存在",uniqueColumns = @UniqueColumn(value = "order",parentFiled = true))
 public class DictModel extends OrderEntity{
 
     private static final long serialVersionUID = 3988974700266864376L;

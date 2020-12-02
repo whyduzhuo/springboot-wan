@@ -2,7 +2,7 @@ package com.duzhuo.wansystem.entity.base;
 
 import com.duzhuo.common.annotation.Unique;
 import com.duzhuo.common.annotation.UniqueColumn;
-import com.duzhuo.common.core.BaseEntity;
+import com.duzhuo.common.core.OrderEntity;
 import com.duzhuo.wansystem.service.base.DictionaryService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -27,8 +26,8 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "字典")
 @Unique(service = DictionaryService.class,message = "字典编码已存在!",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("code")})
 @Unique(service = DictionaryService.class,message = "字典值已存在！",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("value")})
-@Unique(service = DictionaryService.class,message = "排序重复",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("order")})
-public class Dictionary  extends BaseEntity{
+@Unique(service = DictionaryService.class,message = "排序重复",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn(value = "order",parentFiled = true)})
+public class Dictionary  extends OrderEntity{
 
     private static final long serialVersionUID = 1448607782295439386L;
 
@@ -52,16 +51,6 @@ public class Dictionary  extends BaseEntity{
     @NotNull(message = "请选择启用状态")
     @ApiModelProperty(value = "状态")
     private Status status = Status.启用;
-
-    @NotNull(message = "请输入排序")
-    @ApiModelProperty(value = "排序")
-    @Min(value = 0,message = "排序不能小于0")
-    private Integer order;
-
-    @Column(name = "orders")
-    public Integer getOrder() {
-        return order;
-    }
 
     @ApiModelProperty(value = "备注")
     private String remark;

@@ -1,13 +1,13 @@
 package com.duzhuo.wansystem.service.base;
 
-import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Filter;
+import com.duzhuo.common.core.OrderService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.utils.StrFormatter;
-import org.apache.commons.lang3.StringUtils;
 import com.duzhuo.wansystem.dao.base.DictionaryDao;
 import com.duzhuo.wansystem.entity.base.DictModel;
 import com.duzhuo.wansystem.entity.base.Dictionary;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DictionaryService extends BaseService<Dictionary,Long> {
+public class DictionaryService extends OrderService<Dictionary,Long> {
 
     @Resource
     private DictModelService dictModelService;
@@ -43,7 +43,6 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
      */
     public void addData(Dictionary dictionaryVO){
         super.validation(dictionaryVO);
-        this.check(dictionaryVO);
         super.save(dictionaryVO);
     }
 
@@ -54,7 +53,6 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
      */
     public void edit(Dictionary dictionaryVO){
         super.validation(dictionaryVO);
-        this.check(dictionaryVO);
         Dictionary dictionary = super.find(dictionaryVO.getId());
         dictionary.setCode(dictionaryVO.getCode());
         dictionary.setStatus(dictionaryVO.getStatus());
@@ -64,40 +62,19 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
     }
 
 
-    /**
-     * 判断是否重复
-     * @param dictionaryVO
-     * @return
-     */
-    private void check(Dictionary dictionaryVO){
-        List<Filter> filters = new ArrayList<>();
-        filters.add(Filter.eq("code",dictionaryVO.getCode()));
-        filters.add(Filter.eq("dictModel.id",dictionaryVO.getDictModel().getId()));
-        if (dictionaryVO.getId()!=null){
-            filters.add(Filter.ne("id",dictionaryVO.getId()));
-        }
-        if (super.count(filters)>0){
-            throw new ServiceException("字典编码已存在！");
-        }
-        filters.remove(0);
-        filters.add(Filter.eq("value",dictionaryVO.getValue()));
-        if (super.count(filters)>0){
-            throw new ServiceException("字典值已存在");
-        }
-    }
 
 
-    /**
-     * 查询某个模块的字典
-     * @param dictModel
-     * @return
-     */
-    public List<Dictionary> getList(DictModel dictModel){
-        if (dictModel.getDictionaryList().isEmpty()){
-            dictModel  = dictModelService.find(dictModel.getId());
-        }
-        return dictModel.getDictionaryList(Dictionary.Status.启用);
-    }
+//    /**
+//     * 查询某个模块的字典
+//     * @param dictModel
+//     * @return
+//     */
+//    public List<Dictionary> getList(DictModel dictModel){
+//        if (dictModel.getDictionaryList().isEmpty()){
+//            dictModel  = dictModelService.find(dictModel.getId());
+//        }
+//        return dictModel.getDictionaryList(Dictionary.Status.启用);
+//    }
 
     /**
      * 查询某个模块的字典
@@ -215,10 +192,11 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
      * @param id
      * @return
      */
+    @Override
     public void up(Long id) {
         Dictionary dictionary = super.find(id);
         Integer o =dictionary.getOrder();
-        Dictionary uper = dictionaryDao.getUper(o);
+        Dictionary uper = dictionaryDao.getUper(o,dictionary.getDictModel().getId());
         if (uper==null){
             throw new ServiceException("已经到顶了!");
         }
@@ -233,10 +211,11 @@ public class DictionaryService extends BaseService<Dictionary,Long> {
      * @param id
      * @return
      */
+    @Override
     public void down(Long id) {
         Dictionary dictionary = super.find(id);
         Integer o =dictionary.getOrder();
-        Dictionary downer = dictionaryDao.getDowner(o);
+        Dictionary downer = dictionaryDao.getDowner(o,dictionary.getDictModel().getId());
         if (downer==null){
             throw new ServiceException("已经到底了!");
         }

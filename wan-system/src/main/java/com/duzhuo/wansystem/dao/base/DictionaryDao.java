@@ -21,18 +21,18 @@ public interface DictionaryDao extends BaseDao<Dictionary,Long> {
      * @param modelId
      * @return
      */
-    @Query(value = "select max(code) from T_BASE_DICTIONARY",nativeQuery = true)
+    @Query(value = "select max(code) from T_BASE_DICTIONARY WHERE MODEL_ID = ?1",nativeQuery = true)
     String getMaxCode(Long modelId);
 
     Dictionary findByDictModelAndCode(DictModel dictModel, String code);
 
     Dictionary findByDictModelAndValue(DictModel dictModel, String value);
 
-    @Query(value = "SELECT * FROM(SELECT * FROM T_BASE_DICTIONARY WHERE ORDERS < ? ORDER BY ORDERS DESC) WHERE ROWNUM =1",nativeQuery = true)
-    Dictionary getUper(Integer order);
+    @Query(value = "SELECT * FROM(SELECT * FROM T_BASE_DICTIONARY WHERE ORDERS < ?1 AND MODEL_ID = ?2 ORDER BY ORDERS DESC) WHERE ROWNUM =1",nativeQuery = true)
+    Dictionary getUper(Integer order,Long modelId);
 
-    @Query(value = "SELECT * FROM(SELECT * FROM T_BASE_DICTIONARY WHERE ORDERS > ? ORDER BY ORDERS ASC) WHERE ROWNUM =1",nativeQuery = true)
-    Dictionary getDowner(Integer o);
+    @Query(value = "SELECT * FROM(SELECT * FROM T_BASE_DICTIONARY WHERE ORDERS > ?1 AND MODEL_ID = ?2 ORDER BY ORDERS ASC) WHERE ROWNUM =1",nativeQuery = true)
+    Dictionary getDowner(Integer o,Long modelId);
 
     /**
      * 查询某个模块字典的最大排序
