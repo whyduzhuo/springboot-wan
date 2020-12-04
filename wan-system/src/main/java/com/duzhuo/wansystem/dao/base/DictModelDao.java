@@ -3,6 +3,7 @@ package com.duzhuo.wansystem.dao.base;
 import com.duzhuo.common.core.BaseDao;
 import com.duzhuo.wansystem.entity.base.DictModel;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -11,7 +12,7 @@ import java.math.BigDecimal;
  * @email: 1434495271@qq.com
  * @date: 2020/8/10 11:17
  */
-
+@Transactional(rollbackFor = Exception.class)
 public interface DictModelDao extends BaseDao<DictModel,Long> {
 
     /**

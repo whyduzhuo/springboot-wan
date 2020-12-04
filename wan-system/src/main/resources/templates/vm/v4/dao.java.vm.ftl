@@ -10,6 +10,7 @@ import ${data.entityPackages};
  * @author: ${data.author}
  * @date: ${data.createDateStr}
  */
+@Transactional(rollbackFor = Exception.class)
 public interface ${data.entityName}Dao extends BaseDao<${data.entityName},Long> {
 }
 

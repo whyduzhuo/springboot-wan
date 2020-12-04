@@ -4,6 +4,7 @@ import com.duzhuo.common.core.BaseDao;
 import com.duzhuo.wansystem.entity.base.Menu;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @email: 1434495271@qq.com
  * @date: 2020/1/7 15:49
  */
-
+@Transactional(rollbackFor = Exception.class)
 public interface MenuDao extends BaseDao<Menu,Long>{
     /**
      * 查询最大儿子编号
@@ -34,6 +35,7 @@ public interface MenuDao extends BaseDao<Menu,Long>{
      * 删除某个菜单的，角色菜单关联表
      * @param menuId
      */
+
     @Query(value = "DELETE FROM T_BASE_ROLE_MENU WHERE MENU_ID=?",nativeQuery = true)
     @Modifying
     void delMenuRole(Long menuId);

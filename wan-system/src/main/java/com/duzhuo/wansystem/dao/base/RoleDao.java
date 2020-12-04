@@ -5,6 +5,7 @@ import com.duzhuo.wansystem.entity.base.Organization;
 import com.duzhuo.wansystem.entity.base.Role;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
  * @email: 1434495271@qq.com
  * @date: 2020/1/7 15:49
  */
-
+@Transactional(rollbackFor = Exception.class)
 public interface RoleDao extends BaseDao<Role,Long>{
     /**
      * name/organization 联合唯一

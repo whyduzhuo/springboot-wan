@@ -4,6 +4,7 @@ import com.duzhuo.common.core.BaseDao;
 import com.duzhuo.wansystem.entity.base.DictModel;
 import com.duzhuo.wansystem.entity.base.Dictionary;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
  * @email: 1434495271@qq.com
  * @date: 2020/8/10 11:16
  */
-
+@Transactional(rollbackFor = Exception.class)
 public interface DictionaryDao extends BaseDao<Dictionary,Long> {
     /**
      *
