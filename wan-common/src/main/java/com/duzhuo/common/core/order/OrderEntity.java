@@ -1,16 +1,14 @@
-package com.duzhuo.common.core;
+package com.duzhuo.common.core.order;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.duzhuo.common.core.base.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 /**
  * 排序Entity
@@ -22,7 +20,7 @@ import java.util.Date;
 @MappedSuperclass
 @Getter
 @Setter
-public  class OrderEntity extends BaseEntity{
+public  class OrderEntity extends BaseEntity implements Comparable<OrderEntity>{
 
     private static final long serialVersionUID = -5966022578391042795L;
 
@@ -38,4 +36,9 @@ public  class OrderEntity extends BaseEntity{
         return order;
     }
 
+
+    @Override
+    public int compareTo(@org.jetbrains.annotations.NotNull OrderEntity o) {
+        return this.order-o.getOrder();
+    }
 }

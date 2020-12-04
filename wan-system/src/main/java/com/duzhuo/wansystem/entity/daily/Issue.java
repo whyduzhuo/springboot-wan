@@ -1,6 +1,6 @@
 package com.duzhuo.wansystem.entity.daily;
 
-import com.duzhuo.common.core.BaseEntity;
+import com.duzhuo.common.core.base.BaseEntity;
 import com.duzhuo.wansystem.entity.base.Admin;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

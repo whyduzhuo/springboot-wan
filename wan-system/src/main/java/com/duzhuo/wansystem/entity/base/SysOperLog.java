@@ -1,6 +1,6 @@
 package com.duzhuo.wansystem.entity.base;
 
-import com.duzhuo.common.core.BaseEntity;
+import com.duzhuo.common.core.base.BaseEntity;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.enums.YesOrNo;
 import io.swagger.annotations.ApiModel;

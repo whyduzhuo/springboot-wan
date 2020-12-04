@@ -1,17 +1,17 @@
 package  com.duzhuo.wansystem.service.house;
 
-import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.thread.ThreadPoolService;
 import com.duzhuo.common.utils.HttpUtils;
-import org.apache.commons.lang3.StringUtils;
 import com.duzhuo.wansystem.dao.house.HouseCountDao;
 import com.duzhuo.wansystem.dto.house.HouseCountDto;
 import com.duzhuo.wansystem.entity.house.CityUrl;
 import com.duzhuo.wansystem.entity.house.HouseCount;
 import com.duzhuo.wansystem.mapper.house.HouseCountMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +30,7 @@ import java.util.Map;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class HouseCountService extends BaseService<HouseCount, Long>{
+public class HouseCountService extends BaseService<HouseCount, Long> {
 
     @Resource
     private HouseCountDao houseCountDao;
@@ -142,8 +142,7 @@ public class HouseCountService extends BaseService<HouseCount, Long>{
         String endStr = "</span>套";
         int end = pageCode.indexOf(endStr);
         String b = StringUtils.deleteWhitespace(pageCode.substring(start,end));
-        int num = Integer.valueOf(b);
-        return num;
+        return Integer.valueOf(b);
     }
 
     /**
@@ -167,8 +166,7 @@ public class HouseCountService extends BaseService<HouseCount, Long>{
         String endStr = "</b> 套二手房源中";
         int end = pageCode.indexOf(endStr);
         String b = StringUtils.deleteWhitespace(pageCode.substring(start,end));
-        int num = Integer.valueOf(b);
-        return num;
+        return Integer.valueOf(b);
     }
 
     /**

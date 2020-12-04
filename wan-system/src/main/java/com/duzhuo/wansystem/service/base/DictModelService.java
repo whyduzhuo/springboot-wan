@@ -1,7 +1,7 @@
 package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.core.Filter;
-import com.duzhuo.common.core.OrderService;
+import com.duzhuo.common.core.order.OrderService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.utils.StrFormatter;
 import com.duzhuo.wansystem.dao.base.DictModelDao;

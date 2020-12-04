@@ -1,6 +1,6 @@
 package com.duzhuo.wansystem.entity.base;
 
-import com.duzhuo.common.core.BaseEntity;
+import com.duzhuo.common.core.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -3,7 +3,6 @@ package com.duzhuo.wansystem.controller.base;
 import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
-import com.duzhuo.common.utils.ExcelUtils;
 import com.duzhuo.wansystem.entity.base.Coding;
 import com.duzhuo.wansystem.service.base.CodingService;
 import io.swagger.annotations.Api;
@@ -17,9 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -58,7 +55,8 @@ public class CodingController {
     @PostMapping("/addData")
     @ResponseBody
     public Message addData(Coding codingVO){
-        return codingService.addData(codingVO);
+        codingService.addData(codingVO);
+        return Message.success("添加成功！");
     }
 
     @Log(title = "获取controller代码",operateType = OperateType.SELECT)

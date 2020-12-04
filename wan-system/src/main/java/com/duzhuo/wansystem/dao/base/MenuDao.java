@@ -1,6 +1,6 @@
 package com.duzhuo.wansystem.dao.base;
 
-import com.duzhuo.common.core.BaseDao;
+import com.duzhuo.common.core.base.BaseDao;
 import com.duzhuo.wansystem.entity.base.Menu;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +15,7 @@ import java.util.List;
  * @date: 2020/1/7 15:49
  */
 @Transactional(rollbackFor = Exception.class)
-public interface MenuDao extends BaseDao<Menu,Long>{
+public interface MenuDao extends BaseDao<Menu,Long> {
     /**
      * 查询最大儿子编号
      * @param parentId

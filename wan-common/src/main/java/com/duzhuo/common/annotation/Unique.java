@@ -1,6 +1,6 @@
 package com.duzhuo.common.annotation;
 
-import com.duzhuo.common.core.BaseService;
+import com.duzhuo.common.core.base.BaseService;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

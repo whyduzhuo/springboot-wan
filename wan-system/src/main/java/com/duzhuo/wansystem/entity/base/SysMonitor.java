@@ -5,7 +5,7 @@ package com.duzhuo.wansystem.entity.base;
  * @date: 2019/12/30 11:59
  */
 
-import com.duzhuo.common.core.BaseEntity;
+import com.duzhuo.common.core.base.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;

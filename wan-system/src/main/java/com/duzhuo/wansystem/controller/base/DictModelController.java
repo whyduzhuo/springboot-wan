@@ -1,9 +1,9 @@
 package com.duzhuo.wansystem.controller.base;
 
 import com.duzhuo.common.annotation.Log;
-import com.duzhuo.common.core.BaseController;
 import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseController;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.wansystem.entity.base.DictModel;

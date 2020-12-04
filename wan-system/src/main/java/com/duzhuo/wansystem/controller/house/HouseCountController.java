@@ -1,15 +1,15 @@
 package  com.duzhuo.wansystem.controller.house;
 
 import com.duzhuo.common.annotation.Log;
-import com.duzhuo.common.core.BaseController;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseController;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.HttpUtils;
-import org.apache.commons.lang3.StringUtils;
 import com.duzhuo.wansystem.entity.house.HouseCount;
 import com.duzhuo.wansystem.service.house.CityUrlService;
 import com.duzhuo.wansystem.service.house.HouseCountService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -92,7 +91,7 @@ public class HouseCountController extends BaseController {
 
     @GetMapping("ceshi")
     @ResponseBody
-    public Message ceshi(String url,String charSet) throws UnsupportedEncodingException {
+    public Message ceshi(String url,String charSet) {
         String pageCode = HttpUtils.get(url,charSet);
         return Message.success("",pageCode);
     }

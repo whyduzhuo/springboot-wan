@@ -1,6 +1,8 @@
 
 package com.duzhuo.common.core;
 
+import com.duzhuo.common.core.base.BaseEntity;
+
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import java.util.Date;

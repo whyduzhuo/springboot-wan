@@ -1,14 +1,12 @@
-package com.duzhuo.common.core;
+package com.duzhuo.common.core.base;
 
+import com.duzhuo.common.core.EntityListener;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.lucene.document.DateTools;
-import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**

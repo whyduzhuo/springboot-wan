@@ -2,7 +2,7 @@ package com.duzhuo.wansystem.entity.base;
 
 import com.duzhuo.common.annotation.Unique;
 import com.duzhuo.common.annotation.UniqueColumn;
-import com.duzhuo.common.core.BaseEntity;
+import com.duzhuo.common.core.base.BaseEntity;
 import com.duzhuo.common.enums.IsDelete;
 import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.service.base.AdminService;
@@ -15,7 +15,6 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author: 万宏远

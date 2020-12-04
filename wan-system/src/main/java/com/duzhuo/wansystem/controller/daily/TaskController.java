@@ -1,9 +1,9 @@
 package com.duzhuo.wansystem.controller.daily;
 
 import com.duzhuo.common.annotation.Log;
-import com.duzhuo.common.core.BaseController;
 import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseController;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.wansystem.entity.daily.Issue;
@@ -31,7 +31,7 @@ import static org.springframework.web.util.WebUtils.getParametersStartingWith;
 @Api(tags = "任务")
 @Controller
 @RequestMapping("/daily/issue")
-public class TaskController extends BaseController{
+public class TaskController extends BaseController {
     @Resource
     private IssueService issueService;
 

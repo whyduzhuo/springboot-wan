@@ -1,7 +1,7 @@
 package  com.duzhuo.wansystem.service.house;
 
-import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.exception.ServiceException;
 import org.apache.commons.lang3.StringUtils;
 import com.duzhuo.wansystem.dao.house.CityUrlDao;

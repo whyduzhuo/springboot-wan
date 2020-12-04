@@ -1,5 +1,6 @@
-package com.duzhuo.common.core;
+package com.duzhuo.common.core.del;
 
+import com.duzhuo.common.core.base.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,8 +16,10 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 @Getter
 @Setter
-public  class DeleteEntity extends BaseEntity{
+public  class DeleteEntity extends BaseEntity {
     private static final long serialVersionUID = 7976667564090073247L;
+
+    public static final String DEL_TIME_PROPERTY_NAME = "delTime";
     /**
      * 删除标志，0未未删除
      * 已删除=删除时间

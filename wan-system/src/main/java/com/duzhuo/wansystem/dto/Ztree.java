@@ -5,10 +5,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author: 万宏远
@@ -18,7 +21,7 @@ import java.util.List;
 @Getter
 @Setter
 @Api(value = "Ztree树")
-public class Ztree implements Serializable{
+public class Ztree implements Serializable,Comparable<Ztree>{
     /**
      * 按钮图标
      */
@@ -32,45 +35,37 @@ public class Ztree implements Serializable{
      */
     public static final String DICT_ICON = "";
 
-    @JsonProperty
     @ApiModelProperty(value = "id")
     private Long id;
 
-    @JsonProperty
     @ApiModelProperty(value = "父节点id")
     private Long pid;
 
-    @JsonProperty
     @ApiModelProperty(value = "节点名称")
     private String name;
 
-    @JsonProperty
     @ApiModelProperty(value = "节点标题")
     private String title;
 
-    @JsonProperty
     @ApiModelProperty(value = "是否选中")
     private boolean checked = false;
 
-    @JsonProperty
     @ApiModelProperty(value = "是否展开")
     private boolean open = false;
 
-    @JsonProperty
     @ApiModelProperty(value = "是否可勾选")
     private boolean nocheck =false;
 
-    @JsonProperty
+    private Integer orders;
+
     @ApiModelProperty(value = "编号")
     private String num;
 
-    @JsonProperty
     private String icon;
 
-    @JsonProperty
+
     private String type;
 
-    @JsonProperty
     private String urlPath;
 
     @JsonProperty
@@ -80,4 +75,40 @@ public class Ztree implements Serializable{
     @JsonProperty
     @ApiModelProperty(value = "角色id")
     private Long roleId;
+
+    @Override
+    public int compareTo(@NotNull Ztree o) {
+        return this.orders-o.getOrders();
+    }
+
+    /**
+     * 组装树结构
+     * @param ztrees
+     * @return
+     */
+    public static List<Ztree> assembleTree(Collection<Ztree> ztrees){
+        List<Ztree> all = ztrees.stream().distinct().sorted().collect(Collectors.toList());
+        List<Ztree> ztreeList = new ArrayList<>();
+        Ztree.assembleTree(null,ztreeList,all);
+        return ztreeList;
+    }
+
+
+    /**
+     * 递归组装树结构
+     * @param ztree
+     * @param ztreeList
+     * @param all
+     */
+    public static void assembleTree(Ztree ztree,List<Ztree> ztreeList,List<Ztree> all){
+        all.forEach(a->{
+            Boolean b = (ztree==null && a.getPid()==null) || (ztree!=null && a.getPid()!=null && ztree.getId().equals(a.getPid()));
+            if (b){
+                assembleTree(a,a.getChildren(),all);
+                ztreeList.add(a);
+            }
+        });
+    }
+
+
 }

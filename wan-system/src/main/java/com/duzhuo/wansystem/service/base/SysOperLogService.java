@@ -1,7 +1,7 @@
 package com.duzhuo.wansystem.service.base;
 
-import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.utils.ExcelUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class SysOperLogService extends BaseService<SysOperLog,Long>{
+public class SysOperLogService extends BaseService<SysOperLog,Long> {
 
     @Resource
     private SysOperLogDao sysOperLogDao;

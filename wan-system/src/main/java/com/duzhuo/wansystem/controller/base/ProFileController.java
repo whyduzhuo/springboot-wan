@@ -10,16 +10,14 @@ import com.duzhuo.wansystem.entity.base.ProFile;
 import com.duzhuo.wansystem.service.base.ProFileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.unit.DataSize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author: 万宏远
@@ -47,7 +44,7 @@ public class ProFileController {
         return "base/file/uploadTest";
     }
 
-    @GetMapping("/downLoad/{id}")
+    @GetMapping("/downLoad")
     @Log(title = "文件下载",operateType = OperateType.DOWLOAD)
     @ApiOperation(value = "文件下载",httpMethod = "GET")
     public void downLoad(HttpServletRequest request, HttpServletResponse response,@NotNull Long id)throws IOException {
@@ -93,8 +90,7 @@ public class ProFileController {
         titleList.add("字段1");
         titleList.add("字段2");
         titleList.add("字段3");
-        ResponseEntity<byte[]> responseEntity = ExcelUtils.downExcelTempletByte("车牌信息导入模板",titleList);
-        return responseEntity;
+        return ExcelUtils.downExcelTempletByte("车牌信息导入模板",titleList);
     }
 
 

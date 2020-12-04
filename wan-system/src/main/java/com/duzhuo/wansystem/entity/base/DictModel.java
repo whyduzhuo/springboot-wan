@@ -2,21 +2,17 @@ package com.duzhuo.wansystem.entity.base;
 
 import com.duzhuo.common.annotation.Unique;
 import com.duzhuo.common.annotation.UniqueColumn;
-import com.duzhuo.common.core.BaseEntity;
-import com.duzhuo.common.core.OrderEntity;
+import com.duzhuo.common.core.order.OrderEntity;
 import com.duzhuo.wansystem.service.base.DictModelService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +32,7 @@ import java.util.List;
 @Unique(service = DictModelService.class,message = "模块名称已存在",uniqueColumns = @UniqueColumn("modelName"))
 @Unique(service = DictModelService.class,message = "模块编码已存在",uniqueColumns = @UniqueColumn("modelCode"))
 @Unique(service = DictModelService.class,message = "排序已存在",uniqueColumns = @UniqueColumn(value = "order",parentFiled = true))
-public class DictModel extends OrderEntity{
+public class DictModel extends OrderEntity {
 
     private static final long serialVersionUID = 3988974700266864376L;
 

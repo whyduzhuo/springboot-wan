@@ -118,7 +118,7 @@ public class LogAspect {
             });
             //
             if (operLog.getHaveException()==YesOrNo.是){
-                sendEmailService.sendEmail(stackTrace,"1434495271@qq.com","系统错误，请及时处理！");
+                //sendEmailService.sendEmail(stackTrace,"1434495271@qq.com","系统错误，请及时处理！");
             }
 
         }

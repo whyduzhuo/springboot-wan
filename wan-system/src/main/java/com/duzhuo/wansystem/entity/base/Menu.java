@@ -2,8 +2,7 @@ package com.duzhuo.wansystem.entity.base;
 
 import com.duzhuo.common.annotation.Unique;
 import com.duzhuo.common.annotation.UniqueColumn;
-import com.duzhuo.common.core.BaseEntity;
-import com.duzhuo.common.core.OrderEntity;
+import com.duzhuo.common.core.order.OrderEntity;
 import com.duzhuo.common.enums.YesOrNo;
 import com.duzhuo.wansystem.service.base.MenuService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,7 +35,7 @@ import java.util.List;
 @Unique(service = MenuService.class,message = "菜单名称重复",uniqueColumns = {@UniqueColumn("parent"),@UniqueColumn("name")})
 @Unique(service = MenuService.class,message = "菜单编号重复",uniqueColumns = {@UniqueColumn("num")})
 @Unique(service = MenuService.class,message = "菜单排序重复",uniqueColumns = {@UniqueColumn("parent"),@UniqueColumn(value = "order",parentFiled = true)})
-public class Menu extends OrderEntity implements Comparable<Menu>,Serializable {
+public class Menu extends OrderEntity implements Serializable {
 
     private static final long serialVersionUID = -1674442746152794678L;
 
@@ -124,8 +123,4 @@ public class Menu extends OrderEntity implements Comparable<Menu>,Serializable {
         return roleList;
     }
 
-    @Override
-    public int compareTo(Menu o) {
-        return super.getOrder()-o.getOrder();
-    }
 }

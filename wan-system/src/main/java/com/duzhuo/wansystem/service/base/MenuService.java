@@ -1,20 +1,19 @@
 package com.duzhuo.wansystem.service.base;
 
-import com.duzhuo.common.core.BaseService;
-import com.duzhuo.common.core.Filter;
-import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.MenuDao;
 import com.duzhuo.wansystem.dto.Ztree;
-import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author: 万宏远
@@ -140,7 +139,7 @@ public class MenuService extends BaseService<Menu,Long> {
      * @param menuVo
      * @return
      */
-    public Message edit(Menu menuVo) {
+    public void edit(Menu menuVo) {
         super.validation(menuVo);
         this.check(menuVo);
         Menu menu = super.find(menuVo.getId());
@@ -152,7 +151,6 @@ public class MenuService extends BaseService<Menu,Long> {
         menu.setRemark(menuVo.getRemark());
         menu.setType(menuVo.getType());
         super.update(menu);
-        return Message.success("修改成功！");
     }
 
     /**
@@ -267,6 +265,7 @@ public class MenuService extends BaseService<Menu,Long> {
         ztree.setTitle(menu.getRemark());
         ztree.setNum(menu.getNum().toString());
         ztree.setOpen(true);
+        ztree.setOrders(menu.getOrder());
         if (menu.getType()==Menu.TypeEnum.按钮){
             ztree.setIcon(Ztree.BUTTON_ICON);
         }
@@ -293,6 +292,7 @@ public class MenuService extends BaseService<Menu,Long> {
         ztree.setNum(menu.getNum().toString());
         ztree.setOpen(true);
         ztree.setNocheck(false);
+        ztree.setOrders(menu.getOrder());
         if (menu.getType()==Menu.TypeEnum.按钮){
             ztree.setIcon(Ztree.BUTTON_ICON);
         }
@@ -396,22 +396,6 @@ public class MenuService extends BaseService<Menu,Long> {
             throw new ServiceException("roleId can not be null");
         }
         menuDao.delAllMenu(roleId);
-    }
-
-    /**
-     * 递归组装树结构
-     * @param ztree
-     * @param ztreeList
-     * @param all
-     */
-    public void assembleTree(Ztree ztree,List<Ztree> ztreeList,List<Ztree> all){
-        all.forEach(a->{
-            Boolean b = (ztree==null && a.getPid()==null) || (ztree!=null && a.getPid()!=null && ztree.getId().equals(a.getPid()));
-            if (b){
-                assembleTree(a,a.getChildren(),all);
-                ztreeList.add(a);
-            }
-        });
     }
 
     /**

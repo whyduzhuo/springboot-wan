@@ -1,4 +1,4 @@
-package com.duzhuo.common.core;
+package com.duzhuo.common.core.base;
 
 import org.apache.commons.lang3.StringUtils;
 

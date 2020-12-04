@@ -1,9 +1,8 @@
 package com.duzhuo.wansystem.service.base;
 
-import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Filter;
-import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.RoleDao;
 import com.duzhuo.wansystem.dto.Ztree;
@@ -24,7 +23,6 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author: 万宏远
@@ -53,7 +51,7 @@ public class RoleService extends BaseService<Role,Long> {
      * @param roleVo
      * @return
      */
-    public Message addData(Role roleVo) {
+    public void addData(Role roleVo) {
         if (roleVo.getType()==null){
             throw new ServiceException("请选择角色类别");
         }
@@ -68,7 +66,6 @@ public class RoleService extends BaseService<Role,Long> {
             throw new ServiceException("已存在！");
         }
         super.save(roleVo);
-        return Message.success("添加成功!");
     }
 
     /**
@@ -76,7 +73,7 @@ public class RoleService extends BaseService<Role,Long> {
      * @param roleVo
      * @return
      */
-    public Message edit(Role roleVo) {
+    public void edit(Role roleVo) {
         if (StringUtils.isNotBlank(roleVo.getName())){
             throw new ServiceException("请输入名称");
         }
@@ -93,7 +90,6 @@ public class RoleService extends BaseService<Role,Long> {
         role.setName(roleVo.getName());
         role.setOrganization(roleVo.getOrganization());
         super.update(role);
-        return Message.success("修改成功！！");
     }
 
     /**

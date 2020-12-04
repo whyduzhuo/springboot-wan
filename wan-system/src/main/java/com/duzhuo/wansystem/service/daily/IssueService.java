@@ -1,7 +1,7 @@
 package com.duzhuo.wansystem.service.daily;
 
-import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.daily.IssueDao;
 import com.duzhuo.wansystem.entity.daily.Issue;
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @date: 2020/5/19 18:03
  */
 @Service
-public class IssueService extends BaseService<Issue,Long>{
+public class IssueService extends BaseService<Issue,Long> {
     @Resource
     private IssueDao issueDao;
 

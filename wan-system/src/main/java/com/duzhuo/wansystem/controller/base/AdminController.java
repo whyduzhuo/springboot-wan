@@ -1,10 +1,10 @@
 package com.duzhuo.wansystem.controller.base;
 
 import com.duzhuo.common.annotation.Log;
-import com.duzhuo.common.core.BaseController;
 import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseController;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.common.utils.RedisUtils;
@@ -38,7 +38,7 @@ import java.util.*;
 @Api(tags = "用户管理模块")
 @Controller
 @RequestMapping("/base/admin")
-public class AdminController extends BaseController{
+public class AdminController extends BaseController {
     @Resource
     private AdminService adminService;
     @Resource
@@ -87,7 +87,8 @@ public class AdminController extends BaseController{
     @RequiresPermissions("100401")
     @ResponseBody
     public Message addData(Admin adminVO){
-        return adminService.addData(adminVO);
+        adminService.addData(adminVO);
+        return Message.success("添加成功！");
     }
 
     @Log(title = "修改用户信息",operateType = OperateType.UPDATE)
@@ -96,7 +97,8 @@ public class AdminController extends BaseController{
     @RequiresPermissions("")
     @ResponseBody
     public Message edit(Admin admin){
-        return adminService.edit(admin);
+        adminService.edit(admin);
+        return Message.success("修改成功！");
     }
 
     @Log(title = "禁用/启用用户",operateType = OperateType.UPDATE)

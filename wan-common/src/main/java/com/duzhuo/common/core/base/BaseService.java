@@ -1,8 +1,9 @@
-package com.duzhuo.common.core;
+package com.duzhuo.common.core.base;
 
+import com.duzhuo.common.core.CustomSearch;
+import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.exception.ServiceException;
-import com.duzhuo.common.thread.Threads;
 import com.duzhuo.common.utils.RedisUtils;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
@@ -14,11 +15,8 @@ import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -231,7 +229,7 @@ public class BaseService<T extends BaseEntity, ID extends Serializable> {
         return i>0;
     }
 
-    private List<Predicate> generaExample(List<Filter> filters,CriteriaQuery cq,CriteriaBuilder cb,Root root){
+    private List<Predicate> generaExample(List<Filter> filters, CriteriaQuery cq, CriteriaBuilder cb, Root root){
         ExampleMatcher matcher = ExampleMatcher.matching();
         List<Predicate> predicates = new ArrayList<>();
         filters.forEach(filter -> {

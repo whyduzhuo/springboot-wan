@@ -53,8 +53,7 @@ public class MenuDirective implements TemplateDirectiveModel {
             List<Menu> menuList = role.getMenuSet().stream().sorted().collect(Collectors.toList());
             menuList.removeIf(r->r.getType()== Menu.TypeEnum.按钮);
             List<Ztree> ztreeList = menuService.buildTree(menuList);
-            List<Ztree> ztrees = new ArrayList<>();
-            menuService.assembleTree(null,ztrees,ztreeList);
+            List<Ztree> ztrees = Ztree.assembleTree(ztreeList);
             StringBuilder html = new StringBuilder();
             buildHtml(html,ztrees);
             DefaultObjectWrapperBuilder builder = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_29);

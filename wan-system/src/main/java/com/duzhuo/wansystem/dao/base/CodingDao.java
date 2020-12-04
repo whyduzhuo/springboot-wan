@@ -1,6 +1,6 @@
 package com.duzhuo.wansystem.dao.base;
 
-import com.duzhuo.common.core.BaseDao;
+import com.duzhuo.common.core.base.BaseDao;
 import com.duzhuo.wansystem.entity.base.Coding;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,8 +1,8 @@
 package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.config.ProFileConfig;
-import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.ProFileDao;
 import com.duzhuo.wansystem.entity.base.ProFile;
@@ -22,26 +22,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.collections.MapUtils;
-import org.apache.poi.xwpf.converter.core.utils.StringUtils;
-import org.apache.poi.xwpf.converter.pdf.PdfConverter;
-import org.apache.poi.xwpf.converter.pdf.PdfOptions;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-
 /**
  * 项目文件
  * @author: 万宏远
@@ -51,7 +31,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class ProFileService extends BaseService<ProFile,Long>{
+public class ProFileService extends BaseService<ProFile,Long> {
 
     @Resource
     private ProFileConfig proFileConfig;

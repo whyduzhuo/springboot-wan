@@ -1,6 +1,6 @@
 package com.duzhuo.wansystem.dao.base;
 
-import com.duzhuo.common.core.BaseDao;
+import com.duzhuo.common.core.base.BaseDao;
 import com.duzhuo.wansystem.entity.base.Organization;
 import com.duzhuo.wansystem.entity.base.Role;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
  * @date: 2020/1/7 15:49
  */
 @Transactional(rollbackFor = Exception.class)
-public interface RoleDao extends BaseDao<Role,Long>{
+public interface RoleDao extends BaseDao<Role,Long> {
     /**
      * name/organization 联合唯一
      * @param name

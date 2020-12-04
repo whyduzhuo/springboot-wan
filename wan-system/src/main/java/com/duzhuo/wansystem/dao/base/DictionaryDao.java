@@ -1,13 +1,11 @@
 package com.duzhuo.wansystem.dao.base;
 
-import com.duzhuo.common.core.BaseDao;
+import com.duzhuo.common.core.base.BaseDao;
 import com.duzhuo.wansystem.entity.base.DictModel;
 import com.duzhuo.wansystem.entity.base.Dictionary;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**

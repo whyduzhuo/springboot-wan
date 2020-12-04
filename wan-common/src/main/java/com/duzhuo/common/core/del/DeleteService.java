@@ -1,5 +1,6 @@
-package com.duzhuo.common.core;
+package com.duzhuo.common.core.del;
 
+import com.duzhuo.common.core.base.BaseService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -12,7 +13,7 @@ import java.util.List;
  * @date: 2020/1/1 16:58
  */
 @Transactional(rollbackFor = Exception.class)
-public class DeleteService<T extends DeleteEntity, ID extends Serializable> extends BaseService<T,ID>{
+public class DeleteService<T extends DeleteEntity, ID extends Serializable> extends BaseService<T,ID> {
 
     /**
      * 假删除

@@ -1,10 +1,10 @@
 package com.duzhuo.wansystem.service.base;
 
-import com.duzhuo.common.core.DeleteService;
 import com.duzhuo.common.core.Filter;
-import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.delorder.DelOrderService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.OrganizationDao;
+import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Organization;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ import java.util.List;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class OrganizationService extends DeleteService<Organization,Long> {
+public class OrganizationService extends DelOrderService<Organization,Long> {
     @Resource
     private OrganizationDao organizationDao;
 
@@ -36,10 +38,9 @@ public class OrganizationService extends DeleteService<Organization,Long> {
      * @param organizationVO
      * @return
      */
-    public Message addData(Organization organizationVO) {
+    public void addData(Organization organizationVO) {
         super.validation(organizationVO);
         super.save(organizationVO);
-        return Message.success("添加成功!");
     }
 
     /**
@@ -47,10 +48,12 @@ public class OrganizationService extends DeleteService<Organization,Long> {
      * @param organizationVO
      * @return
      */
-    public Message edit(Organization organizationVO) {
+    public void edit(Organization organizationVO) {
         super.validation(organizationVO);
-
-        return Message.error("功能暂未完成！");
+        Organization organization = super.find(organizationVO.getId());
+        organization.setOrder(organizationVO.getOrder());
+        organization.setName(organizationVO.getName());
+        super.save(organization);
     }
 
     private void check(Organization organizationVO){
@@ -65,5 +68,62 @@ public class OrganizationService extends DeleteService<Organization,Long> {
         List<Filter> filters = new ArrayList<>();
         filters.add(Filter.eq("delTime",0));
         return super.searchList(filters,Sort.by(Sort.Order.asc("order")));
+    }
+
+    /**
+     * 获取全部可用部门
+     * @return
+     */
+    public List<Organization> getAllEnable(Long pid) {
+        List<Filter> filters = new ArrayList<>();
+        filters.add(Filter.eq("parent.id",pid));
+        filters.add(Filter.eq("delTime",0));
+        return super.searchList(filters,Sort.by(Sort.Order.asc("order")));
+    }
+
+    /**
+     * 获取全部可用部门,转树结构（已组装好）
+     * @return
+     */
+    public List<Ztree> getAllEnableTree(){
+        return Ztree.assembleTree(buildTree(getAllEnable()));
+    }
+
+    /**
+     * 将organizationList转ztree对象
+     * @param organizations
+     * @return
+     */
+    public List<Ztree> buildTree(Collection<Organization> organizations) {
+        List<Ztree> ztreeList = new ArrayList<>();
+        List<Organization> organizationList = new ArrayList<>(organizations);
+        Collections.sort(organizationList);
+        organizationList.forEach(m->ztreeList.add(organizationToTree(m)));
+        return ztreeList;
+    }
+
+    /**
+     * 将组织机构转tree对象
+     * 不可勾选
+     * @param organization
+     * @return
+     */
+    public Ztree organizationToTree(Organization organization){
+        Ztree ztree = new Ztree();
+        ztree.setId(organization.getId());
+        ztree.setName(organization.getName());
+        ztree.setPid(organization.getParent()==null?null:organization.getParent().getId());
+        ztree.setOpen(true);
+        ztree.setOrders(organization.getOrder());
+        return ztree;
+    }
+
+    /**
+     *
+     * @param pid
+     * @return
+     */
+    public Integer getMaxOrder(Long pid) {
+        return organizationDao.getMaxOrder(pid).intValue();
     }
 }

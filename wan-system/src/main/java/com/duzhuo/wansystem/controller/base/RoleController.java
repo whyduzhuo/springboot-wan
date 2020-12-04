@@ -1,13 +1,12 @@
 package com.duzhuo.wansystem.controller.base;
 
 import com.duzhuo.common.annotation.Log;
-import com.duzhuo.common.core.BaseController;
 import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseController;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.wansystem.entity.base.Admin;
-import com.duzhuo.wansystem.entity.base.Organization;
 import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.service.base.OrganizationService;
 import com.duzhuo.wansystem.service.base.RoleService;
@@ -22,7 +21,6 @@ import org.springframework.web.util.WebUtils;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -125,7 +123,8 @@ public class RoleController extends BaseController {
     @PostMapping("/addData")
     @ResponseBody
     public Message addData(Role roleVO){
-        return roleService.addData(roleVO);
+        roleService.addData(roleVO);
+        return Message.success("添加成功!");
     }
 
     @Log(title = "修改角色",operateType = OperateType.UPDATE)
@@ -134,7 +133,8 @@ public class RoleController extends BaseController {
     @PutMapping("/edit")
     @ResponseBody
     public Message edit(Role role){
-        return roleService.edit(role);
+        roleService.edit(role);
+        return Message.success("修改成功！");
     }
 
     @Log(title = "删除角色",operateType = OperateType.DELETE)

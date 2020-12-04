@@ -1,6 +1,6 @@
 package  com.duzhuo.wansystem.dao.house;
 
-import com.duzhuo.common.core.BaseDao;
+import com.duzhuo.common.core.base.BaseDao;
 import  com.duzhuo.wansystem.entity.house.CityUrl;
 
 import java.util.List;

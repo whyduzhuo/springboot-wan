@@ -2,7 +2,7 @@ package com.duzhuo.wansystem.entity.base;
 
 import com.duzhuo.common.annotation.Unique;
 import com.duzhuo.common.annotation.UniqueColumn;
-import com.duzhuo.common.core.OrderEntity;
+import com.duzhuo.common.core.order.OrderEntity;
 import com.duzhuo.wansystem.service.base.DictionaryService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -27,7 +27,7 @@ import javax.validation.constraints.NotNull;
 @Unique(service = DictionaryService.class,message = "字典编码已存在!",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("code")})
 @Unique(service = DictionaryService.class,message = "字典值已存在！",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("value")})
 @Unique(service = DictionaryService.class,message = "排序重复",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn(value = "order",parentFiled = true)})
-public class Dictionary  extends OrderEntity{
+public class Dictionary  extends OrderEntity {
 
     private static final long serialVersionUID = 1448607782295439386L;
 

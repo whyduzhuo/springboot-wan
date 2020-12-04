@@ -1,8 +1,11 @@
 package com.duzhuo.wansystem.dao.base;
 
-import com.duzhuo.common.core.BaseDao;
+import com.duzhuo.common.core.base.BaseDao;
 import com.duzhuo.wansystem.entity.base.Organization;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 
 /**
  * @author: 万宏远
@@ -11,4 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(rollbackFor = Exception.class)
 public interface OrganizationDao extends BaseDao<Organization,Long> {
+    /**
+     *
+     * @param pid
+     * @return
+     */
+    @Query(value = "SELECT nvl(max(orders),0) FROM T_BASE_Organization WHERE PARENT_ID=?",nativeQuery = true)
+    BigDecimal getMaxOrder(Long pid);
 }

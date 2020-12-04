@@ -1,15 +1,14 @@
 package com.duzhuo.wansystem.service.base;
 
-import com.duzhuo.common.core.BaseService;
 import com.duzhuo.common.core.Filter;
-import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.enums.IsDelete;
 import com.duzhuo.common.exception.ServiceException;
-import org.apache.commons.lang3.StringUtils;
 import com.duzhuo.wansystem.dao.base.AdminDao;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.shiro.AdminRealm;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.RealmSecurityManager;
 import org.springframework.stereotype.Service;
@@ -43,10 +42,9 @@ public class AdminService extends BaseService<Admin,Long> {
      * @param adminVO
      * @return
      */
-    public Message addData(Admin adminVO) {
+    public void addData(Admin adminVO) {
         this.check(adminVO);
         super.save(adminVO);
-        return Message.success("添加成功！");
     }
 
     /**
@@ -54,10 +52,9 @@ public class AdminService extends BaseService<Admin,Long> {
      * @param adminVO
      * @return
      */
-    public Message edit(Admin adminVO){
-//        this.check(adminVO);
-//        super.update(adminVO);
-        return Message.success("修改成功！");
+    public void edit(Admin adminVO){
+        this.check(adminVO);
+        super.update(adminVO);
     }
 
 

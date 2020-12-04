@@ -1,17 +1,14 @@
 package com.duzhuo.wansystem.controller.base;
 
 import com.duzhuo.common.annotation.Log;
-import com.duzhuo.common.core.BaseController;
-import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseController;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dto.Ztree;
-import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.service.base.MenuService;
 import com.duzhuo.wansystem.service.base.RoleService;
-import com.duzhuo.wansystem.shiro.ShiroUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -104,7 +100,8 @@ public class MenuController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public Message edit(Menu menu){
-        return menuService.edit(menu);
+        menuService.edit(menu);
+        return Message.success("修改成功！");
     }
 
 

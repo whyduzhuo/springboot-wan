@@ -1,11 +1,10 @@
 package  com.duzhuo.wansystem.dao.house;
 
-import com.duzhuo.common.core.BaseDao;
+import com.duzhuo.common.core.base.BaseDao;
 import com.duzhuo.wansystem.entity.house.CityUrl;
-import  com.duzhuo.wansystem.entity.house.HouseCount;
+import com.duzhuo.wansystem.entity.house.HouseCount;
 import org.springframework.data.jpa.repository.Query;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;

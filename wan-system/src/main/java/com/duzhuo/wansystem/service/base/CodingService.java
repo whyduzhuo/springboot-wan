@@ -1,9 +1,7 @@
 package com.duzhuo.wansystem.service.base;
 
-import com.duzhuo.common.core.BaseService;
-import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.exception.ServiceException;
-import org.apache.commons.lang3.StringUtils;
 import com.duzhuo.wansystem.dao.base.CodingDao;
 import com.duzhuo.wansystem.entity.base.Coding;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,7 @@ import javax.annotation.Resource;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class CodingService extends BaseService<Coding,Long>{
+public class CodingService extends BaseService<Coding,Long> {
     @Resource
     private CodingDao codingDao;
     @Resource
@@ -30,22 +28,21 @@ public class CodingService extends BaseService<Coding,Long>{
      * @param codingVO
      * @return
      */
-    public Message addData(Coding codingVO){
+    public void addData(Coding codingVO){
         super.validation(codingVO);
         if (this.findByEntityPackages(codingVO.getEntityPackages())!=null){
             throw new ServiceException("类已存在！");
         }
         super.save(codingVO);
-        return Message.success("添加成功！");
     }
 
     /**
      *
      * @return
      */
-    public Message edit(Coding codingVO){
+    public void edit(Coding codingVO){
+        super.validation(codingVO);
         super.update(codingVO);
-        return Message.success("修改成功！");
     }
 
     private Coding findByEntityPackages(String entityPackages) {
