@@ -18,7 +18,7 @@
         <input class="form-control" type="hidden" id="data_id" name="id" value="${data.id}">
         <div class="col-xs-12">
             <label for="username">账号<span class="text-danger">*</span></label>
-            <input class="form-control" type="text" id="username" name="username" value="${data.username}">
+            <input class="form-control" type="text" readonly id="username" name="username" value="${data.username}">
         </div>
 
         <div class="col-xs-12">

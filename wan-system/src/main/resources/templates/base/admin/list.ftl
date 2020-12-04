@@ -40,9 +40,11 @@
                         <td>${data.isDeleteHtml}</td>
                         <td>
                             <div class="btn-group">
+                                <@shiro.hasPermission name="100402">
                                 <button type="button" onclick="detail(${data.id})" class="btn btn-xs btn-primary">
-                                    详情
+                                    编辑
                                 </button>
+                                </@shiro.hasPermission>
                                 <button type="button" onclick="menuList(${data.id})" class="btn btn-xs btn-info">
                                     菜单列表
                                 </button>

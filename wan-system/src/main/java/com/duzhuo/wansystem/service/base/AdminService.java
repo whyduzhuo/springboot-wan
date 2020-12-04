@@ -43,7 +43,7 @@ public class AdminService extends BaseService<Admin,Long> {
      * @return
      */
     public void addData(Admin adminVO) {
-        this.check(adminVO);
+        super.validation(adminVO);
         super.save(adminVO);
     }
 
@@ -53,8 +53,12 @@ public class AdminService extends BaseService<Admin,Long> {
      * @return
      */
     public void edit(Admin adminVO){
-        this.check(adminVO);
-        super.update(adminVO);
+        if (StringUtils.isBlank(adminVO.getRealname())){
+            throw new ServiceException("请输入昵称");
+        }
+        Admin admin = super.find(adminVO.getId());
+        admin.setRealname(adminVO.getRealname());
+        super.update(admin);
     }
 
 
@@ -117,8 +121,8 @@ public class AdminService extends BaseService<Admin,Long> {
             throw new ServiceException("不可禁用自己");
         }
         admin.setIsDelete(IsDelete.values()[(1-admin.getIsDelete().ordinal())]);
-        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
-        AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
+        super.save(admin);
+        AdminRealm shiroRealm =ShiroUtils.getShiroRelame();
         shiroRealm.clearCache(admin.getUsername());
     }
 

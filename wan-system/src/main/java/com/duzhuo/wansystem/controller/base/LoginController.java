@@ -75,6 +75,8 @@ public class LoginController {
             Admin admin =ShiroUtils.getCurrAdmin();
             Set<Role> roleSet = admin.getRoleSet();
             if (roleSet.isEmpty()){
+                AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
+                shiroRealm.clearAllCache();
                 subject.logout();
                 return Message.error("您还没有角色信息，请联系管理员！");
             }
@@ -114,8 +116,7 @@ public class LoginController {
     public Message logout(){
         Admin admin = ShiroUtils.getCurrAdmin();
         SecurityUtils.getSubject().logout();
-        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
-        AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
+        AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
         shiroRealm.clearMyCache();
         redisUtils.delete(Global.ROLE_SESSION_KEY+admin.getId());
         return Message.success("退出成功！");
@@ -123,16 +124,14 @@ public class LoginController {
 
     @GetMapping("/refresh")
     public String refush(){
-        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
-        AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
+        AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
         shiroRealm.clearCachedAuthorizationInfo();
         return "redirect:/base/index";
     }
 
     @GetMapping("/refreshAll")
     public String refreshAll(){
-        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
-        AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
+        AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
         shiroRealm.clearAllCachedAuthorizationInfo();
         return "redirect:/base/index";
     }

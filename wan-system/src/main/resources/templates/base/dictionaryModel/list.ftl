@@ -4,16 +4,6 @@
     <meta charset="utf-8">
     <title>列表</title>
     <#include "/common/tmp/commom.ftl">
-    <style>
-        .orders-lable{
-            display: inline-block;vertical-align: middle
-        }
-        .orders-lable a{
-            top: 0px;
-            display: block;
-            font-size: 12px;
-        }
-    </style>
 </head>
 <body>
 <@adminPageNav navName1='系统管理' navName2='字典模块'/>

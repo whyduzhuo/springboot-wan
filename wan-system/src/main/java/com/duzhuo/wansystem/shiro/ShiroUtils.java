@@ -4,6 +4,8 @@ import com.duzhuo.common.utils.BeanUtils;
 import com.duzhuo.common.utils.Tools;
 import com.duzhuo.wansystem.entity.base.Admin;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.mgt.RealmSecurityManager;
+import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.Subject;
 
 /**
@@ -38,5 +40,10 @@ public class ShiroUtils {
      */
     public static String getIp() {
         return getSubject().getSession().getHost();
+    }
+
+    public static AdminRealm getShiroRelame(){
+        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
+        return (AdminRealm)rsm.getRealms().iterator().next();
     }
 }

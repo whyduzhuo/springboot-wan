@@ -3,6 +3,7 @@ package com.duzhuo.wansystem.service.base;
 import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.base.BaseService;
+import com.duzhuo.common.core.order.OrderService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.RoleDao;
 import com.duzhuo.wansystem.dto.Ztree;
@@ -11,6 +12,7 @@ import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.mapper.base.RoleMapper;
 import com.duzhuo.wansystem.shiro.AdminRealm;
+import com.duzhuo.wansystem.shiro.ShiroUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.RealmSecurityManager;
@@ -31,7 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class RoleService extends BaseService<Role,Long> {
+public class RoleService extends OrderService<Role,Long> {
     @Resource
     private RoleDao roleDao;
     @Resource
@@ -52,19 +54,7 @@ public class RoleService extends BaseService<Role,Long> {
      * @return
      */
     public void addData(Role roleVo) {
-        if (roleVo.getType()==null){
-            throw new ServiceException("请选择角色类别");
-        }
-        if (StringUtils.isNotBlank(roleVo.getName())){
-            throw new ServiceException("请输入名称");
-        }
-        if (roleVo.getOrganization()==null || roleVo.getOrganization().getId()==null){
-            throw new ServiceException("请选择部门");
-        }
-        int c = roleDao.countByNameAndOrganization(roleVo.getName(),roleVo.getOrganization());
-        if (c>0){
-            throw new ServiceException("已存在！");
-        }
+        super.validation(roleVo);
         super.save(roleVo);
     }
 
@@ -74,21 +64,14 @@ public class RoleService extends BaseService<Role,Long> {
      * @return
      */
     public void edit(Role roleVo) {
-        if (StringUtils.isNotBlank(roleVo.getName())){
-            throw new ServiceException("请输入名称");
-        }
-        if (roleVo.getOrganization()==null || roleVo.getOrganization().getId()==null){
-            throw new ServiceException("请选择部门");
-        }
-        if (this.exist(roleVo)){
-            throw new ServiceException("已存在！");
-        }
+        super.validation(roleVo);
         Role role = super.find(roleVo.getId());
         if (role.getType()==Role.TypeEnum.固定角色){
             throw new ServiceException("固定职务/角色，不可修改！");
         }
         role.setName(roleVo.getName());
-        role.setOrganization(roleVo.getOrganization());
+        role.setRemark(roleVo.getRemark());
+        role.setOrder(roleVo.getOrder());
         super.update(role);
     }
 
@@ -118,8 +101,7 @@ public class RoleService extends BaseService<Role,Long> {
         }
         Admin admin = adminService.find(adminId);
         roleDao.addRole(roleId,adminId);
-        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
-        AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
+        AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
         shiroRealm.clearCachedAuthorizationInfo(admin.getUsername());
     }
 
@@ -141,8 +123,7 @@ public class RoleService extends BaseService<Role,Long> {
     public void delRole(Long roleId,Long adminId){
         roleDao.delRole(roleId,adminId);
         Admin admin = adminService.find(adminId);
-        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
-        AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
+        AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
         shiroRealm.clearCachedAuthorizationInfo(admin.getUsername());
     }
 
@@ -249,8 +230,7 @@ public class RoleService extends BaseService<Role,Long> {
     public void grantMenu(Long roleId,Long[] menus) {
         menuService.delAllMenu(roleId);
         menuService.grantMenu(roleId,menus);
-        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
-        AdminRealm shiroRealm = (AdminRealm)rsm.getRealms().iterator().next();
+        AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
         shiroRealm.clearAllCachedAuthorizationInfo();
     }
 

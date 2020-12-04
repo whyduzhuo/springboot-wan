@@ -80,6 +80,14 @@
         width: 100%;
         text-align: center;
     }
+    .orders-lable{
+        display: inline-block;vertical-align: middle
+    }
+    .orders-lable a{
+        top: 0px;
+        display: block;
+        font-size: 12px;
+    }
 </style>
 <script>
     function initSubmit() {

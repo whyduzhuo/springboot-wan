@@ -64,6 +64,7 @@ public class AdminController extends BaseController {
         return "/base/admin/list";
     }
 
+    @RequiresPermissions("100402")
     @Log(title = "用户详情",operateType = OperateType.SELECT)
     @ApiOperation("用户详情")
     @GetMapping("/detail")
@@ -93,8 +94,8 @@ public class AdminController extends BaseController {
 
     @Log(title = "修改用户信息",operateType = OperateType.UPDATE)
     @ApiOperation("修改用户信息")
-    @PutMapping("/edit")
-    @RequiresPermissions("")
+    @PostMapping("/edit")
+    @RequiresPermissions("100402")
     @ResponseBody
     public Message edit(Admin admin){
         adminService.edit(admin);

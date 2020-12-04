@@ -28,6 +28,12 @@
                 ${data.typeHtml}
             </div>
         </div>
+
+        <div class="col-xs-12">
+            <label for="order">排序<span class="text-danger">*</span></label>
+            <input class="form-control" type="number" id="order" name="order" value="${data.order}">
+        </div>
+
         <div class="col-xs-12 col-md-4">
             <label for="remark">备注</label>
             <textarea style="width: 100%;height: 150px;resize: none" class="form-control" id="remark"

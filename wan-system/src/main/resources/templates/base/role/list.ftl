@@ -27,6 +27,7 @@
                     <th>角色名称</th>
                     <th>角色类型</th>
                     <th>归属部门</th>
+                    <th>排序</th>
                     <th>备注</th>
                     <th>操作</th>
                 </tr>
@@ -36,6 +37,12 @@
                         <td>${data.name}</td>
                         <td>${data.type}</td>
                         <td>${data.organization.name}</td>
+                        <td>${data.order}
+                            <lable class="orders-lable">
+                                <a href="javascript:void(0)" onclick="upOrDown('${data.id}','1')" class="glyphicon glyphicon-chevron-up"></a>
+                                <a href="javascript:void(0)" onclick="upOrDown('${data.id}','-1')" class="glyphicon glyphicon-chevron-down"></a>
+                            </lable>
+                        </td>
                         <td>${data.remark}</td>
                         <td>
                             <div class="btn-group">
@@ -107,7 +114,15 @@
     }
     
     function del(id) {
-        
+        ajaxDelete("del",{"id":id},"您确定删除该角色?")
+    }
+
+    function upOrDown(id,change) {
+        ajaxSend("upOrDown","POST",{"id":id, "change":change},function (res) {
+            window.location.reload();
+        },function (res) {
+            layer.msg(res.msg,{icon:0})
+        })
     }
 </script>
 </body>

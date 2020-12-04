@@ -67,7 +67,7 @@ public class OrganizationService extends DelOrderService<Organization,Long> {
     public List<Organization> getAllEnable() {
         List<Filter> filters = new ArrayList<>();
         filters.add(Filter.eq("delTime",0));
-        return super.searchList(filters,Sort.by(Sort.Order.asc("order")));
+        return super.searchList(filters,Sort.by(Sort.Order.asc("parent.order"),Sort.Order.asc("order")));
     }
 
     /**

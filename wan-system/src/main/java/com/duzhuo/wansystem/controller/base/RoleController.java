@@ -4,6 +4,7 @@ import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.core.base.BaseController;
+import com.duzhuo.common.core.order.OrderEntity;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.wansystem.entity.base.Admin;
@@ -12,7 +13,9 @@ import com.duzhuo.wansystem.service.base.OrganizationService;
 import com.duzhuo.wansystem.service.base.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import oracle.jdbc.proxy.annotation.Post;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +49,7 @@ public class RoleController extends BaseController {
         CommonUtil.initPage(request,customSearch);
         Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,SEARCH_PREFIX);
         super.searchParamsTrim(searchParams);
+        customSearch.getOrders().add(Sort.Order.asc(OrderEntity.ORDER_PROPERTY_NAME));
         customSearch.setPagedata(roleService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
         model.addAttribute("searchParams",mapKeyAddPre(searchParams,SEARCH_PREFIX));
@@ -59,6 +63,7 @@ public class RoleController extends BaseController {
     public String addWin(Model model){
         Role role = new Role();
         role.setType(Role.TypeEnum.自定义角色);
+        role.setOrder(roleService.getMaxOrder());
         model.addAttribute("data",role);
         model.addAttribute("orgList",organizationService.getAllEnable());
         return "/base/role/addWin";
@@ -130,10 +135,10 @@ public class RoleController extends BaseController {
     @Log(title = "修改角色",operateType = OperateType.UPDATE)
     @ApiOperation("修改角色")
     @RequiresPermissions("100301")
-    @PutMapping("/edit")
+    @PostMapping("/edit")
     @ResponseBody
-    public Message edit(Role role){
-        roleService.edit(role);
+    public Message edit(Role roleVo){
+        roleService.edit(roleVo);
         return Message.success("修改成功！");
     }
 
@@ -149,12 +154,24 @@ public class RoleController extends BaseController {
 
     @Log(title ="获取单个角色",operateType = OperateType.SELECT)
     @ApiOperation(value = "查询单个角色")
-    @GetMapping("/{id}")
+    @GetMapping("/findById}")
     @ResponseBody
-    public Message findById(@PathVariable @NotNull Long id){
+    public Message findById(@NotNull Long id){
         Role role = roleService.find(id);
         return Message.success(role);
     }
 
-
+    @RequiresPermissions("100301")
+    @ApiOperation(value = "角色--修改排序")
+    @PostMapping("/upOrDown")
+    @ResponseBody
+    @Log(title = "字典--修改排序",operateType = OperateType.UPDATE)
+    public Message upOrDown(Long id,Integer change){
+        if (change<0){
+            roleService.down(id);
+            return Message.success("修改成功！");
+        }
+        roleService.up(id);
+        return Message.success("修改成功！");
+    }
 }
