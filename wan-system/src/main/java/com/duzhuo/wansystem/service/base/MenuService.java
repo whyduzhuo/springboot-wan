@@ -46,7 +46,7 @@ public class MenuService extends BaseService<Menu,Long> {
             Long num = this.createId(menuVO.getParent());
             menuVO.setNum(num);
         }
-        //super.validation(menuVO);
+        super.validation(menuVO);
         this.check(menuVO);
         super.save(menuVO);
     }
