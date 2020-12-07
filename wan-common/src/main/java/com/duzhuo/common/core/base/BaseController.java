@@ -14,9 +14,7 @@ public class BaseController {
     public static final String SEARCH_PREFIX = "search_";
 
     public void searchParamsTrim(Map<String,Object> searchParams){
-        searchParams.forEach((k,v)->{
-            searchParams.put(k,v.toString().trim());
-        });
+        searchParams.forEach((k,v)->searchParams.put(k,v.toString().trim()));
     }
 
     /**

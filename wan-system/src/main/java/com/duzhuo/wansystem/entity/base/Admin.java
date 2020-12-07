@@ -41,7 +41,7 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
     private static final long serialVersionUID = -6079046386811746580L;
 
     @NotBlank(message = "用户名不可为空")
-    @Length(max = 15,min = 3)
+    @Length(max = 15,min = 3,message = "账号长度3-15个字符")
     @ApiModelProperty(value = "账号,一卡通号",dataType = "number",example = "1200402570")
     private String username;
 

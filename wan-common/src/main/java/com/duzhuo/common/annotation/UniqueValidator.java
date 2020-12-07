@@ -4,8 +4,10 @@ import com.duzhuo.common.core.base.BaseEntity;
 import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.utils.SpringUtils;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -41,12 +43,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, BaseEntity> 
         for (UniqueColumn uniqueColumn:uniqueColumns){
             Class clazz = baseEntity.getClass();
             try {
-                Field field;
-                if (uniqueColumn.parentFiled()){
-                    field = clazz.getSuperclass().getDeclaredField(uniqueColumn.value());
-                }else {
-                    field = clazz.getDeclaredField(uniqueColumn.value());
-                }
+                Field field = FieldUtils.getField(clazz,uniqueColumn.value(),true);
                 PropertyDescriptor pd = new PropertyDescriptor(field.getName(), clazz);
                 Method getMethod = pd.getReadMethod();
                 Object value = getMethod.invoke(baseEntity);

@@ -26,10 +26,4 @@ public @interface UniqueColumn {
      * @return
      */
     String excludeValue() default "";
-
-    /**
-     * 是否是父类属性
-     * @return
-     */
-    boolean parentFiled() default false;
 }

@@ -34,7 +34,7 @@ import java.util.List;
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 @Unique(service = MenuService.class,message = "菜单名称重复",uniqueColumns = {@UniqueColumn("parent"),@UniqueColumn("name")})
 @Unique(service = MenuService.class,message = "菜单编号重复",uniqueColumns = {@UniqueColumn("num")})
-@Unique(service = MenuService.class,message = "菜单排序重复",uniqueColumns = {@UniqueColumn("parent"),@UniqueColumn(value = "order",parentFiled = true)})
+@Unique(service = MenuService.class,message = "菜单排序重复",uniqueColumns = {@UniqueColumn("parent"),@UniqueColumn("order")})
 public class Menu extends OrderEntity implements Serializable {
 
     private static final long serialVersionUID = -1674442746152794678L;

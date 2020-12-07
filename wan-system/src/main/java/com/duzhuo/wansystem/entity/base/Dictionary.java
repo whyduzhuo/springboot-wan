@@ -26,7 +26,7 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "字典")
 @Unique(service = DictionaryService.class,message = "字典编码已存在!",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("code")})
 @Unique(service = DictionaryService.class,message = "字典值已存在！",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("value")})
-@Unique(service = DictionaryService.class,message = "排序重复",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn(value = "order",parentFiled = true)})
+@Unique(service = DictionaryService.class,message = "排序重复",uniqueColumns = {@UniqueColumn("dictModel"),@UniqueColumn("order")})
 public class Dictionary  extends OrderEntity {
 
     private static final long serialVersionUID = 1448607782295439386L;
