@@ -34,8 +34,10 @@ public class ShiroConfig {
     private String host;
     @Value("${spring.redis.port}")
     private int port;
-    @Value("${spring.redis.password}")
+    @Value(value = "${spring.redis.password}")
     private String password;
+    @Value(value = "${wan.profile.file-virtual-Path-public}")
+    private String fileVirtualPathPublic;
 
     /**
      * 自定义realm
@@ -82,8 +84,6 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         Map<String,String> map = new HashMap<>();
-        //对所有用户认证
-        map.put("/**","authc");
         // 静态js、css
         map.put("/static/**","anon");
         //swagger接口权限 开放
@@ -93,12 +93,15 @@ public class ShiroConfig {
         map.put("/swagger-resources/**", "anon");
         map.put("/favicon.ico","anon");
         map.put("/base/login","anon");
+        map.put(fileVirtualPathPublic+"/**","anon");
+        //对所有用户认证
+        map.put("/**","authc");
         //登录
         shiroFilterFactoryBean.setLoginUrl("/base/login");
         //首页
         shiroFilterFactoryBean.setSuccessUrl("/base/index");
         //错误页面，认证不通过跳转
-        shiroFilterFactoryBean.setUnauthorizedUrl("/base/error");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/base/index");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;
     }

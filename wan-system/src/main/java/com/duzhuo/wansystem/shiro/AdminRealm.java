@@ -81,6 +81,7 @@ public class AdminRealm extends AuthorizingRealm {
         Admin admin;
         try {
             admin = adminService.login(username, password);
+            admin.setRole(adminService.getCurrRole(admin));
         } catch (Exception e) {
             log.info(e.getMessage(),e);
             throw new AuthenticationException(e.getMessage(), e);

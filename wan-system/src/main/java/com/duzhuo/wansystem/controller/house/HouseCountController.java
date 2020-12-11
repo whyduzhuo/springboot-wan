@@ -8,6 +8,7 @@ import com.duzhuo.common.utils.HttpUtils;
 import com.duzhuo.wansystem.entity.house.HouseCount;
 import com.duzhuo.wansystem.service.house.CityUrlService;
 import com.duzhuo.wansystem.service.house.HouseCountService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -28,6 +29,7 @@ import java.util.Date;
  * @date: 2020/08/18 12:51:09
  */
 
+@Api(tags = "二手房挂牌量")
 @Controller
 @RequestMapping("/house/housecount")
 public class HouseCountController extends BaseController {

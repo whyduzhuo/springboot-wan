@@ -31,7 +31,7 @@ import java.util.Map;
  */
 @RequestMapping("/base/dictionary")
 @Controller
-@Api(value = "字典")
+@Api(tags = "字典")
 public class DictionaryController extends BaseController {
 
     @Resource

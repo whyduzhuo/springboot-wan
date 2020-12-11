@@ -17,9 +17,12 @@ spring:
       number_format: 0.######
       classic_compatible: true    #防止报空指针
   jpa:
-    database: oracle
+    database: default
     show-sql: true
     open-in-view: false
+    hibernate:
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
   devtools:
       restart:
         enabled: true  #设置开启热部署

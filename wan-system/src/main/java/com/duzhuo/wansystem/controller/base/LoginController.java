@@ -80,7 +80,6 @@ public class LoginController {
                 subject.logout();
                 return Message.error("您还没有角色信息，请联系管理员！");
             }
-            redisUtils.set(Global.ROLE_SESSION_KEY+admin.getId(),roleSet.iterator().next());
             return Message.success();
         } catch (AuthenticationException e) {
             String msg = "用户或密码错误";
@@ -118,7 +117,6 @@ public class LoginController {
         SecurityUtils.getSubject().logout();
         AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
         shiroRealm.clearMyCache();
-        redisUtils.delete(Global.ROLE_SESSION_KEY+admin.getId());
         return Message.success("退出成功！");
     }
 

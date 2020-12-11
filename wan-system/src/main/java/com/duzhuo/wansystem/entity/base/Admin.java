@@ -93,4 +93,19 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
         }
         return "";
     }
+
+//------------------- table not exits  ---------
+    /**
+     * 当前角色
+     */
+    private Role role;
+
+    @Transient
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

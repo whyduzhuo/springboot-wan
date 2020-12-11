@@ -11,6 +11,7 @@ import com.duzhuo.common.utils.HttpUtils;
 import com.duzhuo.wansystem.entity.house.CityUrl;
 import com.duzhuo.wansystem.service.house.CityUrlService;
 import com.duzhuo.wansystem.test.CallableAndFuture;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,7 @@ import java.util.Map;
 @Slf4j
 @Controller
 @RequestMapping("/house/cityurl")
+@Api(tags = "城市接口")
 public class CityUrlController extends BaseController {
 
     @Resource

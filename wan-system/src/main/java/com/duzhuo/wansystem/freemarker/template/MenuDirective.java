@@ -48,7 +48,7 @@ public class MenuDirective implements TemplateDirectiveModel {
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
         Admin admin = adminService.getCurrent();
         if (admin!=null){
-            Role role = (Role) redisUtils.get(Global.ROLE_SESSION_KEY+admin.getId());
+            Role role = admin.getRole();
             role = roleService.find(role.getId());
             List<Menu> menuList = role.getMenuSet().stream().sorted().collect(Collectors.toList());
             menuList.removeIf(r->r.getType()== Menu.TypeEnum.按钮);

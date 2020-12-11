@@ -1,6 +1,7 @@
 package com.duzhuo.wansystem.controller.base;
 
 import com.duzhuo.common.annotation.Log;
+import com.duzhuo.common.core.EmailSendService;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.wansystem.entity.base.Coding;
@@ -14,8 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +34,9 @@ import java.util.List;
 public class CodingController {
     @Resource
     private CodingService codingService;
+    @Resource
+    private EmailSendService emailSendService;
+
 
     @Log(title = "代码生成首页",operateType = OperateType.SELECT )
     @ApiOperation(value = "首页")
@@ -113,7 +120,7 @@ public class CodingController {
     }
 
     @GetMapping("/test")
-    public void test(HttpServletResponse response) {
-        codingService.exists(new ArrayList<>());
+    public void test(HttpServletResponse response) throws UnsupportedEncodingException, MessagingException {
+        emailSendService.sendAttachmentMail("1434495271@qq.com","通知","哈哈哈",new File("D:\\wan\\万宏远.pdf"));
     }
 }

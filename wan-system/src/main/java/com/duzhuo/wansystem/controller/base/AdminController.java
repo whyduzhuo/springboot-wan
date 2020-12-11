@@ -187,4 +187,13 @@ public class AdminController extends BaseController {
         adminService.grantRoles(id,roleIds);
         return Message.success("授予成功！");
     }
+
+    @Log(title = "修改密码",operateType = OperateType.UPDATE)
+    @ApiOperation("修改密码")
+    @RequiresPermissions("")
+    @PostMapping("/resetPassword")
+    @ResponseBody
+    public Message resetPassword(Long adminId,String password){
+        return adminService.resetPassword(adminId,password);
+    }
 }

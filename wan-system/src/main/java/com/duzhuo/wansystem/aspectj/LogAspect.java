@@ -38,8 +38,6 @@ public class LogAspect {
     private ThreadPoolService threadPoolService;
     @Resource
     private SysOperLogService sysOperLogService;
-    @Resource
-    private SendEmailService sendEmailService;
 
     /**
      * 配置织入点
@@ -118,7 +116,7 @@ public class LogAspect {
             });
             //
             if (operLog.getHaveException()==YesOrNo.是){
-                //sendEmailService.sendEmail(stackTrace,"1434495271@qq.com","系统错误，请及时处理！");
+
             }
 
         }

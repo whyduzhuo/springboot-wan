@@ -11,9 +11,9 @@ spring:
         max-active: 30
         max-wait: 60000
   mail:
-    host: smtp.qq.com
-    username: 1434495271@qq.com
-    password: wgrlaudodpqwfgii
+    host: smtp.163.com
+    username: why15079185135@163.com
+    password: LSGGAYSGQKCBWNEK
     default-encoding: UTF-8
   servlet:
     multipart:
@@ -28,16 +28,12 @@ wan:
   profile:                      #项目文件配置
     file-path: D:/wan/uploadPath  #默认文件存储路径
     file-virtual-Path: /upload    #文件储路径对应的项目虚拟路径
+    file-virtual-Path-public: /upload/public #shiro 放行文件夹
     max-size: 1MB        #文件最大限制
     max-file-name: 20      #文件名称最长限制
     support-file-type: bmp,gif,jpg,jpeg,png,doc,docx,xls,xlsx,ppt,pptx,txt,rar,zip,pdf
   redis:
     shiro-time-out: 3600 #shiro redis缓存失效时间
-  email:
-    from: why15079185135@163.com
-    username: why15079185135@163.com
-    password: LSGGAYSGQKCBWNEK
-    host: smtp.163.com
 server:
   port: 8082    #端口号
   servlet:

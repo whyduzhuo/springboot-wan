@@ -28,7 +28,7 @@ import java.util.Map;
  */
 @RequestMapping("/base/dictModel")
 @Controller
-@Api
+@Api(tags = "字典模块")
 public class DictModelController extends BaseController {
 
     @Resource
