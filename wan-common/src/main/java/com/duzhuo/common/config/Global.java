@@ -7,5 +7,5 @@ package com.duzhuo.common.config;
  */
 
 public class Global {
-    public static String ROLE_SESSION_KEY = "shiro:role:@";
+
 }

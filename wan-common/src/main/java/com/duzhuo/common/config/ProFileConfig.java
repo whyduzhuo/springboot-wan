@@ -22,6 +22,10 @@ public class ProFileConfig {
      */
     private  String fileVirtualPath;
     /**
+     * shiro 放行文件夹
+     */
+    private String fileVirtualPathPublic;
+    /**
      *文件最大限制
      */
     private  String maxSize;
@@ -73,5 +77,13 @@ public class ProFileConfig {
 
     public void setSupportFileType(String... supportFileType) {
         this.supportFileType = supportFileType;
+    }
+
+    public String getFileVirtualPathPublic() {
+        return fileVirtualPathPublic;
+    }
+
+    public void setFileVirtualPathPublic(String fileVirtualPathPublic) {
+        this.fileVirtualPathPublic = fileVirtualPathPublic;
     }
 }
