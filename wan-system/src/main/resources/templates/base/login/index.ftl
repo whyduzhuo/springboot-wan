@@ -170,7 +170,7 @@
             if(title !=undefined){
                 freme.attr("src",url);
             }
-            freme.show(300);
+            freme.show();
         } else {
             var tabHtml = '<a href="javascript:;" class="menuTab active" data-id="' + url + '">' + title + ' <i class="fa fa-times-circle"></i></a>';
             var frameHtml = '<iframe class="wan_frame"  width="100%" height="100%" src="' + url + '" frameborder="0" data-id="' + url + '"></iframe>';
