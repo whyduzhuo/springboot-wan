@@ -40,6 +40,10 @@ public class RedisUtils {
         return baseEntity.getClass().getName().replace(".",":")+":"+operateType.toString()+"@"+baseEntity.getId();
     }
 
+    public static String buildEntityKey(Class<?> tClass,Long id, OperateType operateType){
+        return tClass.getName().replace(".",":")+":"+operateType.toString()+"@"+id;
+    }
+
     /**
      * 插入缓存默认时间
      * @param key 键

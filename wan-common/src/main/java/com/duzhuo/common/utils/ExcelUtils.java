@@ -1,9 +1,11 @@
 package com.duzhuo.common.utils;
 
 import com.duzhuo.common.exception.ServiceException;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -45,6 +47,26 @@ public class ExcelUtils {
     }
 
     /**
+     * 将workbook下载
+     * @param fileName
+     * @param workbook
+     * @param response
+     * @throws IOException
+     */
+    public static void workBookDownLoad(String fileName,Workbook workbook,HttpServletResponse response) throws IOException {
+        Date date = new Date();
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
+        fileName = fileName + sdFormat.format(date) + ".xls";
+        OutputStream output = response.getOutputStream();
+        response.reset();
+        response.setHeader("Content-disposition", "attachment; filename=" + URLEncoder.encode(fileName, "utf-8"));
+        response.setContentType("application/msexcel");
+        workbook.write(output);
+        workbook.close();
+        output.close();
+    }
+
+    /**
      * 下载一个带下拉选项的excel模板
      * @param title 文件名/首行标题
      * @param headList 表头
@@ -53,13 +75,8 @@ public class ExcelUtils {
      */
     public static void downExcelTemplet(String title,List<String> headList,
                                           List<List<String>> parpamtsList,HttpServletResponse response) throws IOException {
-        String fileName = title+".xls";
         HSSFWorkbook wb = createExcel(title,headList, parpamtsList);
-        response.setHeader("Content-disposition", "attachment; filename=" + URLEncoder.encode(fileName, "utf-8"));
-        response.setContentType("application/msexcel");
-        OutputStream output = response.getOutputStream();
-        wb.write(output);
-        output.close();
+        workBookDownLoad(title,wb,response);
     }
 
     /**
@@ -349,4 +366,223 @@ public class ExcelUtils {
         return workbook;
     }
 
+    /**
+     * 按模板导出
+     * @param temp 模板文件
+     * @param titleRow 表头在第几行，从1开始
+     * @param dataRow 数据写入起始行 从1开始
+     * @param fileName 输出文件名称
+     * @param fields 已勾选的字段
+     * @param data
+     * @param response
+     */
+    public static void doExportExcelByTemp(File temp, int titleRow ,int dataRow,String fileName, String[] fields,
+                                           List<Map<String, Object>> data, HttpServletResponse response) throws IOException, InvalidFormatException {
+        if (!temp.exists()) {
+            throw new ServiceException("模板文件不存在！");
+        }
+        Workbook workbook;
+        try {
+            workbook = new HSSFWorkbook(new FileInputStream(temp));
+        } catch (OfficeXmlFileException e) {
+            workbook = new XSSFWorkbook(new FileInputStream(temp));
+        }
+        Sheet sheet = workbook.getSheetAt(0);
+        List<String> titleList = readExelRowData(sheet, titleRow - 1, 30);
+        for (int i = 0; i < data.size(); i++) {
+            Row row = sheet.createRow(dataRow + i - 1);
+            Map<String, Object> rowObj = data.get(i);
+            for (int j = 0; j < titleList.size(); j++) {
+                String title = titleList.get(j);
+                Cell cell = row.createCell(j);
+                cell.setCellType(CellType.STRING);
+                String value = "";
+                if (haveCheck(title, fields)) {
+                    value = rowObj.get(title) == null ? value : rowObj.get(title).toString();
+                }
+                cell.setCellValue(value);
+            }
+        }
+        workBookDownLoad(fileName, workbook, response);
+    }
+
+    /**
+     * 判断是否有米格字段
+     * @param k
+     * @param fields
+     * @return
+     */
+    private static boolean haveCheck(String k,String[] fields){
+        if(StringUtils.isBlank(k)){
+            return false;
+        }
+        for (String f:fields) {
+            if (k.equals(f)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    /**
+     *
+     * @param excelName
+     * @param head
+     * @param data
+     * @param response
+     * @throws Exception
+     */
+    public static void exportExcel(String excelName, String[] head, List<Map<String, Object>> data, HttpServletResponse response) throws Exception {
+        CellType[] cellTypes = new CellType[head.length];
+        for (int i= 0;i<cellTypes.length;i++){
+            cellTypes[i] = CellType.STRING;
+        }
+        List<String> properties = Lists.newArrayList(head);
+        String title = excelName;
+        exportExcel(excelName,head,data,properties,title,response,cellTypes);
+    }
+
+    public static void exportExcel(String excelName, String[] head, List<Map<String, Object>> data,
+                                      List<String> properties, String title, HttpServletResponse response,
+                                      CellType[] cellTypes) throws Exception {
+        // 第一步，创建一个webbook，对应一个Excel文件
+        HSSFWorkbook wb = new HSSFWorkbook();
+        // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+        HSSFSheet sheet;
+        sheet = wb.createSheet(excelName);
+        // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+        HSSFRow row = sheet.createRow((int) 0);
+        if (title != null) {
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, head.length - 1));
+        }
+        CellStyle headerStyle = getHeaderStyle(wb);
+        CellStyle textStyle = getTextStyle(wb);
+
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue(title);
+        cell.setCellStyle(headerStyle);
+        // 固定的几行数据--先赋值再合并，并且赋值必须给左上角的单元格
+        // 第四步，创建单元格，并设置值表头 设置表头居中
+        row = sheet.createRow((int) 1);
+        for (int i = 0; i < head.length; i++) {
+            cell = row.createCell((short) i);
+            cell.setCellValue(head[i]);
+            cell.setCellStyle(headerStyle);
+        }
+        int count;
+        for (int j = 0; j < data.size(); j++) {
+            row = sheet.createRow((int) j+2);
+            if (properties != null && cellTypes != null) {
+                for (int i = 0; i < properties.size(); i++) {
+                    cell = row.createCell((short) i);
+                    cell.setCellStyle(textStyle);
+                    Object value = data.get(j).get(properties.get(i));
+                    if (!cellTypes[i].equals(CellType.NUMERIC)) {
+                        cell.setCellValue(value == null ? "" : value.toString());
+                    }else{
+                        if (null != value) {
+                            cell.setCellValue(Double.valueOf(value.toString()));
+                        } else {
+                            cell.setCellValue("");
+                        }
+                    }
+                    cell.setCellType(cellTypes[i]);
+                }
+            } else if (properties == null && cellTypes != null) {
+                Iterator<Map.Entry<String, Object>> iterator = data.get(j).entrySet().iterator();
+                count = 0;
+                Object value;
+                while (iterator.hasNext()) {
+                    cell = row.createCell((short) count++);
+                    cell.setCellStyle(textStyle);
+                    value = iterator.next().getValue();
+                    if (!cellTypes[count - 1].equals(CellType.NUMERIC)) {
+                        cell.setCellValue(value == null ? "" : value.toString());
+                    } else {
+                        if (null != value) {
+                            cell.setCellValue(Double.valueOf(value.toString()));
+                        } else {
+                            cell.setCellValue("");
+                        }
+                    }
+                    cell.setCellType(cellTypes[count - 1]);
+                }
+            } else if (properties != null && cellTypes == null) {
+                for (int i = 0; i < properties.size(); i++) {
+                    cell = row.createCell((short) i);
+                    cell.setCellStyle(textStyle);
+                    Object value = data.get(j).get(properties.get(i));
+                    cell.setCellValue(value == null ? "" : value.toString());
+                    cell.setCellType(CellType.STRING);
+                }
+            } else {
+                Iterator<Map.Entry<String, Object>> iterator = data.get(j).entrySet().iterator();
+                count = 0;
+                Object value;
+                while (iterator.hasNext()) {
+                    cell = row.createCell((short) count++);
+                    cell.setCellStyle(textStyle);
+                    value = iterator.next().getValue();
+                    cell.setCellValue(value == null ? "" : value.toString());
+                    cell.setCellType(CellType.STRING);
+                }
+            }
+        }
+        for (int j = 0; j < head.length; j++) {
+            sheet.autoSizeColumn(j);
+        }
+        sheet.createFreezePane(0, 2, 0, 2);
+        workBookDownLoad(excelName,wb,response);
+    }
+
+    public static CellStyle getHeaderStyle(HSSFWorkbook wb) {
+        // 表头样式
+        CellStyle headerStyle = wb.createCellStyle();
+
+        //水平居中
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+        //垂直居中
+        headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        //设置边框
+        headerStyle.setBorderTop(BorderStyle.THIN);
+        headerStyle.setBorderRight(BorderStyle.THIN);
+        headerStyle.setBorderBottom(BorderStyle.THIN);
+        headerStyle.setBorderLeft(BorderStyle.THIN);
+
+        //设置颜色
+        headerStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.LIGHT_GREEN.getIndex());
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+
+        Font headerFont = wb.createFont();
+        headerFont.setFontHeightInPoints((short) 12);
+        headerStyle.setFont(headerFont);
+        return headerStyle;
+    }
+
+    public static CellStyle getTextStyle(HSSFWorkbook wb) {
+        //设置字体
+        Font cellFont = wb.createFont();
+        //------------------------------
+
+        HSSFCellStyle textStyle = wb.createCellStyle();
+        // 单元格样式
+        textStyle.setAlignment(HorizontalAlignment.CENTER);
+        //垂直居中
+        textStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        //设置边框
+        textStyle.setBorderTop(BorderStyle.THIN);
+        textStyle.setBorderRight(BorderStyle.THIN);
+        textStyle.setBorderBottom(BorderStyle.THIN);
+        textStyle.setBorderLeft(BorderStyle.THIN);
+
+        //设置自动换行
+        textStyle.setWrapText(true);
+
+        //设置字体
+        textStyle.setFont(cellFont);
+        return textStyle;
+    }
 }

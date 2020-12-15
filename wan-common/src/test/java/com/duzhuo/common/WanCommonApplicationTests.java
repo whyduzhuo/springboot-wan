@@ -8,6 +8,7 @@ class WanCommonApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.err.println(Integer.MAX_VALUE);
 	}
 
 }

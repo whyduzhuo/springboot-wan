@@ -38,6 +38,9 @@ public class SysOperLog extends BaseEntity {
     @ApiModelProperty(value = "客户端",dataType = "String")
     private String os;
 
+    @ApiModelProperty(value = "浏览器内核",dataType = "String")
+    private String browser;
+
     @ApiModelProperty(value = "操作人",dataType = "number")
     private Admin admin;
 

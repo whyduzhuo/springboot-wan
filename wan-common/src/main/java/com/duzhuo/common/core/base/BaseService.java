@@ -587,6 +587,17 @@ public class BaseService<T extends BaseEntity, ID extends Serializable> {
         };
     }
 
+    /**
+     * searchParams 转 List<Filter>
+     * @param searchParams
+     * @return
+     */
+    public List<Filter> mapToFilters(Map<String, Object> searchParams){
+        Map<String, Filter> filters = parseSearchParams(searchParams);
+        List<Filter> searchParamsFilters = new ArrayList<>(filters.values());
+        return searchParamsFilters;
+    }
+
     public void validation(T entity){
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();

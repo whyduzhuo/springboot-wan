@@ -18,7 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 唯一约束自动化校验器
  * @author: 万宏远
+ * @email: 1434495271@qq.com
  * @date: 2020/11/12 17:26
  */
 @Slf4j

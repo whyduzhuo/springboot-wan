@@ -13,6 +13,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import java.io.IOException;
 
 /**
+ * null 转json问题
  * @author: 万宏远
  * @email: 1434495271@qq.com
  * @date: 2020/10/16 9:59

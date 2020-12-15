@@ -1,14 +1,18 @@
 package com.duzhuo.wansystem.aspectj;
 
 import com.duzhuo.common.annotation.Log;
+import com.duzhuo.common.core.EmailSendService;
 import com.duzhuo.common.enums.YesOrNo;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.thread.ThreadPoolService;
-import com.duzhuo.common.utils.*;
+import com.duzhuo.common.utils.JSON;
+import com.duzhuo.common.utils.ServletUtils;
+import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.SysOperLog;
 import com.duzhuo.wansystem.service.base.SysOperLogService;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
+import eu.bitwalker.useragentutils.UserAgent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.aspectj.lang.JoinPoint;
@@ -21,6 +25,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -38,6 +43,8 @@ public class LogAspect {
     private ThreadPoolService threadPoolService;
     @Resource
     private SysOperLogService sysOperLogService;
+    @Resource
+    private EmailSendService emailSendService;
 
     /**
      * 配置织入点
@@ -116,7 +123,7 @@ public class LogAspect {
             });
             //
             if (operLog.getHaveException()==YesOrNo.是){
-
+                emailSendService.simpleMailSend("1434495271@qq.com","系统错误",operLog.getErrorMsg());
             }
 
         }
@@ -154,9 +161,17 @@ public class LogAspect {
      * @throws Exception 异常
      */
     private void setRequestValue(SysOperLog operLog) throws Exception {
-        Map<String, String[]> map = ServletUtils.getRequest().getParameterMap();
+        HttpServletRequest request = ServletUtils.getRequest();
+        UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
+        // 获取客户端操作系统
+        String os = userAgent.getOperatingSystem().getName();
+        // 获取客户端浏览器
+        String browser = userAgent.getBrowser().getName();
+        Map map = request.getParameterMap();
         String params = JSON.marshal(map);
         operLog.setOperParm(StringUtils.substring(params, 0, 2000));
+        operLog.setOs(os);
+        operLog.setOs(browser);
     }
 
     /**

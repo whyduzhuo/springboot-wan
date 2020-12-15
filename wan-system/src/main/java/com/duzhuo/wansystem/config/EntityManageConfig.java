@@ -57,7 +57,7 @@ public class EntityManageConfig {
                 .persistenceUnit("persistenceUnit")
                 .properties(getHibernateProperties())
                 .build();
-        // 防止save方法出发校验
+        // 防止save方法触发校验
         entityManagerFactory.setValidationMode(ValidationMode.NONE);
         return entityManagerFactory;
     }

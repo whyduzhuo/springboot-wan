@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class BaseController {
     public static final String SEARCH_PREFIX = "search_";
+    public static final String EXP_PREFIX = "exp_";
 
     public void searchParamsTrim(Map<String,Object> searchParams){
         searchParams.forEach((k,v)->searchParams.put(k,v.toString().trim()));
