@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -57,6 +59,7 @@ public class Role extends OrderEntity implements Serializable {
     @NotNull(message = "角色类别不可为空！")
     private TypeEnum type;
 
+    @NotFound(action = NotFoundAction.IGNORE)
     @NotNull(message = "请选择归属部门！")
     @ApiModelProperty(value = "归属部门")
     private Organization organization;

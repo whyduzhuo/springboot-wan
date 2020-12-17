@@ -1,16 +1,8 @@
 <!DOCTYPE html>
-<!--[if IE 9]>
-<html class="ie9 no-focus"> <![endif]-->
-<!--[if gt IE 9]><!-->
-<html class="no-focus"> <!--<![endif]-->
+<html>
 <head>
-    <meta charset="utf-8">
-    <title>列表</title>
-    <meta name="author" content="bianmaren">
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
+    <title></title>
     <#include "/common/tmp/commom.ftl">
-</head>
 <body>
  <@adminPageNav navName1='系统工具' navName2='ExcelDemo'/>
 <div class="block">

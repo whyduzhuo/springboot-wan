@@ -25,7 +25,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @ApiModel(value = "用户")
 @Table(name = "T_EXCEL_DEMO")
-@EqualsAndHashCode(callSuper = true,exclude = "roleSet")
+@EqualsAndHashCode(callSuper = true)
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 @Unique(service = ExcelDemoService.class,message = "姓名重复",uniqueColumns = @UniqueColumn("name"))
 public class ExcelDemo extends BaseEntity{
@@ -35,7 +35,7 @@ public class ExcelDemo extends BaseEntity{
     @Length(max=15,min = 2,message = "姓名长度2-15字符")
     private String name;
 
-    @NotBlank(message = "性别")
+    @NotBlank(message = "性别不可为空！")
     private String sex;
 
     @NotBlank(message = "民族不可为空！")

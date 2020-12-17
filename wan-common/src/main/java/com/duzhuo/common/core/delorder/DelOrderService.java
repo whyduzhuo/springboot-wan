@@ -151,7 +151,7 @@ public class DelOrderService<T extends DelOrderEntity, ID extends Serializable> 
         List<Filter> filters = new ArrayList<>();
         filters.add(Filter.eq(OrderEntity.ORDER_PROPERTY_NAME,o));
         List<T> list = (List<T>) super.searchList(filters, Sort.by(Sort.Direction.ASC, BaseEntity.CREATE_DATE_PROPERTY_NAME));
-        return list.get(0);
+        return list.isEmpty()?null:list.get(0);
     }
 
     /**
@@ -171,6 +171,6 @@ public class DelOrderService<T extends DelOrderEntity, ID extends Serializable> 
             filters.add(Filter.ne(DeleteEntity.DEL_TIME_PROPERTY_NAME,0L));
         }
         List<T> list = (List<T>) super.searchList(filters, Sort.by(Sort.Direction.ASC, BaseEntity.CREATE_DATE_PROPERTY_NAME));
-        return list.get(0);
+        return list.isEmpty()?null:list.get(0);
     }
 }

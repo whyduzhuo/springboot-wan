@@ -51,7 +51,7 @@ public class ExcelDemoController extends BaseController{
         CommonUtil.initPage(request,customSearch);
         Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,"search_");
         super.searchParamsTrim(searchParams);
-        customSearch.setPageSize(60);
+        customSearch.setPageSize(10);
         customSearch.setPagedata(excelDemoService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
         model.addAttribute("searchParams",searchParams);

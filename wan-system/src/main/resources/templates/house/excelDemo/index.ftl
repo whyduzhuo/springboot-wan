@@ -35,11 +35,7 @@
                     <div class="page-body">
                         <table class="table table-bordered" id="listTable">
                             <tr>
-                                <th class="remove-padding-t remove-padding-b">
-                                    <label class="css-input css-checkbox css-checkbox-primary">
-                                        <input type="checkbox" id="selectAll"><span></span>
-                                    </label>
-                                </th>
+
                                 <th>序号</th>
                                 <th>姓名</th>
                                 <th>性别</th>
@@ -48,11 +44,6 @@
                             </tr>
                             <#list customSearch.pagedata.content as data>
                             <tr>
-                                <td>
-                                    <label class="css-input css-checkbox css-checkbox-primary remove-padding remove-margin">
-                                        <input type="checkbox" name="ids" value="${data.id}"/><span></span>
-                                    </label>
-                                </td>
                                 <td>${data_index+1}</td>
                                 <td>${data.name}</td>
                                 <td>${data.sex}</td>
