@@ -37,6 +37,7 @@ spring:
       filter:
         #开启支持resful请求
         enabled: true
+    date-format: yyyy-MM-dd
 debug: true
 
 

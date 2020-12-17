@@ -70,12 +70,12 @@ public class ExcelUtils {
      * 下载一个带下拉选项的excel模板
      * @param title 文件名/首行标题
      * @param headList 表头
-     * @param parpamtsList 可选择参数列(需与列名一比一)
+     * @param paramsList 可选择参数列(需与列名一比一)
      * @param response
      */
     public static void downExcelTemplet(String title,List<String> headList,
-                                          List<List<String>> parpamtsList,HttpServletResponse response) throws IOException {
-        HSSFWorkbook wb = createExcel(title,headList, parpamtsList);
+                                          List<List<String>> paramsList,HttpServletResponse response) throws IOException {
+        HSSFWorkbook wb = createExcel(title,headList, paramsList);
         workBookDownLoad(title,wb,response);
     }
 
@@ -127,14 +127,14 @@ public class ExcelUtils {
         HSSFRow rowm = sheet.createRow(0);
         HSSFCell cellTiltle = rowm.createCell(0);
         //获取列头样式对象
-        HSSFCellStyle columnTopStyle = getColumnTopStyle(wb);
+        CellStyle columnTopStyle = getHeaderStyle(wb);
         cellTiltle.setCellStyle(columnTopStyle);
         cellTiltle.setCellValue(sheetName);
         rowm.setHeightInPoints(25);
 
         //设置第三行标题 标题列
         HSSFRow rowTitleName = sheet.createRow(1);
-        HSSFCellStyle style = getColumnTopStyle(wb);
+        CellStyle style = getHeaderStyle(wb);
         for (int i=0;i<titleList.size();i++){
             HSSFCell cellTitleName = rowTitleName.createCell(i);
             cellTitleName.setCellValue(titleList.get(i));
@@ -159,23 +159,6 @@ public class ExcelUtils {
         return wb;
     }
 
-    /**
-     * 列表首页的大title样式
-     * @param workbook
-     * @return
-     */
-    private static HSSFCellStyle getColumnTopStyle(HSSFWorkbook workbook) {
-        HSSFFont font = workbook.createFont();
-        font.setFontHeightInPoints((short)12);
-        font.setFontName("Courier New");
-        font.setColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
-        HSSFCellStyle style = workbook.createCellStyle();
-        style.setFont(font);
-        style.setWrapText(false);
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        style.setFillForegroundColor(IndexedColors.GREEN.getIndex());
-        return style;
-    }
 
     private static HSSFDataValidation getDataValidationList4Col(HSSFSheet sheet, short firstRow,
                                                                 short firstCol, short endRow,
