@@ -57,13 +57,14 @@ public class ExcelUtils {
         Date date = new Date();
         SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
         fileName = fileName + sdFormat.format(date) + ".xls";
-        OutputStream output = response.getOutputStream();
-        response.reset();
-        response.setHeader("Content-disposition", "attachment; filename=" + URLEncoder.encode(fileName, "utf-8"));
-        response.setContentType("application/msexcel");
-        workbook.write(output);
-        workbook.close();
-        output.close();
+        try (OutputStream output = response.getOutputStream()){
+            response.reset();
+            response.setHeader("Content-disposition", "attachment; filename=" + URLEncoder.encode(fileName, "utf-8"));
+            response.setContentType("application/msexcel");
+            workbook.write(output);
+            workbook.close();
+            output.close();
+        }
     }
 
     /**
@@ -98,14 +99,16 @@ public class ExcelUtils {
                                                              List<List<String>> parpamtsList) throws IOException {
         fileName = fileName+".xls";
         HSSFWorkbook wb = createExcel("sheet1",headList, parpamtsList);
-        ByteArrayOutputStream bos=new ByteArrayOutputStream();
-        wb.write(bos);
-        byte[] barray=bos.toByteArray();
-        //is第一转
-        InputStream is=new ByteArrayInputStream(barray);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentDispositionFormData("attachment", fileName);
-        return new ResponseEntity<>(wb.getBytes(),headers, HttpStatus.OK);
+        try (ByteArrayOutputStream bos=new ByteArrayOutputStream()){
+            wb.write(bos);
+            byte[] barray=bos.toByteArray();
+            //is第一转
+            InputStream is=new ByteArrayInputStream(barray);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentDispositionFormData("attachment", fileName);
+            return new ResponseEntity<>(wb.getBytes(),headers, HttpStatus.OK);
+        }
+
     }
 
     /**
