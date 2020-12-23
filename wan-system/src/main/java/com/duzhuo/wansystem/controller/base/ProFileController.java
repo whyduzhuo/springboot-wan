@@ -1,71 +1,80 @@
 package com.duzhuo.wansystem.controller.base;
 
 import com.duzhuo.common.annotation.Log;
+import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.core.base.BaseController;
 import com.duzhuo.common.enums.OperateType;
-import com.duzhuo.common.utils.BeanUtils;
-import com.duzhuo.common.utils.ExcelUtils;
-import com.duzhuo.common.utils.Tools;
+import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.wansystem.entity.base.ProFile;
 import com.duzhuo.wansystem.service.base.ProFileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.WebUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 
 /**
  * @author: 万宏远
  * @email: 1434495271@qq.com
  * @date: 2020/1/2 8:52
  */
+@Slf4j
 @Api(tags = "文件模块")
 @Controller
 @RequestMapping("/base/proFile")
-public class ProFileController {
+public class ProFileController extends BaseController{
     @Resource
     private ProFileService proFileService;
 
-    @GetMapping("/uploadTest")
-    public String uploadTest(){
-        return "base/file/uploadTest";
+    @Log(title = "文件列表",operateType = OperateType.SELECT)
+    @GetMapping("/list")
+    @ApiOperation(value = "文件管理--列表")
+    public String list(HttpServletRequest request,CustomSearch<ProFile> customSearch, Model model){
+        CommonUtil.initPage(request,customSearch);
+        Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,"search_");
+        super.searchParamsTrim(searchParams);
+        customSearch.setPagedata(proFileService.search(searchParams,customSearch));
+        model.addAttribute("customSearch",customSearch);
+        model.addAttribute("searchParams",searchParams);
+        return "/base/file/list";
     }
+
 
     @GetMapping("/downLoad")
     @Log(title = "文件下载",operateType = OperateType.DOWLOAD)
     @ApiOperation(value = "文件下载",httpMethod = "GET")
-    public void downLoad(HttpServletRequest request, HttpServletResponse response,@NotNull Long id)throws IOException {
-        proFileService.downLoad(id,response);
+    public ResponseEntity<byte[]> downLoad(HttpServletRequest request, HttpServletResponse response,@NotNull Long id)throws IOException {
+        return proFileService.downLoad(id,response);
     }
 
     @PostMapping("/upload")
     @ResponseBody
     @Log(title = "文件上传",operateType = OperateType.UPLOAD)
     @ApiOperation(value = "文件上传")
-    public Message upload(@NotNull MultipartFile file) throws IOException{
-        return proFileService.upload(file);
+    public Message upload(MultipartFile file, @RequestParam(value = "status",defaultValue = "DEFAULT")ProFile.Status status) throws IOException, NoSuchAlgorithmException {
+        return Message.success("上传成功！",proFileService.upload(file,status));
     }
 
     @PostMapping("/uploads")
     @ResponseBody
     @Log(title = "多文件上传",operateType = OperateType.UPLOAD)
     @ApiOperation(value = "多文件上传")
-    public Message upload(MultipartFile[] files) throws IOException{
+    public Message upload(MultipartFile[] files, @RequestParam(value = "status",defaultValue = "DEFAULT")ProFile.Status status) throws IOException, NoSuchAlgorithmException {
         for (MultipartFile file:files) {
-            proFileService.upload(file);
+            proFileService.upload(file,status);
         }
         return Message.success("上传成功！");
     }
@@ -74,39 +83,15 @@ public class ProFileController {
     @ResponseBody
     @Log(title = "查询文件对象",operateType = OperateType.SELECT)
     @ApiOperation(value = "查询文件对象")
-    public ProFile findById(@NotNull Long id){
-        return proFileService.find(id);
+    public Message findById(@NotNull Long id){
+        return Message.success(proFileService.find(id));
     }
 
-    @GetMapping("/acc")
-    public String acc(){
-        return "base/2019-nCoV/accdata";
+    @ApiOperation(value = "文件IO")
+    @GetMapping("/file/{id}")
+    public void file(@PathVariable Long id,HttpServletResponse response) throws IOException {
+        proFileService.fileIO(id,response);
     }
 
-    @GetMapping("/downloadTest")
-    @ApiOperation(value = "下载模板")
-    public ResponseEntity<byte[]> downloadTest() throws IOException {
-        List<String> titleList = new ArrayList<>();
-        titleList.add("字段1");
-        titleList.add("字段2");
-        titleList.add("字段3");
-        return ExcelUtils.downExcelTempletByte("车牌信息导入模板",titleList);
-    }
-
-
-    @GetMapping("/ceshi")
-    @ResponseBody
-    public String ceshi(){
-        Object[] args = new Object[]{"哈哈"};
-        BeanUtils.ceshi(Tools.class,"test",args);
-        return "哈哈";
-
-    }
-
-    @GetMapping("/saveUrlAs")
-    public void saveUrlAs(){
-        File file = proFileService.saveUrlAs("http://onestop.jxufe.edu.cn/eos/FileDown.jsp?path=ff80808171864726017190a427bf01af.docx");
-        proFileService.wordToPdF(file);
-    }
 
 }

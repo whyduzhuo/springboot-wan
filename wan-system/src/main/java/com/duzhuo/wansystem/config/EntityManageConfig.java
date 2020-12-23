@@ -39,7 +39,7 @@ public class EntityManageConfig {
     private DataSource dataSource;
 
     @Primary
-    @Bean(name = "entityManagerPrimary")
+    @Bean(name = "entityManager")
     public EntityManager entityManager(EntityManagerFactoryBuilder builder){
         return entityManageFactory(builder).getObject().createEntityManager();
     }

@@ -8,6 +8,9 @@ import lombok.EqualsAndHashCode;
 import org.springframework.util.unit.DataSize;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 /**
  * 项目文件
@@ -22,6 +25,20 @@ import javax.persistence.*;
 @Table(name = "T_BASE_PROFILE")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 public class ProFile extends BaseEntity{
+    public enum Status{
+        /**
+         * 默认文件夹
+         */
+        DEFAULT,
+        /**
+         * 开放文件夹
+         */
+        PUBLIC,
+        /**
+         * 私有文件夹
+         */
+        PRIVATE,
+    }
 
     private static final long serialVersionUID = 6994839513547840533L;
 
@@ -43,6 +60,19 @@ public class ProFile extends BaseEntity{
     @ApiModelProperty(value = "上传者")
     private Admin admin;
 
+    @ApiModelProperty(value = "MD5值",notes = "用于文件筛选，防止提交重复文件")
+    private String md5;
+
+    @ApiModelProperty(value = "类别")
+    private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "ADMIN_ID")
+    public Admin getAdmin() {
+        return admin;
+    }
+
+
     @Transient
     @ApiModelProperty(value = "文件大小，带单位",notes = "根据大小定单位，带小数，计算属性无需存储",example = "100MB")
     private String fileSizeStr;
@@ -51,15 +81,22 @@ public class ProFile extends BaseEntity{
     @ApiModelProperty(value = "文件下载路径",notes = "计算属性，无需存储")
     private String downloadPath;
 
-    @ManyToOne
-    @JoinColumn(name = "ADMIN_ID")
-    public Admin getAdmin() {
-        return admin;
-    }
+
 
     @Transient
     public String getFileSizeStr(){
-        return DataSize.ofBytes(this.fileSize).toString();
+        if (this.fileSize<1024){
+            return this.fileSize+"B";
+        }
+        if (this.fileSize<1024*1024){
+            DecimalFormat df1 = new DecimalFormat("0.00");
+            return new BigDecimal(this.fileSize).divide(new BigDecimal(1024),2, RoundingMode.HALF_UP).toString() +"KB";
+        }
+        if (this.fileSize<1024*1024*1024){
+            return new BigDecimal(this.fileSize).divide(new BigDecimal(1024*1024),2,RoundingMode.HALF_UP).toString() +"MB";
+        }else {
+            return new BigDecimal(this.fileSize).divide(new BigDecimal(1024*1024*1024),2,RoundingMode.HALF_UP).toString() +"GB";
+        }
     }
 
     @Transient

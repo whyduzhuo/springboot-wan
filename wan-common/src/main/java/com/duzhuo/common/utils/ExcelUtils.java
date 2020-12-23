@@ -264,7 +264,7 @@ public class ExcelUtils {
         List<Map<String,String>> dataMap= new ArrayList<>();
         for (int i=0;i<stringList.size();i++) {
             List<String> strings = stringList.get(i);
-            Map<String,String> map = new HashMap<>();
+            Map<String,String> map = new HashMap<>(strings.size()+1);
             map.put(ROW_NUM_KEY,(i+dataRowStart)+"");
             for (int j = 0;j<strings.size();j++){
                 map.put(titleList.get(j),strings.get(j));
@@ -451,7 +451,7 @@ public class ExcelUtils {
         cell.setCellStyle(headerStyle);
         // 固定的几行数据--先赋值再合并，并且赋值必须给左上角的单元格
         // 第四步，创建单元格，并设置值表头 设置表头居中
-        row = sheet.createRow((int) 1);
+        row = sheet.createRow(1);
         for (int i = 0; i < head.length; i++) {
             cell = row.createCell((short) i);
             cell.setCellValue(head[i]);
@@ -459,7 +459,7 @@ public class ExcelUtils {
         }
         int count;
         for (int j = 0; j < data.size(); j++) {
-            row = sheet.createRow((int) j+2);
+            row = sheet.createRow(j+2);
             if (properties != null && cellTypes != null) {
                 for (int i = 0; i < properties.size(); i++) {
                     cell = row.createCell((short) i);
@@ -526,7 +526,6 @@ public class ExcelUtils {
     public static CellStyle getHeaderStyle(HSSFWorkbook wb) {
         // 表头样式
         CellStyle headerStyle = wb.createCellStyle();
-
         //水平居中
         headerStyle.setAlignment(HorizontalAlignment.CENTER);
         //垂直居中
@@ -536,12 +535,9 @@ public class ExcelUtils {
         headerStyle.setBorderRight(BorderStyle.THIN);
         headerStyle.setBorderBottom(BorderStyle.THIN);
         headerStyle.setBorderLeft(BorderStyle.THIN);
-
         //设置颜色
         headerStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.LIGHT_GREEN.getIndex());
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-
         Font headerFont = wb.createFont();
         headerFont.setFontHeightInPoints((short) 12);
         headerStyle.setFont(headerFont);

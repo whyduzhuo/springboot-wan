@@ -1,24 +1,30 @@
 package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.config.ProFileConfig;
-import com.duzhuo.common.core.Message;
 import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.exception.ServiceException;
+import com.duzhuo.common.utils.Tools;
 import com.duzhuo.wansystem.dao.base.ProFileDao;
 import com.duzhuo.wansystem.entity.base.ProFile;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -32,20 +38,46 @@ import java.util.UUID;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class ProFileService extends BaseService<ProFile,Long> {
-
     @Resource
     private ProFileConfig proFileConfig;
+    @Resource
+    private JdbcTemplate jdbcTemplate;
+    @Resource
+    private ProFileDao proFileDao;
 
     @Resource
     public void setBaseDao(ProFileDao proFileDao){
         super.setBaseDao(proFileDao);
     }
 
-    public void downLoad(@NotNull Long id, HttpServletResponse response) throws IOException{
+    public ResponseEntity<byte[]> downLoad(@NotNull Long id, HttpServletResponse response) throws IOException{
         ProFile proFile = super.find(id);
         if (proFile==null){
             throw new FileNotFoundException("文件不存在！");
         }
+        HttpHeaders headers = new HttpHeaders();
+        String fileName = proFile.getOriginal();
+        //设置文件名
+        headers.setContentDispositionFormData("attachment", new String(fileName.getBytes("utf-8"), "ISO8859-1"));
+        // 文件绝对路径
+        String file = this.getAbsolutePath(proFile);
+        //把文件转成字节数组
+        File byteFile = new File(file);
+        int size = (int) byteFile.length();
+        FileInputStream inputStream = new FileInputStream(byteFile);
+        byte[] bytes = new byte[size];
+        int offset=0;
+        int readed;
+        while(offset<size && (readed = inputStream.read(bytes, offset,inputStream.available() )) != -1){
+            offset+=readed;
+        }
+        inputStream.close();
+        //返回
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+    }
+
+    private String getAbsolutePath(ProFile proFile) {
+        return proFileConfig.getFilePath()+proFile.getDownloadPath().substring(proFileConfig.getFileVirtualPath().length(),proFile.getDownloadPath().length());
     }
 
     /**
@@ -53,7 +85,7 @@ public class ProFileService extends BaseService<ProFile,Long> {
      * @param file
      * @return
      */
-    public Message upload(MultipartFile file) throws IOException {
+    public ProFile upload(MultipartFile file,ProFile.Status status) throws IOException, NoSuchAlgorithmException {
         if (file==null){
             throw new ServiceException("文件为空！");
         }
@@ -68,12 +100,28 @@ public class ProFileService extends BaseService<ProFile,Long> {
         if(!this.isSupport(fileName)){
             throw new ServiceException("不支持的文件格式");
         }
-        // 获取UUID
-        String uuid = UUID.randomUUID().toString();
+        byte[] bytes = file.getBytes();
+        String md5 = Tools.getMD5(bytes);
         // 获取带点的文件后缀名
         String suffix = fileName.substring(fileName.lastIndexOf("."));
-        Calendar calendar = Calendar.getInstance();
+        ProFile p = this.find(file.getSize(),md5,status);
         String date = new  SimpleDateFormat("yyyy/MMdd").format(new Date());
+        if (p!=null){
+            ProFile proFile = new ProFile();
+            proFile.setAdmin(ShiroUtils.getCurrAdmin());
+            proFile.setUuid(p.getUuid());
+            proFile.setSuffix(suffix);
+            proFile.setPath(p.getPath());
+            proFile.setOriginal(fileName);
+            proFile.setFileSize(file.getSize());
+            proFile.setMd5(md5);
+            proFile.setStatus(status);
+            this.addData(proFile);
+            return proFile;
+
+        }
+        // 获取UUID
+        String uuid = UUID.randomUUID().toString();
         // 拼接项目默认文件地址和日期uuid得到保存后的文件名
         String saveFileName = proFileConfig.getFilePath()+"/"+date+"/"+uuid+suffix;
         File desFile = new File(saveFileName);
@@ -93,7 +141,10 @@ public class ProFileService extends BaseService<ProFile,Long> {
         proFile.setPath(proFileConfig.getFileVirtualPath()+"/"+date+"/");
         proFile.setOriginal(fileName);
         proFile.setFileSize(file.getSize());
-        return this.addData(proFile);
+        proFile.setMd5(md5);
+        proFile.setStatus(status);
+        this.addData(proFile);
+        return proFile;
     }
 
     /**
@@ -101,9 +152,8 @@ public class ProFileService extends BaseService<ProFile,Long> {
      * @param proFileVO
      * @return
      */
-    public Message addData(ProFile proFileVO){
+    public void addData(ProFile proFileVO){
         ProFile proFile=super.save(proFileVO);
-        return Message.success("保存成功！",proFile);
     }
 
     /**
@@ -138,60 +188,6 @@ public class ProFileService extends BaseService<ProFile,Long> {
     }
 
 
-    public File saveUrlAs(String url){
-        String fileName = url.substring(url.lastIndexOf("path=")+5);
-        //创建不同的文件夹目录
-        File file=new File(proFileConfig.getFilePath()+"/"+fileName);
-        //判断文件是否存在
-        if (file.exists()){
-            return file;
-        }
-        //判断文件夹是否存在
-        if (!file.getParentFile().exists())
-        {
-            //如果文件夹不存在，则创建新的的文件夹
-            file.mkdirs();
-        }
-        FileOutputStream fileOut = null;
-        HttpURLConnection conn = null;
-        InputStream inputStream = null;
-        try
-        {
-            // 建立链接
-            URL httpUrl=new URL(url);
-            conn=(HttpURLConnection) httpUrl.openConnection();
-            //以Post方式提交表单，默认get方式
-            conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-            // post方式不能使用缓存
-            conn.setUseCaches(false);
-            //连接指定的资源
-            conn.connect();
-            //获取网络输入流
-            inputStream=conn.getInputStream();
-            BufferedInputStream bis = new BufferedInputStream(inputStream);
-            //写入到文件（注意文件保存路径的后面一定要加上文件的名称）
-            fileOut = new FileOutputStream(proFileConfig.getFilePath()+"/"+fileName);
-            BufferedOutputStream bos = new BufferedOutputStream(fileOut);
-            byte[] buf = new byte[4096];
-            int length = bis.read(buf);
-            //保存文件
-            while(length != -1)
-            {
-                bos.write(buf, 0, length);
-                length = bis.read(buf);
-            }
-            bos.close();
-            bis.close();
-            conn.disconnect();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return file;
-    }
-
     public File wordToPdF(File wordFile){
         String wordFileName = wordFile.getName();
         String suffix = wordFileName.substring(wordFileName.lastIndexOf(".")+1);
@@ -203,5 +199,48 @@ public class ProFileService extends BaseService<ProFile,Long> {
         }
         System.err.println(wordFileName);
         return null;
+    }
+
+    /**
+     *
+     * @param fileSize
+     * @param md5
+     * @return
+     */
+    public ProFile find(Long fileSize,String md5,ProFile.Status status){
+        return proFileDao.findByFileSizeAndMd5AndStatus(fileSize,md5,status);
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public File getFile(Long id) {
+        ProFile proFile = super.find(id);
+        String absolutePath = this.getAbsolutePath(proFile);
+        return new File(absolutePath);
+    }
+
+    /**
+     * 将文件IO写入 response
+     * 浏览器会自动打开或者下载
+     * @param id
+     * @param response
+     * @throws IOException
+     */
+    public void fileIO(Long id, HttpServletResponse response) throws IOException {
+        File file = this.getFile(id);
+        try (ServletOutputStream outputStream = response.getOutputStream();
+             FileInputStream fileInputStream = new FileInputStream(file)){
+            int len;
+            byte[] buffer = new byte[2048];
+            while ((len = fileInputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, len);
+            }
+            fileInputStream.close();
+            outputStream.close();
+            response.setHeader("Content-Type", "application/octet-stream");
+        }
     }
 }

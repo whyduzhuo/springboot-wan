@@ -11,4 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(rollbackFor = Exception.class)
 public interface ProFileDao extends BaseDao<ProFile,Long> {
+
+    /**
+     * 查询是否有相同文件
+     * @param fileSize
+     * @param md5
+     * @return
+     */
+    ProFile findByFileSizeAndMd5AndStatus(Long fileSize, String md5, ProFile.Status status);
 }
