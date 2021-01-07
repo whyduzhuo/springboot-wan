@@ -122,7 +122,7 @@
                         <div class="form-group">
                             <div class="col-xs-12 col-md-12">
                                 <label for="filePath">选择文件</label>
-                                <input type="file" name="file" class="form-control input-sm">
+                                <input type="file" name="file" multiple="multiple" class="form-control input-sm">
                             </div>
                         </div>
                     </div>
@@ -145,15 +145,16 @@
     function importData() {
         var form = new FormData(document.getElementById('putInExcel'));
         $.ajax({
-            url: "upload",
+            url: "uploads",
             type: "post",
             data: form,
             processData: false,
             contentType: false,
             success: function (res) {
+                console.log(res);
                 layer.closeAll("loading");
-                layer.msg(res.msg, {icon: res.icon, time:1000,});
-                if(res.type =="SUCCESS" ){
+                layer.msg(res.msg, {icon: res.icon, time:1000});
+                if(res.type == "SUCCESS" ){
                     setTimeout(function () {
                         window.location.reload();
                     }, 1000)
@@ -161,8 +162,7 @@
 
             },
             error: function (XMLHttpRequest) {
-                layer.closeAll("loading");
-                alertErrorMessage(XMLHttpRequest);
+                console.log(XMLHttpRequest)
             }
         })
     }

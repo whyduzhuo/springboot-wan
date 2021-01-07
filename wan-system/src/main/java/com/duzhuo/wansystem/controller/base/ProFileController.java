@@ -6,6 +6,7 @@ import com.duzhuo.common.core.Message;
 import com.duzhuo.common.core.base.BaseController;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
+import com.duzhuo.common.utils.IO.FileTypeJudge;
 import com.duzhuo.wansystem.entity.base.ProFile;
 import com.duzhuo.wansystem.service.base.ProFileService;
 import io.swagger.annotations.Api;
@@ -73,6 +74,9 @@ public class ProFileController extends BaseController{
     @Log(title = "多文件上传",operateType = OperateType.UPLOAD)
     @ApiOperation(value = "多文件上传")
     public Message upload(MultipartFile[] files, @RequestParam(value = "status",defaultValue = "DEFAULT")ProFile.Status status) throws IOException, NoSuchAlgorithmException {
+        if (files==null || files.length==0){
+            return Message.warn("请先选择文件！");
+        }
         for (MultipartFile file:files) {
             proFileService.upload(file,status);
         }

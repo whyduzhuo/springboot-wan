@@ -7,6 +7,7 @@ import com.duzhuo.common.utils.Tools;
 import com.duzhuo.wansystem.dao.base.ProFileDao;
 import com.duzhuo.wansystem.entity.base.ProFile;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,7 +32,7 @@ import java.util.UUID;
  * @email: 1434495271@qq.com
  * @date: 2020/1/2 8:51
  */
-
+@Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class ProFileService extends BaseService<ProFile,Long> {
@@ -132,6 +130,7 @@ public class ProFileService extends BaseService<ProFile,Long> {
         try {
             file.transferTo(desFile);
         } catch (IOException e) {
+            log.error(e.getMessage(),e);
             throw e;
         }
         ProFile proFile = new ProFile();

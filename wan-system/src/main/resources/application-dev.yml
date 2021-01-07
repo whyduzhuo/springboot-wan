@@ -18,6 +18,7 @@ spring:
   servlet:
     multipart:
       max-file-size: ${wan.profile.max-size}
+      max-request-size: 2MB
   redis:
     host: localhost
     port: 6379
@@ -30,7 +31,7 @@ wan:
     file-virtual-Path: /upload    #文件储路径对应的项目虚拟路径
     file-virtual-Path-public: /upload/public #shiro 放行文件夹
     max-size: 1MB        #文件最大限制
-    max-file-name: 20      #文件名称最长限制
+    max-file-name: 40      #文件名称最长限制
     support-file-type: bmp,gif,jpg,jpeg,png,doc,docx,xls,xlsx,ppt,pptx,txt,rar,zip,pdf
   redis:
     shiro-time-out: 3600 #shiro redis缓存失效时间

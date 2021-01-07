@@ -1,6 +1,5 @@
 package com.duzhuo.common.core;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,7 +64,7 @@ public class EmailSendService {
         messageHelper.setTo(to);
         messageHelper.setSubject(title);
         messageHelper.setText(html, true);
-        FileSystemResource fileSystemResource=new FileSystemResource(file);
+        FileSystemResource fileSystemResource = new FileSystemResource(file);
         String fileName= FilenameUtils.getName(file.getName());
         messageHelper.addAttachment(fileName,fileSystemResource);
         mailSender.send(mimeMessage);

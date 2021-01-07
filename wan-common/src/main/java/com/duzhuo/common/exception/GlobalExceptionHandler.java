@@ -7,11 +7,13 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.session.UnknownSessionException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.unit.DataSize;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,12 +25,14 @@ import java.util.Date;
  * @date: 2020/1/1 15:57
  */
 @Slf4j
-@RestControllerAdvice(basePackages = "com.duzhuo.wansystem.controller")
+@RestControllerAdvice
 public class GlobalExceptionHandler {
     public static final String ERROR_VIEW = "/common/error/error";
 
-    @Value("${wan.profile.max-size}")
-    private String maxSize;
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private String maxFileSize;
+    @Value("${spring.servlet.multipart.max-request-size}")
+    private String maxRequestSize;
 
     /**
      * 权限校验异常
@@ -102,7 +106,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public Object maxUploadSizeExceededException(HttpServletRequest request,MaxUploadSizeExceededException e){
-        String msg = "超过文件限制大小:"+maxSize;
+        String msg = "超过文件限制大小!单文件最大"+maxFileSize+"。多文件最大"+maxRequestSize;
         log.warn(msg, e);
         return retError(request,e,msg);
     }
