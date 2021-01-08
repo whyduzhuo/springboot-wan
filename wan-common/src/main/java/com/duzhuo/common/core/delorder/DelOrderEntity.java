@@ -23,12 +23,9 @@ public class DelOrderEntity extends DeleteEntity implements Comparable<DelOrderE
     @NotNull(message = "请输入排序")
     @ApiModelProperty(value = "排序")
     @Min(value = 0,message = "排序不能小于0")
+    @Column(name = "orders")
     private Integer order;
 
-    @Column(name = "orders")
-    public Integer getOrder() {
-        return order;
-    }
 
     @Override
     public int compareTo(@org.jetbrains.annotations.NotNull DelOrderEntity o) {

@@ -50,6 +50,8 @@ public class Organization extends DelOrderEntity implements Serializable {
     @ApiModelProperty(value = "部门名称",dataType = "String",example = "江西财经大学宣传部")
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
     @NotNull(message = "请选择上级部门")
     @ApiModelProperty(value = "上级部门",dataType = "number")
     private Organization parent;
@@ -58,18 +60,9 @@ public class Organization extends DelOrderEntity implements Serializable {
     private Type type = Type.机构部门;
 
     @JsonIgnore
+    @OneToMany(mappedBy = "organization")
     @ApiModelProperty(value = "部门下的全部职务",notes = "一对多职务表")
     private List<Role> roleList = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    public Organization getParent() {
-        return parent;
-    }
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "organization")
-    public List<Role> getRoleList() {
-        return roleList;
-    }
 }

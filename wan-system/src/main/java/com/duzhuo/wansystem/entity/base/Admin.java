@@ -58,20 +58,22 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
     private IsDelete isDelete = IsDelete.否;
 
     @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "T_BASE_ADMIN_ROLE",
+            joinColumns = @JoinColumn(name="ADMIN_ID",referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "ROLE_ID",referencedColumnName = "ID")
+    )
     @ApiModelProperty(value = "全部职务")
     private Set<Role> roleSet = new HashSet<>();
 
     @Transient
     private String roleListStr;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "T_BASE_ADMIN_ROLE",
-            joinColumns = @JoinColumn(name="ADMIN_ID",referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "ROLE_ID",referencedColumnName = "ID")
-    )
-    public Set<Role> getRoleSet() {
-        return roleSet;
-    }
+    /**
+     * 当前角色
+     */
+    @Transient
+    private Role role;
 
     @Transient
     public String getRoleListStr(){
@@ -94,18 +96,5 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
         return "";
     }
 
-//------------------- table not exits  ---------
-    /**
-     * 当前角色
-     */
-    private Role role;
 
-    @Transient
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }

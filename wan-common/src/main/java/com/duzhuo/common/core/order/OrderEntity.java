@@ -27,14 +27,10 @@ public  class OrderEntity extends BaseEntity implements Comparable<OrderEntity>{
     public static final String ORDER_PROPERTY_NAME = "order";
 
     @NotNull(message = "请输入排序")
+    @Column(name = "orders")
     @ApiModelProperty(value = "排序")
     @Min(value = 0,message = "排序不能小于0")
     private Integer order;
-
-    @Column(name = "orders")
-    public Integer getOrder() {
-        return order;
-    }
 
 
     @Override

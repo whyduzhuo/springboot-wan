@@ -38,6 +38,8 @@ public class Dictionary  extends OrderEntity {
 
     @NotNull(message = "请选择模块")
     @ApiModelProperty(value = "模块")
+    @ManyToOne
+    @JoinColumn(name = "MODEL_ID")
     private DictModel dictModel;
 
     @NotBlank(message = "请输入字典编码")
@@ -55,11 +57,6 @@ public class Dictionary  extends OrderEntity {
     @ApiModelProperty(value = "备注")
     private String remark;
 
-    @ManyToOne
-    @JoinColumn(name = "MODEL_ID")
-    public DictModel getDictModel() {
-        return dictModel;
-    }
 
     @Transient
     public String getStatusHtml(){

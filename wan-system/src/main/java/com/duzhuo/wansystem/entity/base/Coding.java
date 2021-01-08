@@ -45,16 +45,6 @@ public class Coding extends BaseEntity{
     @ApiModelProperty(value = "完整类名")
     private String entityPackages;
 
-//------------------ filed not in table -------------
-    @ApiModelProperty(value = "类名")
-    private String entityName;
-
-    @ApiModelProperty(value = "类名小写")
-    private String lowEntityName;
-
-    @ApiModelProperty(value = "系统")
-    private String system;
-
     @ApiModelProperty(value = "serviev包名")
     private String servicepackage;
 
@@ -64,28 +54,22 @@ public class Coding extends BaseEntity{
     @ApiModelProperty(value = "dao包名")
     private String daopackage;
 
+//------------------ filed not in table -------------
+    @Transient
+    @ApiModelProperty(value = "类名")
+    private String entityName;
+
+    @Transient
+    @ApiModelProperty(value = "类名小写")
+    private String lowEntityName;
+
+    @Transient
+    @ApiModelProperty(value = "系统")
+    private String system;
+
     @Transient
     private String createDateStr;
 
-    @Transient
-    public String getEntityName() {
-        return entityName;
-    }
-
-    @Transient
-    public String getLowEntityName() {
-        return lowEntityName;
-    }
-
-    @Transient
-    public String getSystem() {
-        return system;
-    }
-
-    @Transient
-    public String getCreateDateStr() {
-        return createDateStr;
-    }
 
     public void cal(){
         String[] arr = this.entityPackages.split("\\.");

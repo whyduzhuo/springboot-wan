@@ -62,6 +62,8 @@ public class Role extends OrderEntity implements Serializable {
     @NotFound(action = NotFoundAction.IGNORE)
     @NotNull(message = "请选择归属部门！")
     @ApiModelProperty(value = "归属部门")
+    @ManyToOne
+    @JoinColumn(name = "ORG_ID")
     private Organization organization;
 
     @NotBlank(message = "角色名称不可为空！")
@@ -73,40 +75,23 @@ public class Role extends OrderEntity implements Serializable {
     private String remark;
 
     @JsonIgnore
-    @ApiModelProperty(value = "多对多菜单列表")
-    private Set<Menu> menuSet = new HashSet<>();
-
-    @JsonIgnore
-    @ApiModelProperty(value = "拥有该职务的全部用户")
-    private List<Admin> adminList = new ArrayList<>();
-
-    @ManyToOne
-    @JoinColumn(name = "ORG_ID")
-    public Organization getOrganization() {
-        return organization;
-    }
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "T_BASE_ROLE_MENU",
             joinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "menu_id", referencedColumnName = "id"))
-    public Set<Menu> getMenuSet() {
-        return menuSet;
-    }
+    @ApiModelProperty(value = "多对多菜单列表")
+    private Set<Menu> menuSet = new HashSet<>();
 
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "roleSet")
-    public List<Admin> getAdminList() {
-        return adminList;
-    }
+    @ApiModelProperty(value = "拥有该职务的全部用户")
+    private List<Admin> adminList = new ArrayList<>();
+
 
     @Transient
     private boolean checked;
 
-    @Transient
-    public boolean getChecked() {
-        return checked;
-    }
+
 
     @JsonIgnore
     @Transient

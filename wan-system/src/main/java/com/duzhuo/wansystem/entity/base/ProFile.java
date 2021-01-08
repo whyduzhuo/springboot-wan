@@ -57,6 +57,8 @@ public class ProFile extends BaseEntity{
     @ApiModelProperty(value = "原文件名,不带后缀",example = "8月5日会议纪要")
     private String original;
 
+    @ManyToOne
+    @JoinColumn(name = "ADMIN_ID")
     @ApiModelProperty(value = "上传者")
     private Admin admin;
 
@@ -66,11 +68,6 @@ public class ProFile extends BaseEntity{
     @ApiModelProperty(value = "类别")
     private Status status;
 
-    @ManyToOne
-    @JoinColumn(name = "ADMIN_ID")
-    public Admin getAdmin() {
-        return admin;
-    }
 
 
     @Transient

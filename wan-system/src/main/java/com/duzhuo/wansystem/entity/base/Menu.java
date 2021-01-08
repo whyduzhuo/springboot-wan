@@ -77,6 +77,8 @@ public class Menu extends OrderEntity implements Serializable {
     @ApiModelProperty(value = "菜单编号",dataType = "number")
     private Long num;
 
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
     @ApiModelProperty(value = "父级菜单",dataType = "number")
     private Menu parent;
 
@@ -95,32 +97,17 @@ public class Menu extends OrderEntity implements Serializable {
     @ApiModelProperty(value = "备注")
     private String remark;
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "menuSet")
     @ApiModelProperty(value = "拥有此菜单的全部职务")
     private List<Role> roleList = new ArrayList<>();
 
     @JsonIgnore
+    @OneToMany(mappedBy = "parent")
     @ApiModelProperty(value = "子菜单")
     private List<Menu> children = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    public Menu getParent() {
-        return parent;
-    }
 
-    public void setParent(Menu parent) {
-        this.parent = parent;
-    }
 
-    @OneToMany(mappedBy = "parent")
-    public List<Menu> getChildren() {
-        return children;
-    }
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "menuSet")
-    public List<Role> getRoleList() {
-        return roleList;
-    }
 
 }

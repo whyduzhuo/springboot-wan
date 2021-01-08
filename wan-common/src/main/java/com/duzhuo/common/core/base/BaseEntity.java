@@ -4,6 +4,8 @@ import com.duzhuo.common.core.EntityListener;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +16,8 @@ import java.util.Date;
 * @email: 1434495271@qq.com
  * @date: 2020/1/1 16:58
  */
+@Getter
+@Setter
 @EntityListeners(EntityListener.class)
 @MappedSuperclass
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE, isGetterVisibility = JsonAutoDetect.Visibility.NONE, creatorVisibility = JsonAutoDetect.Visibility.NONE)
@@ -24,43 +28,19 @@ public class BaseEntity implements Serializable{
     public static final String CREATE_DATE_PROPERTY_NAME = "createDate";
     public static final String MODIFY_DATE_PROPERTY_NAME = "modifyDate";
 
-    private Long id;
-    private Date createDate;
-    private Date modifyDate;
-
-    @JsonProperty
     @ApiModelProperty(value = "主键",example = "100")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    public Long getId() {
-        return id;
-    }
+    private Long id;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @JsonProperty
     @ApiModelProperty(value = "创建时间")
     @Column(nullable = false)
-    public Date getCreateDate() {
-        return createDate;
-    }
+    private Date createDate;
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    @ApiModelProperty(value = "修改时间")
     @JsonProperty
     @Column(nullable = false)
-    public Date getModifyDate() {
-        return modifyDate;
-    }
+    private Date modifyDate;
 
-    public void setModifyDate(Date modifyDate) {
-        this.modifyDate = modifyDate;
-    }
 
     @Override
     public boolean equals(Object obj) {

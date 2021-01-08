@@ -45,6 +45,8 @@ public class DictModel extends OrderEntity {
     @ApiModelProperty(value = "模块编码")
     private String modelCode;
 
+    @OneToMany(mappedBy = "dictModel")
+    @OrderBy("STATUS ASC,ORDERS ASC,CODE ASC")
     @ApiModelProperty(value = "字典")
     private List<Dictionary> dictionaryList;
 
@@ -58,13 +60,5 @@ public class DictModel extends OrderEntity {
             }
         });
         return dictionaryList1;
-    }
-
-
-
-    @OneToMany(mappedBy = "dictModel")
-    @OrderBy("STATUS ASC,ORDERS ASC,CODE ASC")
-    public List<Dictionary> getDictionaryList() {
-        return dictionaryList;
     }
 }

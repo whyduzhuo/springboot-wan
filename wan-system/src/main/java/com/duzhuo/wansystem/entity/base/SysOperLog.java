@@ -41,6 +41,8 @@ public class SysOperLog extends BaseEntity {
     @ApiModelProperty(value = "浏览器内核",dataType = "String")
     private String browser;
 
+    @ManyToOne
+    @JoinColumn(name = "ADMIN_ID")
     @ApiModelProperty(value = "操作人",dataType = "number")
     private Admin admin;
 
@@ -65,11 +67,6 @@ public class SysOperLog extends BaseEntity {
     @ApiModelProperty(value = "错误消息",dataType ="String")
     private String errorMsg;
 
-    @ManyToOne
-    @JoinColumn(name = "ADMIN_ID")
-    public Admin getAdmin() {
-        return admin;
-    }
 
     @Transient
     public String getStatusHtml(){
