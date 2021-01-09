@@ -35,6 +35,9 @@ wan:
     support-file-type: bmp,gif,jpg,jpeg,png,doc,docx,xls,xlsx,ppt,pptx,txt,rar,zip,pdf
   redis:
     shiro-time-out: 3600 #shiro redis缓存失效时间
+  setting:
+    email: 1434495271@qq.com
+    err-msg-email-reminder: false
 server:
   port: 8082    #端口号
   servlet:
@@ -42,10 +45,6 @@ server:
   tomcat:
     uri-encoding: utf-8
     max-threads: 500
-
-  file:
-#    path: D:/wan/upload/log         #日志保存路径 path 与name只能设置一个，若只设置path 默认文件名：spring.log
-    name: D:/wan/upload/log/wanlog.log  #日志文件名
 
 #微信公众号开发
 #教程https://mp.weixin.qq.com/debug?token=476802302&lang=zh_CN

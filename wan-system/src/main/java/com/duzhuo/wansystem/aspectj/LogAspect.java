@@ -1,6 +1,7 @@
 package com.duzhuo.wansystem.aspectj;
 
 import com.duzhuo.common.annotation.Log;
+import com.duzhuo.common.config.SettingConfig;
 import com.duzhuo.common.core.EmailSendService;
 import com.duzhuo.common.enums.YesOrNo;
 import com.duzhuo.common.exception.ServiceException;
@@ -45,6 +46,8 @@ public class LogAspect {
     private SysOperLogService sysOperLogService;
     @Resource
     private EmailSendService emailSendService;
+    @Resource
+    private SettingConfig settingConfig;
 
     /**
      * 配置织入点
@@ -122,8 +125,8 @@ public class LogAspect {
                 sysOperLogService.addData(operLog);
             });
             //
-            if (operLog.getHaveException()==YesOrNo.是){
-               // emailSendService.simpleMailSend("1434495271@qq.com","系统错误",operLog.getErrorMsg());
+            if (operLog.getHaveException()==YesOrNo.是 && settingConfig.getErrMsgEmailReminder()){
+                emailSendService.simpleMailSend(settingConfig.getEmail(),"系统错误",operLog.getErrorMsg());
             }
 
         }
