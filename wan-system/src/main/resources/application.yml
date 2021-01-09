@@ -39,7 +39,10 @@ spring:
         enabled: true
     date-format: yyyy-MM-dd
 debug: true
-
+logging:
+  level:
+      org.springframework.boot.autoconfigure: warn
+  config: classpath:loggback.xml
 
 
 

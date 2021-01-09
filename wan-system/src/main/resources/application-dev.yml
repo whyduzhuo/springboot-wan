@@ -42,10 +42,6 @@ server:
   tomcat:
     uri-encoding: utf-8
     max-threads: 500
-logging:
-  level:
-    org.springframework.boot.autoconfigure: warn
-    root: info   #日志级别
 
   file:
 #    path: D:/wan/upload/log         #日志保存路径 path 与name只能设置一个，若只设置path 默认文件名：spring.log

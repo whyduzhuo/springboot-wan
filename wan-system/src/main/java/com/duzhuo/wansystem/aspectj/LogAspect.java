@@ -123,7 +123,7 @@ public class LogAspect {
             });
             //
             if (operLog.getHaveException()==YesOrNo.是){
-                emailSendService.simpleMailSend("1434495271@qq.com","系统错误",operLog.getErrorMsg());
+               // emailSendService.simpleMailSend("1434495271@qq.com","系统错误",operLog.getErrorMsg());
             }
 
         }
