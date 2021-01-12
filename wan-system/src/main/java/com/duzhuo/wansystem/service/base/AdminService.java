@@ -3,6 +3,7 @@ package com.duzhuo.wansystem.service.base;
 import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.core.base.BaseService;
+import com.duzhuo.common.core.del.DeleteService;
 import com.duzhuo.common.enums.IsDelete;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.AdminDao;
@@ -28,7 +29,7 @@ import java.util.Set;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class AdminService extends BaseService<Admin,Long> {
+public class AdminService extends DeleteService<Admin,Long> {
     @Resource
     private AdminDao adminDao;
     @Resource
@@ -109,7 +110,7 @@ public class AdminService extends BaseService<Admin,Long> {
         if (admin==null){
             throw new Exception("用户名或密码错误！");
         }
-        if (admin.getIsDelete()==IsDelete.是){
+        if (admin.getDelTime()!=0L){
             throw new Exception("用户已被禁用！");
         }
         return admin;
@@ -124,8 +125,7 @@ public class AdminService extends BaseService<Admin,Long> {
         if (ShiroUtils.getCurrAdmin().getId().equals(admin.getId())){
             throw new ServiceException("不可禁用自己");
         }
-        admin.setIsDelete(IsDelete.values()[(1-admin.getIsDelete().ordinal())]);
-        super.save(admin);
+        super.delete(admin);
         AdminRealm shiroRealm =ShiroUtils.getShiroRelame();
         shiroRealm.clearCache(admin.getUsername());
     }

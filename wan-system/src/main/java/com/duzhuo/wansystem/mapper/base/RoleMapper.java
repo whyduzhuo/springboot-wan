@@ -27,7 +27,7 @@ public class RoleMapper {
     public Page<Admin> showAdmin(Long roleId, Map<String, Object> searchParams, CustomSearch<Admin> customSearch) {
         StringBuilder sql = new StringBuilder();
 
-        sql.append("select t2.id,T2.USERNAME,T2.REALNAME,T2.IS_DELETE from T_BASE_ADMIN_ROLE t1\n" +
+        sql.append("select t2.id,T2.USERNAME,T2.REALNAME,T2.DEL_TIME from T_BASE_ADMIN_ROLE t1\n" +
                 "left join T_BASE_ADMIN t2 on T1.ADMIN_ID = T2.ID\n" +
                 "where T1.ROLE_ID = ?");
         Long total = jdbcTemplate.queryForObject(SQLUtils.countOracle(sql.toString()), Long.class,roleId);
@@ -37,7 +37,7 @@ public class RoleMapper {
             admin.setId(rs.getLong(1));
             admin.setUsername(rs.getString(2));
             admin.setRealname(rs.getString(3));
-            admin.setIsDelete(IsDelete.values()[rs.getInt(4)]);
+            admin.setDelTime(rs.getLong(4));
             return admin;
         },roleId);
         Pageable pageable = PageRequest.of(customSearch.getPageNumber() - 1, customSearch.getPageSize());

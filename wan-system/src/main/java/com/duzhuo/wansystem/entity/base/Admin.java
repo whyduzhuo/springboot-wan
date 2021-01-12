@@ -3,6 +3,7 @@ package com.duzhuo.wansystem.entity.base;
 import com.duzhuo.common.annotation.Unique;
 import com.duzhuo.common.annotation.UniqueColumn;
 import com.duzhuo.common.core.base.BaseEntity;
+import com.duzhuo.common.core.del.DeleteEntity;
 import com.duzhuo.common.enums.IsDelete;
 import com.duzhuo.common.utils.StringUtils;
 import com.duzhuo.wansystem.service.base.AdminService;
@@ -36,7 +37,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true,exclude = "roleSet")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 @Unique(service = AdminService.class,message = "用户名重复",uniqueColumns = @UniqueColumn("username"))
-public class Admin extends BaseEntity implements Cloneable,Serializable {
+public class Admin extends DeleteEntity implements Cloneable,Serializable {
 
     private static final long serialVersionUID = -6079046386811746580L;
 
@@ -52,10 +53,6 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
     @JsonIgnore
     @ApiModelProperty(value = "密码")
     private String password;
-
-    @NotNull
-    @ApiModelProperty(value = "是否禁用")
-    private IsDelete isDelete = IsDelete.否;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
@@ -87,10 +84,10 @@ public class Admin extends BaseEntity implements Cloneable,Serializable {
 
     @Transient
     public String getIsDeleteHtml(){
-        if (this.isDelete==IsDelete.是){
+        if (super.getDelTime()!=0L){
             return "<span  class=\"label label-danger\">已禁用</span>";
         }
-        if (this.isDelete==IsDelete.否){
+        if (super.getDelTime()==0L){
             return "<span  class=\"label label-success\">正常</span>";
         }
         return "";
