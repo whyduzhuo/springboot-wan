@@ -93,6 +93,8 @@ public class ShiroConfig {
         map.put("/swagger-resources/**", "anon");
         map.put("/favicon.ico","anon");
         map.put("/base/login","anon");
+        map.put("/connect/oauth2/authorize","anon");
+        map.put("/cgi-bin/**","anon");
         map.put(fileVirtualPathPublic+"/**","anon");
         //对所有用户认证
         map.put("/**","authc");

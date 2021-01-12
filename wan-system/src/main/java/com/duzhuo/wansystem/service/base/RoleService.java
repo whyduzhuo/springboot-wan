@@ -2,6 +2,7 @@ package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Filter;
+import com.duzhuo.common.core.base.BaseEntity;
 import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.core.order.OrderService;
 import com.duzhuo.common.exception.ServiceException;
@@ -25,6 +26,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 /**
  * @author: 万宏远
@@ -220,18 +222,43 @@ public class RoleService extends OrderService<Role,Long> {
         Set<Menu> menuList = role.getMenuSet();
         return menuService.buildSelectMenu(allMenuList,menuList);
     }
-
     /**
      * 给角色授予菜单
      * @param roleId 角色id
-     * @param menus 菜单id集合
+     * @param newMenusIds 菜单id集合
      * @return
      */
-    public void grantMenu(Long roleId,Long[] menus) {
-        menuService.delAllMenu(roleId);
-        menuService.grantMenu(roleId,menus);
+    public void grantMenu(Long roleId,Long[] newMenusIds) {
+        Role role = super.find(roleId);
+        List<Long> old = role.getMenuSet().stream().map(BaseEntity::getId).collect(Collectors.toList());
+        List<Long> removeIds = subtract(old,Arrays.asList(newMenusIds));
+        List<Long> addIds = subtract(Arrays.asList(newMenusIds),old);
+        menuService.delMenu(roleId,removeIds);
+        menuService.grantMenu(roleId,addIds);
         AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
         shiroRealm.clearAllCachedAuthorizationInfo();
+    }
+
+    /**
+     * a集合减去b集合
+     * @param a
+     * @param b
+     * @return
+     */
+    public List<Long> subtract(Collection<Long> a,Collection<Long> b){
+        Set<Long> aSet = new HashSet<>(a);
+        aSet.removeIf(aLong ->this.exits(b,aLong));
+        return new ArrayList<>(aSet);
+    }
+
+    public Boolean exits(Collection<Long> list,Long a){
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        list.forEach(l->{
+            if (a.equals(l)){
+                atomicBoolean.set(true);
+            }
+        });
+        return atomicBoolean.get();
     }
 
     /**

@@ -10,10 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author: 万宏远
@@ -360,13 +357,22 @@ public class MenuService extends BaseService<Menu,Long> {
      * @param roleId
      * @param menusId
      */
-    public void grantMenu(Long roleId,Long[] menusId){
+    public void grantMenu(Long roleId,Collection<Long> menusId){
         if (roleId==null) {
             throw new ServiceException("roleId can not be bull");
         }
-        if (menusId!=null && menusId.length>0){
-            Arrays.stream(menusId).forEach(m->grantMenu(roleId,m));
+        if (menusId!=null && menusId.size()>0){
+            menusId.forEach(m->grantMenu(roleId,m));
         }
+    }
+
+    /**
+     * 删除某角色下的菜单
+     * @param roleId
+     * @param menuIds
+     */
+    public void delMenu(Long roleId, Collection<Long> menuIds){
+        menuIds.forEach(menuId->this.delMenu(roleId,menuId));
     }
 
     /**
