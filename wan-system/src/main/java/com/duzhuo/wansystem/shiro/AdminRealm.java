@@ -50,13 +50,12 @@ public class AdminRealm extends AuthorizingRealm {
         // 防止认证缓存问题导致授权不起效果
         admin = adminService.find(admin.getId());
         // 职务列表
-        Set<Role> roleList = admin.getRoleSet();
-        Set<String> roleSet = roleList.stream().map(Role::getName).collect(Collectors.toSet());
+        Set<String> roleSet = admin.getRoleSet().stream().map(Role::getName).collect(Collectors.toSet());
         // 菜单/功能列表
         Set<Menu> menus = new HashSet<>();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //添加菜单
-        roleList.forEach(role -> menus.addAll(role.getMenuSet()));
+        admin.getRoleSet().forEach(role -> menus.addAll(role.getMenuSet()));
         Set<String> permissions = new HashSet<>();
         menus.forEach(m->permissions.add(m.getNum().toString()));
         // 角色加入AuthorizationInfo认证对象，在controller接口加RequiresRoles 就可以用了
