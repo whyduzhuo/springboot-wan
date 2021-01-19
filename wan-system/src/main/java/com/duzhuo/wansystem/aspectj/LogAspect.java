@@ -174,7 +174,7 @@ public class LogAspect {
         String params = JSON.marshal(map);
         operLog.setOperParm(StringUtils.substring(params, 0, 2000));
         operLog.setOs(os);
-        operLog.setOs(browser);
+        operLog.setBrowser(browser);
     }
 
     /**

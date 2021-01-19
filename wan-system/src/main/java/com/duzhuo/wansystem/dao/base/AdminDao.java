@@ -26,12 +26,6 @@ public interface AdminDao extends BaseDao<Admin,Long> {
      *
      * @return
      */
-    Admin findByUsernameAndIsDelete(String username,IsDelete isDelete);
-
-    /**
-     *
-     * @return
-     */
     Admin findByUsername(String username);
 
     /**

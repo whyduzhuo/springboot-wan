@@ -117,7 +117,10 @@ public class RoleController extends BaseController {
     @PostMapping("/grantMenu")
     @RequiresPermissions("100303")
     @ResponseBody
-    public Message grantMenu(Long roleId,@RequestParam(value = "menus[]")Long[] menus){
+    public Message grantMenu(Long roleId,@RequestParam(value = "menus[]",required = false)Long[] menus){
+        if (menus==null){
+            menus = new Long[0];
+        }
         roleService.grantMenu(roleId,menus);
         return Message.success("保存成功！");
     }
