@@ -8,8 +8,10 @@ import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.RedisUtils;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Role;
+import com.duzhuo.wansystem.entity.base.po.AdminPo;
 import com.duzhuo.wansystem.service.base.MenuService;
 import com.duzhuo.wansystem.service.base.RoleService;
+import com.duzhuo.wansystem.service.base.po.AdminPoService;
 import com.duzhuo.wansystem.shiro.AdminRealm;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
 import io.swagger.annotations.Api;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -47,6 +50,8 @@ public class LoginController {
     private RoleService roleService;
     @Resource
     private MenuService menuService;
+    @Resource
+    private AdminPoService adminPoService;
     @Resource
     private RedisKeyTimeOutConfig redisKeyTimeOutConfig;
     @Resource
@@ -73,8 +78,9 @@ public class LoginController {
         try {
             subject.login(token);
             Admin admin =ShiroUtils.getCurrAdmin();
-            Set<Role> roleSet = admin.getRoleSet();
-            if (roleSet.isEmpty()){
+            AdminPo adminPo = adminPoService.find(admin.getId());
+            List<Role> roleList = adminPo.getRoleList();
+            if (roleList.isEmpty()){
                 AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
                 shiroRealm.clearAllCache();
                 subject.logout();

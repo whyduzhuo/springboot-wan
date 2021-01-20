@@ -1,4 +1,4 @@
-package com.duzhuo.wansystem.entity.base;
+package com.duzhuo.wansystem.entity.base.po;
 
 import com.duzhuo.common.annotation.Unique;
 import com.duzhuo.common.annotation.UniqueColumn;
@@ -6,6 +6,7 @@ import com.duzhuo.common.core.base.BaseEntity;
 import com.duzhuo.common.core.del.DeleteEntity;
 import com.duzhuo.common.enums.IsDelete;
 import com.duzhuo.common.utils.StringUtils;
+import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.service.base.AdminService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
@@ -34,10 +35,10 @@ import java.util.Set;
 @Entity
 @ApiModel(value = "用户")
 @Table(name = "T_BASE_ADMIN")
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true,exclude = "roleList")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
 @Unique(service = AdminService.class,message = "用户名重复",uniqueColumns = @UniqueColumn("username"))
-public class Admin extends DeleteEntity implements Cloneable,Serializable {
+public class AdminPo extends DeleteEntity implements Cloneable,Serializable {
 
     private static final long serialVersionUID = -6079046386811746580L;
 
@@ -53,6 +54,29 @@ public class Admin extends DeleteEntity implements Cloneable,Serializable {
     @JsonIgnore
     @ApiModelProperty(value = "密码")
     private String password;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "T_BASE_ADMIN_ROLE",
+            joinColumns = @JoinColumn(name="ADMIN_ID",referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "ROLE_ID",referencedColumnName = "ID")
+    )
+    @ApiModelProperty(value = "全部角色")
+    private List<Role> roleList = new ArrayList<>();
+
+    @Transient
+    private String roleListStr;
+
+
+    @Transient
+    public String getRoleListStr(){
+        if (this.getRoleList().isEmpty()){
+            return "无";
+        }
+        List<String> stringList = new ArrayList<>();
+        roleList.forEach(r-> stringList.add(r.getName()));
+        return StringUtils.listToString(stringList,",");
+    }
 
     @Transient
     public String getIsDeleteHtml(){

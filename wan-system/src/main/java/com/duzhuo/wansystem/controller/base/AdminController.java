@@ -13,9 +13,11 @@ import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
+import com.duzhuo.wansystem.entity.base.po.AdminPo;
 import com.duzhuo.wansystem.service.base.AdminService;
 import com.duzhuo.wansystem.service.base.MenuService;
 import com.duzhuo.wansystem.service.base.RoleService;
+import com.duzhuo.wansystem.service.base.po.AdminPoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +45,8 @@ public class AdminController extends BaseController {
     @Resource
     private AdminService adminService;
     @Resource
+    private AdminPoService adminPoService;
+    @Resource
     private MenuService menuService;
     @Resource
     private RedisUtils redisUtils;
@@ -54,12 +58,12 @@ public class AdminController extends BaseController {
     @Log(title = "用户列表",operateType = OperateType.SELECT)
     @GetMapping("/list")
     @ApiOperation(value = "用户列表")
-    public String list(HttpServletRequest request, CustomSearch<Admin> customSearch, Model model){
+    public String list(HttpServletRequest request, CustomSearch<AdminPo> customSearch, Model model){
         CommonUtil.initPage(request,customSearch);
         Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,SEARCH_PREFIX);
         super.searchParamsTrim(searchParams);
         customSearch.getOrders().add(Sort.Order.asc(DeleteEntity.DEL_TIME_PROPERTY_NAME));
-        customSearch.setPagedata(adminService.search(searchParams,customSearch));
+        customSearch.setPagedata(adminPoService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
         model.addAttribute("searchParams",mapKeyAddPre(searchParams, SEARCH_PREFIX));
         return "/base/admin/list";
@@ -125,10 +129,10 @@ public class AdminController extends BaseController {
     @ApiOperation(value = "查询用户菜单")
     @GetMapping("/menuList")
     public String menuList(@RequestParam("id") Long id,Model model){
-        Admin admin = adminService.find(id);
-        Set<Role> roleSet = admin.getRoleSet();
-        model.addAttribute("admin",admin);
-        model.addAttribute("roleList",roleSet);
+        AdminPo adminPo = adminPoService.find(id);
+        List<Role> roleList = adminPo.getRoleList();
+        model.addAttribute("admin",adminPo);
+        model.addAttribute("roleList",roleList);
         return "/base/admin/showMenus";
     }
 
@@ -151,9 +155,9 @@ public class AdminController extends BaseController {
     @GetMapping("/getRolesMenu")
     @ResponseBody
     public Message getRolesMenu(Long adminId){
-        Admin admin = adminService.find(adminId);
-        Set<Role> roleSet = admin.getRoleSet();
-        List<Ztree> ztreeList = roleService.findMenuTree(roleSet);
+        AdminPo adminPo = adminPoService.find(adminId);
+        List<Role> roleList = adminPo.getRoleList();
+        List<Ztree> ztreeList = roleService.findMenuTree(roleList);
         return Message.success(ztreeList);
     }
 
@@ -161,20 +165,20 @@ public class AdminController extends BaseController {
     @ApiOperation("显示用户的角色")
     @GetMapping("/showRoles")
     public String showRoles(Long id,Model model,String name){
-        Admin admin = adminService.find(id);
+        AdminPo adminPo = adminPoService.find(id);
         List<Filter> filters = new ArrayList<>();
         if (StringUtils.isNotBlank(name)){
             filters.add(Filter.eq("name",name));
         }
         List<Role> roleList = roleService.searchList(filters);
         roleList.forEach(r->{
-            boolean b = roleService.in(admin.getRoleSet(),r);
+            boolean b = roleService.in(adminPo.getRoleList(),r);
             if (b){
                 r.setChecked(true);
             }
         });
         model.addAttribute("roleList",roleList);
-        model.addAttribute("admin",admin);
+        model.addAttribute("admin",adminPo);
         model.addAttribute("name",name);
         return "/base/admin/showRoles";
     }

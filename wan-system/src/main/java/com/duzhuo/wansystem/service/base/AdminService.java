@@ -8,6 +8,8 @@ import com.duzhuo.wansystem.dao.base.AdminDao;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
+import com.duzhuo.wansystem.entity.base.po.AdminPo;
+import com.duzhuo.wansystem.service.base.po.AdminPoService;
 import com.duzhuo.wansystem.shiro.AdminRealm;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -31,6 +33,8 @@ import java.util.Set;
 public class AdminService extends DeleteService<Admin,Long> {
     @Resource
     private AdminDao adminDao;
+    @Resource
+    private AdminPoService adminPoService;
     @Resource
     private RoleService roleService;
     @Resource
@@ -138,8 +142,8 @@ public class AdminService extends DeleteService<Admin,Long> {
      * @return
      */
     public void grantRoles(Long adminId, Long[] roleIds) {
-        Admin admin = super.find(adminId);
-        roleService.delRole(admin.getRoleSet(),adminId);
+        AdminPo adminPo = adminPoService.find(adminId);
+        roleService.delRole(adminPo.getRoleList(),adminId);
         roleService.addRole(roleIds,adminId);
     }
 
@@ -173,11 +177,12 @@ public class AdminService extends DeleteService<Admin,Long> {
         if (roleId != null) {
             return roleService.find(roleId);
         }
-        Set<Role> roleSet = admin.getRoleSet();
-        if (roleSet.isEmpty()){
+        AdminPo adminPo = adminPoService.find(admin.getId());
+        List<Role> roleList = adminPo.getRoleList();
+        if (roleList.isEmpty()){
             throw new ServiceException("无角色信息！");
         }
-        Role role = roleSet.iterator().next();
+        Role role = roleList.iterator().next();
         adminDao.addDefaultRole(admin.getId(),role.getId());
         return role;
     }

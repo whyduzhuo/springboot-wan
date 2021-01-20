@@ -3,7 +3,6 @@ package com.duzhuo.wansystem.service.base;
 import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.base.BaseEntity;
-import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.core.order.OrderService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.RoleDao;
@@ -16,9 +15,6 @@ import com.duzhuo.wansystem.mapper.base.RoleMapper;
 import com.duzhuo.wansystem.service.base.po.RolePoService;
 import com.duzhuo.wansystem.shiro.AdminRealm;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.mgt.RealmSecurityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -276,12 +272,12 @@ public class RoleService extends OrderService<Role,Long> {
     /**
      * 查询每个角色的菜单
      * 不去重
-     * @param roleSet
+     * @param roleList
      * @return
      */
-    public List<Ztree> findMenuTree(Set<Role> roleSet) {
+    public List<Ztree> findMenuTree(List<Role> roleList) {
         List<Ztree> ztreeList = new ArrayList<>();
-        roleSet.forEach(r->{
+        roleList.forEach(r->{
             RolePo rolePo = rolePoService.getRolePo(r);
             List<Menu> menuList = rolePo.getMenuList();
             menuList.forEach(m->{

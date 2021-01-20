@@ -5,10 +5,12 @@ import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
+import com.duzhuo.wansystem.entity.base.po.AdminPo;
 import com.duzhuo.wansystem.entity.base.po.RolePo;
 import com.duzhuo.wansystem.service.base.AdminService;
 import com.duzhuo.wansystem.service.base.MenuService;
 import com.duzhuo.wansystem.service.base.RoleService;
+import com.duzhuo.wansystem.service.base.po.AdminPoService;
 import com.duzhuo.wansystem.service.base.po.RolePoService;
 import freemarker.core.Environment;
 import freemarker.template.*;
@@ -33,6 +35,8 @@ public class MenuDirective implements TemplateDirectiveModel {
     @Resource
     private AdminService adminService;
     @Resource
+    private AdminPoService adminPoService;
+    @Resource
     private HttpServletRequest request;
     @Resource
     private MenuService menuService;
@@ -48,8 +52,8 @@ public class MenuDirective implements TemplateDirectiveModel {
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
         Admin admin = adminService.getCurrent();
         if (admin!=null){
-            Role role = admin.getRole();
-
+            AdminPo adminPo = adminPoService.find(admin.getId());
+            Role role = adminService.getCurrRole(admin);
             RolePo rolePo = rolePoService.getRolePo(role);
             List<Menu> menuList = rolePo.getMenuList().stream().sorted().collect(Collectors.toList());
             menuList.removeIf(r->r.getType()== Menu.TypeEnum.按钮);
