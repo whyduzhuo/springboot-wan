@@ -11,7 +11,9 @@ import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
+import com.duzhuo.wansystem.entity.base.po.RolePo;
 import com.duzhuo.wansystem.mapper.base.RoleMapper;
+import com.duzhuo.wansystem.service.base.po.RolePoService;
 import com.duzhuo.wansystem.shiro.AdminRealm;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -44,6 +46,8 @@ public class RoleService extends OrderService<Role,Long> {
     private MenuService menuService;
     @Resource
     private AdminService adminService;
+    @Resource
+    private RolePoService rolePoService;
 
     @Resource
     public void setBaseDao(RoleDao roleDao){
@@ -199,29 +203,29 @@ public class RoleService extends OrderService<Role,Long> {
         return roleDao.countByMenu(roleId).intValue();
     }
 
-    /**
-     * 获取该角色有多少菜单--将按钮剔除
-     * @param roles
-     * @return
-     */
-    public List<Menu> getMenus(Collection<Role> roles){
-        Set<Menu> menuSet = new HashSet<>();
-        roles.forEach(r->menuSet.addAll(r.getMenuSet()));
-        menuSet.removeIf(r->r.getType()==Menu.TypeEnum.按钮);
-        return new ArrayList<>(menuSet);
-    }
 
     /**
-     * 根据劫色获取菜单树
+     * 根据角色获取菜单树
      * @param id
      * @return
      */
     public List<Ztree> getMenuTree(Long id) {
-        Role role = super.find(id);
+        RolePo rolePo = rolePoService.find(id);
         List<Menu> allMenuList = menuService.findAll(Sort.by(Sort.Direction.ASC,"order"));
-        Set<Menu> menuList = role.getMenuSet();
+        List<Menu> menuList = rolePo.getMenuList();
         return menuService.buildSelectMenu(allMenuList,menuList);
     }
+
+    /**
+     * 角色获取菜单
+     * @param id
+     * @return
+     */
+    public List<Menu> getMenu(Long id) {
+        RolePo rolePo = rolePoService.find(id);
+        return rolePo.getMenuList();
+    }
+
     /**
      * 给角色授予菜单
      * @param roleId 角色id
@@ -229,8 +233,8 @@ public class RoleService extends OrderService<Role,Long> {
      * @return
      */
     public void grantMenu(Long roleId,Long[] newMenusIds) {
-        Role role = super.find(roleId);
-        List<Long> old = role.getMenuSet().stream().map(BaseEntity::getId).collect(Collectors.toList());
+        RolePo rolePo = rolePoService.find(roleId);
+        List<Long> old = rolePo.getMenuList().stream().map(BaseEntity::getId).collect(Collectors.toList());
         List<Long> removeIds = subtract(old,Arrays.asList(newMenusIds));
         List<Long> addIds = subtract(Arrays.asList(newMenusIds),old);
         menuService.delMenu(roleId,removeIds);
@@ -270,7 +274,7 @@ public class RoleService extends OrderService<Role,Long> {
     }
 
     /**
-     * 查询每个橘色的菜单
+     * 查询每个角色的菜单
      * 不去重
      * @param roleSet
      * @return
@@ -278,9 +282,10 @@ public class RoleService extends OrderService<Role,Long> {
     public List<Ztree> findMenuTree(Set<Role> roleSet) {
         List<Ztree> ztreeList = new ArrayList<>();
         roleSet.forEach(r->{
-            Set<Menu> menuSet = r.getMenuSet();
-            menuSet.forEach(m->{
-                Ztree ztree=menuService.menuToTree(m);
+            RolePo rolePo = rolePoService.getRolePo(r);
+            List<Menu> menuList = rolePo.getMenuList();
+            menuList.forEach(m->{
+                Ztree ztree=menuService.toTree(m);
                 ztree.setRoleId(r.getId());
                 ztreeList.add(ztree);
             });

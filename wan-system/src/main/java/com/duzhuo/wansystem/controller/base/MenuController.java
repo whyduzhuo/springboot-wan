@@ -51,7 +51,7 @@ public class MenuController extends BaseController {
     @ResponseBody
     public Message getNode(){
         List<Menu> menus = menuService.findAll(Sort.by(Sort.Direction.ASC,"order"));
-        List<Ztree> data = menuService.buildTree(menus);
+        List<Ztree> data = menuService.toTree(menus);
         return Message.success(data);
     }
 
@@ -80,7 +80,7 @@ public class MenuController extends BaseController {
     @ResponseBody
     public Message addData(Menu menuVO){
         menuService.addData(menuVO);
-        return Message.success("添加成功！",menuService.menuToTree(menuVO));
+        return Message.success("添加成功！",menuService.toTree(menuVO));
     }
 
     @Log(title = "新增菜单",operateType = OperateType.SELECT)

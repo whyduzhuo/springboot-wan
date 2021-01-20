@@ -18,6 +18,7 @@ import org.crazycake.shiro.RedisCacheManager;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,28 +42,44 @@ public class AdminRealm extends AuthorizingRealm {
     @Resource
     private RedisUtils redisUtils;
 
-    /**
-     * 授权
-     */
+//    /**
+//     * 授权
+//     */
+//    @Override
+//    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
+//        Admin admin = ShiroUtils.getCurrAdmin();
+//        // 防止认证缓存问题导致授权不起效果
+//        admin = adminService.find(admin.getId());
+//        // 职务列表
+//        Set<String> roleSet = admin.getRoleSet().stream().map(Role::getName).collect(Collectors.toSet());
+//        // 菜单/功能列表
+//        Set<Menu> menus = new HashSet<>();
+//        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+//        //添加菜单
+//        admin.getRoleSet().forEach(role -> menus.addAll(role.getMenuSet()));
+//        Set<String> permissions = new HashSet<>();
+//        menus.forEach(m->permissions.add(m.getNum().toString()));
+//        // 角色加入AuthorizationInfo认证对象，在controller接口加RequiresRoles 就可以用了
+//        info.setRoles(roleSet);
+//        // 权限加入AuthorizationInfo认证对象,在controller接口加RequiresPermissions 就可以用了
+//        info.setStringPermissions(permissions);
+//
+//        return info;
+//    }
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
         Admin admin = ShiroUtils.getCurrAdmin();
-        // 防止认证缓存问题导致授权不起效果
-        admin = adminService.find(admin.getId());
+        // 获取当前登录的角色
+        Role role = adminService.getCurrRole(admin);
         // 职务列表
-        Set<String> roleSet = admin.getRoleSet().stream().map(Role::getName).collect(Collectors.toSet());
+        List<Menu> menuList = roleService.getMenu(role.getId());
         // 菜单/功能列表
-        Set<Menu> menus = new HashSet<>();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        //添加菜单
-        admin.getRoleSet().forEach(role -> menus.addAll(role.getMenuSet()));
-        Set<String> permissions = new HashSet<>();
-        menus.forEach(m->permissions.add(m.getNum().toString()));
         // 角色加入AuthorizationInfo认证对象，在controller接口加RequiresRoles 就可以用了
-        info.setRoles(roleSet);
+        info.addRole(role.getName());
         // 权限加入AuthorizationInfo认证对象,在controller接口加RequiresPermissions 就可以用了
-        info.setStringPermissions(permissions);
-
+        menuList.forEach(r->info.addStringPermission(r.getNum().toString()));
         return info;
     }
 

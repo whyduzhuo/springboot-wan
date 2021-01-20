@@ -4,6 +4,7 @@ import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.MenuDao;
 import com.duzhuo.wansystem.dto.Ztree;
+import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -190,16 +191,6 @@ public class MenuService extends BaseService<Menu,Long> {
         return menuDao.haveChriden(parendId).compareTo(BigDecimal.ZERO)>0;
     }
 
-    /**
-     * 创建菜单树--根据自己已有的菜单
-     * @param menus
-     * @return
-     */
-    public List<Menu> buildMenu(List<Menu> menus){
-        List<Menu> menuList = this.findRoot(menus);
-        menuList.forEach(m->m.setChildren(findChird(m,menus)));
-        return menuList;
-    }
 
     /**
      * 找根节点
@@ -224,29 +215,6 @@ public class MenuService extends BaseService<Menu,Long> {
         return menuDao.findByParentIsNullOrderByOrder();
     }
 
-    /**
-     * 找儿子,找到之后移除
-     * @param menu
-     * @param menus
-     * @return
-     */
-    public List<Menu> findChird(Menu menu,List<Menu> menus){
-        List<Menu> menuList = new ArrayList<>();
-        if (menus.isEmpty()){
-            return menuList;
-        }
-        for (Menu m : menus) {
-            if (m.getParent() == null || !m.getParent().getId().equals(menu.getId())) {
-                continue;
-            }
-            if (m.getType() == Menu.TypeEnum.页面) {
-                menuList.add(m);
-            } else if (m.getType() == Menu.TypeEnum.目录) {
-                m.setChildren(findChird(m, menus));
-            }
-        }
-        return menuList;
-    }
 
     /**
      * 将菜单转tree对象
@@ -254,7 +222,7 @@ public class MenuService extends BaseService<Menu,Long> {
      * @param menu
      * @return
      */
-    public Ztree menuToTree(Menu menu){
+    public Ztree toTree(Menu menu){
         Ztree ztree = new Ztree();
         ztree.setId(menu.getId());
         ztree.setName(menu.getName());
@@ -275,42 +243,13 @@ public class MenuService extends BaseService<Menu,Long> {
     }
 
     /**
-     * 可勾选
-     * @param menu
-     * @param menuSet，已勾选的菜单
-     * @return
-     */
-    private Ztree menuToTree(Menu menu,Set<Menu> menuSet){
-        Ztree ztree = new Ztree();
-        ztree.setId(menu.getId());
-        ztree.setName(menu.getName());
-        ztree.setPid(menu.getParent()==null?null:menu.getParent().getId());
-        ztree.setTitle(menu.getRemark());
-        ztree.setNum(menu.getNum().toString());
-        ztree.setOpen(true);
-        ztree.setNocheck(false);
-        ztree.setOrders(menu.getOrder());
-        if (menu.getType()==Menu.TypeEnum.按钮){
-            ztree.setIcon(Ztree.BUTTON_ICON);
-        }
-        if (menu.getType()==Menu.TypeEnum.页面){
-            ztree.setIcon(Ztree.PAGE_ICON);
-        }
-        ztree.setType(menu.getType().toString());
-        if (menuSet.contains(menu)){
-            ztree.setChecked(true);
-        }
-        return ztree;
-    }
-
-    /**
      * 将menus转ztree对象
      * @param menus
      * @return
      */
-    public List<Ztree> buildTree(List<Menu> menus) {
+    public List<Ztree> toTree(List<Menu> menus) {
         List<Ztree> ztreeList = new ArrayList<>();
-        menus.forEach(m->ztreeList.add(menuToTree(m)));
+        menus.forEach(m->ztreeList.add(toTree(m)));
         return ztreeList;
     }
 
@@ -325,13 +264,13 @@ public class MenuService extends BaseService<Menu,Long> {
     /**
      * 创建菜单树
      * @param allMenuList 全部菜单
-     * @param menuSet 已勾选菜单
+     * @param menuList 已勾选菜单
      * @return
      */
-    public List<Ztree> buildSelectMenu(List<Menu> allMenuList, Set<Menu> menuSet) {
-        List<Ztree> ztreeList = new ArrayList<>();
-        allMenuList.forEach(m->ztreeList.add(this.menuToTree(m,menuSet)));
-        return ztreeList;
+    public List<Ztree> buildSelectMenu(List<Menu> allMenuList, List<Menu> menuList) {
+        List<Ztree> allMenuListTree = this.toTree(allMenuList);
+        List<Ztree> menuListTree = this.toTree(menuList);
+        return Ztree.buildTree(allMenuListTree,menuListTree);
     }
 
     /**
@@ -411,5 +350,14 @@ public class MenuService extends BaseService<Menu,Long> {
      */
     public List<Menu> getAllParent(Long menuId){
         return menuDao.getAllParent(menuId);
+    }
+
+    /**
+     * 查询某个用户的全部菜单
+     * @param admin
+     * @return
+     */
+    public List<Menu> getMenuList(Admin admin) {
+        return menuDao.getMenuList(admin);
     }
 }

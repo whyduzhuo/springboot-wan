@@ -60,7 +60,7 @@ public class Admin extends DeleteEntity implements Cloneable,Serializable {
             joinColumns = @JoinColumn(name="ADMIN_ID",referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID",referencedColumnName = "ID")
     )
-    @ApiModelProperty(value = "全部职务")
+    @ApiModelProperty(value = "全部角色")
     private Set<Role> roleSet = new HashSet<>();
 
     @Transient

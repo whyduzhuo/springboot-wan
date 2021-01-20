@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /**
@@ -86,7 +87,7 @@ public class Ztree implements Serializable,Comparable<Ztree>{
      * @param ztrees
      * @return
      */
-    public static List<Ztree> assembleTree(Collection<Ztree> ztrees){
+    public static List<Ztree> buildTree(Collection<Ztree> ztrees){
         List<Ztree> all = ztrees.stream().distinct().sorted().collect(Collectors.toList());
         List<Ztree> ztreeList = new ArrayList<>();
         Ztree.assembleTree(null,ztreeList,all);
@@ -109,6 +110,38 @@ public class Ztree implements Serializable,Comparable<Ztree>{
             }
         });
     }
+
+
+    /**
+     * 带勾选框的树形结构
+     * @param allZtrees 全部节点
+     * @param checkedZtrees checkedZtrees 已勾选的节点
+     * @return
+     */
+    public static List<Ztree> buildTree(Collection<Ztree> allZtrees,Collection<Ztree> checkedZtrees){
+        List<Ztree> all = allZtrees.stream().distinct().sorted().collect(Collectors.toList());
+        allZtrees.forEach(a->a.setChecked(Ztree.checked(a,checkedZtrees)));
+        List<Ztree> ztreeList = new ArrayList<>();
+        Ztree.assembleTree(null,ztreeList,all);
+        return ztreeList;
+    }
+
+    /**
+     * 判断某个节点是否被选中
+     * @param ztree
+     * @param checkedZtrees
+     * @return
+     */
+    public static boolean checked(Ztree ztree,Collection<Ztree> checkedZtrees){
+        AtomicBoolean b = new AtomicBoolean(false);
+        checkedZtrees.forEach(c->{
+            if (ztree.getId().equals(c.getId())){
+                b.set(true);
+            }
+        });
+        return b.get();
+    }
+
 
 
 }

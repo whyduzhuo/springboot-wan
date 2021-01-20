@@ -1,24 +1,22 @@
 package com.duzhuo.wansystem.freemarker.template;
 
-import com.duzhuo.common.config.Global;
-import com.duzhuo.common.config.RedisKeyTimeOutConfig;
 import com.duzhuo.common.utils.RedisUtils;
 import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
+import com.duzhuo.wansystem.entity.base.po.RolePo;
 import com.duzhuo.wansystem.service.base.AdminService;
 import com.duzhuo.wansystem.service.base.MenuService;
 import com.duzhuo.wansystem.service.base.RoleService;
+import com.duzhuo.wansystem.service.base.po.RolePoService;
 import freemarker.core.Environment;
 import freemarker.template.*;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,6 +39,8 @@ public class MenuDirective implements TemplateDirectiveModel {
     @Resource
     private RoleService roleService;
     @Resource
+    private RolePoService rolePoService;
+    @Resource
     private RedisUtils redisUtils;
     private static String imgTag = "<img src='/static/img/menu.png'/>";
 
@@ -49,11 +49,12 @@ public class MenuDirective implements TemplateDirectiveModel {
         Admin admin = adminService.getCurrent();
         if (admin!=null){
             Role role = admin.getRole();
-            role = roleService.find(role.getId());
-            List<Menu> menuList = role.getMenuSet().stream().sorted().collect(Collectors.toList());
+
+            RolePo rolePo = rolePoService.getRolePo(role);
+            List<Menu> menuList = rolePo.getMenuList().stream().sorted().collect(Collectors.toList());
             menuList.removeIf(r->r.getType()== Menu.TypeEnum.按钮);
-            List<Ztree> ztreeList = menuService.buildTree(menuList);
-            List<Ztree> ztrees = Ztree.assembleTree(ztreeList);
+            List<Ztree> ztreeList = menuService.toTree(menuList);
+            List<Ztree> ztrees = Ztree.buildTree(ztreeList);
             StringBuilder html = new StringBuilder();
             buildHtml(html,ztrees);
             DefaultObjectWrapperBuilder builder = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_29);

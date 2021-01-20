@@ -1,5 +1,10 @@
 package com.duzhuo.wansystem.test;
 
+import org.apache.shiro.codec.Base64;
+
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,9 +27,10 @@ public class Mytest {
      * 李四：13
      * @param args
      */
-    public static void main(String[] args){
-        String a = "15079185135".substring(6);
-        System.err.println(a);
+    public static void main(String[] args) throws NoSuchAlgorithmException {
+        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        SecretKey deskey = keygen.generateKey();
+        System.out.println(Base64.encodeToString(deskey.getEncoded()));
 
     }
 

@@ -2,12 +2,11 @@ package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
-import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.core.del.DeleteService;
-import com.duzhuo.common.enums.IsDelete;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.AdminDao;
 import com.duzhuo.wansystem.entity.base.Admin;
+import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.shiro.AdminRealm;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
@@ -34,6 +33,8 @@ public class AdminService extends DeleteService<Admin,Long> {
     private AdminDao adminDao;
     @Resource
     private RoleService roleService;
+    @Resource
+    private MenuService menuService;
 
     @Resource
     public void setBaseDao(AdminDao adminDao){
@@ -125,7 +126,7 @@ public class AdminService extends DeleteService<Admin,Long> {
         if (ShiroUtils.getCurrAdmin().getId().equals(admin.getId())){
             throw new ServiceException("不可禁用自己");
         }
-        super.delete(admin);
+        super.openClose(admin);
         AdminRealm shiroRealm =ShiroUtils.getShiroRelame();
         shiroRealm.clearCache(admin.getUsername());
     }
@@ -179,5 +180,13 @@ public class AdminService extends DeleteService<Admin,Long> {
         Role role = roleSet.iterator().next();
         adminDao.addDefaultRole(admin.getId(),role.getId());
         return role;
+    }
+
+    /**
+     * 查询某个用户的全部菜单
+     * @return
+     */
+    public List<Menu> getMenuList(Admin admin){
+        return menuService.getMenuList(admin);
     }
 }

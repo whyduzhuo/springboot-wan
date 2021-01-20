@@ -1,6 +1,7 @@
 package com.duzhuo.wansystem.dao.base;
 
 import com.duzhuo.common.core.base.BaseDao;
+import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -104,4 +105,17 @@ public interface MenuDao extends BaseDao<Menu,Long> {
      */
     @Query(value = "SELECT * FROM T_BASE_MENU START WITH ID = ? CONNECT BY PRIOR PARENT_ID = ID order by num asc",nativeQuery = true)
     List<Menu> getAllParent(Long menuId);
+
+    /**
+     * 查询某个用户的全部菜单
+     * @param admin
+     * @return
+     */
+    @Query(value = "SELECT t.* FROM T_BASE_MENU t WHERE ID IN (\n" +
+            "SELECT t2.MENU_ID from T_BASE_ROLE_MENU t2 WHERE t2.ROLE_ID IN (\n" +
+            "SELECT t3.ROLE_ID FROM T_BASE_ADMIN_ROLE t3 WHERE t3.ADMIN_ID=?1\n" +
+            ")\n" +
+            ")\n" +
+            "ORDER BY t.ORDERS ASC ",nativeQuery = true)
+    List<Menu> getMenuList(Admin admin);
 }

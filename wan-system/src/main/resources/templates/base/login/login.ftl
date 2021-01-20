@@ -36,7 +36,7 @@
 
             <div class="col-xs-12 col-md-12">
                 <label class="">是否记住<span class="text-danger">*</span></label>
-                <input class="form-control" name="rememberMe" value="false">
+                <input class="form-control" name="rememberMe" value="true">
             </div>
             <div class="col-xs-12 col-md-12" style="text-align: center">
                 <button type="button" class="btn btn-success" style="width: 100%;margin-top: 20px;" onclick="login()">登录</button>

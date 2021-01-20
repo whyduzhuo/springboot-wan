@@ -86,7 +86,7 @@ public class OrganizationService extends DelOrderService<Organization,Long> {
      * @return
      */
     public List<Ztree> getAllEnableTree(){
-        return Ztree.assembleTree(buildTree(getAllEnable()));
+        return Ztree.buildTree(toTree(getAllEnable()));
     }
 
     /**
@@ -94,7 +94,7 @@ public class OrganizationService extends DelOrderService<Organization,Long> {
      * @param organizations
      * @return
      */
-    public List<Ztree> buildTree(Collection<Organization> organizations) {
+    public List<Ztree> toTree(Collection<Organization> organizations) {
         List<Ztree> ztreeList = new ArrayList<>();
         List<Organization> organizationList = new ArrayList<>(organizations);
         Collections.sort(organizationList);

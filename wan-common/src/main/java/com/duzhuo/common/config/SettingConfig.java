@@ -1,5 +1,7 @@
 package com.duzhuo.common.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "wan.setting")
+@Getter
+@Setter
 public class SettingConfig {
     /**
      * 是否开启错误信息邮件提醒
@@ -20,20 +24,9 @@ public class SettingConfig {
      * 错误消息接收邮箱
      */
     private String email;
+    /**
+     * cookie 记住认证信息的密钥
+     */
+    private String cipherKey;
 
-    public Boolean getErrMsgEmailReminder() {
-        return errMsgEmailReminder;
-    }
-
-    public void setErrMsgEmailReminder(Boolean errMsgEmailReminder) {
-        this.errMsgEmailReminder = errMsgEmailReminder;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

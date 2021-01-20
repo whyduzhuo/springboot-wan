@@ -4,6 +4,7 @@ import com.duzhuo.common.annotation.Unique;
 import com.duzhuo.common.annotation.UniqueColumn;
 import com.duzhuo.common.core.order.OrderEntity;
 import com.duzhuo.common.enums.YesOrNo;
+import com.duzhuo.wansystem.entity.base.po.RolePo;
 import com.duzhuo.wansystem.service.base.MenuService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
@@ -98,9 +99,9 @@ public class Menu extends OrderEntity implements Serializable {
     private String remark;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "menuSet")
+    @ManyToMany(mappedBy = "menuList")
     @ApiModelProperty(value = "拥有此菜单的全部职务")
-    private List<Role> roleList = new ArrayList<>();
+    private List<RolePo> roleList = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "parent")

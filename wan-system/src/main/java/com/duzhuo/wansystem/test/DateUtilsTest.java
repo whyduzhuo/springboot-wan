@@ -1,6 +1,8 @@
 package com.duzhuo.wansystem.test;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.time.DateUtils;
+
+import java.text.ParseException;
 
 /**
  * @author: 万宏远
@@ -10,6 +12,11 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 public class DateUtilsTest {
     public static void main(String[] args) {
-        System.err.println(DigestUtils.md5Hex("wanhy123456"));
+        try {
+            DateUtils.parseDate("20:00","HH:m0");
+            System.err.println("success");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

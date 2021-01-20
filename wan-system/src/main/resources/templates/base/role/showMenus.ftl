@@ -40,20 +40,18 @@
     buildTree();
 
     function buildTree() {
-        var trees =[];
+        var zNodes=[];
         $.ajax({
             url:"getMenuTree?id=${data.id}",
             type: "get",
             async:false,
             success:function (message) {
-                trees = message.data;
+                zNodes = message.data;
             },
             error:function (e) {
 
             }
         });
-        var zNodes=[];
-        pushChildren(zNodes,null,trees);
         zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
     }
 

@@ -52,4 +52,21 @@ public class DeleteService<T extends DeleteEntity, ID extends Serializable> exte
         list.forEach(this::delete);
     }
 
+    /**
+     * 恢复
+     * @param entity
+     */
+    public void recovery(T entity) {
+        entity.setDelTime(0L);
+        super.update(entity);
+    }
+
+    public void openClose(T entity){
+        if (entity.getDelTime()==0L){
+            this.delete(entity);
+        }else {
+            this.recovery(entity);
+        }
+    }
+
 }

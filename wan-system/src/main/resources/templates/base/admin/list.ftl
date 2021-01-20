@@ -52,7 +52,7 @@
                                     角色列表
                                 </button>
                                 <@shiro.hasPermission name="100400">
-                                <#if data.isDelete=='否'>
+                                <#if data.delTime==0>
                                     <button type="button" onclick="remove(${data.id},'禁用')" class="btn btn-xs btn-danger">
                                         禁用
                                     </button>

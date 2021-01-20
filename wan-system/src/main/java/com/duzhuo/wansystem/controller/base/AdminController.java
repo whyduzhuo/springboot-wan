@@ -5,6 +5,7 @@ import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.core.base.BaseController;
+import com.duzhuo.common.core.del.DeleteEntity;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.common.utils.RedisUtils;
@@ -57,7 +58,7 @@ public class AdminController extends BaseController {
         CommonUtil.initPage(request,customSearch);
         Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,SEARCH_PREFIX);
         super.searchParamsTrim(searchParams);
-        customSearch.getOrders().add(Sort.Order.asc("isDelete"));
+        customSearch.getOrders().add(Sort.Order.asc(DeleteEntity.DEL_TIME_PROPERTY_NAME));
         customSearch.setPagedata(adminService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
         model.addAttribute("searchParams",mapKeyAddPre(searchParams, SEARCH_PREFIX));
@@ -138,11 +139,11 @@ public class AdminController extends BaseController {
     public Message getMenuTree(@RequestParam("id") Long id){
         List<Menu> allMenuList = menuService.findAll(Sort.by(Sort.Direction.ASC,"order"));
         Admin admin = adminService.find(id);
-        Set<Role> roleList = admin.getRoleSet();
-        Set<Menu> menuSet = new HashSet<>();
-        roleList.forEach(r->menuSet.addAll(r.getMenuSet()));
-        List<Ztree> ztreeList = menuService.buildSelectMenu(allMenuList,menuSet);
-        return Message.success(ztreeList);
+        List<Menu> menuList = adminService.getMenuList(admin);
+        List<Ztree> allMenuListTree = menuService.toTree(allMenuList);
+        List<Ztree> menuListTree = menuService.toTree(menuList);
+        List<Ztree> result = Ztree.buildTree(allMenuListTree,menuListTree);
+        return Message.success(result);
     }
 
     @Log(title = "查询用户下每个角色的菜单",operateType = OperateType.SELECT)
