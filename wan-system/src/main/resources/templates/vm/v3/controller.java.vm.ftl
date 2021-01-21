@@ -25,7 +25,7 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping("/grid/spec/aids_person")
+@RequestMapping("${data.uri}")
 public class Grid${data.entityName}Controller extends BaseController {
 
     @Resource

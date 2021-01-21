@@ -72,6 +72,10 @@
                     <input class="form-control" name="email" id="email" placeholder="1434495271@qq.com" value="1434495271@qq.com">
                 </div>
                 <div class="col-xs-12 col-md-12">
+                    <label class="">uri<span class="text-danger">*</span></label>
+                    <input class="form-control" name="uri" id="uri"  placeholder="uri" value="/base/music">
+                </div>
+                <div class="col-xs-12 col-md-12">
                     <label class="">业务名<span class="text-danger">*</span></label>
                     <input class="form-control" name="module" id="module"  placeholder="音乐" value="音乐">
                 </div>

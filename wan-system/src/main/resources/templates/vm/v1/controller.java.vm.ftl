@@ -28,7 +28,7 @@ import java.util.Map;
  * @date: ${data.createDateStr}
  */
 @Controller
-@RequestMapping("/admin/${data.lowEntityName}")
+@RequestMapping("${data.uri}")
 public class ${data.entityName}Controller extends BaseController{
    private static final Logger logger = LoggerFactory.getLogger(${data.entityName}Controller.class);
 

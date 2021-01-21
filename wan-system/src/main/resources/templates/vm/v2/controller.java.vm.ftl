@@ -25,7 +25,7 @@ import java.util.Map;
  * @date: ${data.createDateStr}
  */
 
-@RequestMapping("/grid/${data.lowEntityName}")
+@RequestMapping("${data.uri}")
 @RestController
 @Api(value = "${data.module}")
 public class ${data.entityName}Controller extends BaseController {

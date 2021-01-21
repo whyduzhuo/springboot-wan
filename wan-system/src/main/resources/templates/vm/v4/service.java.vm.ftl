@@ -39,11 +39,10 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}, L
      * @param ${data.lowEntityName}VO
      * @return
      */
-    public Message addData(${data.entityName} ${data.lowEntityName}VO) {
+    public void addData(${data.entityName} ${data.lowEntityName}VO) {
         super.validation(${data.lowEntityName}VO);
         this.check(${data.lowEntityName}VO);
         super.save(${data.lowEntityName}VO);
-        return Message.success("添加成功!");
     }
 
 
@@ -52,12 +51,11 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}, L
      * @param ${data.lowEntityName}VO
      * @return
      */
-    public Message edit(${data.entityName} ${data.lowEntityName}VO) {
+    public void edit(${data.entityName} ${data.lowEntityName}VO) {
         super.validation(${data.lowEntityName}VO);
         this.check(${data.lowEntityName}VO);
         ${data.entityName} ${data.lowEntityName} = super.find(${data.lowEntityName}VO.getId());
         super.update(${data.lowEntityName});
-        return Message.success("修改成功!");
     }
 
     /**
@@ -65,11 +63,10 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}, L
      * @param id
      * @return
      */
-    public Message del(Long id) {
+    public void del(Long id) {
         if (id==null){
             throw new ServiceException("请选择数据！");
         }
         super.delete(id);
-        return Message.success("删除成功！");
     }
 }

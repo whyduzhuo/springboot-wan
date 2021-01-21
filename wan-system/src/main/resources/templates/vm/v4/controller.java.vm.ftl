@@ -24,7 +24,7 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping("**")
+@RequestMapping("${data.uri}")
 public class ${data.entityName}Controller extends BaseController {
 
     @Resource
@@ -53,14 +53,6 @@ public class ${data.entityName}Controller extends BaseController {
         return "";
     }
 
-    @RequiresPermissions("1")
-    @Log(title = "编辑${data.module}窗口",operateType = OperateType.SELECT)
-    @ApiOperation(value = "编辑${data.module}窗口")
-    @GetMapping("/editWin")
-    public String editWin(Model model,Long id){
-         model.addAttribute("data",${data.lowEntityName}Service.find(id));
-        return "";
-    }
 
     @RequiresPermissions("1")
     @Log(title = "新增${data.module}",operateType = OperateType.INSERT)
@@ -68,7 +60,17 @@ public class ${data.entityName}Controller extends BaseController {
     @PostMapping("/addData")
     @ResponseBody
     public Message addData(${data.entityName} ${data.lowEntityName}VO){
-        return ${data.lowEntityName}Service.addData(${data.lowEntityName}VO);
+        ${data.lowEntityName}Service.addData(${data.lowEntityName}VO);
+        return Message.success("添加成功！");
+    }
+
+    @RequiresPermissions("1")
+    @Log(title = "编辑${data.module}窗口",operateType = OperateType.SELECT)
+    @ApiOperation(value = "编辑${data.module}窗口")
+    @GetMapping("/editWin")
+    public String editWin(Model model,Long id){
+        model.addAttribute("data",${data.lowEntityName}Service.find(id));
+        return "";
     }
 
     @RequiresPermissions("1")
@@ -77,7 +79,8 @@ public class ${data.entityName}Controller extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public Message edit(${data.entityName} ${data.lowEntityName}VO){
-        return ${data.lowEntityName}Service.edit(${data.lowEntityName}VO);
+        ${data.lowEntityName}Service.edit(${data.lowEntityName}VO);
+        return Message.success("修改成功！");
     }
 
     @RequiresPermissions("1")
@@ -86,7 +89,8 @@ public class ${data.entityName}Controller extends BaseController {
     @ResponseBody
     @PostMapping("/del")
     public Message del(Long id){
-        return ${data.lowEntityName}Service.del(id);
+        ${data.lowEntityName}Service.del(id);
+        return Message.success("删除成功！");
     }
 
 }

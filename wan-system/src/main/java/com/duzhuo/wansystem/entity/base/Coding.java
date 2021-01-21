@@ -54,6 +54,9 @@ public class Coding extends BaseEntity{
     @ApiModelProperty(value = "dao包名")
     private String daopackage;
 
+    @ApiModelProperty(value = "URI")
+    private String uri;
+
 //------------------ filed not in table -------------
     @Transient
     @ApiModelProperty(value = "类名")
