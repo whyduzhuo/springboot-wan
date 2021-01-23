@@ -6,6 +6,7 @@ import com.duzhuo.common.core.Message;
 import com.duzhuo.common.core.base.BaseController;
 import com.duzhuo.common.core.order.OrderEntity;
 import com.duzhuo.common.enums.OperateType;
+import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Role;
@@ -75,6 +76,9 @@ public class RoleController extends BaseController {
     @GetMapping("/editWin")
     public String editWin(Long id,Model model){
         Role role = roleService.find(id);
+        if (role.getType()==Role.TypeEnum.固定角色){
+            throw new ServiceException("固定角色，不可修改！");
+        }
         model.addAttribute("data",role);
         return "/base/role/edit";
     }

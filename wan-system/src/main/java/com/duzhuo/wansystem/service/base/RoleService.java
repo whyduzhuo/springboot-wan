@@ -163,6 +163,10 @@ public class RoleService extends OrderService<Role,Long> {
      */
     @Override
     public void delete(Long id){
+        Role role = super.find(id);
+        if (role.getType()==Role.TypeEnum.固定角色){
+            throw new ServiceException("固定角色，不可删除！");
+        }
         if (this.countByRoleNumber(id)>0){
             throw new ServiceException("请先移除所有人！");
         }
