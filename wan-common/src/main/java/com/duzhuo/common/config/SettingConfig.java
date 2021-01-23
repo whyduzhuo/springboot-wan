@@ -29,4 +29,9 @@ public class SettingConfig {
      */
     private String cipherKey;
 
+    /**
+     * 系统名称
+     */
+    private String name;
+
 }

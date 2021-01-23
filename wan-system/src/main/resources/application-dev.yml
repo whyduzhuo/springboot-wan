@@ -36,10 +36,13 @@ wan:
   redis:
     shiro-time-out: 3600 #shiro redis缓存失效时间
   setting:
+    name: springboot-wan
     email: 1434495271@qq.com
     err-msg-email-reminder: false
+    cipher-key: 0RU6J7R8QhqqO1SE4oF1kA==
+
 server:
-  port: 8082    #端口号
+  port: 8083    #端口号
   servlet:
     context-path: /
   tomcat:

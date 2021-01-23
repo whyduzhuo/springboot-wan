@@ -24,14 +24,13 @@
 
 
 	<modules>
-		<module>wan-admin</module>
 		<module>wan-system</module>
 		<module>wan-common</module>
 	</modules>
 
     <repositories>
         <repository>
-            <id>com.e-iceblue</id>
+            <id>com.e-iceblue</id>lang
             <name>e-iceblue</name>
             <url>http://repo.e-iceblue.com/nexus/content/groups/public/</url>
         </repository>
@@ -122,7 +121,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.4</version>
+            <version>3.5</version>
         </dependency>
         <!--shiro安全框架-->
         <dependency>

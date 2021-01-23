@@ -43,6 +43,7 @@ logging:
   level:
       org.springframework.boot.autoconfigure: warn
   config: classpath:loggback.xml
-
+server:
+  max-http-header-size: 65546
 
 

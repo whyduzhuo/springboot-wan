@@ -65,9 +65,7 @@
         }
         var data = $('#dataForm').serialize();
         ajaxPost(url,data,function (res) {
-            if(url=='addData'){
-                window.parent.addMenu(res.data);
-            }
+            window.parent.location.reload();
             closeLayer();
         });
     }

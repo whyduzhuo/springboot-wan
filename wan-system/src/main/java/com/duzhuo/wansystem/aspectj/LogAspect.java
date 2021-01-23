@@ -126,7 +126,7 @@ public class LogAspect {
             });
             //
             if (operLog.getHaveException()==YesOrNo.是 && settingConfig.getErrMsgEmailReminder()){
-                emailSendService.simpleMailSend(settingConfig.getEmail(),"系统错误",operLog.getErrorMsg());
+                emailSendService.simpleMailSend(settingConfig.getEmail(),settingConfig.getName()+"系统错误",operLog.getErrorMsg());
             }
 
         }

@@ -236,6 +236,7 @@ public class MenuService extends BaseService<Menu,Long> {
         }
         if (menu.getType()==Menu.TypeEnum.页面){
             ztree.setIcon(Ztree.PAGE_ICON);
+            ztree.setOpen(false);
         }
         ztree.setUrlPath(menu.getPath());
         ztree.setType(menu.getType().toString());
