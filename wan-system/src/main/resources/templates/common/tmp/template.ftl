@@ -6,7 +6,7 @@
         <div class="col-sm-7">
             <h1 class="page-heading">
                 ${navName2}
-                <a class="content-header-btn" href="javascript:window.location.reload()"><i class="fa fa-refresh"></i>
+                <a class="btn btn-xs btn-info" href="javascript:window.location.reload()"><i class="fa fa-refresh"></i>
                     刷新</a>
             </h1>
         </div>
