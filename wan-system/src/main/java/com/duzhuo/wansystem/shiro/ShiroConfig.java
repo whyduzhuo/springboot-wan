@@ -1,6 +1,6 @@
 package com.duzhuo.wansystem.shiro;
 
-import com.lowagie.text.pdf.codec.Base64;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -103,7 +103,7 @@ public class ShiroConfig {
         //首页
         shiroFilterFactoryBean.setSuccessUrl("/base/index");
         //错误页面，认证不通过跳转
-        shiroFilterFactoryBean.setUnauthorizedUrl("/base/index");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/base/login");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;
     }

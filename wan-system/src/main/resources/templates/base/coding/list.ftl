@@ -100,6 +100,7 @@
                     <button type="button" class="btn btn-primary" onclick="save('v2')">乡镇平台saas</button>
                     <button type="button" class="btn btn-primary" onclick="save('v3')">乡镇平台saas2</button>
                     <button type="button" class="btn btn-primary" onclick="save('v4')">本项目</button>
+                    <button type="button" class="btn btn-primary" onclick="save('v5')">民政</button>
                     <button type="button" class="btn btn-success" onclick="addData()">保存数据库</button>
                 </div>
             </div>
@@ -252,6 +253,7 @@
                 $("#controllerpackage").val(data.controllerpackage);
                 $("#servicepackage").val(data.servicepackage);
                 $("#daopackage").val(data.daopackage);
+                $("#uri").val(data.uri);
             },
             error:function (XMLHttpRequest) {
                 layer.closeAll("loading");

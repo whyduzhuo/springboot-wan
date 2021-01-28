@@ -62,9 +62,9 @@ public class LoginController {
     @GetMapping("/login")
     public String login(){
         Admin admin = ShiroUtils.getCurrAdmin();
-        if (admin!=null){
-            return "redirect:/base/index";
-        }
+//        if (admin!=null){
+//            return "redirect:/base/index";
+//        }
         return "/base/login/login";
     }
 
