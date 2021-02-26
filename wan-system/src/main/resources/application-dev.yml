@@ -58,6 +58,13 @@ server:
 # access_token是公众号的凭证，有效期2小时，需要定时刷新
 #
 wan-oauth:
-  wechart-appid: wxc64be930f85801c2
-  wechart-secret: 59daaee2149a269e4def5aa1be898bf2
+  wechart-appid: wx9e25e5433e58242a
+  wechart-secret: eab3d7fc4002b849113ec1c4b2fc80bc
+  wx-snsapi-base: snsapi_userinfo
+  wx-state: STATE
+  wx-connect-oath2-authorize-url: https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s&connect_redirect=1#wechat_redirect
+  wx-get-token-url: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
+  request-url: http://wanhongyuan.test.utools.club/api/wechat/userinfo
+  user-token: https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
+  user-info: https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
 

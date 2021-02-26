@@ -35,6 +35,7 @@ public class Ztree implements Serializable,Comparable<Ztree>{
      *
      */
     public static final String DICT_ICON = "";
+    private static final long serialVersionUID = 594486531697963903L;
 
     @ApiModelProperty(value = "id")
     private Long id;

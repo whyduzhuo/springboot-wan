@@ -62,6 +62,11 @@
                                     </button>
                                 </#if>
                                 </@shiro.hasPermission>
+                                <@shiro.hasPermission name="100404">
+                                <button type="button" onclick="resetPasswordWin(${data.id})" class="btn btn-xs btn-primary">
+                                    修改密码
+                                </button>
+                                </@shiro.hasPermission>
                             </div>
                         </td>
                     </tr>
@@ -123,6 +128,61 @@
             maxmin: true,
             area: ['600px', '90%'],
             content: 'showRoles?id='+id
+        });
+    }
+</script>
+<!-- 编辑/新增结点对话框 -->
+<div class="modal fade" id="modal-add" tabindex="-1" data-backdrop="static" role="dialog" aria-hidden="true" style="display: none;position: absolute">
+    <div class="modal-dialog  modal-dialog-popin" style="min-width: 400px;max-width: 600px;">
+        <div class="modal-content">
+            <div class="block block-themed block-transparent remove-margin-b">
+                <div class="block-header bg-info" style="background-color: #1c8eb9">
+                    <ul class="block-options">
+                        <li>
+                            <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
+                        </li>
+                    </ul>
+                    <h3 class="block-title">重置密码</h3>
+                </div>
+                <div class="block-content">
+                    <form class="form-horizontal push-10-t" method="post" onsubmit="return false;" id="dataForm"
+                          style="margin: 0 auto;position: relative;">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label for="password">新密码<span class="text-danger">*</span></label>
+                                <input class="form-control" type="password"  name="password">
+                                <input id="adminId" type="hidden" name="adminId">
+                            </div>
+                            <div class="col-xs-12">
+                                <label for="password">确认密码<span class="text-danger">*</span></label>
+                                <input class="form-control" type="password"  name="repassword">
+                            </div>
+                        </div>
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">
+                                &times;
+                            </button>提示：密码至少输入6位,修改密码之后，用户登录失效
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-default" type="button" data-dismiss="modal">关闭</button>
+                <button class="btn btn-sm btn-primary" id="addNodeButton" type="button" onclick="resetPassword()"><i class="fa fa-check"></i> 提交
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function resetPasswordWin(id) {
+        $('#adminId').val(id);
+        $('#modal-add').modal('show')
+    }
+    function resetPassword() {
+        ajaxPost("resetPassword",$('#dataForm').serialize(),function () {
+            $('#modal-add').modal('hide');
         });
     }
 </script>

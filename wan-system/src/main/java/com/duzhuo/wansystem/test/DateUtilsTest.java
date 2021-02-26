@@ -11,12 +11,13 @@ import java.text.ParseException;
  */
 
 public class DateUtilsTest {
-    public static void main(String[] args) {
-        try {
-            DateUtils.parseDate("20:00","HH:m0");
-            System.err.println("success");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args) throws ParseException {
+        Type type = Type.valueOf("哈德");
+        System.err.print(type);
+    }
+
+    public enum Type{
+        哈哈,
+        呵呵
     }
 }

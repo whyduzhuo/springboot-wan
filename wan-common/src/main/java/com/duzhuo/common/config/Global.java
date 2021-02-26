@@ -8,4 +8,5 @@ package com.duzhuo.common.config;
 
 public class Global {
 
+    public static String WX_TOKEN_REDIS_KEY = "access_token";
 }

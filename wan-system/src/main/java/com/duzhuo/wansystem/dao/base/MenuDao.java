@@ -118,4 +118,19 @@ public interface MenuDao extends BaseDao<Menu,Long> {
             ")\n" +
             "ORDER BY t.ORDERS ASC ",nativeQuery = true)
     List<Menu> getMenuList(Admin admin);
+
+
+    /**
+     * 根据菜单编号查询菜单
+     * @param num
+     * @return
+     */
+    Menu findByNum(Long num);
+
+    /**
+     * 查询直系子节点
+     * @param id
+     * @return
+     */
+    List<Menu> findByParentId(Long id);
 }

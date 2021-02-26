@@ -133,4 +133,18 @@ public class MenuController extends BaseController {
         Menu menu = menuService.find(id);
         return Message.success(menu);
     }
+
+    /**
+     * 进入页面组
+     * @param num
+     * @return
+     */
+    @GetMapping("/menuGroup")
+    public String menuGroup(Long num,Model model){
+        Menu menu = menuService.findByNum(num);
+        List<Menu> menuList = menuService.getChildren(menu.getId());
+        model.addAttribute("menuList",menuList);
+        model.addAttribute("menu",menu);
+        return "/base/menu/menuGroup";
+    }
 }

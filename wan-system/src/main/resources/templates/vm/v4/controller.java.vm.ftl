@@ -22,7 +22,7 @@ import java.util.Map;
  * @author: ${data.author}
  * @date: ${data.createDateStr}
  */
-
+@Api(value = "${data.module}")
 @Controller
 @RequestMapping("${data.uri}")
 public class ${data.entityName}Controller extends BaseController {

@@ -37,6 +37,20 @@ import java.util.List;
 @Unique(service = MenuService.class,message = "菜单编号重复",uniqueColumns = {@UniqueColumn("num")})
 @Unique(service = MenuService.class,message = "菜单排序重复",uniqueColumns = {@UniqueColumn("parent"),@UniqueColumn("order")})
 public class Menu extends OrderEntity implements Serializable {
+    /**
+     * 按钮图标
+     */
+    public static final String BUTTON_ICON = "/static/zTree_v3-master/css/zTreeStyle/img/diy/10.png";
+    /**
+     * 菜单图标
+     */
+    public static final String PAGE_ICON = "/static/zTree_v3-master/css/zTreeStyle/img/diy/2.png";
+
+    /**
+     * 菜单图标
+     */
+    public static final String PAGE_GROUP_ICON = "/static/zTree_v3-master/css/zTreeStyle/img/diy/11.png";
+
 
     private static final long serialVersionUID = -1674442746152794678L;
 
@@ -63,6 +77,10 @@ public class Menu extends OrderEntity implements Serializable {
          *
          */
         按钮,
+        /**
+         * 页面组内可以添加页面，默认url = /base/menu/menuGroup?num=#num
+         */
+        页面组,
     }
 
     @NotBlank(message = "菜单名不能为空")

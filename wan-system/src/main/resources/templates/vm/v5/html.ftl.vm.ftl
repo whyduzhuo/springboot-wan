@@ -16,7 +16,7 @@
         <div class="panel panel-default">
             <div class="panel-body" style="padding-top: 0px">
             <div class="pageConsoleBox" style="background: #fff;padding-top: 10px">
-             <#noparse><@listpageHead isShowDeleteBtn=false iframeWidth='60%' iframeHeight="90%"></#noparse>
+             <#noparse><@listpageHead  showAddBtnName='新增' isShowSearch=true isShowDeleteBtn=true isShowAddBtn=true isImportBtn=false isExportBtn=false exportUrl="exportExcel" importUrl="importExcel" addUrl="edit" iframeWidth="95%" iframeHeight="98%"></#noparse>
                 <input type="text" class="form-control input-sm" name="search_like_name"
                        placeholder="姓名">
             <#noparse></@listpageHead></#noparse>
@@ -39,7 +39,7 @@
 <#noparse></@pageFoot></#noparse>
 
 
-<#noparse><@pageList></#noparse>
+<#noparse><@pageList listApi = "getList"></#noparse>
 
     <script type="text/html" id="editTpl">
         <span class="btn btn-xs btn-info btn-custom" lay-event="edit"><i class="fa fa-edit"></i> 编辑</span>

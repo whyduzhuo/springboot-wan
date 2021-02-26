@@ -44,6 +44,9 @@ public class MenuService extends BaseService<Menu,Long> {
             Long num = this.createId(menuVO.getParent());
             menuVO.setNum(num);
         }
+        if (menuVO.getType()==Menu.TypeEnum.页面组){
+            menuVO.setPath("/base/menu/menuGroup?num="+menuVO.getNum());
+        }
         super.validation(menuVO);
         this.check(menuVO);
         super.save(menuVO);
@@ -234,6 +237,9 @@ public class MenuService extends BaseService<Menu,Long> {
         if (menu.getType()==Menu.TypeEnum.按钮){
             ztree.setIcon(Ztree.BUTTON_ICON);
         }
+        if (menu.getType()==Menu.TypeEnum.页面组){
+            ztree.setIcon(Menu.PAGE_GROUP_ICON);
+        }
         if (menu.getType()==Menu.TypeEnum.页面){
             ztree.setIcon(Ztree.PAGE_ICON);
             ztree.setOpen(false);
@@ -360,5 +366,23 @@ public class MenuService extends BaseService<Menu,Long> {
      */
     public List<Menu> getMenuList(Admin admin) {
         return menuDao.getMenuList(admin);
+    }
+
+
+    /**
+     *
+     * @param num
+     */
+    public Menu findByNum(Long num) {
+        return menuDao.findByNum(num);
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public List<Menu> getChildren(Long id) {
+        return menuDao.findByParentId(id);
     }
 }

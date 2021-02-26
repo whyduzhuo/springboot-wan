@@ -73,11 +73,14 @@
             background-color: #d9edf7;
             border-color: #bce8f1;
         }
+        .layui-col-space15{
+            margin: 0px
+        }
     </style>
 </head>
 <@adminPageNav navName1='首页' navName2=''/>
 <body class="timo-layout-page">
-<div class="layui-row layui-col-space15">
+<div class="layui-row layui-col-space15" >
     <div class="layui-col-md3 layui-col-sm6 layui-col-xs12">
         <div class="widget-small widget-user">
             <i class="icon fa fa-users fa-3x"></i>

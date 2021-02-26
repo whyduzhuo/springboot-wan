@@ -106,7 +106,7 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}Map
 
     /**
     * ${data.module}--下载导入模板
-    * @param ids
+    * @param response
     * @return
     */
     public void downloadTemplate(HttpServletResponse response) throws IOException {
@@ -122,7 +122,7 @@ public class ${data.entityName}Service extends BaseService<${data.entityName}Map
 
     /**
     * ${data.module}--数据导入
-    * @param ids
+    * @param file
     * @return
     */
     public ApproveResult importData(MultipartFile file, Boolean isUpload) throws IOException {

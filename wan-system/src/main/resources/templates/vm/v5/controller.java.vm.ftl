@@ -24,7 +24,7 @@ import java.util.Map;
  * @author: ${data.author}
  * @date: ${data.createDateStr}
  */
-
+@Api(value = "${data.module}")
 @Controller
 @RequestMapping("${data.uri}")
 public class ${data.entityName}Controller extends BaseController {
@@ -32,6 +32,14 @@ public class ${data.entityName}Controller extends BaseController {
     @Resource
     private ${data.entityName}Service ${data.lowEntityName}Service;
 
+    @ApiOperation(value = "${data.module}--页面")
+    @PermissionAnt("")
+    @GetMapping("/list")
+    public String list(){
+        return "/admin_tmpl${data.uri}/list";
+    }
+
+    @ApiOperation(value = "${data.module}--数据分页")
     @PermissionAnt("")
     @ResponseBody
     @PostMapping(value = "/getList")
@@ -41,16 +49,7 @@ public class ${data.entityName}Controller extends BaseController {
         return new TableListResult<>(page);
     }
 
-    /**
-    * 页面
-    * @return
-    */
-    @PermissionAnt("")
-    @GetMapping("/list")
-    public String list(){
-        return "/admin_tmpl${data.uri}/list";
-    }
-
+    @ApiOperation(value = "${data.module}--新增窗口")
     @GetMapping("/addWin")
     public String addWin(Model model){
         ${data.entityName}Dto ${data.lowEntityName}Dto = new ${data.entityName}Dto();
@@ -58,14 +57,15 @@ public class ${data.entityName}Controller extends BaseController {
         return "/admin_tmpl${data.uri}/addWin";
     }
 
+    @ApiOperation(value = "${data.module}--编辑窗口")
     @GetMapping("/editWin")
     public String editWin(Long id,Model model){
-        ${data.entityName}Dto  ${data.lowEntityName}Dto = ${data.lowEntityName}Service.getById(id);
+        ${data.entityName}Dto  ${data.lowEntityName}Dto = ${data.lowEntityName}Service.findDtoById(id);
         model.addAttribute("data",${data.lowEntityName}Dto);
         return "/admin_tmpl${data.uri}/editWin";
     }
 
-
+    @ApiOperation(value = "${data.module}--新增")
     @ResponseBody
     @PostMapping("/add")
     public ApiResult add(${data.entityName} ${data.lowEntityName}VO){
@@ -73,6 +73,7 @@ public class ${data.entityName}Controller extends BaseController {
         return ApiResult.success("保存成功！");
     }
 
+    @ApiOperation(value = "${data.module}--修改")
     @ResponseBody
     @PostMapping("/edit")
     public ApiResult edit(${data.entityName} ${data.lowEntityName}VO){
@@ -80,7 +81,7 @@ public class ${data.entityName}Controller extends BaseController {
         return ApiResult.success("保存成功！");
     }
 
-
+    @ApiOperation(value = "${data.module}--删除")
     @ResponseBody
     @PostMapping("/delete")
     public ApiResult del(Long id){
@@ -88,13 +89,13 @@ public class ${data.entityName}Controller extends BaseController {
         return ApiResult.success("删除成功！");
     }
 
-    @ApiOperation(value = "下载导入模板")
+    @ApiOperation(value = "${data.module}--下载导入模板")
     @GetMapping("/downloadTemplate")
         public void downloadTemplate(HttpServletResponse response) throws IOException {
         ${data.lowEntityName}Service.downloadTemplate(response);
     }
 
-    @ApiOperation(value = "数据导入")
+    @ApiOperation(value = "${data.module}--数据导入")
     @PostMapping(value = "/importData")
     @ResponseBody
     public ApiResult importData(Boolean isUpload, MultipartFile file) throws Exception {

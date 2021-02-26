@@ -96,6 +96,7 @@ public class ShiroConfig {
         map.put("/connect/oauth2/authorize","anon");
         map.put("/cgi-bin/**","anon");
         map.put(fileVirtualPathPublic+"/**","anon");
+        map.put("/api/wechat/**","anon");
         //对所有用户认证
         map.put("/**","authc");
         //登录
