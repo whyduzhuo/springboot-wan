@@ -94,7 +94,7 @@ public class ShiroConfig {
         map.put("/favicon.ico","anon");
         map.put("/base/login","anon");
         map.put("/connect/oauth2/authorize","anon");
-        map.put("/cgi-bin/**","anon");
+        map.put("/kaptcha/**","anon");
         map.put(fileVirtualPathPublic+"/**","anon");
         map.put("/api/wechat/**","anon");
         //对所有用户认证

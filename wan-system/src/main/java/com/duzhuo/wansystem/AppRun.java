@@ -1,5 +1,6 @@
 package com.duzhuo.wansystem;
 
+import org.activiti.spring.boot.SecurityAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -22,7 +23,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @author 万宏远
  */
 @EnableSwagger2
-@SpringBootApplication(exclude = { DataSourceAutoConfiguration.class})
+@SpringBootApplication(exclude = { DataSourceAutoConfiguration.class, SecurityAutoConfiguration.class,org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class})
 @ComponentScan(value = {"com.duzhuo.wansystem","com.duzhuo.common"})
 @EnableJpaRepositories(entityManagerFactoryRef = "entityManageFactoryPrimary", transactionManagerRef = "transactionManagerPrimary",basePackages = {"com.duzhuo.wansystem.dao"})
 @EntityScan(value = {"com.duzhuo.wansystem.entity"})

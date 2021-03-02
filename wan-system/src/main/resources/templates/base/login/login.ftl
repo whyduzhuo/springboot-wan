@@ -33,7 +33,16 @@
                 <label class="">密码<span class="text-danger">*</span></label>
                 <input class="form-control" name="password" value="123456">
             </div>
-
+            <div class="col-xs-12 col-md-12">
+                <label>验证码</label>
+                <input type="hidden" id="key" name="kaptchaKey">
+                <div>
+                    <div style="width: 50%;display: inline-block">
+                        <input class="form-control" placeholder="请输入验证码" name="kaptchaValInput">
+                    </div>
+                    <img onclick="reloadKaptcha()" title="换一张" id="kaptcha" src="">
+                </div>
+            </div>
             <div class="col-xs-12 col-md-12">
                 <label class="">是否记住<span class="text-danger">*</span></label>
                 <input class="form-control" name="rememberMe" value="true">
@@ -56,9 +65,34 @@
                     if (res.type=='SUCCESS'){
                         window.location.href="index";
                     }else {
-                        layer.msg(res.msg, {icon: res.icon, time: 1000,skin:'.demo-class'})
+                        layer.msg(res.msg, {icon: res.icon, time: 1000,skin:'.demo-class'});
+                        setTimeout(function () {
+                            reloadKaptcha();
+                        },1500)
                     }
 
+                }
+            })
+        }
+
+        reloadKaptcha();
+        function reloadKaptcha() {
+            layer.load();
+            $.ajax({
+                url: "/kaptcha/kaptcha",
+                type: "get",
+                success :function (res) {
+                    layer.closeAll("loading");
+                    if (res.type=='SUCCESS'){
+                        console.log(res);
+                        $("#key").val(res.data.key);
+                        $("#kaptcha").attr("src",res.data.img);
+                    }else {
+                        layer.msg(res.msg, {icon: res.icon, time: 1000,skin:'.demo-class'})
+                    }
+                },
+                error:function () {
+                    layer.closeAll("loading");
                 }
             })
         }

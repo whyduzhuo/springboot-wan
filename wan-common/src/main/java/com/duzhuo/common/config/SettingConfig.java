@@ -20,6 +20,11 @@ public class SettingConfig {
      * 是否开启错误信息邮件提醒
      */
     private Boolean errMsgEmailReminder;
+
+    /**
+     * 错误信息邮件标题
+     */
+    private String errMsgEmailTitle;
     /**
      * 错误消息接收邮箱
      */

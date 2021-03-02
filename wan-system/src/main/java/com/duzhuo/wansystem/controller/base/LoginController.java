@@ -72,7 +72,15 @@ public class LoginController {
     @ApiOperation(value = "登录系统")
     @PostMapping("/login")
     @ResponseBody
-    public Message login(String username, String password, Boolean rememberMe, HttpServletRequest request) {
+    public Message login(String username, String password, Boolean rememberMe, String kaptchaKey, String kaptchaValInput ) {
+        //校验验证码是否正确
+        if (StringUtils.isBlank(kaptchaValInput)){
+            return Message.warn("请输入验证码");
+        }
+        String kaptchaVal = redisUtils.get(kaptchaKey).toString();
+        if (!kaptchaValInput.equalsIgnoreCase(kaptchaVal)){
+            return Message.warn("验证码不正确");
+        }
         UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
         Subject subject = SecurityUtils.getSubject();
         try {
