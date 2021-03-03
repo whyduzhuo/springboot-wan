@@ -15,6 +15,7 @@
         <div class="col-xs-12 col-md-4">
             <label for="column2">部门<span class="text-danger">*</span></label>
             <select class="form-control" name="column2" id="column2">
+                <option value="" disabled selected hidden>请选择</option>
                 <#noparse><#list  statusList as status></#noparse>
                 <option value="<#noparse>${status}</#noparse>"  <#noparse><#if data.column2 == status></#noparse>selected<#noparse></#if></#noparse>><#noparse>${status}</#noparse></option>
                 <#noparse></#list></#noparse>
@@ -25,14 +26,16 @@
             <label for="column3">选择3<span class="text-danger">*</span></label>
             <div class="exp_column">
                 <label class="css-input css-checkbox css-checkbox-primary">
-                <input type="radio" name="column3" value="是" <#noparse><#if data.column3 == '是'></#noparse>checked<#noparse></#if></#noparse> /><span></span>
-                </label>是
+                    <input type="radio" name="column3" value="是" <#noparse><#if data.column3 == '是'></#noparse>checked<#noparse></#if></#noparse> /><span></span>
+                    是
+                </label>
             </div>
 
             <div class="exp_column">
                 <label class="css-input css-checkbox css-checkbox-primary">
-                <input type="radio" name="column3" value="否" <#noparse><#if data.column3 == '否'></#noparse>checked<#noparse></#if></#noparse> /><span></span>
-                </label>否
+                    <input type="radio" name="column3" value="否" <#noparse><#if data.column3 == '否'></#noparse>checked<#noparse></#if></#noparse> /><span></span>
+                    否
+                </label>
             </div>
 
         </div>
@@ -41,7 +44,7 @@
             <textarea style="width: 100%;height: 150px;resize: none" class="form-control" id="column4"
                       name="column4"><#noparse>${data.column4}</#noparse></textarea>
         </div>
-
+        <div class="col-xs-12 col-md-4" style="height: 60px;"></div>
         <div class="edit-win-foot">
             <button type="button" class="btn btn-success" onclick="save()">保存</button>
             <button type="button" class="btn btn-default" onclick="closeLayer()">关闭</button>
