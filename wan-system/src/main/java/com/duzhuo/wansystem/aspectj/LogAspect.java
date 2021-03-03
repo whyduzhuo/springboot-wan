@@ -126,7 +126,9 @@ public class LogAspect {
             });
             //
             if (operLog.getHaveException()==YesOrNo.是 && settingConfig.getErrMsgEmailReminder()){
-                emailSendService.simpleMailSend(settingConfig.getEmail(),settingConfig.getName()+settingConfig.getErrMsgEmailTitle(),operLog.getErrorMsg());
+                threadPoolService.execute(()->{
+                    emailSendService.simpleMailSend(settingConfig.getEmail(),settingConfig.getName()+settingConfig.getErrMsgEmailTitle(),operLog.getErrorMsg());
+                });
             }
 
         }
