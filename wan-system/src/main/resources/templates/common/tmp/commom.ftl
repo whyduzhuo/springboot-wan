@@ -283,4 +283,7 @@
         layer.msg(msg);
     }
 
+    $(document).on("click","#selectAll", function () {
+        $("#listTable").find("input[name='ids']:enabled").prop("checked",this.checked);
+    });
 </script>
