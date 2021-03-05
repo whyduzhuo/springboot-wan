@@ -36,7 +36,7 @@
                 <tr>
                     <td>
                         <label class="css-input css-checkbox css-checkbox-primary remove-padding remove-margin">
-                            <input type="checkbox" name="ids" <#if data.type=="固定角色">disabled</#if> <#if data.checked>checked</#if> value="${data.id}"/><span></span>
+                            <input type="checkbox" name="ids"  <#if data.checked>checked</#if> value="${data.id}"/><span></span>
                         </label>
                     </td>
                     <td>${data.name}</td>
