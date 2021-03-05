@@ -63,7 +63,7 @@
                 success :function (res) {
                     layer.closeAll("loading");
                     if (res.type=='SUCCESS'){
-                        window.location.href="index";
+                        window.top.location.href="index";
                     }else {
                         layer.msg(res.msg, {icon: res.icon, time: 1000,skin:'.demo-class'});
                         setTimeout(function () {
