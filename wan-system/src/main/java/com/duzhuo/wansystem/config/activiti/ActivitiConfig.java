@@ -27,12 +27,15 @@ public class ActivitiConfig {
     }
 
     @Bean
-    public SpringProcessEngineConfiguration springProcessEngineConfiguration() {
+    public SpringProcessEngineConfiguration processEngineConfiguration() {
         SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
         configuration.setDataSource(dataSource);
         configuration.setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
         configuration.setJobExecutorActivate(true);
         configuration.setTransactionManager(transactionManager());
+        configuration.setActivityFontName("宋体");
+        configuration.setAnnotationFontName("宋体");
+        configuration.setLabelFontName("宋体");
         return configuration;
     }
 }

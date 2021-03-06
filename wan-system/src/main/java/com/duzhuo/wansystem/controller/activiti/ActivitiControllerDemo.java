@@ -2,14 +2,11 @@ package com.duzhuo.wansystem.controller.activiti;
 
 import com.duzhuo.common.core.Message;
 import org.activiti.engine.*;
-import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskInfo;
-import org.activiti.spring.ProcessEngineFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Controller;
@@ -17,7 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -37,10 +36,10 @@ public class ActivitiControllerDemo {
     private ProcessEngine processEngine;
     /**
      * 流程管理定义 服务类
-     * ACT_GE_BYTEARRAY
-     * ACT_RE_DEPLOYMENT
+     * ACT_GE_BYTEARRAY 字节文件表
+     * ACT_RE_DEPLOYMENT 流程部署表
      * ACT_RE_MODEL
-     * ACT_RE_PROCDEF
+     * ACT_RE_PROCDEF 流程定义表
      */
     @Autowired
     private RepositoryService repositoryService;
@@ -126,5 +125,19 @@ public class ActivitiControllerDemo {
 
         return Message.success("");
     }
+
+    /**
+     * 流程部署
+     * @return
+     */
+    @GetMapping("/deployProcess")
+    @ResponseBody
+    public Message deployProcess(){
+        repositoryService.createDeployment().name("请假流程Demo")
+                .addClasspathResource("bpmn/leave.bpmn").deploy();
+        return Message.success("流程部署成功！");
+    }
+
+
 
 }

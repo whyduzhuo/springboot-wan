@@ -38,10 +38,16 @@ spring:
         #开启支持resful请求
         enabled: true
     date-format: yyyy-MM-dd
+  activiti:
+    #自动部署验证设置:true-开启（默认）、false-关闭
+    check-process-definitions: false
+    database-schema-update: true
+
 debug: true
 logging:
   level:
       org.springframework.boot.autoconfigure: warn
+      org.activiti.engine.impl.persistence.entity: trace
   config: classpath:loggback.xml
 server:
   max-http-header-size: 65546

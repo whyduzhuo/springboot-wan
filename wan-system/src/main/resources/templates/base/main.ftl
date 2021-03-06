@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>
 <link href="/static/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="/static/css/main.css" media="all">
@@ -131,7 +131,7 @@
                 <div>
                     <h4>技术选型</h4>
                     <ol>
-                        <li>后端技术：SpringBoot + Spring Data Jpa + Thymeleaf + Shiro + redis + poi +quartz + swagger </li>
+                        <li>后端技术：SpringBoot + Spring Data Jpa + Freemarker + Shiro + redis + poi +quartz + swagger +Activiti </li>
                         <li>前端技术：Layui + Jquery + bootstrap + zTree + Font-awesome + Echarts</li>
                     </ol>
                 </div>

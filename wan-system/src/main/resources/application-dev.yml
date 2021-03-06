@@ -39,6 +39,7 @@ wan:
     name: springboot-wan
     email: 1434495271@qq.com
     err-msg-email-reminder: false
+
     cipher-key: 0RU6J7R8QhqqO1SE4oF1kA==
 
 server:
