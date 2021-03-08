@@ -249,13 +249,13 @@ public class MenuService extends BaseService<Menu,Long> {
         ztree.setOpen(true);
         ztree.setOrders(menu.getOrder());
         if (menu.getType()==Menu.TypeEnum.按钮){
-            ztree.setIcon(Ztree.BUTTON_ICON);
+            ztree.setIcon(Menu.BUTTON_ICON);
         }
         if (menu.getType()==Menu.TypeEnum.页面组){
             ztree.setIcon(Menu.PAGE_GROUP_ICON);
         }
         if (menu.getType()==Menu.TypeEnum.页面){
-            ztree.setIcon(Ztree.PAGE_ICON);
+            ztree.setIcon(Menu.PAGE_ICON);
             ztree.setOpen(false);
         }
         ztree.setUrlPath(menu.getPath());

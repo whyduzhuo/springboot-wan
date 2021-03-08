@@ -23,18 +23,7 @@ import java.util.stream.Collectors;
 @Setter
 @Api(value = "Ztree树")
 public class Ztree implements Serializable,Comparable<Ztree>{
-    /**
-     * 按钮图标
-     */
-    public static final String BUTTON_ICON = "/static/zTree_v3-master/css/zTreeStyle/img/diy/10.png";
-    /**
-     * 菜单图标
-     */
-    public static final String PAGE_ICON = "/static/zTree_v3-master/css/zTreeStyle/img/diy/2.png";
-    /**
-     *
-     */
-    public static final String DICT_ICON = "";
+
     private static final long serialVersionUID = 594486531697963903L;
 
     @ApiModelProperty(value = "id")
