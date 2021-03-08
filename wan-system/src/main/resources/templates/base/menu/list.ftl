@@ -8,9 +8,14 @@
 <@adminPageNav navName1='系统管理' navName2='菜单管理'/>
     <div style="position: fixed;height: 40px;">
         <@shiro.hasPermission name="100200">
+        <button  onclick="addTopWin()"
+                 class="btn btn-sm btn-success" type="button"
+                 data-toggle="tooltip" data-original-title="新增顶层菜单">新增顶层菜单</button>
+        </@shiro.hasPermission>
+        <@shiro.hasPermission name="100200">
         <button  onclick="addWin()"
                  class="btn btn-sm btn-success" type="button"
-                 data-toggle="tooltip" data-original-title="新增">新增</button>
+                 data-toggle="tooltip" data-original-title="新增子菜单">新增子菜单</button>
         </@shiro.hasPermission>
         <@shiro.hasPermission name="100201">
         <button  onclick="editWin()"
@@ -74,8 +79,18 @@
             type: 2,
             title: '新增菜单',
             maxmin: true,
-            area: ['500px', '600px'],
+            area: ['500px', '80%'],
             content: 'addWin?pid='+treeNode.id
+        });
+    }
+    
+    function addTopWin() {
+        layer.open({
+            type: 2,
+            title: '新增顶层菜单',
+            maxmin: true,
+            area: ['500px', '70%'],
+            content: 'addTopWin'
         });
     }
     

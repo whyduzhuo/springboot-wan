@@ -68,7 +68,20 @@ public class MenuController extends BaseController {
         menu.setParent(parent);
         menu.setOrder(menuService.getMaxOrder(parent.getId())+1);
         menu.setNum(menuService.createId(parent));
+        menu.setPath("#");
         model.addAttribute("typeList",Menu.TypeEnum.values());
+        model.addAttribute("data",menu);
+        return "/base/menu/edit";
+    }
+
+    @ApiOperation(value = "新增顶级菜单页面")
+    @Log(title = "新增顶级菜单页面",operateType = OperateType.SELECT)
+    @RequiresPermissions("100200")
+    @GetMapping("/addTopWin")
+    public String addTopWin(Model model){
+        Menu menu = new Menu();
+        menu.setOrder(menuService.getMaxOrder()+1);
+        menu.setNum(menuService.createId(null)+1);
         model.addAttribute("data",menu);
         return "/base/menu/edit";
     }

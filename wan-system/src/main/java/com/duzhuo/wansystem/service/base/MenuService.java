@@ -37,6 +37,9 @@ public class MenuService extends BaseService<Menu,Long> {
      * @return
      */
     public void addData(Menu menuVO) {
+        if (menuVO.getParent()==null){
+            addTopMenu(menuVO);
+        }
         if (menuVO.getParent()!=null && menuVO.getParent().getId()!=null){
             menuVO.setParent(super.find(menuVO.getParent().getId()));
         }
@@ -49,6 +52,17 @@ public class MenuService extends BaseService<Menu,Long> {
         }
         super.validation(menuVO);
         this.check(menuVO);
+        super.save(menuVO);
+    }
+
+    /**
+     * 添加顶层菜单
+     * @param menuVO
+     */
+    public void addTopMenu(Menu menuVO){
+        menuVO.setPath("#");
+        menuVO.setType(Menu.TypeEnum.目录);
+        super.validation(menuVO);
         super.save(menuVO);
     }
 
@@ -266,6 +280,14 @@ public class MenuService extends BaseService<Menu,Long> {
      */
     public Integer getMaxOrder(Long parentId){
         return menuDao.getMaxOrder(parentId).intValue();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Integer getMaxOrder(){
+        return menuDao.getMaxOrder().intValue();
     }
 
     /**

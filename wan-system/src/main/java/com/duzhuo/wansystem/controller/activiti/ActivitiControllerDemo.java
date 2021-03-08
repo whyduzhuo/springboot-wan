@@ -7,6 +7,7 @@ import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskInfo;
+import org.apache.ibatis.logging.jdbc.BaseJdbcLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Controller;
@@ -121,7 +122,6 @@ public class ActivitiControllerDemo {
          * 获取某人的任务
          */
         List<Task> list = taskService.createTaskQuery().taskAssignee("1200402570").orderByTaskCreateTime().desc().list();
-
 
         return Message.success("");
     }

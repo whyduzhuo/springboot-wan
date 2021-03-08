@@ -6,33 +6,36 @@
 <body>
     <form id="dataForm">
         <input class="form-control" type="hidden" id="data_id" name="id" value="${data.id}">
-        <div class="col-xs-12">
-            <label for="parent_name">父级节点<span class="text-danger">*</span></label>
-            <input class="form-control" type="hidden" id="parent_id" name="parent.id" value="${data.parent.id}">
-            <input class="form-control" readonly type="text" id="parent_name" name="parent.name" value="${data.parent.name}">
-        </div>
-        <div class="col-xs-12">
-            <label for="type">类型<span class="text-danger">*</span></label>
-            <div class="form-control">
-                 <#list typeList as type>
-                     <label class="css-input css-checkbox css-checkbox-primary">
-                         <input type="radio" name="type" value="${type}" <#if data.type==type>checked</#if> /><span></span>
-                     </label>
-                     <span>${type}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                 </#list>
+        <#if data.parent.id??>
+            <div class="col-xs-12">
+                <label for="parent_name">父级节点<span class="text-danger">*</span></label>
+                <input class="form-control" type="hidden" id="parent_id" name="parent.id" value="${data.parent.id}">
+                <input class="form-control" readonly type="text" id="parent_name" name="parent.name" value="${data.parent.name}">
             </div>
-        </div>
+
+            <div class="col-xs-12">
+                <label for="type">类型<span class="text-danger">*</span></label>
+                <div class="form-control">
+                     <#list typeList as type>
+                         <label class="css-input css-checkbox css-checkbox-primary">
+                             <input type="radio" name="type" value="${type}" <#if data.type==type>checked</#if> /><span></span>
+                         </label>
+                         <span>${type}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                     </#list>
+                </div>
+            </div>
+        </#if>
 
         <div class="col-xs-12">
             <label for="name">菜单名称<span class="text-danger">*</span></label>
             <input class="form-control" type="text" id="name" name="name" value="${data.name}">
         </div>
-
-        <div class="col-xs-12">
-            <label for="path">url<span class="text-danger">*</span></label>
-            <input class="form-control" type="text" id="path" name="path" value="${data.path}" placeholder="没有地址输入#">
-        </div>
-
+        <#if data.parent.id??>
+            <div class="col-xs-12">
+                <label for="path">url<span class="text-danger">*</span></label>
+                <input class="form-control" type="text" id="path" name="path" value="${data.path}" placeholder="没有地址输入#">
+            </div>
+        </#if>
         <div class="col-xs-12">
             <label for="num">权限编号<span class="text-danger">*</span></label>
             <input class="form-control" type="text" id="num" name="num" value="${data.num}">
