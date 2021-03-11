@@ -96,6 +96,12 @@
                 }
             })
         }
+
+        $(document).keyup(function(event){
+            if(event.keyCode ==13){
+                $("#submit").trigger("click");
+            }
+        });
     </script>
 </body>
 </html>
