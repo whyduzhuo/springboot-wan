@@ -1,13 +1,13 @@
 package com.duzhuo.wansystem.controller.activiti;
 
 import com.duzhuo.common.core.Message;
+import com.duzhuo.common.utils.TencentSmsUtils;
 import org.activiti.engine.*;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskInfo;
-import org.apache.ibatis.logging.jdbc.BaseJdbcLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Controller;
@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -28,6 +26,9 @@ import java.util.List;
 @RequestMapping("/activiti")
 @Controller
 public class ActivitiControllerDemo {
+
+    @Resource
+    private TencentSmsUtils tencentSmsUtils;
 
     /**
      * 流程引擎，一下service的bean创建都用到了ProcessEngine

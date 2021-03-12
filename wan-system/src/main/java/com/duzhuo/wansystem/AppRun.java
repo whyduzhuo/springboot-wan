@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -23,6 +24,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @author 万宏远
  */
 @EnableSwagger2
+@EnableAsync
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class, SecurityAutoConfiguration.class,org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class})
 @ComponentScan(value = {"com.duzhuo.wansystem","com.duzhuo.common"})
 @EnableJpaRepositories(entityManagerFactoryRef = "entityManageFactoryPrimary", transactionManagerRef = "transactionManagerPrimary",basePackages = {"com.duzhuo.wansystem.dao"})

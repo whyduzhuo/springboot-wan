@@ -69,6 +69,10 @@ public class BaseService<T extends BaseEntity, ID extends Serializable> {
         return baseDao.save(entity);
     }
 
+    protected List<T> saveAll(List<T> entitys){
+        return baseDao.saveAll(entitys);
+    }
+
 
     /**
      * 删除

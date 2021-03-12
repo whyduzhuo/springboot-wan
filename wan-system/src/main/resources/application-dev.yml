@@ -39,8 +39,14 @@ wan:
     name: springboot-wan
     email: 1434495271@qq.com
     err-msg-email-reminder: false
-
     cipher-key: 0RU6J7R8QhqqO1SE4oF1kA==
+  sms:
+    tencent:
+      secret-id: AKIDKUQFsEOeXhfXJqThq79wLglcEsIVmDwU
+      secret-key: Ukkusjjph8JpDS9gzHEQ1PZVTBfni16y
+      appid: 1400493174
+      sign: 独酌工作室
+      template-id: 889214
 
 server:
   port: 8083    #端口号

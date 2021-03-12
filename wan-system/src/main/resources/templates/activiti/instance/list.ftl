@@ -31,8 +31,8 @@
         <table class="table table-bordered" id="listTable">
             <tr>
                 <th>id</th>
-                <th>流程名称</th>
-                <th>部署id</th>
+                <th>流程定义</th>
+                <th>流程实例id</th>
                 <th>key</th>
                 <th>XML</th>
                 <th>图片</th>
@@ -43,8 +43,8 @@
                 <#list customSearch.pagedata.content as data>
                 <tr>
                     <td>${data.id}</td>
-                    <td>${data.name}</td>
-                    <td>${data.deploymentId}</td>
+                    <td>${data.processDefinitionName}</td>
+                    <td>${data.processInstanceId}</td>
                     <td>${data.key}</td>
                     <td>
                         <a href="bpmn?procDefId=${data.id}" target="_blank">${data.resourceName}</a>

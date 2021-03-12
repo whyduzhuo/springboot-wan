@@ -7,6 +7,8 @@ import com.duzhuo.common.core.base.BaseController;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.common.utils.IO.ExcelUtils;
+import com.duzhuo.common.utils.RSAEncrypt;
+import com.duzhuo.common.utils.RedisUtils;
 import com.duzhuo.wansystem.dto.house.ExcelDemoDto;
 import com.duzhuo.wansystem.entity.house.ExcelDemo;
 import com.duzhuo.wansystem.service.house.ExcelDemoService;
@@ -39,6 +41,8 @@ import java.util.Map;
 public class ExcelDemoController extends BaseController{
     @Resource
     private ExcelDemoService excelDemoService;
+    @Resource
+    private RedisUtils redisUtils;
 
 
     @Log(title = "ExcelDemo",operateType = OperateType.SELECT)
@@ -115,5 +119,22 @@ public class ExcelDemoController extends BaseController{
     @ResponseBody
     public Message importData(MultipartFile file, @RequestParam(value = "isupload",required = false,defaultValue = "false") boolean isupload) throws Exception {
         return excelDemoService.importData(file,isupload);
+    }
+
+
+    @GetMapping("/rsaDemo")
+    public String rsaDemo(Model model) throws Exception {
+        RSAEncrypt rsaEncrypt = new RSAEncrypt();
+        redisUtils.set(rsaEncrypt.getPublicKey(),rsaEncrypt.getPrivateKey(),100);
+        model.addAttribute("publicKey",rsaEncrypt.getPublicKey());
+        return "/house/excelDemo/rsaDemo";
+    }
+
+    @PostMapping("/jimi")
+    @ResponseBody
+    public Message jimi(String password,String publicKey) throws Exception {
+        String privateKey = (String) redisUtils.get(publicKey);
+        String jimi = RSAEncrypt.decrypt(password,privateKey);
+        return Message.success(jimi);
     }
 }
