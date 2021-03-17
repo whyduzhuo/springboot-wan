@@ -63,6 +63,10 @@ public interface MenuDao extends BaseDao<Menu,Long> {
     @Query(value = "SELECT nvl(MAX(ORDERS),0) FROM T_BASE_MENU WHERE PARENT_ID=?",nativeQuery = true)
     BigDecimal getMaxOrder(Long parentId);
 
+    /**
+     * 查询排序最大的根节点
+     * @return
+     */
     @Query(value = "SELECT nvl(MAX(ORDERS),0) FROM T_BASE_MENU WHERE PARENT_ID IS NULL",nativeQuery = true)
     BigDecimal getMaxOrder();
 

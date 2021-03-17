@@ -39,6 +39,7 @@ public class MenuService extends BaseService<Menu,Long> {
     public void addData(Menu menuVO) {
         if (menuVO.getParent()==null){
             addTopMenu(menuVO);
+            return;
         }
         if (menuVO.getParent()!=null && menuVO.getParent().getId()!=null){
             menuVO.setParent(super.find(menuVO.getParent().getId()));
