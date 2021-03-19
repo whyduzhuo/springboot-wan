@@ -1,6 +1,9 @@
 package com.duzhuo.common.core.base;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,5 +39,14 @@ public class BaseController {
             paramsNew.put(prefix + entry.getKey(), entry.getValue());
         }
         return paramsNew;
+    }
+
+    /**
+     * springmvc 空格统一转null
+     * @param binder
+     */
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 }
