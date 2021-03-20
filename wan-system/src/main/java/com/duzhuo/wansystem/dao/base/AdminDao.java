@@ -39,4 +39,12 @@ public interface AdminDao extends BaseDao<Admin,Long> {
     @Query(value = "UPDATE T_BASE_ADMIN_ROLE SET FLAG=1 WHERE ADMIN_ID=?1 AND ROLE_ID=?2",nativeQuery = true)
     @Modifying
     void addDefaultRole(Long adminId, Long roleId);
+
+    /**
+     *
+     * @param username
+     * @param l
+     * @return
+     */
+    Admin findByUsernameAndDelTime(String username, long l);
 }

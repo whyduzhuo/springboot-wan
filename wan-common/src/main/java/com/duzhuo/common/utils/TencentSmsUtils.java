@@ -46,7 +46,7 @@ public class TencentSmsUtils {
         String yzm = TencentSmsUtils.randomYzm(4);
         threadPoolService.execute(() -> {
             try {
-                sendSms(TencentSmsUtils.randomYzm(4),phone);
+                sendSms(yzm,phone);
             } catch (TencentCloudSDKException e) {
                 log.error(e.getMessage(),e);
             }

@@ -88,21 +88,35 @@ public class AdminRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        UsernamePasswordToken upToken = (UsernamePasswordToken) token;
-        String username = upToken.getUsername();
-        String password = "";
-        if (upToken.getPassword() != null) {
-            password = new String(upToken.getPassword());
+        MyUsernamePasswordToken upToken = (MyUsernamePasswordToken) token;
+        if (upToken.getLoginType()== MyUsernamePasswordToken.LoginType.OAUTH2){
+            Admin admin = adminService.findByUsernameEnable(upToken.getUsername());
+            return new SimpleAuthenticationInfo(admin, admin.getPassword(), getName());
         }
-        Admin admin;
-        try {
-            admin = adminService.login(username, password);
-            adminService.getCurrRole(admin);
-        } catch (Exception e) {
-            log.info(e.getMessage(),e);
-            throw new AuthenticationException(e.getMessage(), e);
+        if (upToken.getLoginType()== MyUsernamePasswordToken.LoginType.SMS){
+            Admin admin = adminService.findByUsernameEnable(upToken.getUsername());
+            return new SimpleAuthenticationInfo(admin, admin.getPassword(), getName());
         }
-        return new SimpleAuthenticationInfo(admin, password, getName());
+        if (upToken.getLoginType()== MyUsernamePasswordToken.LoginType.REMEMBER_ME){
+            Admin admin = adminService.findByUsernameEnable(upToken.getUsername());
+            return new SimpleAuthenticationInfo(admin, admin.getPassword(), getName());
+        }
+        if (upToken.getLoginType()== MyUsernamePasswordToken.LoginType.PASSWORD) {
+            String username = upToken.getUsername();
+            String password = "";
+            if (upToken.getPassword() != null) {
+                password = new String(upToken.getPassword());
+            }
+            Admin admin;
+            try {
+                admin = adminService.login(username, password);
+            } catch (Exception e) {
+                log.info(e.getMessage(), e);
+                throw new AuthenticationException(e.getMessage(), e);
+            }
+            return new SimpleAuthenticationInfo(admin, password, getName());
+        }
+        return null;
     }
 
     /**

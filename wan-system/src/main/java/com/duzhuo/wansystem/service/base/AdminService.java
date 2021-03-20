@@ -7,6 +7,7 @@ import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.AdminDao;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
+import com.duzhuo.wansystem.entity.base.RememberMe;
 import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.entity.base.po.AdminPo;
 import com.duzhuo.wansystem.service.base.po.AdminPoService;
@@ -38,6 +39,8 @@ public class AdminService extends DeleteService<Admin,Long> {
     private RoleService roleService;
     @Resource
     private MenuService menuService;
+    @Resource
+    private  RememberMeService rememberMeService;
 
     @Resource
     public void setBaseDao(AdminDao adminDao){
@@ -163,6 +166,7 @@ public class AdminService extends DeleteService<Admin,Long> {
         admin.setPassword(DigestUtils.md5Hex(admin.getUsername()+password));
         super.update(admin);
         ShiroUtils.getShiroRelame().clearCache(admin.getUsername());
+        rememberMeService.removeByAdmin(admin);
         return Message.success("修改成功！");
     }
 
@@ -192,5 +196,14 @@ public class AdminService extends DeleteService<Admin,Long> {
      */
     public List<Menu> getMenuList(Admin admin){
         return menuService.getMenuList(admin);
+    }
+
+    /**
+     * 查询未被删除的用户
+     * @param username
+     * @return
+     */
+    public Admin findByUsernameEnable(String username) {
+        return adminDao.findByUsernameAndDelTime(username,0L);
     }
 }

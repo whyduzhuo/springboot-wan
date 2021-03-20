@@ -1,27 +1,25 @@
 package com.duzhuo.wansystem.controller.base;
 
 import com.duzhuo.common.annotation.Log;
-import com.duzhuo.common.config.Global;
 import com.duzhuo.common.config.RedisKeyTimeOutConfig;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.RedisUtils;
 import com.duzhuo.wansystem.entity.base.Admin;
-import com.duzhuo.wansystem.entity.base.Role;
-import com.duzhuo.wansystem.entity.base.po.AdminPo;
 import com.duzhuo.wansystem.service.base.MenuService;
+import com.duzhuo.wansystem.service.base.RememberMeService;
 import com.duzhuo.wansystem.service.base.RoleService;
 import com.duzhuo.wansystem.service.base.po.AdminPoService;
 import com.duzhuo.wansystem.shiro.AdminRealm;
+import com.duzhuo.wansystem.shiro.MyUsernamePasswordToken;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.mgt.RealmSecurityManager;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,8 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Set;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author: 万宏远
@@ -46,12 +43,16 @@ import java.util.Set;
 @RequestMapping("/base")
 public class LoginController {
 
+
+
     @Resource
     private RoleService roleService;
     @Resource
     private MenuService menuService;
     @Resource
     private AdminPoService adminPoService;
+    @Resource
+    private RememberMeService rememberMeService;
     @Resource
     private RedisKeyTimeOutConfig redisKeyTimeOutConfig;
     @Resource
@@ -60,11 +61,19 @@ public class LoginController {
     @Log(title = "进入登录页",operateType = OperateType.OTHER)
     @ApiOperation(value = "进入登录页")
     @GetMapping("/login")
-    public String login(){
+    public String login(HttpServletRequest request){
         Admin admin = ShiroUtils.getCurrAdmin();
-//        if (admin!=null){
-//            return "redirect:/base/index";
-//        }
+        if (admin!=null){
+            return "redirect:/base/index";
+        }
+        Admin cookAdmin = rememberMeService.getCookAdmin(request);
+        if (cookAdmin!=null){
+            MyUsernamePasswordToken token = new MyUsernamePasswordToken(cookAdmin.getUsername(), cookAdmin.getPassword(), MyUsernamePasswordToken.LoginType.REMEMBER_ME);
+            Subject subject = SecurityUtils.getSubject();
+            subject.login(token);
+            return "redirect:/base/index";
+
+        }
         return "/base/login/login";
     }
 
@@ -72,7 +81,9 @@ public class LoginController {
     @ApiOperation(value = "登录系统")
     @PostMapping("/login")
     @ResponseBody
-    public Message login(String username, String password, Boolean rememberMe, String kaptchaKey, String kaptchaValInput ) {
+    public Message login(HttpServletRequest request, HttpServletResponse response,
+                         String username, String password, Boolean rememberMe,
+                         String kaptchaKey, String kaptchaValInput ) {
         //校验验证码是否正确
         if (StringUtils.isBlank(kaptchaValInput)){
             return Message.warn("请输入验证码");
@@ -81,19 +92,11 @@ public class LoginController {
         if (!kaptchaValInput.equalsIgnoreCase(kaptchaVal)){
             return Message.warn("验证码不正确");
         }
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
+        MyUsernamePasswordToken token = new MyUsernamePasswordToken(username,  DigestUtils.md5Hex(username+password), MyUsernamePasswordToken.LoginType.PASSWORD);
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
-            Admin admin =ShiroUtils.getCurrAdmin();
-            AdminPo adminPo = adminPoService.find(admin.getId());
-            List<Role> roleList = adminPo.getRoleList();
-            if (roleList.isEmpty()){
-                AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
-                shiroRealm.clearAllCache();
-                subject.logout();
-                return Message.error("您还没有角色信息，请联系管理员！");
-            }
+            rememberMeService.rememberMe(request,response,rememberMe);
             return Message.success();
         } catch (AuthenticationException e) {
             String msg = "用户或密码错误";
@@ -126,11 +129,12 @@ public class LoginController {
     @ApiOperation(value = "退出登录")
     @GetMapping("/logout")
     @ResponseBody
-    public Message logout(){
+    public Message logout(HttpServletRequest request){
         Admin admin = ShiroUtils.getCurrAdmin();
-        SecurityUtils.getSubject().logout();
         AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
         shiroRealm.clearMyCache();
+        SecurityUtils.getSubject().logout();
+        rememberMeService.removeByAdmin(admin);
         return Message.success("退出成功！");
     }
 
