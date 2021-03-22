@@ -29,6 +29,7 @@
                     <th>归属部门</th>
                     <th>排序</th>
                     <th>备注</th>
+                    <th>查看</th>
                     <th>操作</th>
                 </tr>
                     <#list customSearch.pagedata.content as data>
@@ -45,15 +46,17 @@
                         </td>
                         <td>${data.remark}</td>
                         <td>
+                            <@shiro.hasPermission name="100304">
+                                <a href="javascript:void(0)" onclick="showAdmin(${data.id})">人员列表</a>
+                            </@shiro.hasPermission>
+                        </td>
+                        <td>
                             <div class="btn-group">
                             <@shiro.hasPermission name="100301">
                                 <button type="button" class="btn btn-xs btn-primary" onclick="openEditWin(${data.id})">修改</button>
                             </@shiro.hasPermission>
-                            <@shiro.hasPermission name="100304">
-                                <button type="button" class="btn btn-xs btn-info" onclick="showAdmin(${data.id})">人员列表</button>
-                            </@shiro.hasPermission>
                             <@shiro.hasPermission name="100305">
-                                <button type="button" class="btn btn-xs btn-info" onclick="showMenu(${data.id})">菜单列表</button>
+                                <button type="button" class="btn btn-xs btn-info" onclick="showMenu(${data.id})">菜单授权</button>
                             </@shiro.hasPermission>
                             <@shiro.hasPermission name="100302">
                                 <button type="button" class="btn btn-xs btn-danger" onclick="del(${data.id})">删除</button>

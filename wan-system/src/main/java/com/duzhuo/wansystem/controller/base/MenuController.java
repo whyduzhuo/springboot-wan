@@ -7,6 +7,7 @@ import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Menu;
+import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.service.base.MenuService;
 import com.duzhuo.wansystem.service.base.RoleService;
 import io.swagger.annotations.Api;
@@ -159,5 +160,14 @@ public class MenuController extends BaseController {
         model.addAttribute("menuList",menuList);
         model.addAttribute("menu",menu);
         return "/base/menu/menuGroup";
+    }
+
+    @GetMapping("/showRoles")
+    public String showRoles(Model model,@RequestParam(value = "menuId") Long menuId){
+        Menu menu = menuService.find(menuId);
+        List<Role> roleList = menuService.getAllRoles(menuId);
+        model.addAttribute("dataList",roleList);
+        model.addAttribute("menu",menu);
+        return "/base/menu/showRoles";
     }
 }

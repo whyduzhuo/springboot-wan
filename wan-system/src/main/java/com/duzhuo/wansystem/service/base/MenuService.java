@@ -6,6 +6,7 @@ import com.duzhuo.wansystem.dao.base.MenuDao;
 import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
+import com.duzhuo.wansystem.entity.base.Role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,8 @@ public class MenuService extends BaseService<Menu,Long> {
 
     @Resource
     private MenuDao menuDao;
+    @Resource
+    private RoleService roleService;
 
     @Resource
     public void setBaseDao(MenuDao menuDao){
@@ -407,5 +410,14 @@ public class MenuService extends BaseService<Menu,Long> {
      */
     public List<Menu> getChildren(Long id) {
         return menuDao.findByParentId(id);
+    }
+
+    /**
+     * 获取拥有某个菜单的全部角色
+     * @param menuId
+     * @return
+     */
+    public List<Role> getAllRoles(Long menuId) {
+        return roleService.getAllRoles(menuId);
     }
 }

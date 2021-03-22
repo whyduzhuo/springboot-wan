@@ -66,7 +66,7 @@
             title: '用户详情',
             maxmin: true,
             area: ['500px', '600px'],
-            content: 'detail?id='+id
+            content: '/base/admin/detail?id='+id
         });
     }
 
@@ -76,7 +76,7 @@
             title: '用户菜单',
             maxmin: true,
             area: ['500px', '90%'],
-            content: 'menuList?id='+id
+            content: '/base/admin/menuList?id='+id
         });
     }
 </script>

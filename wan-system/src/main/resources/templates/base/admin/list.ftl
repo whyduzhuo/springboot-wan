@@ -30,6 +30,7 @@
                     <th>用户名</th>
                     <th>角色</th>
                     <th>状态</th>
+                    <th>查看</th>
                     <th>操作</th>
                 </tr>
                     <#list customSearch.pagedata.content as data>
@@ -39,15 +40,18 @@
                         <td>${data.roleListStr}</td>
                         <td>${data.isDeleteHtml}</td>
                         <td>
+                            <a href="javascript:void(0)" onclick="menuList(${data.id})" >
+                                菜单列表
+                            </a>
+                        </td>
+                        <td>
                             <div class="btn-group">
                                 <@shiro.hasPermission name="100402">
                                 <button type="button" onclick="detail(${data.id})" class="btn btn-xs btn-primary">
                                     编辑
                                 </button>
                                 </@shiro.hasPermission>
-                                <button type="button" onclick="menuList(${data.id})" class="btn btn-xs btn-info">
-                                    菜单列表
-                                </button>
+
                                 <button type="button" onclick="roleList(${data.id})" class="btn btn-xs btn-success">
                                     角色列表
                                 </button>
