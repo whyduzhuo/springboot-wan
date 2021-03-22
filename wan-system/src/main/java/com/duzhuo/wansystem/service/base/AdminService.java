@@ -7,7 +7,6 @@ import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.wansystem.dao.base.AdminDao;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
-import com.duzhuo.wansystem.entity.base.RememberMe;
 import com.duzhuo.wansystem.entity.base.Role;
 import com.duzhuo.wansystem.entity.base.po.AdminPo;
 import com.duzhuo.wansystem.service.base.po.AdminPoService;
@@ -21,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author: 万宏远
@@ -157,10 +157,10 @@ public class AdminService extends DeleteService<Admin,Long> {
      */
     public Message resetPassword(Long adminId, String password) {
         if (StringUtils.isBlank(password)){
-            throw new ServiceException("");
+            throw new ServiceException("请输入密码");
         }
         if (password.length()<5){
-            throw new ServiceException("");
+            throw new ServiceException("请输入6位数密码");
         }
         Admin admin = super.find(adminId);
         admin.setPassword(DigestUtils.md5Hex(admin.getUsername()+password));
@@ -206,4 +206,28 @@ public class AdminService extends DeleteService<Admin,Long> {
     public Admin findByUsernameEnable(String username) {
         return adminDao.findByUsernameAndDelTime(username,0L);
     }
+
+    /**
+     * 切换角色
+     * @param adminId
+     * @param roleId
+     */
+    public void changeRole(Long adminId,Long roleId){
+        Admin admin = super.find(adminId);
+        List<Role> roleList = roleService.getAllRolesByAdmin(adminId);
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        roleList.forEach(r->{
+            if (r.getId().equals(roleId)){
+                atomicBoolean.set(true);
+            }
+        });
+        if (!atomicBoolean.get()){
+            throw new ServiceException("切换失败，无此角色！");
+        }
+        adminDao.cleanDefaultRole(adminId);
+        adminDao.addDefaultRole(adminId,roleId);
+        ShiroUtils.getShiroRelame().clearCache(admin.getUsername());
+    }
+
+
 }

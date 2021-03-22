@@ -10,7 +10,6 @@ import com.duzhuo.wansystem.entity.base.Organization;
 import com.duzhuo.wansystem.service.base.OrganizationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import oracle.jdbc.proxy.annotation.Post;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

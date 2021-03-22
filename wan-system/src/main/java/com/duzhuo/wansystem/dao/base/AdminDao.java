@@ -47,4 +47,12 @@ public interface AdminDao extends BaseDao<Admin,Long> {
      * @return
      */
     Admin findByUsernameAndDelTime(String username, long l);
+
+    /**
+     * 清除某个人的默认角色
+     * @param adminId
+     */
+    @Query(value = "UPDATE T_BASE_ADMIN_ROLE SET FLAG=NULL WHERE ADMIN_ID=?1 ",nativeQuery = true)
+    @Modifying
+    void cleanDefaultRole(Long adminId);
 }

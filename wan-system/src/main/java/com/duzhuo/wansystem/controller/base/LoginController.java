@@ -6,6 +6,8 @@ import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.RedisUtils;
 import com.duzhuo.wansystem.entity.base.Admin;
+import com.duzhuo.wansystem.entity.base.Role;
+import com.duzhuo.wansystem.service.base.AdminService;
 import com.duzhuo.wansystem.service.base.MenuService;
 import com.duzhuo.wansystem.service.base.RememberMeService;
 import com.duzhuo.wansystem.service.base.RoleService;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author: 万宏远
@@ -57,6 +60,8 @@ public class LoginController {
     private RedisKeyTimeOutConfig redisKeyTimeOutConfig;
     @Resource
     private RedisUtils redisUtils;
+    @Resource
+    private AdminService adminService;
 
     @Log(title = "进入登录页",operateType = OperateType.OTHER)
     @ApiOperation(value = "进入登录页")
@@ -150,5 +155,25 @@ public class LoginController {
         AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
         shiroRealm.clearAllCachedAuthorizationInfo();
         return "redirect:/base/index";
+    }
+
+
+    @GetMapping("/changeRoleWin")
+    public String changeRoleWindw(Model model){
+        Admin admin = ShiroUtils.getCurrAdmin();
+        List<Role> roleList = roleService.getAllRolesByAdmin(admin.getId());
+        model.addAttribute("dataList",roleList);
+        model.addAttribute("role",adminService.getCurrRole(admin));
+        return "/base/login/changeRoleWin";
+    }
+
+    @Log(title = "切换角色",operateType = OperateType.OTHER)
+    @ApiOperation(value = "切换角色")
+    @ResponseBody
+    @GetMapping("/changeRole")
+    public Message changeRole(Long id){
+        Admin admin = ShiroUtils.getCurrAdmin();
+        adminService.changeRole(admin.getId(),id);
+        return Message.success("切换成功！");
     }
 }

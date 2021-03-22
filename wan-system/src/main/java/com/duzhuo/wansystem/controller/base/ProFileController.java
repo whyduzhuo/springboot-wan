@@ -6,7 +6,6 @@ import com.duzhuo.common.core.Message;
 import com.duzhuo.common.core.base.BaseController;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
-import com.duzhuo.common.utils.IO.FileTypeJudge;
 import com.duzhuo.wansystem.entity.base.ProFile;
 import com.duzhuo.wansystem.service.base.ProFileService;
 import io.swagger.annotations.Api;

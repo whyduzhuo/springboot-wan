@@ -33,7 +33,7 @@ public class KaptchaController {
     @Resource
     private DefaultKaptcha defaultKaptcha;
     @Resource
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String,String> redisTemplate;
 
     @RequestMapping("/kaptcha")
     @ResponseBody

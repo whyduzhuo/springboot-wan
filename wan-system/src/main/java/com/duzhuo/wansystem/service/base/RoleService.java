@@ -319,4 +319,23 @@ public class RoleService extends OrderService<Role,Long> {
         });
         return i.get();
     }
+
+    /**
+     * 获取拥有某个菜单的全部角色
+     * @param menuId
+     * @return
+     */
+    public List<Role> getAllRoles(Long menuId) {
+        return roleDao.getAllRoles(menuId);
+    }
+
+
+    /**
+     * 查询某个用户的全部角色
+     * @param adminId
+     * @return
+     */
+    public List<Role> getAllRolesByAdmin(Long adminId){
+        return roleDao.getAllRolesByAdmin(adminId);
+    }
 }

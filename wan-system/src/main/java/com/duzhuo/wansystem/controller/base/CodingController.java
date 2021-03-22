@@ -5,7 +5,6 @@ import com.duzhuo.common.core.EmailSendService;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.thread.ThreadPoolService;
-import com.duzhuo.common.thread.Threads;
 import com.duzhuo.wansystem.entity.base.Coding;
 import com.duzhuo.wansystem.service.base.CodingService;
 import io.swagger.annotations.Api;
@@ -17,16 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -127,27 +118,5 @@ public class CodingController {
     @ResponseBody
     public Coding findById(Long id){
         return codingService.find(id);
-    }
-
-    @GetMapping("/test")
-    public void test(HttpServletResponse response) throws UnsupportedEncodingException, MessagingException, ExecutionException, InterruptedException {
-        //emailSendService.sendAttachmentMail("1434495271@qq.com","通知","哈哈哈",new File("D:\\wan\\万宏远.pdf"));
-        Long timeMillis = System.currentTimeMillis();
-        Future<String> a = threadPoolExecutor.submit(() -> {
-            Threads.sleep(3000);
-            return "a";
-        });
-        Future<String> b = threadPoolExecutor.submit(() -> {
-            Threads.sleep(6000);
-            return "b";
-        });
-        Future<String> c = threadPoolExecutor.submit(() -> {
-            Threads.sleep(9000);
-            return "c";
-        });
-        String astr = a.get();
-        String bstr = b.get();
-        String cstr = c.get();
-        System.err.println("耗时："+(System.currentTimeMillis()-timeMillis));
     }
 }
