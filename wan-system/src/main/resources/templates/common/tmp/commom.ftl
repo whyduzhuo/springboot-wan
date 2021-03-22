@@ -89,6 +89,19 @@
         display: block;
         font-size: 12px;
     }
+    }
+    .btn-success:focus{
+        outline: none !important;
+    }
+    .btn-primary:focus{
+        outline: none !important;
+    }
+    .btn-info:focus{
+        outline: none !important;
+    }
+    .btn-danger:focus{
+        outline: none !important;
+    }
 </style>
 <script>
     function initSubmit() {
