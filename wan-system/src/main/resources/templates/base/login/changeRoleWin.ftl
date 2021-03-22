@@ -7,7 +7,7 @@
         .role_item{
             display: inline-block;
             width: 150px;
-            height: 200px;
+            height: 160px;
             padding: 20px;
             text-align: center;
             background-color: #fff;

@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="shortcut icon" href="/static/favicon.ico"/>
-    <script type="text/javascript" src="/static/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/jquery/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>
-    <link href="/static/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
+    <#include "/common/tmp/commom.ftl">
 
     <style type="text/css">
         #login-form {
@@ -18,6 +14,9 @@
             position: absolute;
             right: 30%;
             top: 20%;
+        }
+        body{
+            background-color: #ffffff;
         }
     </style>
 </head>
@@ -44,8 +43,10 @@
                 </div>
             </div>
             <div class="col-xs-12 col-md-12">
-                <label class="">是否记住<span class="text-danger">*</span></label>
-                <input class="form-control" name="rememberMe" value="true">
+                <label class="css-input css-checkbox css-checkbox-primary remove-padding remove-margin">
+                    <input type="checkbox" name="rememberMe" /><span></span>
+                    记住我
+                </label>
             </div>
             <div class="col-xs-12 col-md-12" style="text-align: center">
                 <button type="button" class="btn btn-success" style="width: 100%;margin-top: 20px;" onclick="login()">登录</button>

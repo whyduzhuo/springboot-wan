@@ -25,10 +25,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -86,8 +83,8 @@ public class LoginController {
     @ApiOperation(value = "登录系统")
     @PostMapping("/login")
     @ResponseBody
-    public Message login(HttpServletRequest request, HttpServletResponse response,
-                         String username, String password, Boolean rememberMe,
+    public Message login(HttpServletRequest request, HttpServletResponse response, String username, String password,
+                         @RequestParam(value = "rememberMe",required = false,defaultValue = "false") Boolean rememberMe,
                          String kaptchaKey, String kaptchaValInput ) {
         //校验验证码是否正确
         if (StringUtils.isBlank(kaptchaValInput)){
@@ -97,7 +94,8 @@ public class LoginController {
         if (!kaptchaValInput.equalsIgnoreCase(kaptchaVal)){
             return Message.warn("验证码不正确");
         }
-        MyUsernamePasswordToken token = new MyUsernamePasswordToken(username,  DigestUtils.md5Hex(username+password), MyUsernamePasswordToken.LoginType.PASSWORD);
+        String p =  DigestUtils.md5Hex(username+password);
+        MyUsernamePasswordToken token = new MyUsernamePasswordToken(username,p, MyUsernamePasswordToken.LoginType.PASSWORD);
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);

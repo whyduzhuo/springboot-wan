@@ -197,7 +197,7 @@
             url:'logout',
             type:'get',
             success:function (res) {
-                layer.msg(res.message);
+                layer.msg(res.msg);
                 window.location.reload();
             }
         })

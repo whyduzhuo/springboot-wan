@@ -112,7 +112,6 @@ public class AdminService extends DeleteService<Admin,Long> {
         if (StringUtils.isBlank(password)){
             throw new Exception("密码为空！");
         }
-        password = DigestUtils.md5Hex(username+password);
         Admin admin = this.findByUsernameAndPassword(username,password);
         if (admin==null){
             throw new Exception("用户名或密码错误！");
