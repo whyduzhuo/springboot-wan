@@ -263,26 +263,8 @@
     }
 
     function addData() {
-        layer.load();
-        $.ajax({
-            url:'addData',
-            type: "post",
-            data: $('#dataForm').serialize(),
-            success:function (res) {
-                layer.closeAll("loading");
-                layer.confirm(res.msg,{icon:res.icon}, function (index) {
-                    if(res.type=='SUCCESS'){
-                        layer.load();
-                        window.location.reload();
-                    }
-                    layer.close(index);
-                });
-            },
-            error:function (XMLHttpRequest) {
-                layer.closeAll("loading");
-                alert("系统错误");
-                console.log(XMLHttpRequest);
-            }
+        ajaxPost("addData",data,function () {
+            window.location.reload();
         });
     }
 

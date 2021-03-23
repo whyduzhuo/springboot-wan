@@ -182,7 +182,7 @@ public class AdminService extends DeleteService<Admin,Long> {
         AdminPo adminPo = adminPoService.find(admin.getId());
         List<Role> roleList = adminPo.getRoleList();
         if (roleList.isEmpty()){
-            throw new ServiceException("无角色信息！");
+            return null;
         }
         Role role = roleList.iterator().next();
         adminDao.addDefaultRole(admin.getId(),role.getId());

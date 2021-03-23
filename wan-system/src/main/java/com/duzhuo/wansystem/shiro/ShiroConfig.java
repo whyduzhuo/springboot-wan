@@ -85,11 +85,6 @@ public class ShiroConfig {
         Map<String,String> map = new LinkedHashMap<>();
         // 静态js、css
         map.put("/static/**","anon");
-        //swagger接口权限 开放
-        map.put("/swagger-ui.html", "anon");
-        map.put("/webjars/**", "anon");
-        map.put("/v2/**", "anon");
-        map.put("/swagger-resources/**", "anon");
         map.put("/favicon.ico","anon");
         map.put("/base/login","anon");
         map.put("/connect/oauth2/authorize","anon");

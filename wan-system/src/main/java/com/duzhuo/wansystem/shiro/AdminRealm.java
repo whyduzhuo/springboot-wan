@@ -70,12 +70,16 @@ public class AdminRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
         Admin admin = ShiroUtils.getCurrAdmin();
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         // 获取当前登录的角色
         Role role = adminService.getCurrRole(admin);
+        if (role==null){
+            return info;
+        }
         // 职务列表
         List<Menu> menuList = roleService.getMenu(role.getId());
         // 菜单/功能列表
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+
         // 角色加入AuthorizationInfo认证对象，在controller接口加RequiresRoles 就可以用了
         info.addRole(role.getName());
         // 权限加入AuthorizationInfo认证对象,在controller接口加RequiresPermissions 就可以用了

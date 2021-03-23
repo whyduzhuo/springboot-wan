@@ -36,6 +36,7 @@
             <input class="form-control" type="password" id="re_password" name="re_password">
         </div>
 
+        <div class="col-xs-12 col-md-4" style="height: 60px;"></div>
         <div class="edit-win-foot">
             <button type="button" class="btn btn-success" onclick="save()">保存</button>
             <button type="button" class="btn btn-default" onclick="closeLayer()">关闭</button>

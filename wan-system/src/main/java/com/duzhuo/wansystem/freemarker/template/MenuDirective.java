@@ -52,18 +52,19 @@ public class MenuDirective implements TemplateDirectiveModel {
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
         Admin admin = adminService.getCurrent();
         if (admin!=null){
-            AdminPo adminPo = adminPoService.find(admin.getId());
             Role role = adminService.getCurrRole(admin);
-            RolePo rolePo = rolePoService.getRolePo(role);
-            List<Menu> menuList = rolePo.getMenuList().stream().sorted().collect(Collectors.toList());
-            menuList.removeIf(r->r.getType()== Menu.TypeEnum.按钮);
-            List<Ztree> ztreeList = menuService.toTree(menuList);
-            List<Ztree> ztrees = Ztree.buildTree(ztreeList);
-            StringBuilder html = new StringBuilder();
-            buildHtml(html,ztrees);
-            DefaultObjectWrapperBuilder builder = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_29);
-            env.setVariable("navHtml",builder.build().wrap(html));
-            body.render(env.getOut());
+            if (role!=null){
+                RolePo rolePo = rolePoService.getRolePo(role);
+                List<Menu> menuList = rolePo.getMenuList().stream().sorted().collect(Collectors.toList());
+                menuList.removeIf(r->r.getType()== Menu.TypeEnum.按钮);
+                List<Ztree> ztreeList = menuService.toTree(menuList);
+                List<Ztree> ztrees = Ztree.buildTree(ztreeList);
+                StringBuilder html = new StringBuilder();
+                buildHtml(html,ztrees);
+                DefaultObjectWrapperBuilder builder = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_29);
+                env.setVariable("navHtml",builder.build().wrap(html));
+                body.render(env.getOut());
+            }
         }
     }
 

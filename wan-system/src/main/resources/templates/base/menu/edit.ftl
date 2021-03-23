@@ -51,6 +51,7 @@
             <textarea style="width: 100%;height: 100px;resize: none" class="form-control" id="remark"
                       name="remark">${data.remark}</textarea>
         </div>
+        <div class="col-xs-12 col-md-4" style="height: 60px;"></div>
         <div class="edit-win-foot">
             <button type="button" class="btn btn-success" onclick="save()">保存</button>
             <button type="button" class="btn btn-default" onclick="closeLayer()">关闭</button>

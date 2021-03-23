@@ -26,6 +26,7 @@
             <input class="form-control" type="text" id="realname" name="realname" value="${data.realname}">
         </div>
 
+        <div class="col-xs-12 col-md-4" style="height: 60px;"></div>
         <div class="edit-win-foot">
             <button type="button" class="btn btn-success" onclick="save()">保存</button>
             <button type="button" class="btn btn-default" onclick="closeLayer()">关闭</button>
