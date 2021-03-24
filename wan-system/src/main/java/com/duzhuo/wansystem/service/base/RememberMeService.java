@@ -164,4 +164,17 @@ public class RememberMeService extends BaseService<RememberMe, Long> {
             super.delete(rememberMeList);
         }
     }
+
+    /**
+     * 移除记住功能
+     * @param request
+     */
+    public void removeRememberMe(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        Cookie cookie = ServletUtils.getCookiesValue(cookies,REMEMBER_COOKIES_NAME);
+        if (cookie==null){
+            return;
+        }
+        rememberMeDao.removeToken(cookie.getValue());
+    }
 }

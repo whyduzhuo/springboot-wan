@@ -4,6 +4,8 @@ package  com.duzhuo.wansystem.dao.base;
 import com.duzhuo.common.core.base.BaseDao;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.RememberMe;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -31,5 +33,13 @@ public interface RememberMeDao extends BaseDao<RememberMe,Long> {
      * @return
      */
     List<RememberMe> findByAdmin(Admin admin);
+
+    /**
+     *
+     * @param value
+     */
+    @Query(value = "DELETE FROM t_base_remember_me WHERE token = ?1",nativeQuery = true)
+    @Modifying
+    void removeToken(String value);
 }
 
