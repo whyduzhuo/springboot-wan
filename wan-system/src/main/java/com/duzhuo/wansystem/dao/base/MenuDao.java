@@ -140,4 +140,14 @@ public interface MenuDao extends BaseDao<Menu,Long> {
      * @return
      */
     List<Menu> findByParentId(Long id);
+
+    /**
+     * 查询某个角色的全部菜单
+     * @param roleId
+     * @return
+     */
+    @Query(value = "SELECT t.* FROM T_BASE_MENU t WHERE ID IN (\n" +
+            "SELECT t2.MENU_ID from T_BASE_ROLE_MENU t2 WHERE t2.ROLE_ID =?1 \n" +
+            ")",nativeQuery = true)
+    List<Menu> getMenu(Long roleId);
 }

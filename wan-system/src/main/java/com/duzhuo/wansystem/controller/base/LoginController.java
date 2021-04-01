@@ -137,7 +137,7 @@ public class LoginController {
         AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
         shiroRealm.clearMyCache();
         SecurityUtils.getSubject().logout();
-        rememberMeService.removeByAdmin(admin);
+        rememberMeService.removeRememberMe(request);
         return Message.success("退出成功！");
     }
 

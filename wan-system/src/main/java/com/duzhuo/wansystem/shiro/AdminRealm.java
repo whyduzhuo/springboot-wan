@@ -32,13 +32,7 @@ import java.util.stream.Collectors;
 public class AdminRealm extends AuthorizingRealm {
 
     @Resource
-    private MenuService menuService;
-
-    @Resource
-    private RoleService roleService;
-
-    @Resource
-    private AdminService adminService;
+    private ShiroSourceService shiroSourceService;
     @Resource
     private RedisUtils redisUtils;
 
@@ -72,12 +66,12 @@ public class AdminRealm extends AuthorizingRealm {
         Admin admin = ShiroUtils.getCurrAdmin();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         // 获取当前登录的角色
-        Role role = adminService.getCurrRole(admin);
+        Role role = shiroSourceService.getCurrRole(admin);
         if (role==null){
             return info;
         }
         // 职务列表
-        List<Menu> menuList = roleService.getMenu(role.getId());
+        List<Menu> menuList = shiroSourceService.getMenu(role.getId());
         // 菜单/功能列表
 
         // 角色加入AuthorizationInfo认证对象，在controller接口加RequiresRoles 就可以用了
@@ -94,15 +88,15 @@ public class AdminRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         MyUsernamePasswordToken upToken = (MyUsernamePasswordToken) token;
         if (upToken.getLoginType()== MyUsernamePasswordToken.LoginType.OAUTH2){
-            Admin admin = adminService.findByUsernameEnable(upToken.getUsername());
+            Admin admin = shiroSourceService.findByUsernameEnable(upToken.getUsername());
             return new SimpleAuthenticationInfo(admin, admin.getPassword(), getName());
         }
         if (upToken.getLoginType()== MyUsernamePasswordToken.LoginType.SMS){
-            Admin admin = adminService.findByUsernameEnable(upToken.getUsername());
+            Admin admin = shiroSourceService.findByUsernameEnable(upToken.getUsername());
             return new SimpleAuthenticationInfo(admin, admin.getPassword(), getName());
         }
         if (upToken.getLoginType()== MyUsernamePasswordToken.LoginType.REMEMBER_ME){
-            Admin admin = adminService.findByUsernameEnable(upToken.getUsername());
+            Admin admin = shiroSourceService.findByUsernameEnable(upToken.getUsername());
             return new SimpleAuthenticationInfo(admin, admin.getPassword(), getName());
         }
         if (upToken.getLoginType()== MyUsernamePasswordToken.LoginType.PASSWORD) {
@@ -113,7 +107,7 @@ public class AdminRealm extends AuthorizingRealm {
             }
             Admin admin;
             try {
-                admin = adminService.login(username, password);
+                admin = shiroSourceService.login(username, password);
             } catch (Exception e) {
                 log.info(e.getMessage(), e);
                 throw new AuthenticationException(e.getMessage(), e);

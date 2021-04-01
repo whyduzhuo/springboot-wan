@@ -105,23 +105,6 @@ public class AdminService extends DeleteService<Admin,Long> {
         return adminDao.findByUsernameAndPassword(username,password);
     }
 
-    public Admin login(String username, String password) throws Exception {
-        if (StringUtils.isBlank(username)){
-            throw new Exception("用户名为空！");
-        }
-        if (StringUtils.isBlank(password)){
-            throw new Exception("密码为空！");
-        }
-        Admin admin = this.findByUsernameAndPassword(username,password);
-        if (admin==null){
-            throw new Exception("用户名或密码错误！");
-        }
-        if (admin.getDelTime()!=0L){
-            throw new Exception("用户已被禁用！");
-        }
-        return admin;
-    }
-
     /**
      * 禁用用户
      * @param id
