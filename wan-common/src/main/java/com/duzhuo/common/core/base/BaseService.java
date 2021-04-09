@@ -419,7 +419,7 @@ public class BaseService<T extends BaseEntity, ID extends Serializable> {
         Specification<T> spec = generareSpecification(filters, null);
         if (null == sort) {
             //默认创建时间排序
-            sort = Sort.by(Sort.Direction.ASC,BaseEntity.CREATE_DATE_PROPERTY_NAME);
+            sort = Sort.by(Sort.Direction.DESC,BaseEntity.CREATE_DATE_PROPERTY_NAME);
         }
         return findAll(spec, sort);
     }
