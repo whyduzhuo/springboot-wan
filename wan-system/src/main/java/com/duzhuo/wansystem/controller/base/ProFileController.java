@@ -56,7 +56,7 @@ public class ProFileController extends BaseController{
     @GetMapping("/downLoad")
     @Log(title = "文件下载",operateType = OperateType.DOWLOAD)
     @ApiOperation(value = "文件下载",httpMethod = "GET")
-    public ResponseEntity<byte[]> downLoad(HttpServletRequest request, HttpServletResponse response,@NotNull Long id)throws IOException {
+    public ResponseEntity<byte[]> downLoad(HttpServletRequest request, HttpServletResponse response,@NotNull Long id) throws IOException {
         return proFileService.downLoad(id,response);
     }
 
@@ -96,5 +96,11 @@ public class ProFileController extends BaseController{
         proFileService.fileIO(id,response);
     }
 
-
+    @ResponseBody
+    @ApiOperation(value = "world转pdf")
+    @Log(title = "world转pdf",operateType = OperateType.SELECT)
+    @GetMapping("/toPdf")
+    public Message toPdf(Long id) throws Exception {
+        return Message.success("转换成功，是否立即下载",proFileService.toPdf(id).getId());
+    }
 }

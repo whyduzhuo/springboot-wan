@@ -1,4 +1,3 @@
-/*
 package com.duzhuo.common.utils;
 
 import org.apache.commons.collections.MapUtils;
@@ -20,29 +19,28 @@ import java.util.Map;
 public class WordToPDF {
 
 
-    */
-/**
-     * 将word文档， 转换成pdf, 中间替换掉变量 
-     * @param source 源为word文档， 必须为docx文档 
-     * @param target 目标输出 
-     * @param params 需要替换的变量 
+    /**
+     * 将word文档， 转换成pdf, 中间替换掉变量
+     * @param source 源为word文档， 必须为docx文档
+     * @param target 目标输出
+     * @param params 需要替换的变量
      * @throws Exception
-     *//*
+     */
 
     public static void wordConverterToPdf(InputStream source,
                                           OutputStream target, Map<String, String> params) throws Exception {
         wordConverterToPdf(source, target, null, params);
     }
 
-    */
-/**
-     * 将word文档， 转换成pdf, 中间替换掉变量 
-     * @param source 源为word文档， 必须为docx文档 
-     * @param target 目标输出 
-     * @param params 需要替换的变量 
-     * @param options PdfOptions.create().fontEncoding( "windows-1250" ) 或者其他 
+
+    /**
+     * 将word文档， 转换成pdf, 中间替换掉变量
+     * @param source 源为word文档， 必须为docx文档
+     * @param target 目标输出
+     * @param params 需要替换的变量
+     * @param options PdfOptions.create().fontEncoding( "windows-1250" ) 或者其他
      * @throws Exception
-     *//*
+     */
 
     public static void wordConverterToPdf(InputStream source, OutputStream target,
                                           PdfOptions options,
@@ -59,8 +57,8 @@ public class WordToPDF {
         PdfConverter.getInstance().convert(doc, target, options);
     }
 
-    */
-/** 替换段落中内容 *//*
+
+    /** 替换段落中内容 */
 
     private static void paragraphReplace(List<XWPFParagraph> paragraphs, Map<String, String> params) {
         if (MapUtils.isNotEmpty(params)) {
@@ -75,6 +73,23 @@ public class WordToPDF {
         }
     }
 
+    /**
+     * world 转 pdf
+     * @param sourceDocPath world原路径
+     * @param outputPdfPath 输出路径
+     */
+    public static void toPdf(String sourceDocPath,String outputPdfPath) throws Exception {
+        InputStream source;
+        OutputStream target;
+        source = new FileInputStream(sourceDocPath);
+        target = new FileOutputStream(outputPdfPath);
+        Map<String, String> params = new HashMap<>();
+
+
+        PdfOptions options = PdfOptions.create();
+
+        wordConverterToPdf(source, target, options, params);
+    }
 
     public static void main(String[] args) {
         String filepath = "D:\\wan\\uploadPath\\ff80808171864726017190a427bf01af.docx";
@@ -100,4 +115,4 @@ public class WordToPDF {
         }
 
     }
-}*/
+}

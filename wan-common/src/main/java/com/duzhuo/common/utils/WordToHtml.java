@@ -208,7 +208,7 @@ public class WordToHtml {
     public static void main(String[] args) {
         // 项目中应该这样获取 String rootPath = request.getSession().getServletContext().getRealPath("");
         String rootPath = "D:\\wan\\uploadPath";
-        String fileUrl = "/ff80808171864726017190a427bf01af.docx";
+        String fileUrl = "/5ea02bae-c773-402f-b3c4-75ca77ea2563.docx";
         // 截取文件后缀
         int begin = fileUrl.lastIndexOf(".");
         int last = fileUrl.length();

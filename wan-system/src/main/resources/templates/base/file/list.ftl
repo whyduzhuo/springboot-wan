@@ -67,6 +67,10 @@
                            onclick="remove(${data.id})"
                            class="btn btn-xs btn-danger" type="button"
                            data-toggle="tooltip" data-original-title="删除">删除</a>
+                        <a href="javasript:void()"
+                           class="btn btn-xs btn-info" type="button"
+                           onclick="toPdf('${data.id}')"
+                           data-toggle="tooltip" data-original-title="转PDF">转PDF</a>
                     </div>
                 </td>
             </tr>
@@ -95,6 +99,14 @@
             area: ['500px', '600px'],
             content: 'editWin?id='+id
         });
+    }
+    
+    function toPdf(id) {
+        ajaxSend("toPdf","get",{"id":id},function (res) {
+            layer.confirm(res.msg,{icon:res.icon}, function (index) {
+                window.open("downLoad?id="+res.data)
+            });
+        })
     }
 
     function remove(id) {
@@ -145,7 +157,7 @@
     function importData() {
         var form = new FormData(document.getElementById('putInExcel'));
         $.ajax({
-            url: "uploads",
+            url: "upload",
             type: "post",
             data: form,
             processData: false,

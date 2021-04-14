@@ -91,6 +91,8 @@ public class ShiroConfig {
         map.put("/kaptcha/**","anon");
         map.put(fileVirtualPathPublic+"/**","anon");
         map.put("/api/wechat/**","anon");
+        map.put("/base/login2","anon");
+        map.put("/captcha/**","anon");
 //        map.put("/MP_verify_ulwYaaCP2peBHClv.txt","anon");
 //        map.put("/weixin/**","anon");
         //对所有用户认证

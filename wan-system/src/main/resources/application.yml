@@ -61,3 +61,19 @@ xss:
   excludes: /system/notice/*
   # 匹配链接
   urlPatterns: /*
+aj:
+  captcha:
+    jigsaw: classpath:/captcha/images/jigsaw
+    pic-click: classpath:/captcha/images/pic-click
+    cache-type: local
+    type: default
+    water-mark: \u72ec\u914c\u5de5\u4f5c\u5ba4
+    slip-offset: 5
+    aes-status: true
+    interference-options: 2
+    history-data-clear-enable: true
+    req-frequency-limit-enable: true
+    req-get-lock-limit: 5
+    req-get-lock-seconds: 360
+    req-get-minute-limit: 30
+

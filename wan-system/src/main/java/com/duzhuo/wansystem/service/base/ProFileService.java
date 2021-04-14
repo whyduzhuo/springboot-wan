@@ -4,10 +4,12 @@ import com.duzhuo.common.config.ProFileConfig;
 import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.utils.Tools;
+import com.duzhuo.common.utils.WordToPDF;
 import com.duzhuo.wansystem.dao.base.ProFileDao;
 import com.duzhuo.wansystem.entity.base.ProFile;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -110,7 +112,7 @@ public class ProFileService extends BaseService<ProFile,Long> {
             proFile.setUuid(p.getUuid());
             proFile.setSuffix(suffix);
             proFile.setPath(p.getPath());
-            proFile.setOriginal(fileName);
+            proFile.setOriginal(fileName.replace(suffix,""));
             proFile.setFileSize(file.getSize());
             proFile.setMd5(md5);
             proFile.setStatus(status);
@@ -241,5 +243,39 @@ public class ProFileService extends BaseService<ProFile,Long> {
             outputStream.close();
             response.setHeader("Content-Type", "application/octet-stream");
         }
+    }
+
+    /**
+     * world 转 pdf
+     * @param id
+     */
+    public ProFile toPdf(Long id) throws Exception {
+        ProFile proFile = super.find(id);
+        if (!proFile.getSuffix().equalsIgnoreCase(".doc") && !proFile.getSuffix().equalsIgnoreCase(".docx")){
+            throw new ServiceException("非pdf文件！");
+        }
+        String date = new  SimpleDateFormat("yyyy/MMdd").format(new Date());
+        String uuid = UUID.randomUUID().toString();
+        String suffix = ".pdf";
+        String newFilePath = proFileConfig.getFilePath()+"/"+date+"/"+uuid+suffix;
+        //world绝对路径
+        String wordFile = this.getAbsolutePath(proFile);
+        String pdfFile = proFileConfig.getFilePath()+"/"+date+"/"+uuid+suffix;
+        WordToPDF.toPdf(wordFile,pdfFile);
+        ProFile pdfProfile = new ProFile();
+        pdfProfile.setAdmin(ShiroUtils.getCurrAdmin());
+        File filePdf = new File(pdfFile);
+        pdfProfile.setFileSize(filePdf.length());
+
+        byte[] bytes = FileUtils.readFileToByteArray(filePdf);
+        String md5 = Tools.getMD5(bytes);
+        pdfProfile.setMd5(md5);
+        pdfProfile.setOriginal(proFile.getOriginal());
+        pdfProfile.setPath(proFileConfig.getFileVirtualPath()+"/"+date+"/");
+        pdfProfile.setStatus(ProFile.Status.PUBLIC);
+        pdfProfile.setSuffix(".pdf");
+        pdfProfile.setUuid(uuid);
+        this.addData(pdfProfile);
+        return pdfProfile;
     }
 }
