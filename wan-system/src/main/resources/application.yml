@@ -67,7 +67,7 @@ aj:
     pic-click: classpath:/captcha/images/pic-click
     cache-type: local
     type: default
-    water-mark: \u72ec\u914c\u5de5\u4f5c\u5ba4
+    water-mark: 独酌工作室
     slip-offset: 5
     aes-status: true
     interference-options: 2

@@ -43,7 +43,7 @@
         </div>
         <div class="col-xs-12 col-md-12" style="text-align: center">
             <input type="hidden" name="captchaVerification" id="captchaVerification">
-            <button id='btn' type="button" class="btn btn-info" style="width: 100%;background-color: ##409EFF;margin-top: 10px">登录</button>
+            <button id='btn' type="button" class="btn btn-success" style="width: 100%;margin-top: 10px">登录</button>
             <div id="mpanel2" style="">
             </div>
         </div>

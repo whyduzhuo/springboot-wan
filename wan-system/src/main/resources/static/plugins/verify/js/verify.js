@@ -87,7 +87,7 @@
 		this.moveLeftDistance = 0,
 		this.secretKey = '',
         this.defaults = {
-			baseUrl:"https://captcha.anji-plus.com/captcha-api",
+			baseUrl:"",
 			containerId:'',
         	captchaType:"blockPuzzle",
         	mode : 'fixed',	//弹出式pop，固定fixed
