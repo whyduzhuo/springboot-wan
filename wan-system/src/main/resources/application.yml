@@ -75,5 +75,5 @@ aj:
     req-frequency-limit-enable: true
     req-get-lock-limit: 5
     req-get-lock-seconds: 360
-    req-get-minute-limit: 30
+    req-get-minute-limit: 100
 

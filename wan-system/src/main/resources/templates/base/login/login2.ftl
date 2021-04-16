@@ -11,22 +11,29 @@
     <link rel="stylesheet" type="text/css" href="/static/plugins/verify/css/verify.css">
     <style type="text/css">
         #login-form {
+            padding-top: 20px;
             width: 300px;
-            height: 600px;
+            height: 300px;
             display: block;
             position: absolute;
             right: 30%;
             top: 20%;
+            color: #fff;
+            background: rgba(255,255,255,.2);
+            border: 1px solid rgba(255,255,255,.3);
         }
         body{
             background-color: #ffffff;
         }
     </style>
 </head>
-<body>
-<img src="/static/img/login-background.jpg" style="position: absolute;top: 0px;right: 0px">
+<body style="background-image:url('/static/img/login/bg.jpg');overflow-y:hidden;" >
+<#--<img src="/static/img/login-background.jpg" style="position: absolute;top: 0px;right: 0px">-->
 <form method="post" id="login-form">
     <div class="form-group">
+        <div class="col-xs-12 col-md-12">
+            <h4 style="text-align: center">SpringBoot-wan</h4>
+        </div>
         <div class="col-xs-12 col-md-12">
             <label class="">用户名<span class="text-danger">*</span></label>
             <input class="form-control" name="username" value="admin">
@@ -35,7 +42,7 @@
             <label class="">密码<span class="text-danger">*</span></label>
             <input class="form-control" name="password" value="123456">
         </div>
-        <div class="col-xs-12 col-md-12">
+        <div class="col-xs-12 col-md-12" style="margin: 10px 0;">
             <label class="css-input css-checkbox css-checkbox-primary remove-padding remove-margin">
                 <input type="checkbox" name="rememberMe" /><span></span>
                 记住我
