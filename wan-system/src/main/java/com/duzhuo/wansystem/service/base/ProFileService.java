@@ -1,6 +1,7 @@
 package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.config.ProFileConfig;
+import com.duzhuo.common.core.CustomSearch;
 import com.duzhuo.common.core.base.BaseService;
 import com.duzhuo.common.core.del.DeleteService;
 import com.duzhuo.common.exception.ServiceException;
@@ -11,6 +12,7 @@ import com.duzhuo.wansystem.entity.base.ProFile;
 import com.duzhuo.wansystem.shiro.ShiroUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,7 @@ import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -49,6 +52,13 @@ public class ProFileService extends DeleteService<ProFile,Long> {
     @Resource
     public void setBaseDao(ProFileDao proFileDao){
         super.setBaseDao(proFileDao);
+    }
+
+    @Override
+    public Page<ProFile> search(Map<String, Object> searchParams, CustomSearch<ProFile> customSearch) {
+        Page<ProFile> search = super.search(searchParams, customSearch);
+        search.getContent().forEach(r-> r.setExit(this.exit(r)));
+        return search;
     }
 
     public ResponseEntity<byte[]> downLoad(@NotNull Long id, HttpServletResponse response) throws IOException{
@@ -79,6 +89,19 @@ public class ProFileService extends DeleteService<ProFile,Long> {
 
     private String getAbsolutePath(ProFile proFile) {
         return proFileConfig.getFilePath()+proFile.getDownloadPath().substring(proFileConfig.getFileVirtualPath().length(),proFile.getDownloadPath().length());
+    }
+
+
+
+    /**
+     * 判断文件是否存在
+     * @param proFile
+     * @return
+     */
+    public Boolean exit(ProFile proFile){
+        String absolutePath = getAbsolutePath(proFile);
+        File file = new File(absolutePath);
+        return file.exists();
     }
 
     /**

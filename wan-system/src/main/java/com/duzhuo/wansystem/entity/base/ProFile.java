@@ -103,4 +103,9 @@ public class ProFile extends DeleteEntity{
     }
 
 
+    @Transient
+    @ApiModelProperty(value = "是否存在！")
+    private boolean exit;
+
+
 }

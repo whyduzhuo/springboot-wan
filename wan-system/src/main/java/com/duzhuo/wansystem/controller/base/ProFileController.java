@@ -2,8 +2,10 @@ package com.duzhuo.wansystem.controller.base;
 
 import com.duzhuo.common.annotation.Log;
 import com.duzhuo.common.core.CustomSearch;
+import com.duzhuo.common.core.Filter;
 import com.duzhuo.common.core.Message;
 import com.duzhuo.common.core.base.BaseController;
+import com.duzhuo.common.core.del.DeleteEntity;
 import com.duzhuo.common.enums.OperateType;
 import com.duzhuo.common.utils.CommonUtil;
 import com.duzhuo.wansystem.entity.base.ProFile;
@@ -46,6 +48,7 @@ public class ProFileController extends BaseController{
         CommonUtil.initPage(request,customSearch);
         Map<String,Object> searchParams = WebUtils.getParametersStartingWith(request,"search_");
         super.searchParamsTrim(searchParams);
+        customSearch.getFilters().add(Filter.eq(DeleteEntity.DEL_TIME_PROPERTY_NAME,0L));
         customSearch.setPagedata(proFileService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
         model.addAttribute("searchParams",searchParams);

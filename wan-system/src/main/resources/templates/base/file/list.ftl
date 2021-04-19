@@ -42,6 +42,7 @@
                 <th>文件路径</th>
                 <th>文件大小</th>
                 <th>上传者</th>
+                <th>是否存在</th>
                 <th>操作</th>
             </tr>
             <#list customSearch.pagedata.content as data>
@@ -55,6 +56,13 @@
                 <td>${data.downloadPath}</td>
                 <td>${data.fileSizeStr}</td>
                 <td>${data.admin.realname}</td>
+                <td>
+                    <#if data.exit>
+                        <span  class="label label-success">存在</span>
+                    <#else>
+                        <span  class="label label-danger">不存在</span>
+                    </#if>
+                </td>
                 <td>
                     <div class="btn-group">
                         <a href="file/${data.id}" target="_blank"
