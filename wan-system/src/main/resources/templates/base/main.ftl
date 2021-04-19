@@ -126,7 +126,7 @@
                 <blockquote class="layui-elem-quote layui-quote-nm">
                     springboot-wan后台管理系统，基于SpringBoot2.0 + Spring Data Jpa + freemarker + Shiro + redis 开发的后台管理系统，采用分模块的方式便于开发和维护，目前支持的功能有：权限管理、部门管理、字典管理、日志记录、文件上传、代码生成等，为快速开发后台系统而生的脚手架！
                     <div>开源协议：Apache License 2.0</div>
-                    <div>开源地址：<a href="https://gitee.com/little_one/springboot-wan.git">https://gitee.com/little_one/springboot-wan.git</a></div>
+                    <div>开源地址：<a target="_blank" href="https://gitee.com/little_one/springboot-wan.git">https://gitee.com/little_one/springboot-wan.git</a></div>
                 </blockquote>
                 <div>
                     <h4>技术选型</h4>

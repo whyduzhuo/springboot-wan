@@ -142,19 +142,21 @@
         }
     </script>
 </body>
-<#--数据导出方法-->
+
+
 <div class="modal fade" id="exportModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <form class="modal-dialog" action="exportData" method="post" target="_blank">
-        <div class="modal-content" style="border-radius: 10px">
-            <div class="modal-header" style="background-color: #286ec5;color: #fff;border-radius: 10px 10px 0 0;">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true">×
+    <div class="modal-dialog">
+        <form class="modal-content" action="exportData" method="post" target="_blank">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
                 </button>
                 <h4 class="modal-title" id="myModalLabel">
-                    请选择导出范围
+                    导出选项
                 </h4>
             </div>
             <div class="modal-body">
+                <h4 style="display: block">请选择导出范围</h4>
                 <div  style="display: inline-block;width: 30%">
                     <label>请求方式:</label>
                     <select class="input-sm input-search form-control" name="search_eq_method">
@@ -195,7 +197,8 @@
                     <input class="input-sm input-search form-control" name="exp_like_title" value="${searchParams['search_like_title']}"/>
                 </div>
                 <br/>
-                <h4 style="display: inline-block">请选择导出字段</h4>
+
+                <h4 style="display: inline-block;margin-top: 20px">请选择导出字段</h4>
                 <label class="css-input css-checkbox css-checkbox-primary">
                     <input type="checkbox" value="1" checked class="quanxuan"/><span></span>全选
                 </label>
@@ -280,14 +283,13 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">关闭
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                 </button>
-                <button type="submit" class="btn btn-primary" >
+                <button type="submit" class="btn btn-primary">
                     导出excel
                 </button>
             </div>
-        </div><!-- /.modal-content -->
-    </form><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </form><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 </html>
