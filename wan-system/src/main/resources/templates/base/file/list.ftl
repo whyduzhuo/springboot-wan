@@ -139,7 +139,6 @@
                         </div>
                     </div>
                 </div>
-                <input value="false" type="hidden" id="isUpload" name="isUpload">
                 <div class="modal-footer">
                     <button class="btn btn-sm btn-default" type="button" data-dismiss="modal">关闭</button>
                     <button class="btn btn-sm btn-primary" name="11"  type="button" onclick="importData()">上传

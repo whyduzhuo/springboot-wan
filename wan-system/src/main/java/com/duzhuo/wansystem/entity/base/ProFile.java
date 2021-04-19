@@ -1,6 +1,7 @@
 package com.duzhuo.wansystem.entity.base;
 
 import com.duzhuo.common.core.base.BaseEntity;
+import com.duzhuo.common.core.del.DeleteEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -24,7 +25,7 @@ import java.text.DecimalFormat;
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "T_BASE_PROFILE")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "T_BASE_SEQ", allocationSize = 1)
-public class ProFile extends BaseEntity{
+public class ProFile extends DeleteEntity{
     public enum Status{
         /**
          * 默认文件夹

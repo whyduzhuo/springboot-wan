@@ -103,4 +103,13 @@ public class ProFileController extends BaseController{
     public Message toPdf(Long id) throws Exception {
         return Message.success("转换成功，是否立即下载",proFileService.toPdf(id).getId());
     }
+
+    @ResponseBody
+    @ApiOperation(value = "文件删除")
+    @Log(title = "文件删除",operateType = OperateType.DELETE)
+    @DeleteMapping("/del")
+    public Message del(Long id){
+        proFileService.delete(id);
+        return Message.success("删除成功！");
+    }
 }

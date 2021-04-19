@@ -2,6 +2,7 @@ package com.duzhuo.wansystem.service.base;
 
 import com.duzhuo.common.config.ProFileConfig;
 import com.duzhuo.common.core.base.BaseService;
+import com.duzhuo.common.core.del.DeleteService;
 import com.duzhuo.common.exception.ServiceException;
 import com.duzhuo.common.utils.Tools;
 import com.duzhuo.common.utils.WordToPDF;
@@ -37,7 +38,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class ProFileService extends BaseService<ProFile,Long> {
+public class ProFileService extends DeleteService<ProFile,Long> {
     @Resource
     private ProFileConfig proFileConfig;
     @Resource

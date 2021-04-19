@@ -146,7 +146,7 @@
 
 <div class="modal fade" id="exportModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form class="modal-content" action="exportData" method="post" target="_blank">
+        <form class="modal-content" action="exportData" method="post" target="_blank" style="border-radius: 10px">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;

@@ -181,56 +181,54 @@
                     </table>
                 </div>
             </div>
-        <#--数据导出方法-->
-            <div class="modal fade" id="exportModel" tabindex="-1"  aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-content" style="border-radius: 10px;width: 600px;margin: 0 auto;">
-                    <div class="modal-header" style="background-color: #286ec5;color: #fff;border-radius: 10px 10px 0 0;">
-                        <button type="button" class="close" data-dismiss="modal"
-                                aria-hidden="true">×
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">
-                            请选择导出范围
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <h4 style="display: inline-block">请选择导出字段</h4>
-                        <div>
-                            <div class="exp_column">
-                                <label class="css-input css-checkbox css-checkbox-primary">
-                                    <input type="checkbox" checked name="fields" value="姓名"/><span></span>姓名
-                                </label>
-                            </div>
-
-                            <div class="exp_column">
-                                <label class="css-input css-checkbox css-checkbox-primary">
-                                    <input type="checkbox" checked name="fields" value="学号"/><span></span>学号
-                                </label>
-                            </div>
-
-                            <div class="exp_column">
-                                <label class="css-input css-checkbox css-checkbox-primary">
-                                    <input type="checkbox" checked name="fields" value="班级"/><span></span>班级
-                                </label>
-                            </div>
-
-                            <div class="exp_column">
-                                <label class="css-input css-checkbox css-checkbox-primary">
-                                    <input type="checkbox" checked name="fields" value="学院"/><span></span>学院
-                                </label>
-                            </div>
-
+            <div class="modal fade" id="exportModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                请选择导出范围
+                            </h4>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default"
-                                data-dismiss="modal">关闭
-                        </button>
-                        <button type="submit" class="btn btn-primary" >
-                            导出excel
-                        </button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
+                        <div class="modal-body">
+                            <div>
+                                <div class="exp_column">
+                                    <label class="css-input css-checkbox css-checkbox-primary">
+                                        <input type="checkbox" checked name="fields" value="姓名"/><span></span>姓名
+                                    </label>
+                                </div>
+
+                                <div class="exp_column">
+                                    <label class="css-input css-checkbox css-checkbox-primary">
+                                    <input type="checkbox" checked name="fields" value="学号"/><span></span>学号
+                                    </label>
+                                </div>
+
+                                <div class="exp_column">
+                                    <label class="css-input css-checkbox css-checkbox-primary">
+                                        <input type="checkbox" checked name="fields" value="班级"/><span></span>班级
+                                    </label>
+                                </div>
+
+                                <div class="exp_column">
+                                    <label class="css-input css-checkbox css-checkbox-primary">
+                                        <input type="checkbox" checked name="fields" value="学院"/><span></span>学院
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                导出excel
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
         </form>
     </div>
 </body>
