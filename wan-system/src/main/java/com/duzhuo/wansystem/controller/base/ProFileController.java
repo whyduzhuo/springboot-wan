@@ -51,7 +51,7 @@ public class ProFileController extends BaseController{
         customSearch.getFilters().add(Filter.eq(DeleteEntity.DEL_TIME_PROPERTY_NAME,0L));
         customSearch.setPagedata(proFileService.search(searchParams,customSearch));
         model.addAttribute("customSearch",customSearch);
-        model.addAttribute("searchParams",searchParams);
+        model.addAttribute("searchParams",mapKeyAddPre(searchParams,SEARCH_PREFIX));
         return "/base/file/list";
     }
 

@@ -1,15 +1,16 @@
 package com.duzhuo.wansystem.shiro;
 
+import com.duzhuo.common.config.SettingConfig;
 import com.duzhuo.common.utils.RedisUtils;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
-import com.duzhuo.wansystem.service.base.AdminService;
-import com.duzhuo.wansystem.service.base.MenuService;
-import com.duzhuo.wansystem.service.base.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -17,10 +18,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.crazycake.shiro.RedisCacheManager;
 
 import javax.annotation.Resource;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * 自定义Realm 处理登录 权限
@@ -35,6 +33,8 @@ public class AdminRealm extends AuthorizingRealm {
     private ShiroSourceService shiroSourceService;
     @Resource
     private RedisUtils redisUtils;
+    @Resource
+    private SettingConfig settingConfig;
 
 //    /**
 //     * 授权
@@ -130,7 +130,7 @@ public class AdminRealm extends AuthorizingRealm {
      * 因为缓存key值自定义的用户username {@link ShiroConfig#myShiroRealm()} {@link ShiroConfig#cacheManager}
      */
     public void clearCachedAuthenticationInfo(String username) {
-        String key = "shiro:cache:authenticationCache:"+username;
+        String key = settingConfig.getName()+":shiro:cache:authenticationCache:"+username;
         redisUtils.delete(key);
     }
 
@@ -155,7 +155,7 @@ public class AdminRealm extends AuthorizingRealm {
      * 因为缓存key值自定义的用户username {@link ShiroConfig#myShiroRealm()} {@link ShiroConfig#cacheManager}
      */
     public void clearCachedAuthorizationInfo(String username){
-        String key = "shiro:cache:authorizationCache:"+username;
+        String key = settingConfig.getName()+":shiro:cache:authorizationCache:"+username;
         redisUtils.delete(key);
     }
 

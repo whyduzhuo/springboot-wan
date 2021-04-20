@@ -87,6 +87,6 @@ public interface RoleDao extends BaseDao<Role,Long> {
      */
     @Query(value = "SELECT t1.* FROM T_BASE_ROLE t1 " +
             "LEFT JOIN T_BASE_ADMIN_ROLE t2 ON t1.id = t2.role_id " +
-            "WHERE t2.admin_id = ?1",nativeQuery = true)
+            "WHERE t2.admin_id = ?1 ORDER BY t1.orders asc",nativeQuery = true)
     List<Role> getAllRolesByAdmin(Long adminId);
 }

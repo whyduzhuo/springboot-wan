@@ -1,10 +1,9 @@
 package com.duzhuo.wansystem.shiro;
 
-import org.apache.shiro.codec.Base64;
+import com.duzhuo.common.config.SettingConfig;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
@@ -15,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.Resource;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -38,6 +38,8 @@ public class ShiroConfig {
     private String password;
     @Value(value = "${wan.profile.file-virtual-Path-public}")
     private String fileVirtualPathPublic;
+    @Resource
+    private SettingConfig settingConfig;
 
     /**
      * 自定义realm
@@ -150,6 +152,7 @@ public class ShiroConfig {
         redisCacheManager.setPrincipalIdFieldName("username");
         //用户权限信息缓存时间
         redisCacheManager.setExpire(timeout);
+        redisCacheManager.setKeyPrefix(settingConfig.getName()+":shiro:cache:");
         return redisCacheManager;
     }
 
@@ -159,7 +162,7 @@ public class ShiroConfig {
     public RedisSessionDAO redisSessionDAO() {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(redisManager());
-        redisSessionDAO.setKeyPrefix("shiro:sid:");
+        redisSessionDAO.setKeyPrefix(settingConfig.getName()+":shiro:sid:");
         return redisSessionDAO;
     }
 

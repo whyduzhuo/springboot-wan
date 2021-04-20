@@ -4,6 +4,8 @@ import com.duzhuo.common.core.base.BaseDao;
 import com.duzhuo.wansystem.entity.base.ProFile;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author: 万宏远
  * @email: 1434495271@qq.com
@@ -18,5 +20,5 @@ public interface ProFileDao extends BaseDao<ProFile,Long> {
      * @param md5
      * @return
      */
-    ProFile findByFileSizeAndMd5AndStatus(Long fileSize, String md5, ProFile.Status status);
+    List<ProFile> findByFileSizeAndMd5AndStatus(Long fileSize, String md5, ProFile.Status status);
 }

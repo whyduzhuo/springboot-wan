@@ -7,12 +7,15 @@ import com.duzhuo.wansystem.dto.Ztree;
 import com.duzhuo.wansystem.entity.base.Admin;
 import com.duzhuo.wansystem.entity.base.Menu;
 import com.duzhuo.wansystem.entity.base.Role;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author: 万宏远
@@ -28,6 +31,8 @@ public class MenuService extends BaseService<Menu,Long> {
     private MenuDao menuDao;
     @Resource
     private RoleService roleService;
+    @Resource
+    private RedisTemplate<String,String> redisTemplate;
 
     @Resource
     public void setBaseDao(MenuDao menuDao){
@@ -418,6 +423,7 @@ public class MenuService extends BaseService<Menu,Long> {
      * @return
      */
     public List<Role> getAllRoles(Long menuId) {
+        redisTemplate.opsForValue().set("hahha","haha",100, TimeUnit.SECONDS);
         return roleService.getAllRoles(menuId);
     }
 }

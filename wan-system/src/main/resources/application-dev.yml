@@ -18,7 +18,7 @@ spring:
   servlet:
     multipart:
       max-file-size: ${wan.profile.max-size}
-      max-request-size: 2MB
+      max-request-size: 20MB
   redis:
     host: localhost
     port: 6379
@@ -30,9 +30,9 @@ wan:
     file-path: D:/wan/uploadPath  #默认文件存储路径
     file-virtual-Path: /upload    #文件储路径对应的项目虚拟路径
     file-virtual-Path-public: /upload/public #shiro 放行文件夹
-    max-size: 1MB        #文件最大限制
-    max-file-name: 40      #文件名称最长限制
-    support-file-type: bmp,gif,jpg,jpeg,png,doc,docx,xls,xlsx,ppt,pptx,txt,rar,zip,pdf
+    max-size: 10MB        #文件最大限制
+    max-file-name: 200      #文件名称最长限制
+    support-file-type: bmp,gif,jpg,jpeg,png,doc,docx,xls,xlsx,ppt,pptx,txt,rar,zip,pdf,mp4,mp3,avi
   redis:
     shiro-time-out: 3600 #shiro redis缓存失效时间
   setting:
@@ -55,6 +55,9 @@ server:
   tomcat:
     uri-encoding: utf-8
     max-threads: 500
+logging:
+  level:
+    org.springframework.web: trace
 
 #微信公众号开发
 #教程https://mp.weixin.qq.com/debug?token=476802302&lang=zh_CN

@@ -46,9 +46,8 @@ spring:
 debug: true
 logging:
   level:
-      org.springframework.boot.autoconfigure: warn
-      org.activiti.engine.impl.persistence.entity: trace
-      org.springframework.web: trace
+    org.springframework.boot.autoconfigure: warn
+    org.activiti.engine.impl.persistence.entity: trace
   config: classpath:loggback.xml
 server:
   max-http-header-size: 65546

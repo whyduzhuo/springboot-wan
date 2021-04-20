@@ -16,17 +16,12 @@
         </@pageHeadLeft>
         <@pageHeadRight>
             <div class="search-item">
-                <label>请求方式:</label>
-                <select class="input-sm input-search" name="search_eq_method">
-                    <option value="" selected>全部</option>
-                    <#list methodList as method>
-                         <option value="${method}" <#if searchParams['search_eq_method']==method>selected </#if>>${method}</option>
-                    </#list>
-                </select>
+                <label>源文件名:</label>
+                <input class="input-sm input-search" name="search_like_original" value="${searchParams['search_like_original']}"/>
             </div>
             <div class="search-item">
-                <label>用户:</label>
-                <input class="input-sm input-search" name="search_like_admin.realname" value=""/>
+                <label>文件类型:</label>
+                <input class="input-sm input-search" placeholder="如：jpg" name="search_like_suffix" value="${searchParams['search_like_suffix']}"/>
             </div>
         </@pageHeadRight>
     </div>
@@ -38,7 +33,7 @@
                         <input type="checkbox" id="selectAll"><span></span>
                     </label>
                 </th>
-                <th>源文件名</th>
+                <th style="width: 15%">源文件名</th>
                 <th>文件路径</th>
                 <th>文件大小</th>
                 <th>上传者</th>
@@ -142,7 +137,7 @@
                         <div class="form-group">
                             <div class="col-xs-12 col-md-12">
                                 <label for="filePath">选择文件</label>
-                                <input type="file" name="file" multiple="multiple" class="form-control input-sm">
+                                <input type="file" name="files" multiple="multiple" class="form-control input-sm">
                             </div>
                         </div>
                     </div>
@@ -164,7 +159,7 @@
     function importData() {
         var form = new FormData(document.getElementById('putInExcel'));
         $.ajax({
-            url: "upload",
+            url: "uploads",
             type: "post",
             data: form,
             processData: false,

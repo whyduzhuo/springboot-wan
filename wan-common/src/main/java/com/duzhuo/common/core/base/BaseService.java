@@ -282,6 +282,9 @@ public class BaseService<T extends BaseEntity, ID extends Serializable> {
                     predicates.add(cb.isNotEmpty(root.get(filter.getProperty())));
                     break;
                 case parentlike:
+                    predicates.add(cb.like(root.get(filter.getProperty()), filter.getValue() + "%"));
+                    break;
+                default:
                     break;
             }
         });

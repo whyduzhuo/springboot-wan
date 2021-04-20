@@ -29,8 +29,10 @@ import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 项目文件
@@ -227,13 +229,20 @@ public class ProFileService extends DeleteService<ProFile,Long> {
     }
 
     /**
-     *
+     * 查询文件
      * @param fileSize
      * @param md5
      * @return
      */
     public ProFile find(Long fileSize,String md5,ProFile.Status status){
-        return proFileDao.findByFileSizeAndMd5AndStatus(fileSize,md5,status);
+        List<ProFile> proFileList = proFileDao.findByFileSizeAndMd5AndStatus(fileSize,md5,status);
+        AtomicReference<ProFile> proFileAtomicReference = new AtomicReference<>();
+        proFileList.forEach(r->{
+            if (this.exit(r)){
+                proFileAtomicReference.set(r);
+            }
+        });
+        return proFileAtomicReference.get();
     }
 
     /**
