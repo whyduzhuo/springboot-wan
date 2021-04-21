@@ -2,6 +2,9 @@
 
 ### 介绍
 springboot 后台管理系统快速开发框架
+感谢 [若依](https://gitee.com/y_project/RuoYi.git)  。
+感谢 [小懒虫](https://gitee.com/aun/Timo.git)  。
+感谢 [Eladmin](https://gitee.com/elunez/eladmin.git)  。
 
 ### 软件架构
 Springboot,Jpa,Shiro,Freekmarker,Layer,bootstrap,Oracle
