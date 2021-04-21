@@ -9,6 +9,11 @@ springboot 后台管理系统快速开发框架
 ### 软件架构
 Springboot,Jpa,Shiro,Freekmarker,Layer,bootstrap,Oracle,redis,swagger
 
+### 系统亮点
+1. 全自动sql连表查询
+2. 基于注解的唯一约束校验
+3. Shiro缓存更新，无需重新登录，授权立即生效
+
 ### 系统安全
 防xss攻击，防暴力破解，防webShell攻击，防越权漏洞
 
