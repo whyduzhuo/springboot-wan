@@ -199,20 +199,6 @@ public class LoginController {
         return Message.success("退出成功！");
     }
 
-    @GetMapping("/refresh")
-    public String refush(){
-        AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
-        shiroRealm.clearCachedAuthorizationInfo();
-        return "redirect:/base/index";
-    }
-
-    @GetMapping("/refreshAll")
-    public String refreshAll(){
-        AdminRealm shiroRealm = ShiroUtils.getShiroRelame();
-        shiroRealm.clearAllCachedAuthorizationInfo();
-        return "redirect:/base/index";
-    }
-
 
     @GetMapping("/changeRoleWin")
     public String changeRoleWindw(Model model){
