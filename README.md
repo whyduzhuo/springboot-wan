@@ -7,7 +7,7 @@ springboot 后台管理系统快速开发框架
 * 感谢 [Eladmin](https://gitee.com/elunez/eladmin.git)  。
 
 ### 软件架构
-Springboot,Jpa,Shiro,Freekmarker,Layer,bootstrap,Oracle
+Springboot,Jpa,Shiro,Freekmarker,Layer,bootstrap,Oracle,redis,swagger
 
 ### 系统安全
 防xss攻击，防暴力破解，防webShell攻击，防越权漏洞
