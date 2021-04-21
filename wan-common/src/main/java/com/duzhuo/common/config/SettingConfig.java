@@ -29,10 +29,6 @@ public class SettingConfig {
      * 错误消息接收邮箱
      */
     private String email;
-    /**
-     * cookie 记住认证信息的密钥
-     */
-    private String cipherKey;
 
     /**
      * 系统名称

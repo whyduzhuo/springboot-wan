@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <script type="text/javascript" src="/static/layui-v2.5.6/layui/layui.all.js"></script>
 <link href="/static/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="/static/css/main.css" media="all">
@@ -180,128 +180,190 @@
             <div class="layui-card-header">更新日志</div>
             <div class="layui-card-body">
                 <ul class="layui-timeline">
+
                     <li class="layui-timeline-item">
                         <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                         <div class="layui-timeline-content layui-text">
-                            <h3 class="layui-timeline-title">v2.0.3</h3>
+                            <h3 class="layui-timeline-title">2021-04-03 </h3>
                             <p>
-                                1. 更新：重命名菜单类型为：目录、菜单、按钮<br>
-                                2. 更新：重写Shiro“记住我”系列化数据，减少cookie体积<br>
-                                3. 新增：获取用户角色列表方法<br>
-                                4. 修复：获取部门数据时延迟加载超时问题<br>
-                                5. 修复：将jq版本改为2.2.4，解决layui弹出窗口最大化问题<br>
-                                6. 新增：项目配置项，可直接通过yml文件配置Shiro和XSS防护忽略规则<br>
-                                7. 新增：ResultExceptionError和ResultExceptionSuccess异常类<br>
-                                8. 修复：若干页面显示问题，优化加载时提示<br>
+                                1. 新增：滑动验证码<br>
+                                2. 新增：整合Redisson分布式锁<br>
+                                3. 新增：角色切换功能
+                            </p>
+                        </div>
+                    </li>
+
+
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">2021-03-03 </h3>
+                            <p>
+                                1. 新增：登录验证码<br>
+                                2. 修复：邮件发送慢导致程序卡顿的bug<br>
+                                3.新增：rememberMe记住我功能
+                            </p>
+                        </div>
+                    </li>
+
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">2021-01-23</h3>
+                            <p>
+                                1. 新增：定时任务<br>
                             </p>
                         </div>
                     </li>
                     <li class="layui-timeline-item">
                         <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                         <div class="layui-timeline-content layui-text">
-                            <h3 class="layui-timeline-title">v2.0.2</h3>
+                            <h3 class="layui-timeline-title">2020-12-17</h3>
                             <p>
-                                1.优化：根据【阿里巴巴Java开发手册】对代码进行优化处理！<br>
-                                2.新增：上传文件路径输出为全路径方法<br>
-                                3.更新：介绍文档及HTML页面头部信息<br>
-                                4.更新：去掉“更多按钮”，直接显示隐藏内容，不再需要点击按钮滑动内容<br>
-                                5.修复：编译时警告信息！<br>
-                                6.修复：代码生成新模块版本号问题<br>
-                                7.修复：接口无法继承多个父接口的问题<br>
-                                8.修复：jwt组件中添加获取用户名的方法<br>
-                                9.修复：代码生成时控制器保存地址问题<br>
-                                10.修复：部门、菜单控制器更新数据时，pids无法更新<br>
+                                1. 新增：Excel导入导出功能<br>
+                            </p>
+                        </div>
+                    </li>
+
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">2020-12-01</h3>
+                            <p>
+                                1. 修复：@Unique死循环导致内存溢出的bug<br>
+                                2. 新增：系统监控<br>
+                                3. 新增：OrderEntity 、OrderService、DeleteEntity、DeleteService<br>
+                            </p>
+                        </div>
+                    </li>
+
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">2020-11-27 </h3>
+                            <p>
+                                1. 新增：系统错误自动发送邮件<br>
+                                2. 优化：角色授权，修改shiro-redis缓存<br>
+                                3. 优化：首页菜单，清除当前登录人的权限缓存<br>
+                                4. 优化：数据字典<br>
+                            </p>
+                        </div>
+                    </li>
+
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">2020-11-13 </h3>
+                            <p>
+                                1. 新增：自定义validator唯一约束注解<br>
                             </p>
                         </div>
                     </li>
                     <li class="layui-timeline-item">
                         <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                         <div class="layui-timeline-content layui-text">
-                            <h3 class="layui-timeline-title">v2.0.1</h3>
+                            <h3 class="layui-timeline-title">2020-11-09 </h3>
                             <p>
-                                1.新增：加入JWT TOKEN鉴权机制，实现多端的权限验证！<br>
-                                2.更新：模块化全局统一异常处理机制及项目配置，降低模块间的耦合性！<br>
-                                3.修复：部分环境下代码生成模板文件编译时的后缀遗留问题！<br>
-                                4.修复：部门更新导致pids字段为空的问题！<br>
+                                1. 新增：整合参数校验注解<br>
+                                2. 优化：优化数据校验和全局异常处理<br>
                             </p>
                         </div>
                     </li>
                     <li class="layui-timeline-item">
                         <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                         <div class="layui-timeline-content layui-text">
-                            <h3 class="layui-timeline-title">v2.0</h3>
+                            <h3 class="layui-timeline-title">2020-10-05</h3>
                             <p>
-                                1.重构项目结构，引入组件及业务组概念<br>
-                                2.前后台分离部署，可以针对前台进行性能优化<br>
-                                3.优化逻辑删除功能，限制查询已删除的数据<br>
-                                4.重构代码生成功能解析方式<br>
-                                5.优化弹出式窗口，加入最大化及自动适应大小<br>
-                                6.优化数据列表在小窗口下显示混乱问题
+                                3. 新增：整合lombok<br>
+                                4. 修复：用户菜单显示优化<br>
                             </p>
                         </div>
                     </li>
                     <li class="layui-timeline-item">
                         <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                         <div class="layui-timeline-content layui-text">
-                            <h3 class="layui-timeline-title">v1.0.8</h3>
+                            <h3 class="layui-timeline-title">2020-08-26</h3>
                             <p>
-                                1.重构字典模块，简化字典操作<br>
-                                2.修复个人信息修改时不通过问题<br>
-                                3.修复用户名修改报错问题，防止脏数据报错<br>
-                                4.修复上传文件无法访问的bug<br>
-                                5.修复生成实体类Text类型的bug
+                                1.优化：房屋挂牌走势bug<br>
+                                2.新增：shiro整合redis,实现session共享<br>
                             </p>
                         </div>
                     </li>
                     <li class="layui-timeline-item">
                         <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                         <div class="layui-timeline-content layui-text">
-                            <h3 class="layui-timeline-title">v1.0.6</h3>
+                            <h3 class="layui-timeline-title">2020-08-20</h3>
                             <p>
-                                加入导入导出功能
+                                1.新增：二手房数据爬取<br>
+                                2.新增：二手房挂牌量走势<br>
+                                3.新增：菜单授权功能
+                                4.新增：整合Echarts
                             </p>
                         </div>
                     </li>
                     <li class="layui-timeline-item">
                         <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                         <div class="layui-timeline-content layui-text">
-                            <h3 class="layui-timeline-title">v1.0.5</h3>
+                            <h3 class="layui-timeline-title">2020-08-11 </h3>
                             <p>
-                                1.加入QuerySpec动态查询实例<br>
-                                2.加入选择排序功能<br>
-                                3.加入xss防护功能<br>
-                                4.加入swagger数据接口文档
+                                1.字典和字典模块功能
                             </p>
                         </div>
                     </li>
                     <li class="layui-timeline-item">
                         <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                         <div class="layui-timeline-content layui-text">
-                            <h3 class="layui-timeline-title">v1.0.1</h3>
+                            <h3 class="layui-timeline-title">2020-07-30 </h3>
                             <p>
-                                1.加入部门管理<br>
-                                2.更新项目开源协议<br>
-                                3.支持第三级子菜单
+                                1.新增菜单功能<br>
+                                2.加入Ztree树形工具
                             </p>
                         </div>
                     </li>
                     <li class="layui-timeline-item">
                         <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                         <div class="layui-timeline-content layui-text">
-                            <h3 class="layui-timeline-title">v1.0</h3>
+                            <h3 class="layui-timeline-title">2020-07-24</h3>
                             <p>
-                                正式发布v1.0系统<br>
-                                1.权限管理<br>
-                                2.字典管理<br>
-                                3.日志管理<br>
-                                4.代码生成
+                                1.修复：若干bug</br>
+                                2.新增：代码生成模板功能
                             </p>
                         </div>
                     </li>
                     <li class="layui-timeline-item">
                         <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                         <div class="layui-timeline-content layui-text">
-                            <div class="layui-timeline-title">小懒虫</div>
+                            <h3 class="layui-timeline-title">2020-07-17 </h3>
+                            <p>
+                                1.新增：加入swagger数据接口文档
+                            </p>
+                        </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">2020-01-19</h3>
+                            <p>
+                                1.新增：文件上传功能
+                                2.新增：线程池
+                                3.整合Shiro
+                                4.整合Freemarker
+                            </p>
+                        </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">2020-01-17</h3>
+                            <p>
+                                1.搭建代码生成工具
+                            </p>
+                        </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <div class="layui-timeline-title">wan</div>
                         </div>
                     </li>
                 </ul>
