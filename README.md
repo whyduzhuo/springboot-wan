@@ -1,24 +1,38 @@
 # springboot-wan
 
 #### 介绍
-代码生成
+springboot 后台管理系统快速开发框架
 
 #### 软件架构
 Springboot,Jpa,Shiro,Freekmarker,Layer,bootstrap,Oracle
 
 
-#### 安装教程
+#### 软件环境
 
 1.  jdk 1.8
 2.  oracle 11
+3.  maven 3.0+
+4.  redis
 
-#### 使用说明
+#### 内置功能
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  用户管理
+2.  角色管理
+3.  菜单管理
+4.  系统监控
+5.  数据字典
+6.  Api接口文档
+7.  文件管理
+8.  定时任务
+9.  操作日志
+10. 代码生成
+11. 房屋挂牌走势
 
-#### 参与贡献
+
+#### 演示图
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0421/203157_1da0e918_5215349.jpeg "QQ截图20210421202940.jpg")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0421/203216_65e45ac5_5215349.jpeg "QQ截图20210421202849.jpg")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0421/203229_a5107d02_5215349.jpeg "QQ截图20210421203003.jpg")
 
 1.  Fork 本仓库
 2.  新建 Feat_xxx 分支
